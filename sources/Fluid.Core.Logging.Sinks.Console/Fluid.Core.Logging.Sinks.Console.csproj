@@ -1,0 +1,21 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <Import Project="../../../props/Fluid.Core.props" />
+
+  <ItemGroup>
+    <Folder Include="Formatting\" />
+    <Folder Include="Output\" />
+    <Folder Include="Platform\" />
+    <Folder Include="Rendering\" />
+    <Folder Include="Themes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fluid.Core.Logging\Fluid.Core.Logging.csproj" />
+  </ItemGroup>
+
+</Project>

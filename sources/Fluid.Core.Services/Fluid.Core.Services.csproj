@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+
+  <Import Project="../../../props/Fluid.Core.props" />
+
+  <ItemGroup>
+    <PackageReference Include="System.Composition.AttributedModel" Version="1.3.0" />
+    <PackageReference Include="System.Composition.TypedParts" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
+    <ProjectReference Include="..\Fluid.Core.Devices.Interfaces\Fluid.Core.Devices.Interfaces.csproj" />
+    <ProjectReference Include="..\Fluid.Core.Interfaces\Fluid.Core.Interfaces.csproj" />
+    <ProjectReference Include="..\Fluid.Core.IoC\Fluid.Core.IoC.csproj" />
+    <ProjectReference Include="..\Fluid.Core.Native\Fluid.Core.Native.csproj" />
+    <ProjectReference Include="..\Fluid.Core.Services.Interfaces\Fluid.Core.Services.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

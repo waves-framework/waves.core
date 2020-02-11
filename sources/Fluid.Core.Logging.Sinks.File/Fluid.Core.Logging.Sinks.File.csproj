@@ -1,0 +1,13 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <Import Project="../../../props/Fluid.Core.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fluid.Core.Logging\Fluid.Core.Logging.csproj" />
+  </ItemGroup>
+
+</Project>

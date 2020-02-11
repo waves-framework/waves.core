@@ -1,0 +1,32 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <Import Project="../../../props/Fluid.Core.props" />
+
+  <ItemGroup>
+    <Folder Include="Capturing\" />
+    <Folder Include="Configuration\" />
+    <Folder Include="Context\" />
+    <Folder Include="Core\Enrichers\" />
+    <Folder Include="Core\Filters\" />
+    <Folder Include="Core\Pipeline\" />
+    <Folder Include="Core\Sinks\" />
+    <Folder Include="Data\" />
+    <Folder Include="Debugging\" />
+    <Folder Include="Events\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Formatting\Display\Obsolete\" />
+    <Folder Include="Formatting\Json\" />
+    <Folder Include="Formatting\Raw\" />
+    <Folder Include="Parsing\" />
+    <Folder Include="Policies\" />
+    <Folder Include="Properties\" />
+    <Folder Include="Rendering\" />
+    <Folder Include="Settings\KeyValuePairs\" />
+  </ItemGroup>
+
+
+</Project>

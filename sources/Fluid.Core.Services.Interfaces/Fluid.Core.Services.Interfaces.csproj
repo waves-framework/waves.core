@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../../../props/Fluid.Core.props" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fluid.Core.Devices.Interfaces\Fluid.Core.Devices.Interfaces.csproj" />
+    <ProjectReference Include="..\Fluid.Core.EventArgs\Fluid.Core.EventArgs.csproj" />
+  </ItemGroup>
+
+</Project>
