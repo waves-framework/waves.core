@@ -4,6 +4,6 @@
     <Version>0.1.0</Version>
   </PropertyGroup>
 
-  <Import Project="../../../props/Fluid.Core.props" />
+  <Import Project="../../props/Fluid.Core.props" />
 
 </Project>

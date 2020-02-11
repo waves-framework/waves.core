@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <Import Project="../../../props/Fluid.Core.props" />
+  <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />

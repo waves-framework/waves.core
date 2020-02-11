@@ -1,5 +1,5 @@
 ﻿using System;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Devices.Interfaces
 {

@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
-  <Import Project="../../../props/Fluid.Core.props" />
+  <Import Project="../../props/Fluid.Core.props" />
 
   <PropertyGroup>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

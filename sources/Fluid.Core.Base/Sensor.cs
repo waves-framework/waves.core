@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Fluid.Core.Enums;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
@@ -14,13 +12,13 @@ namespace Fluid.Core.Base
         private string _name;
         private string _manufacturer;
         private string _serialNumber;
-        
+
         private float _referenceValue = 1.0f;
 
         private SensorType _type = SensorType.Line;
 
         /// <summary>
-        /// Новый экземпляр датчика.
+        ///     Новый экземпляр датчика.
         /// </summary>
         public Sensor()
         {
@@ -28,7 +26,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Новый экземпляр датчика.
+        ///     Новый экземпляр датчика.
         /// </summary>
         /// <param name="isEditable">Редактируемый ли датчик.</param>
         public Sensor(bool isEditable)
@@ -37,7 +35,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Новый экземпляр датчика.
+        ///     Новый экземпляр датчика.
         /// </summary>
         /// <param name="id">Идентификатор.</param>
         public Sensor(Guid id)
@@ -137,7 +135,7 @@ namespace Fluid.Core.Base
             {
                 IsEditable = IsEditable,
                 Name = Name,
-                Manufacturer =  Manufacturer,
+                Manufacturer = Manufacturer,
                 SerialNumber = SerialNumber,
                 Sensitivity = Sensitivity,
                 Type = Type

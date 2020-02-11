@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Annotations;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
@@ -44,7 +45,7 @@ namespace Fluid.Core.Base
         public event EventHandler<IMessage> MessageReceived;
 
         /// <summary>
-        /// Уведомление об изменении параметров.
+        ///     Уведомление об изменении параметров.
         /// </summary>
         /// <param name="propertyName"></param>
         [NotifyPropertyChangedInvocator]
@@ -54,7 +55,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Уведомление об отправке системного сообщения.
+        ///     Уведомление об отправке системного сообщения.
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnMessageReceived(IMessage e)

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Fluid.Core.Base;
+using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Devices.Interfaces.Input.ADC;
-using Fluid.Core.Interfaces;
 
 namespace Fluid.Core.Devices.Input.ADC
 {
@@ -11,7 +11,7 @@ namespace Fluid.Core.Devices.Input.ADC
         private double _digitalGain = 1.0f;
 
         private ICollection<double> _availableManagedGains;
-        
+
         /// <inheritdoc />
         protected AdcEntryPoint(IModule parent) : base(parent)
         {

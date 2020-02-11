@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Devices.Interfaces.Input.ADC
 {

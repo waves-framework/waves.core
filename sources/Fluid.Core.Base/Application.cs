@@ -1,9 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
@@ -76,7 +73,7 @@ namespace Fluid.Core.Base
         }
 
         /// <inheritdoc />
-        public event System.EventHandler<IMessage> MessageReceived;
+        public event EventHandler<IMessage> MessageReceived;
 
         /// <inheritdoc />
         public event EventHandler ActionsUpdated;
