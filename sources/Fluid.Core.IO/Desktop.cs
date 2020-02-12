@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using Fluid.Core.Interfaces;
 using Fluid.Core.IO.Enums;
+using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
@@ -24,8 +24,8 @@ namespace Fluid.Core.IO
         {
             try
             {
-                var desktopPath = System.Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                var userPath = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 _directoryInfo = new DirectoryInfo(desktopPath);
 
                 FullName = _directoryInfo.FullName;

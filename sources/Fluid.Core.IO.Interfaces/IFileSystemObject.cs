@@ -1,16 +1,16 @@
-﻿using Fluid.Core.Interfaces;
+﻿using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.IO.Interfaces
 {
     public interface IFileSystemObject : IObject
     {
         /// <summary>
-        /// Выбран ли объект.
+        ///     Выбран ли объект.
         /// </summary>
         bool IsSelected { get; set; }
 
         /// <summary>
-        /// Является ли объект скрытым.
+        ///     Является ли объект скрытым.
         /// </summary>
         bool IsHidden { get; }
 
