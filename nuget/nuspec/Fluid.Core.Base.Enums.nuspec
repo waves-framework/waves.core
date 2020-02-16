@@ -12,7 +12,7 @@
     <description>Библиотека основных перечислений Fluid.Core.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
-    <tags>fluid core enums</tags>
+    <tags>fluid core base enums</tags>
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
