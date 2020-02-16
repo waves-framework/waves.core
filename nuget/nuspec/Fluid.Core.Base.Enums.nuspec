@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fluid.Core.Base.Enums</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2019-$CURRENTYEAR$</copyright>
+    <copyright>Copyright 2019-2020</copyright>
     <tags>fluid core enums</tags>
   </metadata>
   <files>
