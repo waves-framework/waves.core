@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Fluid.Core.Base.Enums</id>
-    <version>$NUGETVERSION$</version>
+    <version>0.3</version>
     <authors>Fluid</authors>
     <owners>Fluid</owners>
     <licenseUrl>https://ambertape.ru</licenseUrl>
