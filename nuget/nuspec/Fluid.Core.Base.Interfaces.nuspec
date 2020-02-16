@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Fluid.Core.Base.Interfaces</id>
+    <version>0.3.0</version>
+    <authors>Fluid</authors>
+    <owners>Fluid</owners>
+    <licenseUrl>https://ambertape.ru</licenseUrl>
+    <projectUrl>https://ambertape.ru</projectUrl>
+    <icon>files\logo.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Fluid.Core.Base.Enums</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019-2020</copyright>
+    <tags>fluid core enums</tags>
+    <dependencies>
+      <dependency id="Fluid.Core.Base.Enums" version="0.3.0" />
+    </dependencies>
+  </metadata>
+  <files>
+  	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.Interfaces.dll" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.Interfaces.xml" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.Interfaces.dll" target="lib\netcoreapp3.1\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.Interfaces.xml" target="lib\netcoreapp3.1\x64"/>
+  </files>    
+</package>
