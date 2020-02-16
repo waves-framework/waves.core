@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fluid.Core.Base;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.EventArgs;
+using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Devices.Interfaces.Input.ADC;
-using Fluid.Core.Enums;
-using Fluid.Core.EventArgs;
-using Fluid.Core.Interfaces;
 using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services

@@ -1,13 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Version>0.3</Version>
   </PropertyGroup>
 
   <Import Project="../../props/Fluid.Core.props" />
-
-  <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
-  </ItemGroup>
 
 </Project>

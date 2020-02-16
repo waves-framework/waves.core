@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fluid.Core.Base.EventArgs;
 using Fluid.Core.Devices.Interfaces.Input.ADC;
-using Fluid.Core.EventArgs;
-using Fluid.Core.Interfaces;
 
 namespace Fluid.Core.Services.Interfaces
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Services.Interfaces
 {

@@ -12,7 +12,7 @@
     <description>Библиотека для логгирования в консоль.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
-    <tags>fluid core logs logging</tags>
+    <tags>fluid core logs logging console</tags>
     <dependencies>
       <dependency id="Fluid.Core.Logging" version="1.0.0" />
     </dependencies>

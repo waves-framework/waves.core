@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Fluid.Core.Base;
-using Fluid.Core.Enums;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.Interfaces;
 using Fluid.Core.IoC;
 using Fluid.Core.Services.Interfaces;
 
@@ -11,27 +11,7 @@ namespace Fluid.Core.Services
 {
     public class SensorService : Service, ISensorService
     {
-        private IConfigurationService _configurationService;
-
         private List<ISensor> _sensors = new List<ISensor>();
-
-        /// <summary>
-        ///     Сервис конфигурации.
-        /// </summary>
-        public IConfigurationService ConfigurationService
-        {
-            get => _configurationService;
-            set
-            {
-                if (Equals(value, _configurationService))
-                {
-                    return;
-                }
-
-                _configurationService = value;
-                OnPropertyChanged();
-            }
-        }
 
         /// <inheritdoc />
         public List<ISensor> Sensors
@@ -66,10 +46,6 @@ namespace Fluid.Core.Services
                 return;
             }
 
-            _configurationService = ContainerCore.GetInstance<IConfigurationService>();
-
-            InitializeConfiguration();
-
             IsInitialized = true;
 
             OnMessageReceived(
@@ -98,15 +74,15 @@ namespace Fluid.Core.Services
                     Type = SensorType.Line
                 });
 
-            if (!_configurationService.Configuration.Contains(sensorsPathKey))
+            if (!configuration.Contains(sensorsPathKey))
             {
-                _configurationService.Configuration.AddProperty(
+                configuration.AddProperty(
                     new Property(sensorsPathKey, new List<ISensor>(), false));
             }
             else
             {
                 var sensors =
-                    (List<ISensor>)_configurationService.Configuration.GetPropertyValue(
+                    (List<ISensor>)configuration.GetPropertyValue(
                         sensorsPathKey);
 
                 foreach (var sensor in sensors)
@@ -121,7 +97,7 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
-            _configurationService.Configuration.SetPropertyValue(
+            configuration.SetPropertyValue(
                 "SensorService-Sensors",
                 Sensors.GetRange(1, Sensors.Count - 1));
         }
@@ -129,6 +105,9 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public override void Dispose()
         {
+            foreach (var sensor in Sensors)
+            {
+            }
         }
 
         /// <inheritdoc />
@@ -171,13 +150,6 @@ namespace Fluid.Core.Services
                 Sensors[i] = sensor;
                 break;
             }
-        }
-
-        /// <summary>
-        ///     Инициалиазация конфигурации.
-        /// </summary>
-        private void InitializeConfiguration()
-        {
         }
 
         /// <summary>
