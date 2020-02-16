@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Fluid.Core.Logging.Sinks.Console</id>
+    <version>1.0.0</version>
+    <authors>Fluid</authors>
+    <owners>Fluid</owners>
+    <licenseUrl>https://ambertape.ru</licenseUrl>
+    <projectUrl>https://ambertape.ru</projectUrl>
+    <icon>files\logo.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Библиотека для логгирования в консоль.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019-2020</copyright>
+    <tags>fluid core logs logging</tags>
+    <dependencies>
+      <dependency id="Fluid.Core.Logging" version="1.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+  	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.Sinks.Console.dll" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.Sinks.Console.xml" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.Sinks.Console.dll" target="lib\netcoreapp3.1\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.Sinks.Console.xml" target="lib\netcoreapp3.1\x64"/>
+  </files>    
+</package>
