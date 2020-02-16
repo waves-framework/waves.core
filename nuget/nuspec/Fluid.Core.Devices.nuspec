@@ -12,7 +12,7 @@
     <description>Библиотека абстрактных классов устройств Fluid.Core</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
-    <tags>fluid core devices interfaces</tags>
+    <tags>fluid core devices</tags>
     <dependencies>
       <dependency id="Fluid.Core.Base" version="0.3.0" />
       <dependency id="Fluid.Core.Devices.Interfaces" version="0.3.0" />
