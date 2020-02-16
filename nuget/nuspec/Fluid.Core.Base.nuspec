@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Fluid.Core.Base</id>
-    <version>1.0.0</version>
+    <version>0.3.0</version>
     <authors>Fluid</authors>
     <owners>Fluid</owners>
     <licenseUrl>https://ambertape.ru</licenseUrl>
@@ -12,7 +12,7 @@
     <description>Библиотека основных абстрактных классов Fluid.Core</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
-    <tags>fluid core base annotations</tags>
+    <tags>fluid core base</tags>
     <dependencies>
       <dependency id="Fluid.Core.Base.Annotations" version="1.0.0" />
       <dependency id="Fluid.Core.Base.Interfaces" version="0.3.0" />
