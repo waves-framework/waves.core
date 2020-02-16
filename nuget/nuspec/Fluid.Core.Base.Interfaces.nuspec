@@ -9,10 +9,10 @@
     <projectUrl>https://ambertape.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Fluid.Core.Base.Enums</description>
+    <description>Базовые интерфейсы для Fluid.Core.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
-    <tags>fluid core enums</tags>
+    <tags>fluid core base interfaces</tags>
     <dependencies>
       <dependency id="Fluid.Core.Base.Enums" version="0.3.0" />
     </dependencies>
