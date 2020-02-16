@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Fluid.Core.Base;
-using Fluid.Core.Base.Enums;
-using Fluid.Core.Base.Interfaces;
+using Fluid.Core.Enums;
+using Fluid.Core.Interfaces;
 using Fluid.Core.IoC;
 using Fluid.Core.Logging;
 using Fluid.Core.Logging.Events;
@@ -11,7 +11,8 @@ using Fluid.Core.Logging.Sinks.Console;
 using Fluid.Core.Logging.Sinks.File;
 using Fluid.Core.Services;
 using Fluid.Core.Services.Interfaces;
-using Fluid.Core.Utils.Serialization;
+using Fluid.Tools.IO.Serialization;
+using IService = Fluid.Core.Services.Interfaces.IService;
 
 namespace Fluid.Core
 {
@@ -105,7 +106,7 @@ namespace Fluid.Core
                 if (File.Exists(fileName))
                     File.Delete(fileName);
 
-                Json.WriteToFile(fileName, Configuration);
+                JsonSerialization.WriteToFile(fileName, Configuration);
             }
             catch (Exception e)
             {
@@ -195,7 +196,7 @@ namespace Fluid.Core
                     "core.config");
 
                 Configuration = File.Exists(fileName)
-                    ? Json.ReadFile<Configuration>(fileName)
+                    ? JsonSerialization.ReadFile<Configuration>(fileName)
                     : new Configuration();
 
                 IsConfigurationInitialized = true;
@@ -211,13 +212,7 @@ namespace Fluid.Core
         /// </summary>
         private static void InitializeServices()
         {
-            var moduleService = new ModuleService();
-
-            RegisterService<IModuleService>(moduleService);
-            RegisterService<IApplicationService>(new ApplicationService());
-            RegisterService<IAdcService>(new AdcService(moduleService));
-            RegisterService<IInputService>(new InputService());
-            RegisterService<ISensorService>(new SensorService());
+            RegisterService<IModuleService>(new ModuleService());   // сервис модулей
 
             IsServicesInitialized = true;
         }

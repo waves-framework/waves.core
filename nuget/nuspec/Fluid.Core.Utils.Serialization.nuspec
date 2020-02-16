@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Fluid.Core.Utils.Serialization</id>
+    <version>1.1.0</version>
+    <authors>Fluid</authors>
+    <owners>Fluid</owners>
+    <licenseUrl>https://ambertape.ru</licenseUrl>
+    <projectUrl>https://ambertape.ru</projectUrl>
+    <icon>files\logo.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Библиотека утилит для сериализации файлов.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019-2020</copyright>
+    <tags>fluid core utils serialization</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="12.0.3" />
+    </dependencies>
+  </metadata>
+  <files>
+  	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Utils.Serialization.dll" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Utils.Serialization.xml" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Utils.Serialization.dll" target="lib\netcoreapp3.1\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Utils.Serialization.xml" target="lib\netcoreapp3.1\x64"/>
+  </files>    
+</package>

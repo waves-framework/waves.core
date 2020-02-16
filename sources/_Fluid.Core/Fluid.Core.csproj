@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project>
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -8,15 +8,20 @@
   <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Base.Interfaces\Fluid.Core.Base.Interfaces.csproj" />
+    <PackageReference Include="System.Composition" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tools\Fluid.Tools\Fluid.Tools.csproj" />
     <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
+    <ProjectReference Include="..\Fluid.Core.Interfaces\Fluid.Core.Interfaces.csproj" />
     <ProjectReference Include="..\Fluid.Core.IoC\Fluid.Core.IoC.csproj" />
     <ProjectReference Include="..\Fluid.Core.Logging.Sinks.Console\Fluid.Core.Logging.Sinks.Console.csproj" />
     <ProjectReference Include="..\Fluid.Core.Logging.Sinks.File\Fluid.Core.Logging.Sinks.File.csproj" />
     <ProjectReference Include="..\Fluid.Core.Logging\Fluid.Core.Logging.csproj" />
+    <ProjectReference Include="..\Fluid.Core.Native\Fluid.Core.Native.csproj" />
     <ProjectReference Include="..\Fluid.Core.Services.Interfaces\Fluid.Core.Services.Interfaces.csproj" />
     <ProjectReference Include="..\Fluid.Core.Services\Fluid.Core.Services.csproj" />
-    <ProjectReference Include="..\Fluid.Core.Utils.Serialization\Fluid.Core.Utils.Serialization.csproj" />
   </ItemGroup>
 
 </Project>
