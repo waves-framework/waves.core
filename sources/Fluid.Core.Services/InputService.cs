@@ -1,8 +1,8 @@
 ﻿using System;
 using Fluid.Core.Base;
-using Fluid.Core.Enums;
-using Fluid.Core.EventArgs;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.EventArgs;
+using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services
@@ -62,7 +62,8 @@ namespace Fluid.Core.Services
         {
             if (IsInitialized) return;
 
-            OnMessageReceived(this,new Message("Информация", "Сервис инициализирован.", Name, MessageType.Information));
+            OnMessageReceived(this,
+                new Message("Информация", "Сервис инициализирован.", Name, MessageType.Information));
 
             IsInitialized = true;
         }
@@ -70,19 +71,16 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
-            
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
-            
         }
 
         /// <inheritdoc />
         public override void Dispose()
         {
-            
         }
 
         /// <summary>

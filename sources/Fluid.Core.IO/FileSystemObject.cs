@@ -1,5 +1,5 @@
-﻿using Fluid.Core.Interfaces;
-using Object = Fluid.Core.Base.Object;
+﻿using Fluid.Core.Base;
+using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {

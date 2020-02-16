@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Composition.Hosting;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using Fluid.Core.Base;
-using Fluid.Core.Enums;
-using Fluid.Core.Interfaces;
-using Fluid.Core.IoC;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services
@@ -64,10 +62,7 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public override void Initialize()
         {
-            if (IsInitialized)
-            {
-                return;
-            }
+            if (IsInitialized) return;
 
             LoadApplications();
 
@@ -98,7 +93,7 @@ namespace Fluid.Core.Services
         {
             if (Applications == null) return;
 
-            foreach (var application in Applications) 
+            foreach (var application in Applications)
                 application.Dispose();
 
             UnsubscribeApplicationCollectionEvents();
@@ -113,19 +108,13 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public void AddPath(string path)
         {
-            if (!Paths.Contains(path))
-            {
-                (Paths as List<string>)?.Add(path);
-            }
+            if (!Paths.Contains(path)) Paths?.Add(path);
         }
 
         /// <inheritdoc />
         public void RemovePath(string path)
         {
-            if (Paths.Contains(path))
-            {
-                (Paths as List<string>)?.Remove(path);
-            }
+            if (Paths.Contains(path)) Paths?.Remove(path);
         }
 
         /// <inheritdoc />
@@ -135,7 +124,7 @@ namespace Fluid.Core.Services
         }
 
         /// <summary>
-        /// Загружает модули.
+        ///     Загружает модули.
         /// </summary>
         private void LoadApplications()
         {
@@ -165,16 +154,10 @@ namespace Fluid.Core.Services
                     {
                         var name = assembly.GetName().Name;
 
-                        if (name == fileInfo.Name.Replace(fileInfo.Extension, ""))
-                        {
-                            hasItem = true;
-                        }
+                        if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
                     }
 
-                    if (!hasItem)
-                    {
-                        assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
-                    }
+                    if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
                 }
             }
 
@@ -190,7 +173,7 @@ namespace Fluid.Core.Services
         }
 
         /// <summary>
-        /// Подписка на события приложения.
+        ///     Подписка на события приложения.
         /// </summary>
         private void SubscribeApplicationEvents()
         {
@@ -202,7 +185,7 @@ namespace Fluid.Core.Services
         }
 
         /// <summary>
-        /// Отписка от событий приложения.
+        ///     Отписка от событий приложения.
         /// </summary>
         private void UnsubscribeApplicationCollectionEvents()
         {
@@ -216,39 +199,39 @@ namespace Fluid.Core.Services
         }
 
         /// <summary>
-        /// Действия при приеме системного сообщения от приложений.
+        ///     Действия при приеме системного сообщения от приложений.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnApplicationMessageReceived(object sender, IMessage e)
         {
-            OnMessageReceived(sender,e);
+            OnMessageReceived(sender, e);
         }
 
         /// <summary>
-        /// Действия при обновлении коллекции действий приложения.
+        ///     Действия при обновлении коллекции действий приложения.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnApplicationActionsUpdated(object sender, System.EventArgs e)
+        private void OnApplicationActionsUpdated(object sender, EventArgs e)
         {
             OnApplicationsActionsUpdated();
         }
 
         /// <summary>
-        /// Уведомление об обновлении коллекции приложений.
+        ///     Уведомление об обновлении коллекции приложений.
         /// </summary>
         protected virtual void OnApplicationsUpdated()
         {
-            ApplicationsUpdated?.Invoke(this, System.EventArgs.Empty);
+            ApplicationsUpdated?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// Уведомление об обновлении коллекции действий приложений.
+        ///     Уведомление об обновлении коллекции действий приложений.
         /// </summary>
         protected virtual void OnApplicationsActionsUpdated()
         {
-            ApplicationsActionsUpdated?.Invoke(this, System.EventArgs.Empty);
+            ApplicationsActionsUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 }

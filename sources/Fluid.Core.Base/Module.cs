@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
@@ -16,7 +14,7 @@ namespace Fluid.Core.Base
         private ICollection<IEntryPoint> _inputs = new List<IEntryPoint>();
 
         private ICollection<IEntryPoint> _outputs = new List<IEntryPoint>();
-        
+
         /// <inheritdoc />
         public bool IsInitialized
         {
@@ -99,7 +97,7 @@ namespace Fluid.Core.Base
         public abstract void Dispose();
 
         /// <summary>
-        /// Получение хэш-кода.
+        ///     Получение хэш-кода.
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
@@ -119,7 +117,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Уведомление о приеме системного сообщения.
+        ///     Уведомление о приеме системного сообщения.
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnMessageReceived(IMessage e)

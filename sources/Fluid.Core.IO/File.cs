@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Fluid.Core.Interfaces;
+using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
@@ -60,7 +60,5 @@ namespace Fluid.Core.IO
         ///     Размер файла.
         /// </summary>
         public long Size { get; set; }
-
-
     }
 }

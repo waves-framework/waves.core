@@ -1,8 +1,7 @@
 ﻿using System;
 using Fluid.Core.Base;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Services.Interfaces;
-
 using Object = Fluid.Core.Base.Object;
 
 namespace Fluid.Core.Services
@@ -50,7 +49,7 @@ namespace Fluid.Core.Services
         }
 
         /// <summary>
-        /// Загружает значение из конфигурации.
+        ///     Загружает значение из конфигурации.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="configuration"></param>
@@ -59,7 +58,7 @@ namespace Fluid.Core.Services
         public static T LoadConfigurationValue<T>(IConfiguration configuration, string key)
         {
             if (configuration.Contains(key))
-                return (T)configuration.GetPropertyValue(key);
+                return (T) configuration.GetPropertyValue(key);
 
             configuration.AddProperty(new Property(key, default, false));
 

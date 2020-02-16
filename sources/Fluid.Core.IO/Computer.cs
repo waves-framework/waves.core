@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using Fluid.Core.Interfaces;
 using Fluid.Core.IO.Enums;
+using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
@@ -11,7 +11,7 @@ namespace Fluid.Core.IO
         private DirectoryType _type = DirectoryType.Pc;
 
         private ObservableCollection<IFileSystemObject> _children = new ObservableCollection<IFileSystemObject>();
-        
+
         /// <summary>
         ///     Новый экземпляр директории.
         /// </summary>

@@ -1,6 +1,5 @@
 ﻿using System;
-using Fluid.Core.EventArgs;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.EventArgs;
 
 namespace Fluid.Core.Services.Interfaces
 {

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Fluid.Core.Services</id>
+    <version>0.3.0</version>
+    <authors>Fluid</authors>
+    <owners>Fluid</owners>
+    <licenseUrl>https://ambertape.ru</licenseUrl>
+    <projectUrl>https://ambertape.ru</projectUrl>
+    <icon>files\logo.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Библиотека базовых сервисов Fluid.Core.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019-2020</copyright>
+    <tags>fluid core presentation</tags>
+    <dependencies>
+      <dependency id="Fluid.Core.Base" version="0.3.0" />
+      <dependency id="Fluid.Core.Base.EventArgs" version="0.3.0" />
+      <dependency id="Fluid.Core.Base.Interfaces" version="0.3.0" />
+      <dependency id="Fluid.Core.Devices.Interfaces" version="0.3.0" />
+      <dependency id="Fluid.Core.IoC" version="0.3.0" />
+      <dependency id="Fluid.Core.Native.Windows" version="0.3.0" />
+      <dependency id="Fluid.Core.Services.Interfaces" version="0.3.0" />
+    </dependencies>
+  </metadata>
+  <files>
+  	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Services.dll" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Services.xml" target="lib\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Services.dll" target="lib\netcoreapp3.1\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Services.xml" target="lib\netcoreapp3.1\x64"/>
+  </files>    
+</package>

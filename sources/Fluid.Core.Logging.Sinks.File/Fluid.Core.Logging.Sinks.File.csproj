@@ -1,10 +1,10 @@
-﻿<Project>
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.1.0</Version>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
-  <Import Project="../../../props/Fluid.Core.props" />
+  <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Fluid.Core.Logging\Fluid.Core.Logging.csproj" />

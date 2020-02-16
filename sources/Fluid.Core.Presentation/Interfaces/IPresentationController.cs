@@ -6,17 +6,17 @@ namespace Fluid.Core.Presentation.Interfaces
     public interface IPresentationController : INotifyPropertyChanged
     {
         /// <summary>
-        ///     Выбранное представление
+        ///     Выбранное представление.
         /// </summary>
         IPresentation SelectedPresentation { get; set; }
 
         /// <summary>
-        ///     Список доступных представлений
+        ///     Список доступных представлений.
         /// </summary>
         ObservableCollection<IPresentation> Presentations { get; }
 
         /// <summary>
-        /// Инициализация
+        /// Инициализация.
         /// </summary>
         void Initialize();
     }

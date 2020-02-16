@@ -1,5 +1,5 @@
-﻿using Fluid.Core.Devices.Interfaces.Input.ADC;
-using Fluid.Core.Interfaces;
+﻿using Fluid.Core.Base.Interfaces;
+using Fluid.Core.Devices.Interfaces.Input.ADC;
 
 namespace Fluid.Core.Devices.Input.ADC
 {

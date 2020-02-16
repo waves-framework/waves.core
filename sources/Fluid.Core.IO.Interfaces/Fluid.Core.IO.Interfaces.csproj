@@ -4,10 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <Import Project="../../../props/Fluid.Core.props" />
+  <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Interfaces\Fluid.Core.Interfaces.csproj" />
+    <ProjectReference Include="..\Fluid.Core.Base.Interfaces\Fluid.Core.Base.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

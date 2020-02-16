@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using Fluid.Core.Base;
-using Fluid.Core.Enums;
-using Fluid.Core.Interfaces;
-using Fluid.Core.Native;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.Interfaces;
+using Fluid.Core.Native.Windows;
 using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services
@@ -307,7 +307,7 @@ namespace Fluid.Core.Services
         /// </summary>
         protected virtual void OnModulesUpdated()
         {
-            ModulesUpdated?.Invoke(this, System.EventArgs.Empty);
+            ModulesUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 }

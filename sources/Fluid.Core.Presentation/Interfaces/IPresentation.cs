@@ -6,17 +6,17 @@ namespace Fluid.Core.Presentation.Interfaces
     public interface IPresentation : INotifyPropertyChanged
     {
         /// <summary>
-        /// Контекст данных представления
+        /// Контекст данных представления.
         /// </summary>
-        object DataContext { get; }
+        IPresentationViewModel DataContext { get; }
 
         /// <summary>
-        /// Представление
+        /// Представление.
         /// </summary>
-        FrameworkElement View { get; }
+        IPresentationView View { get; }
 
         /// <summary>
-        /// Инициализация
+        /// Инициализация.
         /// </summary>
         void Initialize();
     }

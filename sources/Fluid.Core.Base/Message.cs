@@ -1,6 +1,6 @@
 using System;
-using Fluid.Core.Enums;
-using Fluid.Core.Interfaces;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {

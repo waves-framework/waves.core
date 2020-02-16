@@ -1,6 +1,8 @@
-﻿namespace Fluid.Core.Base
+﻿using Fluid.Core.Base.Interfaces;
+
+namespace Fluid.Core.Base
 {
-    public struct Size
+    public struct Size : ISize
     {
         /// <summary>
         ///     Создает новый экземпляр размера
