@@ -13,6 +13,11 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
     <tags>fluid core logs logging</tags>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="netcoreapp3.1" />
+      </group>
+    </frameworkReferences> 
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
@@ -21,7 +26,4 @@
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="lib\netcoreapp3.1\x64"/>
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="lib\netcoreapp3.1\x64"/>
   </files>    
-  <frameworkReferences>
-      <group targetFramework=".NETCoreApp3.1" />
-    </frameworkReferences>
 </package>

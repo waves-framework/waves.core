@@ -16,6 +16,11 @@
     <dependencies>
       <dependency id="Fluid.Core.Base" version="0.3.0" />
     </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="netcoreapp3.1" />
+      </group>
+    </frameworkReferences> 
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
@@ -24,7 +29,4 @@
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Presentation.dll" target="lib\netcoreapp3.1\x64"/>
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Presentation.xml" target="lib\netcoreapp3.1\x64"/>
   </files>    
-  <frameworkReferences>
-      <group targetFramework=".NETCoreApp3.1" />
-    </frameworkReferences>
 </package>
