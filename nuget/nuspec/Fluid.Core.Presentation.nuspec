@@ -17,8 +17,8 @@
       <dependency id="Fluid.Core.Base" version="0.3.0" />
     </dependencies>
     <frameworkReferences>
-      <group targetFramework=".NETCoreApp3.1">
-        <frameworkReference name="Microsoft.NETCore.App" />
+      <group targetFramework="netcoreapp3.1">
+        <dependency name="Microsoft.NetCore.App" />
       </group>
     </frameworkReferences> 
   </metadata>

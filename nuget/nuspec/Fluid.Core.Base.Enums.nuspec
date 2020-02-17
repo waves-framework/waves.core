@@ -14,8 +14,8 @@
     <copyright>Copyright 2019-2020</copyright>
     <tags>fluid core base enums</tags>
     <frameworkReferences>
-      <group targetFramework=".NETCoreApp3.1">
-        <frameworkReference name="Microsoft.NETCore.App" />
+      <group targetFramework="netcoreapp3.1">
+        <dependency name="Microsoft.NetCore.App" />
       </group>
     </frameworkReferences> 
   </metadata>
