@@ -13,11 +13,6 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
     <tags>fluid core base annotations</tags>
-    <frameworkReferences>
-      <group targetFramework="netcoreapp3.1">
-        <FrameworkReference Include="Microsoft.NetCore.App" />
-      </group>
-    </frameworkReferences> 
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />

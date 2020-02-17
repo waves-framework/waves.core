@@ -16,11 +16,6 @@
     <dependencies>
       <dependency id="Fluid.Core.Logging" version="1.0.0" />
     </dependencies>
-    <frameworkReferences>
-      <group targetFramework="netcoreapp3.1">
-        <FrameworkReference Include="Microsoft.NetCore.App" />
-      </group>
-    </frameworkReferences> 
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />

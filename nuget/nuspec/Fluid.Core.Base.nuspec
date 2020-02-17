@@ -17,11 +17,6 @@
       <dependency id="Fluid.Core.Base.Annotations" version="1.0.0" />
       <dependency id="Fluid.Core.Base.Interfaces" version="0.3.0" />
     </dependencies>
-    <frameworkReferences>
-      <group targetFramework="netcoreapp3.1">
-        <FrameworkReference Include="Microsoft.NetCore.App" />
-      </group>
-    </frameworkReferences> 
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
