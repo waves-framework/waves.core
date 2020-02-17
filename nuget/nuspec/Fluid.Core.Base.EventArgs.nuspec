@@ -25,4 +25,7 @@
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="lib\netcoreapp3.1\x64"/>
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="lib\netcoreapp3.1\x64"/>
   </files>    
+  <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1" />
+    </frameworkReferences>
 </package>

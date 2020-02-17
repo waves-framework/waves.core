@@ -23,5 +23,8 @@
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Utils.Serialization.xml" target="lib\netcoreapp3.1\x86"/>
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Utils.Serialization.dll" target="lib\netcoreapp3.1\x64"/>
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Utils.Serialization.xml" target="lib\netcoreapp3.1\x64"/>
-  </files>    
+  </files> 
+  <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1" />
+    </frameworkReferences>   
 </package>
