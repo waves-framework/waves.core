@@ -20,7 +20,7 @@
     </dependencies>
     <frameworkReferences>
       <group targetFramework="netcoreapp3.1">
-        <dependency name="Microsoft.NetCore.App" />
+        <FrameworkReference Include="Microsoft.NetCore.App" />
       </group>
     </frameworkReferences> 
   </metadata>
