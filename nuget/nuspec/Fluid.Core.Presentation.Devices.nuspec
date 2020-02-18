@@ -14,9 +14,16 @@
     <copyright>Copyright 2019-2020</copyright>
     <tags>fluid core presentation</tags>
     <dependencies>
-      <dependency id="Fluid.Core.Presentation" version="0.3.0" />
-      <dependency id="Fluid.Core.Devices.Interfaces" version="0.3.0" />
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Fluid.Core.Presentation" version="0.3.0" />
+        <dependency id="Fluid.Core.Devices.Interfaces" version="0.3.0" />
+      </group>
     </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.NETCore.App" />
+      </group>
+    </frameworkReferences>
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />

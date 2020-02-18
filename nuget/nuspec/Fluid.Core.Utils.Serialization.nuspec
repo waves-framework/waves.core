@@ -14,8 +14,15 @@
     <copyright>Copyright 2019-2020</copyright>
     <tags>fluid core utils serialization</tags>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="12.0.3" />
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Newtonsoft.Json" version="12.0.3" />
+      </group>
     </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.NETCore.App" />
+      </group>
+    </frameworkReferences>
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
