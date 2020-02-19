@@ -15,13 +15,13 @@
     <tags>fluid core presentation</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base" version="0.3.0" />
-        <dependency id="Fluid.Core.Base.EventArgs" version="0.3.0" />
-        <dependency id="Fluid.Core.Base.Interfaces" version="0.3.0" />
-        <dependency id="Fluid.Core.Devices.Interfaces" version="0.3.0" />
-        <dependency id="Fluid.Core.IoC" version="0.3.0" />
-        <dependency id="Fluid.Core.Native.Windows" version="0.3.0" />
-        <dependency id="Fluid.Core.Services.Interfaces" version="0.3.0" />
+        <dependency id="Fluid.Core.Base" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Core.Base.EventArgs" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Core.Base.Interfaces" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Core.Devices.Interfaces" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Core.IoC" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Core.Native.Windows" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Core.Services.Interfaces" version="[2020.1,2020.2]" />
       </group>
     </dependencies>
     <frameworkReferences>
