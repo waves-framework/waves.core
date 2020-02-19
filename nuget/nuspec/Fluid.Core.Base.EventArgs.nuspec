@@ -29,11 +29,11 @@
   	<file src="..\..\files\logo.png" target="files\" />
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="ref\netcoreapp3.1"/>
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="ref\netcoreapp3.1"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="lib\netcoreapp3.1\AnyCPU"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="lib\netcoreapp3.1\AnyCPU"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="lib\netcoreapp3.1\x86"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="lib\netcoreapp3.1\x86"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="lib\netcoreapp3.1\x64"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="lib\netcoreapp3.1\x64"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="runtimes\win10-anycpu\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="runtimes\win10-anycpu\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="runtimes\win10-x86\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="runtimes\win10-x86\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="runtimes\win10-x64\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="runtimes\win10-x64\lib\netcoreapp3.1"/>
   </files>
 </package>
