@@ -47,8 +47,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{3265
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluid.Core.Native.Windows", "..\sources\Fluid.Core.Native.Windows\Fluid.Core.Native.Windows.csproj", "{E0855A88-8D0C-4A22-A8EF-5F941AE2ADE0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presetation", "Presetation", "{27C98C96-B7F5-488A-B22C-0A9BB0FC710C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{2F9F2D65-7068-406E-9B62-C24A77B731E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluid.Core.Presentation.Windows", "..\sources\Fluid.Core.Presentation.Windows\Fluid.Core.Presentation.Windows.csproj", "{D9C4124E-E46C-4CA6-97E0-1AE7F3592089}"

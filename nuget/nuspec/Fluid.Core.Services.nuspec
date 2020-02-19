@@ -32,6 +32,8 @@
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Services.dll" target="ref\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Services.xml" target="ref\netcoreapp3.1"/>
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Services.dll" target="lib\netcoreapp3.1\AnyCPU"/>
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Services.xml" target="lib\netcoreapp3.1\AnyCPU"/>
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Services.dll" target="lib\netcoreapp3.1\x86"/>

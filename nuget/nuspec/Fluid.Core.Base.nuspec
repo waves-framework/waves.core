@@ -16,7 +16,7 @@
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
         <dependency id="Fluid.Core.Base.Annotations" version="1.0.0" />
-      <dependency id="Fluid.Core.Base.Interfaces" version="0.3.0" />
+      	<dependency id="Fluid.Core.Base.Interfaces" version="0.3.0" />
       </group>
     </dependencies>
     <frameworkReferences>
@@ -27,6 +27,8 @@
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.dll" target="ref\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.xml" target="ref\netcoreapp3.1"/>
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.dll" target="lib\netcoreapp3.1\AnyCPU"/>
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.xml" target="lib\netcoreapp3.1\AnyCPU"/>
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.dll" target="lib\netcoreapp3.1\x86"/>
