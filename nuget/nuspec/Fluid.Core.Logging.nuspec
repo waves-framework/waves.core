@@ -24,13 +24,11 @@
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="ref\netcoreapp3.1"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="ref\netcoreapp3.1"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="lib\netcoreapp3.1\AnyCPU"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="lib\netcoreapp3.1\AnyCPU"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="lib\netcoreapp3.1\x86"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="lib\netcoreapp3.1\x86"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="lib\netcoreapp3.1\x64"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="lib\netcoreapp3.1\x64"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="build\netcoreapp3.1\AnyCPU"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="build\netcoreapp3.1\AnyCPU"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="build\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="build\netcoreapp3.1\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.dll" target="build\netcoreapp3.1\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Logging.xml" target="build\netcoreapp3.1\x64"/>
   </files>    
 </package>
