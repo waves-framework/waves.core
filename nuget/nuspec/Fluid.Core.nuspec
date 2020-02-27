@@ -23,7 +23,7 @@
         <dependency id="Fluid.Core.Logging.Sinks.File" version="[2020.1,2020.2]" />
         <dependency id="Fluid.Core.Services" version="[2020.1,2020.2]" />
         <dependency id="Fluid.Core.Services.Interfaces" version="[2020.1,2020.2]" />
-        <dependency id="Fluid.Core.Utils.Serialization" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Utils.Serialization" version="[2020.1,2020.2]" />
       </group>
     </dependencies>
     <frameworkReferences>

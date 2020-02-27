@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,9 +6,5 @@
   </PropertyGroup>
 
   <Import Project="../../props/Fluid.Core.props" />
-
-  <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Utils.Serialization\Fluid.Core.Utils.Serialization.csproj" />
-  </ItemGroup>
 
 </Project>

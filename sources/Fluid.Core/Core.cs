@@ -11,7 +11,7 @@ using Fluid.Core.Logging.Sinks.Console;
 using Fluid.Core.Logging.Sinks.File;
 using Fluid.Core.Services;
 using Fluid.Core.Services.Interfaces;
-using Fluid.Core.Utils.Serialization;
+using Fluid.Utils.Serialization;
 
 namespace Fluid.Core
 {
