@@ -1,9 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>0.3</Version>
-  </PropertyGroup>
-
   <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
