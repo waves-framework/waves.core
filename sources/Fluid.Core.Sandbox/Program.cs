@@ -6,7 +6,7 @@ namespace Fluid.Core.Sandbox
     {
         static void Main(string[] args)
         {
-            Utils.Serialization.Json.WriteToFile("1.asd", new object());
+            
         }
     }
 }
