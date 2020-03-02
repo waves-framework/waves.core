@@ -2,10 +2,6 @@
 
   <Import Project="../../props/Fluid.Core.props" />
 
-  <PropertyGroup>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Fluid.Core.Base.Enums\Fluid.Core.Base.Enums.csproj" />
     <ProjectReference Include="..\Fluid.Core.Base.Interfaces\Fluid.Core.Base.Interfaces.csproj" />

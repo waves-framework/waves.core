@@ -15,9 +15,9 @@
     <tags>fluid core io</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base" version="[2020.1,2020.2]" />
-        <dependency id="Fluid.Core.IO.Enums" version="[2020.1,2020.2]" />
-        <dependency id="Fluid.Core.IO.Interfaces" version="[2020.1,2020.2]" />
+        <dependency id="Fluid.Core.Base" version="[2020.1.1,2020.2]" />
+        <dependency id="Fluid.Core.IO.Enums" version="[2020.1.1,2020.2]" />
+        <dependency id="Fluid.Core.IO.Interfaces" version="[2020.1.1,2020.2]" />
       </group>
     </dependencies>
     <frameworkReferences>
