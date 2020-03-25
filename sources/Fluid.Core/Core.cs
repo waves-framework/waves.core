@@ -49,12 +49,13 @@ namespace Fluid.Core
         {
             try
             {
-                WriteLog("--------------------------------------------");
-                WriteLogMessage(new Message("Запуск ядра", "Инициализация запуска ядра...", "Core", MessageType.Information));
-
                 ContainerCore.Start();
 
                 InitializeLog();
+
+				WriteLog("--------------------------------------------");
+                WriteLogMessage(new Message("Запуск ядра", "Инициализация запуска ядра...", "Core", MessageType.Information));
+
                 InitializeConfiguration();
                 InitializeServices();
 
