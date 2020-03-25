@@ -244,7 +244,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Записывает сообщение в лог.
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Сообщение.</param>
         public static void WriteLogMessage(IMessage message)
         {
             switch (message.Type)
@@ -277,6 +277,18 @@ namespace Fluid.Core
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        /// <summary>
+        ///     Записывает исключение в лог.
+        /// </summary>
+        /// <param name="exception">Исключение.</param>
+        /// <param name="sender">Отправитель.</param>
+        public static void WriteLogMessage(Exception exception, string sender)
+        {
+            Log.Error("{0} [{1}]: {2} - {3}",
+                DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
+                "Вызвано исключение:", sender, exception.Message + "\r\n" + exception.ToString());
         }
 
         /// <summary>
