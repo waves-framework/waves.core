@@ -247,6 +247,8 @@ namespace Fluid.Core
         /// <param name="message">Сообщение.</param>
         public static void WriteLogMessage(IMessage message)
         {
+            if (!IsLogInitialized) return;
+
             switch (message.Type)
             {
                 case MessageType.Information:
@@ -286,6 +288,8 @@ namespace Fluid.Core
         /// <param name="sender">Отправитель.</param>
         public static void WriteLogMessage(Exception exception, string sender)
         {
+            if (!IsLogInitialized) return;
+
             Log.Error("{0} [{1}]: {2} - {3}",
                 DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
                 "Вызвано исключение:", sender, exception.Message + "\r\n" + exception.ToString());
