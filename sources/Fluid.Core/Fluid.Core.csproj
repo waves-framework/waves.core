@@ -3,7 +3,7 @@
   <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="Fluid.Utils.Serialization" Version="2020.1.3" />
+    <PackageReference Include="Fluid.Utils.Serialization" Version="2020.1.1" />
   </ItemGroup>
 
   <ItemGroup>
