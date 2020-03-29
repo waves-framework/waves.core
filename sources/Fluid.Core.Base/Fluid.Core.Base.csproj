@@ -3,7 +3,6 @@
   <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Base.Annotations\Fluid.Core.Base.Annotations.csproj" />
     <ProjectReference Include="..\Fluid.Core.Base.Interfaces\Fluid.Core.Base.Interfaces.csproj" />
   </ItemGroup>
 

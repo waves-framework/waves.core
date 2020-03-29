@@ -5,6 +5,9 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Обозреваемый объект.
+    /// </summary>
     public class ObservableObject : IObservableObject
     {
         /// <inheritdoc />

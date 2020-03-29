@@ -15,7 +15,6 @@
     <tags>fluid core base</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base.Annotations" version="[2020.1.1,2020.2]" />
       	<dependency id="Fluid.Core.Base.Interfaces" version="[2020.1.1,2020.2]" />
       </group>
     </dependencies>
