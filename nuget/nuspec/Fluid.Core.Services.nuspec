@@ -7,7 +7,7 @@
     <owners>Fluid</owners>
     <licenseUrl>https://ambertape.ru</licenseUrl>
     <projectUrl>https://ambertape.ru</projectUrl>
-    <icon>..\..\files\logo.png</icon>
+    <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Библиотека базовых сервисов Fluid.Core.</description>
     <releaseNotes></releaseNotes>
