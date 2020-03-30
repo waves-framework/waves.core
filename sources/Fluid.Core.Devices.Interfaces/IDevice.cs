@@ -3,55 +3,58 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Devices.Interfaces
 {
+    /// <summary>
+    /// Interface for devices instances.
+    /// </summary>
     public interface IDevice : IModule
     {
         /// <summary>
-        ///     Открыто ли устройство.
+        ///     Gets whether device is opened.
         /// </summary>
         bool IsOpen { get; }
 
         /// <summary>
-        ///     Запущено ли устройство.
+        ///     Gets whether device is running.
         /// </summary>
         bool IsRunning { get; }
 
         /// <summary>
-        ///     Событие открытия устройства.
+        ///     Device opened event.
         /// </summary>
         event EventHandler DeviceOpened;
 
         /// <summary>
-        ///     Событие закрытия устройства.
+        ///     Device closed event.
         /// </summary>
         event EventHandler DeviceClosed;
 
         /// <summary>
-        ///     Событие запуска работы устройства.
+        ///     Device started event.
         /// </summary>
         event EventHandler DeviceStarted;
 
         /// <summary>
-        ///     Событие остановки работы устройства.
+        ///     Device stopped event.
         /// </summary>
         event EventHandler DeviceStopped;
 
         /// <summary>
-        ///     Открытие устройства.
+        ///     Opens device.
         /// </summary>
         void Open();
 
         /// <summary>
-        ///     Закрытие устройства.
+        ///     Closes device.
         /// </summary>
         void Close();
 
         /// <summary>
-        ///     Запуск работы устройства.
+        ///     Starts device.
         /// </summary>
         void Start();
 
         /// <summary>
-        ///     Остановка работы устройства.
+        ///     Stops device.
         /// </summary>
         void Stop();
     }

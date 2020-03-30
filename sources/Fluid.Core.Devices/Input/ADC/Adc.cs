@@ -3,60 +3,21 @@ using Fluid.Core.Devices.Interfaces.Input.ADC;
 
 namespace Fluid.Core.Devices.Input.ADC
 {
+    /// <summary>
+    /// Abstract ADC device base class.
+    /// </summary>
     public abstract class Adc : InputDevice, IAdc
     {
-        private ICollection<short> _availableBitsPerSampleValues = new List<short>();
-
-        private ICollection<double> _availableSampleRates = new List<double>();
-        private short _bitsPerSample;
-        private double _sampleRate;
+        /// <inheritdoc />
+        public virtual double SampleRate { get; set; }
 
         /// <inheritdoc />
-        public double SampleRate
-        {
-            get => _sampleRate;
-            set
-            {
-                if (value.Equals(_sampleRate)) return;
-                _sampleRate = value;
-                OnPropertyChanged();
-            }
-        }
+        public virtual short BitsPerSample { get; set; }
 
         /// <inheritdoc />
-        public short BitsPerSample
-        {
-            get => _bitsPerSample;
-            set
-            {
-                if (value == _bitsPerSample) return;
-                _bitsPerSample = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICollection<double> AvailableSampleRates { get; private set; } = new List<double>();
 
         /// <inheritdoc />
-        public ICollection<double> AvailableSampleRates
-        {
-            get => _availableSampleRates;
-            private set
-            {
-                if (Equals(value, _availableSampleRates)) return;
-                _availableSampleRates = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public ICollection<short> AvailableBitsPerSampleValues
-        {
-            get => _availableBitsPerSampleValues;
-            private set
-            {
-                if (Equals(value, _availableBitsPerSampleValues)) return;
-                _availableBitsPerSampleValues = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICollection<short> AvailableBitsPerSampleValues { get; private set; } = new List<short>();
     }
 }

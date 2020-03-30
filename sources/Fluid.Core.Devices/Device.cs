@@ -4,34 +4,16 @@ using Fluid.Core.Devices.Interfaces;
 
 namespace Fluid.Core.Devices
 {
+    /// <summary>
+    /// Abstract device base class.
+    /// </summary>
     public abstract class Device : Module, IDevice
     {
-        private bool _isOpen;
-        private bool _isRunning;
+        /// <inheritdoc />
+        public bool IsOpen { get; set; }
 
         /// <inheritdoc />
-        public bool IsOpen
-        {
-            get => _isOpen;
-            private set
-            {
-                if (value == _isOpen) return;
-                _isOpen = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public bool IsRunning
-        {
-            get => _isRunning;
-            private set
-            {
-                if (value == _isRunning) return;
-                _isRunning = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsRunning { get; set; }
 
         /// <inheritdoc />
         public event EventHandler DeviceOpened;
@@ -58,7 +40,7 @@ namespace Fluid.Core.Devices
         public abstract void Stop();
 
         /// <summary>
-        ///     Уведомление об открытии устройства.
+        ///     Notifies when device opened.
         /// </summary>
         protected virtual void OnDeviceOpened()
         {
@@ -66,7 +48,7 @@ namespace Fluid.Core.Devices
         }
 
         /// <summary>
-        ///     Уведомление о закрытии устройства.
+        ///     Notifies when device closed.
         /// </summary>
         protected virtual void OnDeviceClosed()
         {
@@ -74,7 +56,7 @@ namespace Fluid.Core.Devices
         }
 
         /// <summary>
-        ///     Уведомление о запуске устройства.
+        ///     Notifies when device started.
         /// </summary>
         protected virtual void OnDeviceStarted()
         {
@@ -82,7 +64,7 @@ namespace Fluid.Core.Devices
         }
 
         /// <summary>
-        ///     Уведомление об остановке устройства.
+        ///     Notifies when device stopped.
         /// </summary>
         protected virtual void OnDeviceStopped()
         {

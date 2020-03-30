@@ -5,51 +5,23 @@ using Fluid.Core.Devices.Interfaces.Input.ADC;
 
 namespace Fluid.Core.Devices.Input.ADC
 {
+    /// <summary>
+    /// Abstract ADC entry point base class.
+    /// </summary>
     public abstract class AdcEntryPoint : EntryPoint, IAdcEntryPoint
     {
-        private ICollection<double> _availableManagedGains;
-        private double _digitalGain = 1.0f;
-        private double _managedGain;
-
         /// <inheritdoc />
         protected AdcEntryPoint(IModule parent, bool isProperty) : base(parent, isProperty)
         {
         }
 
         /// <inheritdoc />
-        public double DigitalGain
-        {
-            get => _digitalGain;
-            set
-            {
-                if (value.Equals(_digitalGain)) return;
-                _digitalGain = value;
-                OnPropertyChanged();
-            }
-        }
+        public virtual double DigitalGain { get; set; } = 1.0f;
 
         /// <inheritdoc />
-        public double ManagedGain
-        {
-            get => _managedGain;
-            set
-            {
-                if (value.Equals(_managedGain)) return;
-                _managedGain = value;
-                OnPropertyChanged();
-            }
-        }
+        public abstract double DeviceGain { get; set; }
 
         /// <inheritdoc />
-        public ICollection<double> AvailableManagedGains
-        {
-            get => _availableManagedGains;
-            private set
-            {
-                if (Equals(value, _availableManagedGains)) return;
-                _availableManagedGains = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICollection<double> AvailableDeviceGains { get; private set; }
     }
 }

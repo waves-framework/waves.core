@@ -3,21 +3,24 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Devices.Interfaces.Input.ADC
 {
+    /// <summary>
+    /// Interface for ADC entry point.
+    /// </summary>
     public interface IAdcEntryPoint : IEntryPoint
     {
         /// <summary>
-        ///     Цифровое усиление.
+        ///     Gets digital gain.
         /// </summary>
         double DigitalGain { get; set; }
 
         /// <summary>
-        ///     Цифровое усиление.
+        ///     Gets device gain.
         /// </summary>
-        double ManagedGain { get; set; }
+        double DeviceGain { get; set; }
 
         /// <summary>
-        ///     Список усилений.
+        ///     Gets available device gains collection.
         /// </summary>
-        ICollection<double> AvailableManagedGains { get; }
+        ICollection<double> AvailableDeviceGains { get; }
     }
 }
