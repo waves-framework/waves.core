@@ -4,68 +4,73 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Services.Interfaces
 {
+    /// <summary>
+    /// Interface for module service classes.
+    /// </summary>
     public interface IModuleService : IService
     {
         /// <summary>
-        ///     Пути к библиотекам модулей.
+        ///     Gets modules directory paths.
         /// </summary>
         List<string> ModulesPaths { get; }
 
         /// <summary>
-        ///     Пути к нативным библиотекам.
+        ///     Gets native libraries paths.
         /// </summary>
         List<string> NativeLibrariesPaths { get; }
 
         /// <summary>
-        ///     Список библиотек модулей.
+        ///     Gets all of loaded libraries.
         /// </summary>
         IEnumerable<IModuleLibrary> Libraries { get; }
 
         /// <summary>
-        ///     Список модулей.
+        ///     Gets all of loaded modules.
         /// </summary>
         List<IModule> Modules { get; }
 
         /// <summary>
-        ///     Список дополнительно загруженных библиотек.
+        ///     List of loaded native libraries names.
         /// </summary>
         List<string> NativeLibrariesNames { get; }
 
         /// <summary>
-        ///     Получает модуль по идентификатору.
+        ///     Gets module by ID.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">ID.</param>
         IModule GetModule(string id);
 
         /// <summary>
-        ///     Добавить путь к библиотекам модулей.
+        /// Adds modules directory path.
         /// </summary>
+        /// <param name="path">Path.</param>
         void AddModulePath(string path);
 
         /// <summary>
-        ///     Добавить путь к нативным библиотекам.
+        ///     Adds native libraries directory path.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path.</param>
         void AddNativeLibraryPath(string path);
 
         /// <summary>
-        ///     Удалить путь к библиотекам модулей.
+        /// Removes modules directory path.
         /// </summary>
+        /// <param name="path">Path.</param>
         void RemoveModulePath(string path);
 
         /// <summary>
-        ///     Удалить путь к нативным библиотекам.
+        ///     Removes native libraries directory path.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Path.</param>
         void RemoveNativeLibraryPath(string path);
 
         /// <summary>
-        ///     Обновление списка библиотек.
+        ///     Updates libraries collection.
         /// </summary>
         void UpdateLibraries();
 
         /// <summary>
-        ///     Событие обновления списка модулей.
+        ///     Event for modules collection updated.
         /// </summary>
         event EventHandler ModulesUpdated;
     }

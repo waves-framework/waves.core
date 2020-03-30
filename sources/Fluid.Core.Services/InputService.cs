@@ -7,45 +7,33 @@ using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services
 {
+    /// <summary>
+    /// Input service.
+    /// </summary>
     public class InputService : Service, IInputService
     {
-        /// <summary>
-        ///     Событие нажатия клавиши
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler<KeyEventArgs> KeyPressed;
 
-        /// <summary>
-        ///     Событие отпускания клавиши
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler<KeyEventArgs> KeyReleased;
 
-        /// <summary>
-        ///     Событие мыши
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler<PointerEventArgs> PointerStateChanged;
 
-        /// <summary>
-        ///     Установка нажатия клавиши
-        /// </summary>
-        /// <param name="e"></param>
+        /// <inheritdoc />
         public void SetKeyPressed(KeyEventArgs e)
         {
             OnKeyPressed(e);
         }
 
-        /// <summary>
-        ///     Установка отпускания мыши
-        /// </summary>
-        /// <param name="e"></param>
+        /// <inheritdoc />
         public void SetKeyReleased(KeyEventArgs e)
         {
             OnKeyReleased(e);
         }
 
-        /// <summary>
-        ///     Изменение состояния мыши
-        /// </summary>
-        /// <param name="e"></param>
+        /// <inheritdoc />
         public void SetPointer(PointerEventArgs e)
         {
             OnPointerStateChanged(e);
@@ -62,7 +50,7 @@ namespace Fluid.Core.Services
         {
             if (IsInitialized) return;
 
-            OnMessageReceived(this, new Message("Информация", "Сервис инициализирован.", Name, MessageType.Information));
+            OnMessageReceived(this, new Message("Initialization.", "Service was initialized.", Name, MessageType.Information));
 
             IsInitialized = true;
         }

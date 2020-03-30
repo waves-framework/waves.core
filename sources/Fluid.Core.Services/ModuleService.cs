@@ -15,16 +15,12 @@ using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services
 {
+    /// <summary>
+    /// Module service.
+    /// </summary>
     public class ModuleService : Service, IModuleService
     {
         private readonly List<IModule> _clonedModules = new List<IModule>();
-        private IEnumerable<IModuleLibrary> _libraries;
-
-        private List<IModule> _modules = new List<IModule>();
-        private List<string> _modulesPaths = new List<string>();
-
-        private List<string> _nativeLibrariesNames = new List<string>();
-        private List<string> _nativeLibrariesPaths = new List<string>();
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("F21B05E5-6648-448E-9AC9-C7D06A79D346");
@@ -33,66 +29,20 @@ namespace Fluid.Core.Services
         public override string Name { get; set; } = "Module Loader Service";
 
         /// <inheritdoc />
-        public List<string> ModulesPaths
-        {
-            get => _modulesPaths;
-            private set
-            {
-                if (Equals(value, _modulesPaths)) return;
-
-                _modulesPaths = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<string> ModulesPaths { get; private set; } = new List<string>();
 
         /// <inheritdoc />
-        public List<string> NativeLibrariesPaths
-        {
-            get => _nativeLibrariesPaths;
-            private set
-            {
-                if (Equals(value, _nativeLibrariesPaths)) return;
-
-                _nativeLibrariesPaths = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<string> NativeLibrariesPaths { get; private set; } = new List<string>();
 
         /// <inheritdoc />
         [ImportMany]
-        public IEnumerable<IModuleLibrary> Libraries
-        {
-            get => _libraries;
-            set
-            {
-                _libraries = value;
-                OnPropertyChanged();
-            }
-        }
+        public IEnumerable<IModuleLibrary> Libraries { get; private set; }
 
         /// <inheritdoc />
-        public List<IModule> Modules
-        {
-            get => _modules;
-            set
-            {
-                if (Equals(value, _modules)) return;
-
-                _modules = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<IModule> Modules { get; private set; } = new List<IModule>();
 
         /// <inheritdoc />
-        public List<string> NativeLibrariesNames
-        {
-            get => _nativeLibrariesNames;
-            private set
-            {
-                _nativeLibrariesNames = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<string> NativeLibrariesNames { get; private set; } = new List<string>();
 
         /// <inheritdoc />
         public IModule GetModule(string id)
@@ -154,12 +104,7 @@ namespace Fluid.Core.Services
 
             IsInitialized = true;
 
-            OnMessageReceived(this,
-                new Message(
-                    "Информация",
-                    "Сервис инициализирован.",
-                    Name,
-                    MessageType.Information));
+            OnMessageReceived(this, new Message("Initialization.", "Service was initialized.", Name, MessageType.Information));
         }
 
         /// <inheritdoc />
@@ -202,8 +147,8 @@ namespace Fluid.Core.Services
                 {
                     OnMessageReceived(this,
                         new Message(
-                            "Ошибка пути",
-                            "Путь к модулям " + path + " не существует или был удален.",
+                            "Loading path error.",
+                            "Path to application ( " + path + ") doesn't exists or was deleted.",
                             Name,
                             MessageType.Error));
 
@@ -267,8 +212,8 @@ namespace Fluid.Core.Services
                     {
                         OnMessageReceived(this, 
                             new Message(
-                            "Ошибка загрузки библиотеки",
-                            "Библиотека " + file.Name + " не поддерживается данной системой.",
+                            "Native library loading error.",
+                            "Library " + file.Name + " can't be loaded on current system.",
                             Name,
                             MessageType.Error));
                     }

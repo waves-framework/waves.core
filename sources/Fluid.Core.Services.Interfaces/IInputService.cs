@@ -3,39 +3,42 @@ using Fluid.Core.Base.EventArgs;
 
 namespace Fluid.Core.Services.Interfaces
 {
+    /// <summary>
+    /// Interface for input service classes.
+    /// </summary>
     public interface IInputService : IService
     {
         /// <summary>
-        ///     Событие нажатия клавиши
+        ///     Event for key pressing.
         /// </summary>
         event EventHandler<KeyEventArgs> KeyPressed;
 
         /// <summary>
-        ///     Событие отпускания клавиши
+        ///     Event for key releasing.
         /// </summary>
         event EventHandler<KeyEventArgs> KeyReleased;
 
         /// <summary>
-        ///     Событие мыши
+        ///     Event for pointer state changing.
         /// </summary>
         event EventHandler<PointerEventArgs> PointerStateChanged;
 
         /// <summary>
-        ///     Установка нажатия клавиши
+        ///     Sets key pressed state.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Arguments.</param>
         void SetKeyPressed(KeyEventArgs e);
 
         /// <summary>
-        ///     Установка отпускания мыши
+        ///     Sets key released state.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Arguments.</param>
         void SetKeyReleased(KeyEventArgs e);
 
         /// <summary>
-        ///     Изменение состояния мыши
+        ///     Sets pointer state.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Arguments.</param>
         void SetPointer(PointerEventArgs e);
     }
 }

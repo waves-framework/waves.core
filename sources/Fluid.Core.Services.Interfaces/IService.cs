@@ -1,29 +1,33 @@
 ﻿using System;
-using System.ComponentModel;
 using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Services.Interfaces
 {
-    public interface IService : IObject, INotifyPropertyChanged, IDisposable
+    /// <summary>
+    /// Base interface for all services.
+    /// </summary>
+    public interface IService : IObject, IDisposable
     {
         /// <summary>
-        ///     Инициализирован ли сервисю
+        ///     Gets whether service is initialized.
         /// </summary>
         bool IsInitialized { get; }
 
         /// <summary>
-        ///     Инициализация сервисаю
+        ///     Initializes service.
         /// </summary>
         void Initialize();
 
         /// <summary>
-        ///     Загрузка конфигурации.
+        /// Loads configuration.
         /// </summary>
+        /// <param name="configuration">Configuration.</param>
         void LoadConfiguration(IConfiguration configuration);
 
         /// <summary>
-        ///     Сохранение конфигурации.
+        /// Saves configuration.
         /// </summary>
+        /// <param name="configuration">Configuration.</param>
         void SaveConfiguration(IConfiguration configuration);
     }
 }

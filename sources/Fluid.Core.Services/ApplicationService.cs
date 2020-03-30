@@ -11,47 +11,19 @@ using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services
 {
+    /// <summary>
+    /// Application service.
+    /// </summary>
     public class ApplicationService : Service, IApplicationService
     {
-        private ICollection<IApplicationAction> _applicationActions = new List<IApplicationAction>();
-        private IEnumerable<IApplication> _applications;
-        private List<string> _paths = new List<string>();
+        /// <inheritdoc />
+        public List<string> Paths { get; set; } = new List<string>();
 
         /// <inheritdoc />
-        public List<string> Paths
-        {
-            get => _paths;
-            private set
-            {
-                if (Equals(value, _paths)) return;
-                _paths = value;
-                OnPropertyChanged();
-            }
-        }
+        public IEnumerable<IApplication> Applications { get; private set; }
 
         /// <inheritdoc />
-        public IEnumerable<IApplication> Applications
-        {
-            get => _applications;
-            private set
-            {
-                if (Equals(value, _applications)) return;
-                _applications = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public ICollection<IApplicationAction> ApplicationActions
-        {
-            get => _applicationActions;
-            private set
-            {
-                if (Equals(value, _applicationActions)) return;
-                _applicationActions = value;
-                OnPropertyChanged();
-            }
-        }
+        public ICollection<IApplicationAction> ApplicationActions { get; private set; } = new List<IApplicationAction>();
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("B709823E-22BE-4297-982B-59A90B82D977");
@@ -64,39 +36,67 @@ namespace Fluid.Core.Services
         {
             if (IsInitialized) return;
 
-            LoadApplications();
+            try
+            {
+                LoadApplications();
 
-            IsInitialized = true;
+                IsInitialized = true;
 
-            OnMessageReceived(this,
-                new Message(
-                    "Информация",
-                    "Сервис инициализирован.",
-                    nameof(ApplicationService),
-                    MessageType.Information));
+                OnMessageReceived(this,
+                    new Message(
+                        "Initialization.",
+                        "Service was initialized.",
+                        Name,
+                        MessageType.Information));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
-            Paths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ApplicationService-Paths"));
+            try
+            {
+                Paths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ApplicationService-Paths"));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
-            configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
+            try
+            {
+                configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public override void Dispose()
         {
             if (Applications == null) return;
+            
+            try
+            {
+                foreach (var application in Applications)
+                    application.Dispose();
 
-            foreach (var application in Applications)
-                application.Dispose();
-
-            UnsubscribeApplicationCollectionEvents();
+                UnsubscribeApplicationCollectionEvents();
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
@@ -108,19 +108,48 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public void AddPath(string path)
         {
-            if (!Paths.Contains(path)) Paths?.Add(path);
+            try
+            {
+                if (!Paths.Contains(path)) Paths?.Add(path);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public void RemovePath(string path)
         {
-            if (Paths.Contains(path)) Paths?.Remove(path);
+            try
+            {
+                if (Paths.Contains(path)) Paths?.Remove(path);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
-        public void UpdateApplications()
+        public void UpdateApplicationsCollection()
         {
-            LoadApplications();
+            try
+            {
+                LoadApplications();
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
+        }
+
+        /// <summary>
+        ///     Notifies when applications actions updated.
+        /// </summary>
+        protected virtual void OnApplicationsActionsUpdated()
+        {
+            ApplicationsActionsUpdated?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -128,110 +157,123 @@ namespace Fluid.Core.Services
         /// </summary>
         private void LoadApplications()
         {
-            UnsubscribeApplicationCollectionEvents();
-
-            var assemblies = new List<Assembly>();
-
-            foreach (var path in Paths)
+            try
             {
-                if (!Directory.Exists(path))
-                {
-                    OnMessageReceived(this,
-                        new Message(
-                            "Ошибка пути",
-                            "Путь к приложению " + path + " не существует или был удален.",
-                            "Core",
-                            MessageType.Error));
+                UnsubscribeApplicationCollectionEvents();
 
-                    continue;
-                }
+                var assemblies = new List<Assembly>();
 
-                foreach (var file in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
+                foreach (var path in Paths)
                 {
-                    var hasItem = false;
-                    var fileInfo = new FileInfo(file);
-                    foreach (var assembly in assemblies)
+                    if (!Directory.Exists(path))
                     {
-                        var name = assembly.GetName().Name;
+                        OnMessageReceived(this,
+                            new Message(
+                                "Loading path error.",
+                                "Path to application ( " + path + ") doesn't exists or was deleted.",
+                                Name,
+                                MessageType.Error));
 
-                        if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
+                        continue;
                     }
 
-                    if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
+                    foreach (var file in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
+                    {
+                        var hasItem = false;
+                        var fileInfo = new FileInfo(file);
+                        foreach (var assembly in assemblies)
+                        {
+                            var name = assembly.GetName().Name;
+
+                            if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
+                        }
+
+                        if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
+                    }
                 }
+
+                var configuration = new ContainerConfiguration()
+                    .WithAssemblies(assemblies);
+
+                using var container = configuration.CreateContainer();
+                Applications = container.GetExports<IApplication>();
+
+                SubscribeApplicationEvents();
+
+                OnApplicationsUpdated();
             }
-
-            var configuration = new ContainerConfiguration()
-                .WithAssemblies(assemblies);
-
-            using var container = configuration.CreateContainer();
-            Applications = container.GetExports<IApplication>();
-
-            SubscribeApplicationEvents();
-
-            OnApplicationsUpdated();
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <summary>
-        ///     Подписка на события приложения.
+        ///     Subscribes for application events.
         /// </summary>
         private void SubscribeApplicationEvents()
         {
-            foreach (var application in Applications)
+            try
             {
-                application.ActionsUpdated += OnApplicationActionsUpdated;
-                application.MessageReceived += OnApplicationMessageReceived;
+                foreach (var application in Applications)
+                {
+                    application.ActionsUpdated += OnApplicationActionsUpdated;
+                    application.MessageReceived += OnApplicationMessageReceived;
+                }
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
             }
         }
 
         /// <summary>
-        ///     Отписка от событий приложения.
+        ///     Unsubscribe to application events.
         /// </summary>
         private void UnsubscribeApplicationCollectionEvents()
         {
             if (Applications == null) return;
 
-            foreach (var application in Applications)
+            try
             {
-                application.ActionsUpdated -= OnApplicationActionsUpdated;
-                application.MessageReceived -= OnApplicationMessageReceived;
+                foreach (var application in Applications)
+                {
+                    application.ActionsUpdated -= OnApplicationActionsUpdated;
+                    application.MessageReceived -= OnApplicationMessageReceived;
+                }
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
             }
         }
 
         /// <summary>
-        ///     Действия при приеме системного сообщения от приложений.
+        ///     Notifies when application receive message.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Message.</param>
         private void OnApplicationMessageReceived(object sender, IMessage e)
         {
             OnMessageReceived(sender, e);
         }
 
         /// <summary>
-        ///     Действия при обновлении коллекции действий приложения.
+        ///     Notifies when application actions updated.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Message.</param>
         private void OnApplicationActionsUpdated(object sender, EventArgs e)
         {
             OnApplicationsActionsUpdated();
         }
 
         /// <summary>
-        ///     Уведомление об обновлении коллекции приложений.
+        ///    Notifies when applications collection updated.
         /// </summary>
         protected virtual void OnApplicationsUpdated()
         {
             ApplicationsUpdated?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        ///     Уведомление об обновлении коллекции действий приложений.
-        /// </summary>
-        protected virtual void OnApplicationsActionsUpdated()
-        {
-            ApplicationsActionsUpdated?.Invoke(this, EventArgs.Empty);
         }
     }
 }

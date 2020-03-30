@@ -6,6 +6,9 @@ using Object = Fluid.Core.Base.Object;
 
 namespace Fluid.Core.Services
 {
+    /// <summary>
+    /// Service base class.
+    /// </summary>
     public abstract class Service : Object, IService
     {
         /// <inheritdoc />
@@ -14,14 +17,10 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public abstract override string Name { get; }
 
-        /// <summary>
-        ///     Инициализирован ли сервис
-        /// </summary>
+        /// <inheritdoc />
         public bool IsInitialized { get; set; } = false;
 
-        /// <summary>
-        ///     Инициализация сервиса
-        /// </summary>
+        /// <inheritdoc />
         public abstract void Initialize();
 
         /// <inheritdoc />
@@ -34,12 +33,12 @@ namespace Fluid.Core.Services
         public abstract void Dispose();
 
         /// <summary>
-        ///     Загружает значение из конфигурации.
+        /// Loads property value from configuration.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="configuration"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <param name="configuration">Configuration instance.</param>
+        /// <param name="key">Property key.</param>
+        /// <returns>Value.</returns>
         public static T LoadConfigurationValue<T>(IConfiguration configuration, string key)
         {
             if (configuration.Contains(key))

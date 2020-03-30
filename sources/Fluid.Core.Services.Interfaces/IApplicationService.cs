@@ -4,47 +4,50 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Services.Interfaces
 {
+    /// <summary>
+    /// Interface for Application service classes.
+    /// </summary>
     public interface IApplicationService : IService
     {
         /// <summary>
-        ///     Пути к директориям приложений.
+        ///     Gets paths to application directories.
         /// </summary>
         List<string> Paths { get; }
 
         /// <summary>
-        ///     Приложения.
+        ///     Gets applications.
         /// </summary>
         IEnumerable<IApplication> Applications { get; }
 
         /// <summary>
-        ///     Действия приложений.
+        ///     Gets all of application actions.
         /// </summary>
         ICollection<IApplicationAction> ApplicationActions { get; }
 
         /// <summary>
-        ///     Добавление пути к приложению.
+        ///     Adds path to applications directory.
         /// </summary>
         /// <param name="path"></param>
         void AddPath(string path);
 
         /// <summary>
-        ///     Удаление пути к приложению.
+        ///     Removes path to applications directory.
         /// </summary>
         /// <param name="path"></param>
         void RemovePath(string path);
 
         /// <summary>
-        ///     Обновление коллекции приложений.
+        ///     Updates applications collection.
         /// </summary>
-        void UpdateApplications();
+        void UpdateApplicationsCollection();
 
         /// <summary>
-        ///     Событие обновление коллекции приложений.
+        ///     Event for applications collection updated.
         /// </summary>
         event EventHandler ApplicationsUpdated;
 
         /// <summary>
-        ///     Событие обновления коллекции действий приложений.
+        ///     Event for applications actions updated.
         /// </summary>
         event EventHandler ApplicationsActionsUpdated;
     }
