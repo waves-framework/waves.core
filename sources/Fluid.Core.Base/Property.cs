@@ -1,8 +1,12 @@
 ﻿using System;
 using Fluid.Core.Base.Interfaces;
+using PropertyChanged;
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Property base class.
+    /// </summary>
     [Serializable]
     public class Property : Object, IProperty
     {
@@ -11,12 +15,11 @@ namespace Fluid.Core.Base
         private object _value;
 
         /// <summary>
-        ///     Конструктор
+        ///     Creates new instance of property.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <param name="isReadOnly"></param>
-        /// <exception cref="Exception"></exception>
+        /// <param name="name">Name.</param>
+        /// <param name="value">Value.</param>
+        /// <param name="isReadOnly">Is property read only.</param>
         public Property(string name, object value, bool isReadOnly)
         {
             IsReadOnly = isReadOnly;
@@ -25,66 +28,18 @@ namespace Fluid.Core.Base
         }
 
         /// <inheritdoc />
-        public sealed override string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == _name) return;
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
+        public sealed override string Name { get; set; }
 
-        /// <summary>
-        ///     Является ли свойство доступным только для чтения
-        /// </summary>
-        public bool IsReadOnly
-        {
-            get => _isReadOnly;
-            set
-            {
-                if (value == _isReadOnly) return;
-                _isReadOnly = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public bool IsReadOnly { get; private set; }
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
-        /// <summary>
-        ///     Значение
-        /// </summary>
-        public object Value
-        {
-            get => _value;
-            set
-            {
-                if (Equals(value, _value)) return;
-                _value = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public object Value { get; set; }
 
-        /// <summary>
-        ///     Получение Hash-кода объекта
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            var hashCode = 1;
-
-            hashCode = (hashCode * 397) ^ Name.GetHashCode();
-            hashCode = (hashCode * 397) ^ Value.GetHashCode();
-
-            return hashCode;
-        }
-
-        /// <summary>
-        ///     Клонирование
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public object Clone()
         {
             return new Property(Name, Value, IsReadOnly);

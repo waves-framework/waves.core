@@ -287,7 +287,7 @@ namespace Fluid.Core.Services
 
             foreach (var library in Libraries)
             {
-                library.UpdateModulesList();
+                library.UpdateModulesCollection();
 
                 foreach (var module in library.Modules)
                 {

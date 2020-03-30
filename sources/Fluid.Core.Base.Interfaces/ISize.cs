@@ -1,24 +1,27 @@
 ﻿namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of Size structures.
+    /// </summary>
     public interface ISize
     {
         /// <summary>
-        ///     Получает или задает ширину.
+        ///     Gets or sets width.
         /// </summary>
-        float Width { get; set; }
+        float Width { get; }
 
         /// <summary>
-        ///     Получает или задает высоту.
+        ///     Gets or sets height.
         /// </summary>
-        float Height { get; set; }
+        float Height { get; }
 
         /// <summary>
-        ///     Получает или задает площадь.
+        ///     Get or sets space of size structure.
         /// </summary>
         float Space { get; }
 
         /// <summary>
-        ///     Получает или задает соотношение сторон.
+        ///     Gets or sets aspect ratio of size structure.
         /// </summary>
         float Aspect { get; }
 }

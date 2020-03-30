@@ -3,6 +3,9 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Objects base class.
+    /// </summary>
     public abstract class Object : ObservableObject, IObject
     {
         /// <inheritdoc />
@@ -10,5 +13,8 @@ namespace Fluid.Core.Base
 
         /// <inheritdoc />
         public abstract string Name { get; set; }
+
+        /// <inheritdoc />
+        public event EventHandler<IMessage> MessageReceived;
     }
 }

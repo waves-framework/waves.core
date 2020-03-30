@@ -1,29 +1,32 @@
 ﻿namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of point structures.
+    /// </summary>
     public interface IPoint
     {
         /// <summary>
-        ///     Получает или задает координату по оси X.
+        ///     Gets or sets X coordinate.
         /// </summary>
         float X { get; set; }
 
         /// <summary>
-        ///     Получает или задает координату по оси Y.
+        ///     Get or sets Y coordinate.
         /// </summary>
         float Y { get; set; }
 
         /// <summary>
-        /// Получает длину вектора.
+        ///     Gets length of current vector.
         /// </summary>
         float Length { get; }
 
         /// <summary>
-        /// Получает длину вектора в квадрате (для оптимизаций).
+        /// Get square length of current vector.
         /// </summary>
         float SquaredLength { get; }
 
         /// <summary>
-        /// Получает модуль угла вектора.
+        /// Gets abs of vector angle.
         /// </summary>
         float Angle { get; }
     }

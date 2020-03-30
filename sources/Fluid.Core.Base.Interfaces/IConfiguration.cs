@@ -3,54 +3,46 @@ using System.Collections.Generic;
 
 namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of configuration classes.
+    /// </summary>
     public interface IConfiguration : IObject, ICloneable
     {
         /// <summary>
-        ///     Коллекция параметров.
+        ///     Gets properties collection.
         /// </summary>
         ICollection<IProperty> Properties { get; }
 
         /// <summary>
-        ///     Добавления параметра.
+        ///     Adds new property.
         /// </summary>
-        /// <param name="property"></param>
+        /// <param name="property">Instance of property.</param>
         void AddProperty(IProperty property);
 
         /// <summary>
-        ///     Получение значения параметра.
+        ///     Gets property value.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">Property name.</param>
+        /// <returns>Value.</returns>
         object GetPropertyValue(string name);
 
         /// <summary>
-        ///     Установка значения параметра.
+        ///     Sets property value.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
         void SetPropertyValue(string name, object value);
 
         /// <summary>
-        ///     Удаление параметра.
+        ///     Removes property by name.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Property name.</param>
         void RemoveProperty(string name);
 
         /// <summary>
-        ///     Содержит ли конфигурации параметр.
+        ///     Gets whether the configuration contains a parameter.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">Property name.</param>
         bool Contains(string name);
-
-        /// <summary>
-        ///     Получение hash-кода объекта.
-        /// </summary>
-        /// <returns></returns>
-        int GetHashCode();
-
-        /// <summary>
-        ///     Событие оправки системного сообщения.
-        /// </summary>
-        event EventHandler<IMessage> MessageReceived;
     }
 }

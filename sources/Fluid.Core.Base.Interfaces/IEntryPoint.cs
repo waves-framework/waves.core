@@ -2,36 +2,28 @@
 
 namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of entry point's classes.
+    /// </summary>
     public interface IEntryPoint : IObject, IDisposable
     {
         /// <summary>
-        ///     Является ли точка свойством.
+        ///     Gets whether a point is a property.
         /// </summary>
-        bool IsProperty { get; set; }
+        bool IsProperty { get; }
 
         /// <summary>
-        ///     Значение точки.
+        ///     Gets current value of point.
         /// </summary>
         object Value { get; set; }
 
         /// <summary>
-        ///     Родительский модуль точки.
+        ///     Gets parent of this point.
         /// </summary>
         IModule Parent { get; }
 
         /// <summary>
-        ///     Получение hash-кода объекта.
-        /// </summary>
-        /// <returns></returns>
-        int GetHashCode();
-
-        /// <summary>
-        ///     Событие отправки системного сообщения.
-        /// </summary>
-        event EventHandler<IMessage> MessageReceived;
-
-        /// <summary>
-        ///     Событие приема данных на точку.
+        ///     Event for data receiving handling.
         /// </summary>
         event EventHandler<object> DataReceived;
     }

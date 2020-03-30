@@ -1,32 +1,30 @@
-﻿namespace Fluid.Core.Base.EventArgs
+﻿using Fluid.Core.Base.Interfaces;
+
+namespace Fluid.Core.Base.EventArgs
 {
+    /// <summary>
+    /// Event args for data receiving handling.
+    /// </summary>
     public class DataReceivedEventArgs
     {
         /// <summary>
-        /// Новый экземпляр аргументов приема данных.
+        /// Creates new instance of DataReceivedEventArgs.
         /// </summary>
-        /// <param name="sender">Отправитель.</param>
-        /// <param name="index">Индекс отправителя.</param>
-        /// <param name="data"></param>
-        public DataReceivedEventArgs(object sender, int index, object data)
+        /// <param name="sender">Sender.</param>
+        /// <param name="data">Data.</param>
+        public DataReceivedEventArgs(IObject sender, object data)
         {
             Sender = sender;
-            SenderIndex = index;
             Data = data;
         }
 
         /// <summary>
-        /// Отправитель.
+        /// Gets sender.
         /// </summary>
-        public object Sender { get; private set; }
+        public IObject Sender { get; private set; }
 
         /// <summary>
-        /// Индекс отправителя.
-        /// </summary>
-        public int SenderIndex { get; private set; }
-
-        /// <summary>
-        /// Передаваемые данные.
+        /// Gets data.
         /// </summary>
         public object Data { get; private set; }
     }

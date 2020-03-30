@@ -4,25 +4,13 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Base abstract application class.
+    /// </summary>
     public abstract class Application : Object, IApplication
     {
-        private bool _isInitialized;
-
-        private IConfiguration _configuration = new Configuration();
-
-        private ICollection<IApplicationAction> _actions = new List<IApplicationAction>();
-
         /// <inheritdoc />
-        public bool IsInitialized
-        {
-            get => _isInitialized;
-            private set
-            {
-                if (value == _isInitialized) return;
-                _isInitialized = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsInitialized { get; set; }
 
         /// <inheritdoc />
         public abstract IColor IconBackgroundColor { get; }
@@ -31,16 +19,7 @@ namespace Fluid.Core.Base
         public abstract IColor IconForegroundColor { get; }
 
         /// <inheritdoc />
-        public IConfiguration Configuration
-        {
-            get => _configuration;
-            private set
-            {
-                if (Equals(value, _configuration)) return;
-                _configuration = value;
-                OnPropertyChanged();
-            }
-        }
+        public IConfiguration Configuration { get; private set; } = new Configuration();
 
         /// <inheritdoc />
         public abstract override Guid Id { get; }
@@ -61,19 +40,7 @@ namespace Fluid.Core.Base
         public abstract Version Version { get; }
 
         /// <inheritdoc />
-        public ICollection<IApplicationAction> Actions
-        {
-            get => _actions;
-            private set
-            {
-                if (Equals(value, _actions)) return;
-                _actions = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public event EventHandler<IMessage> MessageReceived;
+        public ICollection<IApplicationAction> Actions { get; private set; } = new List<IApplicationAction>();
 
         /// <inheritdoc />
         public event EventHandler ActionsUpdated;
@@ -88,20 +55,11 @@ namespace Fluid.Core.Base
         public abstract void Dispose();
 
         /// <summary>
-        ///     Уведомления об обнолении списка доступных действий.
+        ///     Notifies when actions collection changed.
         /// </summary>
         protected virtual void OnActionsUpdated()
         {
             ActionsUpdated?.Invoke(this, EventArgs.Empty);
-        }
-
-        /// <summary>
-        ///     Уведомление об отправке системного сообщения.
-        /// </summary>
-        /// <param name="message">Сообщение.</param>
-        protected virtual void OnMessageReceived(IMessage message)
-        {
-            MessageReceived?.Invoke(this, message);
         }
     }
 }

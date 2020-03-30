@@ -3,22 +3,19 @@ using System.ComponentModel;
 
 namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface for connection classes.
+    /// </summary>
     public interface IConnection : IObject, INotifyPropertyChanged, IDisposable, ICloneable
     {
         /// <summary>
-        ///     Точка входа в соединение.
+        ///     Get input entry point of this connection.
         /// </summary>
         IEntryPoint Input { get; set; }
 
         /// <summary>
-        ///     Точка выхода из соединения.
+        ///     Gets output entry point of this connection.
         /// </summary>
         IEntryPoint Output { get; set; }
-
-        /// <summary>
-        ///     Получение Hash-кода объекта.
-        /// </summary>
-        /// <returns></returns>
-        int GetHashCode();
     }
 }

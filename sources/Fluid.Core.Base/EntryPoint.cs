@@ -3,56 +3,31 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Entry point base class.
+    /// </summary>
     public class EntryPoint : Object, IEntryPoint
     {
-        private Guid _id = Guid.NewGuid();
-
-        private bool _isProperty;
-        private string _name;
         private object _value = new object();
 
-        private IModule _parent;
-
         /// <summary>
-        ///     Создает новый экземпляр
+        ///     Creates new instance of entry point.
         /// </summary>
-        /// <param name="parent"></param>
-        public EntryPoint(IModule parent)
+        /// <param name="parent">Parent.</param>
+        /// <param name="isProperty">Whether a point is a property.</param>
+        public EntryPoint(IModule parent, bool isProperty)
         {
             Parent = parent;
+            IsProperty = isProperty;
         }
 
-        /// <summary>
-        ///     Определяет является ли точкой для свойства модуля
-        /// </summary>
-        public bool IsProperty
-        {
-            get => _isProperty;
-            set
-            {
-                if (value == _isProperty) return;
-                _isProperty = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public bool IsProperty { get; }
 
-        /// <summary>
-        ///     Имя точки
-        /// </summary>
-        public override string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == _name) return;
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public override string Name { get; set; }
 
-        /// <summary>
-        ///     Значение точки
-        /// </summary>
+        /// <inheritdoc />
         public object Value
         {
             get => _value;
@@ -65,40 +40,17 @@ namespace Fluid.Core.Base
             }
         }
 
-        /// <summary>
-        ///     Идентификатор точки
-        /// </summary>
+        /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
-        /// <summary>
-        ///     Ссылка на родительский модуль точки
-        /// </summary>
-        public IModule Parent
-        {
-            get => _parent;
-            internal set
-            {
-                if (Equals(value, _parent)) return;
-                _parent = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public IModule Parent { get; set; }
 
-        /// <summary>
-        ///     Событие отправки системного сообщения
-        /// </summary>
-        [field: NonSerialized]
-        public event EventHandler<IMessage> MessageReceived;
-
-        /// <summary>
-        ///     Событие приема данных на точку
-        /// </summary>
+        /// <inheritdoc />
         [field: NonSerialized]
         public event EventHandler<object> DataReceived;
 
-        /// <summary>
-        ///     Dispose
-        /// </summary>
+        /// <inheritdoc />
         public void Dispose()
         {
             Parent = null;
@@ -106,18 +58,9 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        ///     Уведомление об отправке системного сообщения.
+        ///     Notifies when new data received.
         /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnMessageReceived(IMessage e)
-        {
-            MessageReceived?.Invoke(this, e);
-        }
-
-        /// <summary>
-        ///     Уведомление о приеме данных.
-        /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Data.</param>
         protected virtual void OnDataReceived(object e)
         {
             DataReceived?.Invoke(this, e);

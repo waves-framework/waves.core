@@ -2,22 +2,19 @@
 
 namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of property classes.
+    /// </summary>
     public interface IProperty : IObject, ICloneable
     {
         /// <summary>
-        ///     Только для чтения.
+        ///     Gets is property read only.
         /// </summary>
-        bool IsReadOnly { get; set; }
+        bool IsReadOnly { get; }
 
         /// <summary>
-        ///     Значение свойства.
+        ///     Gets or sets value of property.
         /// </summary>
         object Value { get; set; }
-
-        /// <summary>
-        ///     Получение hash-code объекта.
-        /// </summary>
-        /// <returns></returns>
-        int GetHashCode();
     }
 }

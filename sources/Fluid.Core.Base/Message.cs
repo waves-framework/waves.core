@@ -4,15 +4,18 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Base message structure.
+    /// </summary>
     public struct Message : IMessage
     {
         /// <summary>
-        ///     Создает новое системное сообщение
+        ///     Creates new instance of Message.
         /// </summary>
-        /// <param name="title">Заголовок</param>
-        /// <param name="text">Текст сообщения</param>
-        /// <param name="sender">Имя отправителя</param>
-        /// <param name="type">Тип</param>
+        /// <param name="title">Title.</param>
+        /// <param name="text">Text.</param>
+        /// <param name="sender">Sender.</param>
+        /// <param name="type">Message type.</param>
         public Message(string title, string text, string sender, MessageType type)
         {
             Title = title;
@@ -20,31 +23,41 @@ namespace Fluid.Core.Base
             Type = type;
             Sender = sender;
             DateTime = DateTime.Now;
+            Exception = null;
         }
 
         /// <summary>
-        ///     Заголовок
+        /// Creates new instance of Message.
         /// </summary>
+        /// <param name="exception">Exception.</param>
+        /// <param name="isFatal">Is it a fatal error message?</param>
+        public Message(Exception exception, bool isFatal)
+        {
+            Title = "An exception was received";
+            Text = exception.Message;
+            Type = isFatal ? MessageType.Fatal : MessageType.Error;
+            Sender = exception.Source;
+            DateTime = DateTime.Now;
+            Exception = exception;
+        }
+
+
+        /// <inheritdoc />
         public string Title { get; }
 
-        /// <summary>
-        ///     Дата и время
-        /// </summary>
+        /// <inheritdoc />
         public DateTime DateTime { get; }
 
-        /// <summary>
-        ///     Описание
-        /// </summary>
+        /// <inheritdoc />
         public string Text { get; }
 
-        /// <summary>
-        ///     Имя отправителя
-        /// </summary>
+        /// <inheritdoc />
         public string Sender { get; }
 
-        /// <summary>
-        ///     Тип данных
-        /// </summary>
+        /// <inheritdoc />
+        public Exception Exception { get; }
+
+        /// <inheritdoc />
         public MessageType Type { get; }
     }
 }

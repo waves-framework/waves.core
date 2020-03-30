@@ -3,23 +3,56 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Base color structure.
+    /// </summary>
     [Serializable]
     public struct Color : IColor
     {
-        public static Color Red = FromArgb(255, 255, 0, 0);
-        public static Color Green = FromArgb(255, 0, 255, 0);
-        public static Color Blue = FromArgb(255, 0, 0, 255);
-        public static Color White = FromArgb(255, 255, 255, 255);
-        public static Color Gray = FromArgb(255, 100, 100, 100);
-        public static Color Black = FromArgb(255, 0, 0, 0);
-        public static Color Empty = FromArgb(0, 0, 0, 0);
-        public static Color LightGray = FromHex("#d3d3d3");
-        public static Color Transparent = Empty;
+        /// <summary>
+        /// Red color.
+        /// </summary>
+        public static readonly Color Red = FromArgb(255, 255, 0, 0);
 
         /// <summary>
-        ///     Произвольный цвет
+        /// Green color.
         /// </summary>
-        /// <returns></returns>
+        public static readonly Color Green = FromArgb(255, 0, 255, 0);
+
+        /// <summary>
+        /// Blue color.
+        /// </summary>
+        public static readonly Color Blue = FromArgb(255, 0, 0, 255);
+
+        /// <summary>
+        /// White color.
+        /// </summary>
+        public static readonly Color White = FromArgb(255, 255, 255, 255);
+
+        /// <summary>
+        /// Gray color.
+        /// </summary>
+        public static readonly Color Gray = FromArgb(255, 100, 100, 100);
+
+        /// <summary>
+        /// Black color.
+        /// </summary>
+        public static readonly Color Black = FromArgb(255, 0, 0, 0);
+
+        /// <summary>
+        /// Transparent color.
+        /// </summary>
+        public static readonly Color Transparent = FromArgb(0, 0, 0, 0);
+
+        /// <summary>
+        /// Light gray color.
+        /// </summary>
+        public static readonly Color LightGray = FromHex("#d3d3d3");
+
+        /// <summary>
+        ///     Creates random color.
+        /// </summary>
+        /// <returns>Random color.</returns>
         public static Color Random()
         {
             var random = new Random();
@@ -36,53 +69,38 @@ namespace Fluid.Core.Base
             return new Color(Convert.ToByte(a), Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
         }
 
-        /// <summary>
-        ///     Red
-        /// </summary>
+
+        /// <inheritdoc />
         public byte R { get; }
 
-        /// <summary>
-        ///     Green
-        /// </summary>
+        /// <inheritdoc />
         public byte G { get; }
 
-        /// <summary>
-        ///     Blue
-        /// </summary>
+        /// <inheritdoc />
         public byte B { get; }
 
-        /// <summary>
-        ///     Alpha
-        /// </summary>
+        /// <inheritdoc />
         public byte A { get; }
 
-        /// <summary>
-        ///     Нормированное значение красного
-        /// </summary>
+        /// <inheritdoc />
         public float ScR => R / 255f;
 
-        /// <summary>
-        ///     Нормированное значение зеленого
-        /// </summary>
+        /// <inheritdoc />
         public float ScG => G / 255f;
 
-        /// <summary>
-        ///     Нормированное значение синего
-        /// </summary>
+        /// <inheritdoc />
         public float ScB => B / 255f;
 
-        /// <summary>
-        ///     Нормированное значение альфа-канала
-        /// </summary>
+        /// <inheritdoc />
         public float ScA => A / 255f;
 
         /// <summary>
-        ///     Создает новый экземпляр цвета
+        /// Creates new instance of color structure.
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="r"></param>
-        /// <param name="g"></param>
-        /// <param name="b"></param>
+        /// <param name="a">Alpha value.</param>
+        /// <param name="r">Red value.</param>
+        /// <param name="g">Green value.</param>
+        /// <param name="b">Blue value.</param>
         public Color(byte a, byte r, byte g, byte b)
         {
             A = a;
@@ -92,11 +110,11 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        ///     Создает новый экземпляр цвета
+        /// Creates new instance of color structure.
         /// </summary>
-        /// <param name="r"></param>
-        /// <param name="g"></param>
-        /// <param name="b"></param>
+        /// <param name="r">Red value.</param>
+        /// <param name="g">Green value.</param>
+        /// <param name="b">Blue value.</param>
         public Color(byte r, byte g, byte b)
         {
             A = 255;
@@ -106,52 +124,46 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        ///     Получение цвета из ARGB параметров
+        /// Gets color from ARGB values.
         /// </summary>
-        /// <param name="a"></param>
-        /// <param name="r"></param>
-        /// <param name="g"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
+        /// <param name="a">Alpha value.</param>
+        /// <param name="r">Red value.</param>
+        /// <param name="g">Green value.</param>
+        /// <param name="b">Blue value.</param>
+        /// <returns>Color.</returns>
         public static Color FromArgb(byte a, byte r, byte g, byte b)
         {
             return new Color(a, r, g, b);
         }
 
         /// <summary>
-        ///     Преобразование в строку
+        /// Converts color to string.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>String.</returns>
         public override string ToString()
         {
             return $"A:{A},R:{R},G:{G},B:{B}";
         }
 
         /// <summary>
-        ///     Сравнение значений
+        ///     Compares two colors.
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">Other color.</param>
+        /// <returns>True if equals, false if not.</returns>
         public bool Equals(Color other)
         {
             return R == other.R && G == other.G && B == other.B && A == other.A;
         }
 
-        /// <summary>
-        ///     Сравнение
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is Color color && Equals(color);
         }
 
-        /// <summary>
-        ///     Получение хеш-кода
-        /// </summary>
-        /// <returns></returns>
+
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
@@ -164,11 +176,21 @@ namespace Fluid.Core.Base
             }
         }
 
+        /// <inheritdoc />
+        public string ToHexString(bool isUseAlphaIsSet = true, bool isHexPrefix = true)
+        {
+            if (A == 255) return isHexPrefix ? $"#{R:X2}{G:X2}{B:X2}" : $"{R:X2}{G:X2}{B:X2}";
+
+            if (isUseAlphaIsSet) return isHexPrefix ? $"#{A:X2}{R:X2}{G:X2}{B:X2}" : $"{A:X2}{R:X2}{G:X2}{B:X2}";
+
+            return isHexPrefix ? $"#{R:X2}{G:X2}{B:X2}" : $"{R:X2}{G:X2}{B:X2}";
+        }
+
         /// <summary>
-        ///     Преобразование из HEX-строки
+        /// Converts HEX string to Color.
         /// </summary>
-        /// <param name="hexColor"></param>
-        /// <returns></returns>
+        /// <param name="hexColor">HEX string.</param>
+        /// <returns>Color.</returns>
         public static Color FromHex(string hexColor)
         {
             try
@@ -201,27 +223,12 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        ///     Преобразование в HEX-строку
+        /// Tries parsing HEX string to color.
         /// </summary>
-        /// <param name="isUseAlphaIsSet"></param>
-        /// <param name="isHexPrefix"></param>
-        /// <returns></returns>
-        public string ToHexString(bool isUseAlphaIsSet = true, bool isHexPrefix = true)
-        {
-            if (A == 255) return isHexPrefix ? $"#{R:X2}{G:X2}{B:X2}" : $"{R:X2}{G:X2}{B:X2}";
-
-            if (isUseAlphaIsSet) return isHexPrefix ? $"#{A:X2}{R:X2}{G:X2}{B:X2}" : $"{A:X2}{R:X2}{G:X2}{B:X2}";
-
-            return isHexPrefix ? $"#{R:X2}{G:X2}{B:X2}" : $"{R:X2}{G:X2}{B:X2}";
-        }
-
-        /// <summary>
-        ///     Попытка преобразования из hex-строки
-        /// </summary>
-        /// <param name="hexColor"></param>
-        /// <param name="color"></param>
-        /// <param name="isHasAlphaInSource"></param>
-        /// <returns></returns>
+        /// <param name="hexColor">HEX string.</param>
+        /// <param name="color">Output color.</param>
+        /// <param name="isHasAlphaInSource">Whether color has alpha channel in HEX.</param>
+        /// <returns>True if parsed, false if not.</returns>
         public static bool TryParseFromHex(string hexColor, out Color color, out bool isHasAlphaInSource)
         {
             color = Black;

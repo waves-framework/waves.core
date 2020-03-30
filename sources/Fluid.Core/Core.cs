@@ -216,9 +216,7 @@ namespace Fluid.Core
 
             RegisterService<IModuleService>(moduleService);
             RegisterService<IApplicationService>(new ApplicationService());
-            RegisterService<IAdcService>(new AdcService(moduleService));
             RegisterService<IInputService>(new InputService());
-            RegisterService<ISensorService>(new SensorService());
 
             IsServicesInitialized = true;
         }

@@ -11,7 +11,7 @@ namespace Fluid.Core.Devices.Input.ADC
         private bool _isPhantomPowerSupported;
 
         /// <inheritdoc />
-        protected MeasuringAdcEntryPoint(IModule parent) : base(parent)
+        protected MeasuringAdcEntryPoint(IModule parent, bool isProperty) : base(parent, isProperty)
         {
         }
 

@@ -4,67 +4,54 @@ using System.ComponentModel;
 
 namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of module classes.
+    /// </summary>
     public interface IModule : IObject, ICloneable, IDisposable, INotifyPropertyChanged
     {
         /// <summary>
-        /// Инициализирован ли модуль.
+        /// Gets whether the module is initialized.
         /// </summary>
         bool IsInitialized { get; }
 
         /// <summary>
-        /// Иконка модуля.
+        /// Gets icon of the module.
         /// </summary>
         string Icon { get; }
 
         /// <summary>
-        ///     Описание модуля.
+        ///     Gets description of the module.
         /// </summary>
         string Description { get; }
 
         /// <summary>
-        ///     Производитель модуля.
+        ///     Gets manufacturer of the module.
         /// </summary>
         string Manufacturer { get; }
 
         /// <summary>
-        ///     Версия модуля.
+        ///     Gets version of the module.
         /// </summary>
         Version Version { get; }
 
         /// <summary>
-        ///     Инициализация.
-        /// </summary>
-        void Initialize();
-
-        /// <summary>
-        ///     Запуск единичного исполнения работы модуля.
-        /// </summary>
-        void Execute();
-
-        /// <summary>
-        ///     Конфигурация модуля.
+        ///     Gets module's configuration.
         /// </summary>
         IConfiguration Configuration { get; }
 
         /// <summary>
-        ///     Точки входов данных.
+        ///     Gets input points of the module.
         /// </summary>
         ICollection<IEntryPoint> Inputs { get; }
 
         /// <summary>
-        ///     Точки выходов данных.
+        ///     Gets output points of the module.
         /// </summary>
         ICollection<IEntryPoint> Outputs { get; }
 
         /// <summary>
-        ///     Событие отправки системного сообщения.
+        ///     Initializes module.
         /// </summary>
-        event EventHandler<IMessage> MessageReceived;
-
-        /// <summary>
-        ///     Получение Hash-кода объекта.
-        /// </summary>
-        /// <returns></returns>
-        int GetHashCode();
+        void Initialize();
     }
 }

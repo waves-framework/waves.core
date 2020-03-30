@@ -2,12 +2,15 @@
 
 namespace Fluid.Core.Base
 {
+    /// <summary>
+    /// Size base structure.
+    /// </summary>
     public struct Size : ISize
     {
         /// <summary>
-        ///     Создает новый экземпляр размера
+        /// Creates new instance of size (square).
         /// </summary>
-        /// <param name="length"></param>
+        /// <param name="length">Length.</param>
         public Size(float length)
         {
             Width = length;
@@ -15,61 +18,48 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        ///     Создает новый экземпляр размера
+        ///     Creates new instance of size (rectangle)
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
+        /// <param name="width">Width.</param>
+        /// <param name="height">Height.</param>
         public Size(float width, float height)
         {
             Width = width;
             Height = height;
         }
 
-        /// <summary>
-        ///     Ширина
-        /// </summary>
-        public float Width { get; set; }
 
-        /// <summary>
-        ///     Высота
-        /// </summary>
-        public float Height { get; set; }
+        /// <inheritdoc />
+        public float Width { get; }
 
-        /// <summary>
-        ///     Площадь
-        /// </summary>
+        /// <inheritdoc />
+        public float Height { get; }
+
+        /// <inheritdoc />
         public float Space => Width * Height;
 
-        /// <summary>
-        ///     Соотношение сторон
-        /// </summary>
+        /// <inheritdoc />
         public float Aspect => Width / Height;
 
         /// <summary>
-        ///     Сравнение 2 объектов
+        /// Gets whether two size structures are equals.
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">The second structure.</param>
+        /// <returns>Return true if equals, false if not.</returns>
         public bool Equals(Size other)
         {
             return Width.Equals(other.Width) && Height.Equals(other.Height);
         }
 
-        /// <summary>
-        ///     Сравнение 2 объектов
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             return obj is Size size && Equals(size);
         }
 
-        /// <summary>
-        ///     Получение хеш-кода
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked

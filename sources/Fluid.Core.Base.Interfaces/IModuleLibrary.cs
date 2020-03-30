@@ -4,40 +4,43 @@ using System.ComponentModel;
 
 namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of Fluid's Module Library classes.
+    /// </summary>
     public interface IModuleLibrary :  INotifyPropertyChanged
     {
         /// <summary>
-        /// Наименование библиотеки.
+        /// Gets name of module library.
         /// </summary>
         string Name { get; }
 
         /// <summary>
-        ///     Описание библиотеки.
+        ///     Gets description of module library.
         /// </summary>
         string Description { get; }
 
         /// <summary>
-        ///     Производитель библиотеки.
+        ///     Get manufacturer of module library.
         /// </summary>
         string Manufacturer { get; }
 
         /// <summary>
-        ///     Версия библиотеки.
+        ///     Gets version of module library.
         /// </summary>
         Version Version { get; }
 
         /// <summary>
-        ///     Список модулей библиотеки.
+        ///     Gets collection of modules.
         /// </summary>
         ICollection<IModule> Modules { get; }
 
         /// <summary>
-        ///     Обновление списка модулей.
+        ///     Updates modules collection.
         /// </summary>
-        void UpdateModulesList();
+        void UpdateModulesCollection();
 
         /// <summary>
-        ///     Событие отправки системного сообщения.
+        ///     Event for message receiving handling.
         /// </summary>
         event EventHandler<IMessage> MessageReceived;
     }

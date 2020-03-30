@@ -13,7 +13,7 @@ namespace Fluid.Core.Devices.Input.ADC
         private ICollection<double> _availableManagedGains;
 
         /// <inheritdoc />
-        protected AdcEntryPoint(IModule parent) : base(parent)
+        protected AdcEntryPoint(IModule parent, bool isProperty) : base(parent, isProperty)
         {
         }
 

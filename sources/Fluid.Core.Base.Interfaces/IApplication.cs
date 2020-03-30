@@ -3,70 +3,68 @@ using System.Collections.Generic;
 
 namespace Fluid.Core.Base.Interfaces
 {
+    /// <summary>
+    /// Interface of application classes.
+    /// </summary>
     public interface IApplication : IObject, IDisposable
     {
         /// <summary>
-        ///     Инициализирован ли приложение.
+        ///     Gets whether the application is initialized. 
         /// </summary>
         bool IsInitialized { get; }
 
         /// <summary>
-        /// Цвет фона иконки.
+        /// Gets icon's background color.
         /// </summary>
         IColor IconBackgroundColor { get; }
 
         /// <summary>
-        /// Цвет иконки.
+        /// Gets icon's foreground color.
         /// </summary>
         IColor IconForegroundColor { get; }
 
         /// <summary>
-        ///     Конфигурация приложения.
+        ///     Gets application's configuration.
         /// </summary>
         IConfiguration Configuration { get; }
 
         /// <summary>
-        ///     Иконка приложения.
+        ///     Gets application's icon.
         /// </summary>
         string Icon { get; }
 
         /// <summary>
-        ///     Описание приложения.
+        ///     Gets description.
         /// </summary>
         string Description { get; }
 
         /// <summary>
-        ///     Производитель приложения.
+        ///     Gets manufacturer.
         /// </summary>
         string Manufacturer { get; }
 
         /// <summary>
-        ///     Версия приложения.
+        ///     Gets version.
         /// </summary>
         Version Version { get; }
 
         /// <summary>
-        ///     Список доступных действия для приложения.
+        ///     Gets collection of available actions.
         /// </summary>
         ICollection<IApplicationAction> Actions { get; }
 
         /// <summary>
-        ///     Событие отправки системного сообщения.
-        /// </summary>
-        event EventHandler<IMessage> MessageReceived;
-
-        /// <summary>
-        ///     Событие обновления списка доступных действий.
+        ///     Event for actions updated.
         /// </summary>
         event EventHandler ActionsUpdated;
 
         /// <summary>
-        ///     Инициализация приложения.
+        ///     Initializes application.
         /// </summary>
         void Initialize();
 
         /// <summary>
-        ///     Сохранение конфигурации.
+        ///     Saves configuration.
         /// </summary>
         void SaveConfiguration();
     }

@@ -1,11 +1,18 @@
 ﻿namespace Fluid.Core.Base.Enums
 {
     /// <summary>
-    ///     События нажатия клавиатуры
+    ///     Key event type enum.
     /// </summary>
     public enum KeyEventType
     {
+        /// <summary>
+        /// Key pressed.
+        /// </summary>
         Pressed,
+
+        /// <summary>
+        /// Key released.
+        /// </summary>
         Released
     }
 }
