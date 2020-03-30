@@ -3,73 +3,39 @@ using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
+    /// <summary>
+    /// Abstract base file system object class.
+    /// </summary>
     public abstract class FileSystemObject : Object, IFileSystemObject
     {
-        private string _fullName;
-
-        private bool _isHidden;
-        private bool _isSelected;
-        private string _name;
-        private IFileSystemObject _parent;
-
-        /// <inheritdoc />
-        public bool IsSelected
+        /// <summary>
+        /// Creates new instance of file system object.
+        /// </summary>
+        protected FileSystemObject()
         {
-            get => _isSelected;
-            set
-            {
-                if (value == _isSelected) return;
-                _isSelected = value;
-                OnPropertyChanged();
-            }
+        }
+
+        /// <summary>
+        /// Creates new instance of file system object.
+        /// </summary>
+        /// <param name="fullName">Full Name.</param>
+        /// <param name="parent">Parent.</param>
+        protected FileSystemObject(string fullName, IFileSystemObject parent)
+        {
+            FullName = fullName;
+            Parent = parent;
         }
 
         /// <inheritdoc />
-        public bool IsHidden
-        {
-            get => _isHidden;
-            set
-            {
-                if (value == _isHidden) return;
-                _isHidden = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsHidden { get; internal set; }
 
         /// <inheritdoc />
-        public override string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == _name) return;
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
+        public override string Name { get; set; }
+        
+        /// <inheritdoc />
+        public string FullName { get; protected set; }
 
         /// <inheritdoc />
-        public string FullName
-        {
-            get => _fullName;
-            set
-            {
-                if (value == _fullName) return;
-                _fullName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <inheritdoc />
-        public IFileSystemObject Parent
-        {
-            get => _parent;
-            set
-            {
-                if (Equals(value, _parent)) return;
-                _parent = value;
-                OnPropertyChanged();
-            }
-        }
+        public IFileSystemObject Parent { get; protected set; }
     }
 }

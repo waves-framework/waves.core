@@ -4,24 +4,23 @@ using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
+    /// <summary>
+    /// File.
+    /// </summary>
     public class File : FileSystemObject
     {
-        private string _name;
-
         /// <summary>
-        ///     Новый экземпляр файла.
+        ///     Creates new instance of File.
         /// </summary>
-        /// <param name="fullName"></param>
-        /// <param name="parent"></param>
-        public File(string fullName, IFileSystemObject parent)
+        /// <param name="fullName">Full Name.</param>
+        /// <param name="parent">Parent.</param>
+        public File(string fullName, IFileSystemObject parent) : base(fullName, parent)
         {
             try
             {
                 var fileInfo = new FileInfo(fullName);
 
-                FullName = fileInfo.FullName;
                 Name = fileInfo.Name;
-                Parent = parent;
                 Extension = fileInfo.Extension;
                 Size = fileInfo.Length;
                 Id = Guid.NewGuid();
@@ -40,24 +39,15 @@ namespace Fluid.Core.IO
         public override Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
-        public sealed override string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == _name) return;
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
+        public sealed override string Name { get; set; }
 
         /// <summary>
-        ///     Расширение файла.
+        ///     File's extension.
         /// </summary>
         public string Extension { get; set; }
 
         /// <summary>
-        ///     Размер файла.
+        ///     File's size.
         /// </summary>
         public long Size { get; set; }
     }

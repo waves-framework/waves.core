@@ -6,26 +6,24 @@ using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
+    /// <summary>
+    /// Directory.
+    /// </summary>
     public class Directory : FileSystemObject
     {
         private readonly DirectoryInfo _directoryInfo;
 
-        private ObservableCollection<IFileSystemObject> _children = new ObservableCollection<IFileSystemObject>();
-        private string _name;
-
-        private DirectoryType _type = DirectoryType.Directory;
-
         /// <summary>
-        ///     Новый экземпляр директории.
+        ///     Creates new instance of Directory.
         /// </summary>
-        public Directory()
+        public Directory() : base()
         {
         }
 
         /// <summary>
-        ///     Новый экземпляр директории.
+        ///     Creates new instance of Directory.
         /// </summary>
-        /// <param name="fullName"></param>
+        /// <param name="fullName">Full name</param>
         public Directory(string fullName)
         {
             try
@@ -47,10 +45,10 @@ namespace Fluid.Core.IO
         }
 
         /// <summary>
-        ///     Новый экземпляр директории.
+        ///     Creates new instance of Directory.
         /// </summary>
-        /// <param name="fullName">Полное имя.</param>
-        /// <param name="parent">Родитель.</param>
+        /// <param name="fullName">Full name.</param>
+        /// <param name="parent">Parent.</param>
         public Directory(string fullName, IFileSystemObject parent)
         {
             try
@@ -75,47 +73,20 @@ namespace Fluid.Core.IO
         public override Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
-        public sealed override string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == _name) return;
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
+        public sealed override string Name { get; set; }
 
         /// <summary>
-        ///     Тип директории
+        ///     Directory type.
         /// </summary>
-        public virtual DirectoryType Type
-        {
-            get => _type;
-            set
-            {
-                if (value == _type) return;
-                _type = value;
-                OnPropertyChanged();
-            }
-        }
+        public virtual DirectoryType Type { get; internal set; } = DirectoryType.Directory;
 
         /// <summary>
-        ///     Объекты, содержащиеся в директории
+        ///     Directory children collection.
         /// </summary>
-        public virtual ObservableCollection<IFileSystemObject> Children
-        {
-            get => _children;
-            set
-            {
-                if (Equals(value, _children)) return;
-                _children = value;
-                OnPropertyChanged();
-            }
-        }
+        public virtual ObservableCollection<IFileSystemObject> Children { get; protected set; } = new ObservableCollection<IFileSystemObject>();
 
         /// <summary>
-        ///     Загрузка объектов, содержащихся в папке
+        ///     Loads directory's children.
         /// </summary>
         public virtual void LoadChildren()
         {

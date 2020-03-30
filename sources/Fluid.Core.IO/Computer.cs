@@ -6,11 +6,11 @@ using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
+    /// <summary>
+    /// Computer directory.
+    /// </summary>
     public class Computer : Directory
     {
-        private ObservableCollection<IFileSystemObject> _children = new ObservableCollection<IFileSystemObject>();
-        private DirectoryType _type = DirectoryType.Pc;
-
         /// <summary>
         ///     Новый экземпляр директории.
         /// </summary>
@@ -19,8 +19,8 @@ namespace Fluid.Core.IO
         {
             try
             {
-                Name = "Этот компьютер";
-                FullName = "Этот компьютер";
+                Name = "This PC";
+                FullName = "Computer";
                 Parent = parent;
             }
             catch (Exception e)
@@ -30,37 +30,13 @@ namespace Fluid.Core.IO
             }
         }
 
-        /// <summary>
-        ///     Тип директории
-        /// </summary>
-        public override DirectoryType Type
-        {
-            get => _type;
-            set
-            {
-                if (value == _type) return;
-                _type = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public override DirectoryType Type { get; internal set; } = DirectoryType.Computer;
 
-        /// <summary>
-        ///     Объекты, содержащиеся в директории
-        /// </summary>
-        public override ObservableCollection<IFileSystemObject> Children
-        {
-            get => _children;
-            set
-            {
-                if (Equals(value, _children)) return;
-                _children = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public override ObservableCollection<IFileSystemObject> Children { get; protected set; } = new ObservableCollection<IFileSystemObject>();
 
-        /// <summary>
-        ///     Загрузка объектов, содержащихся в папке
-        /// </summary>
+        /// <inheritdoc />
         public override void LoadChildren()
         {
             Children.Clear();

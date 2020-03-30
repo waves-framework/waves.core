@@ -2,25 +2,23 @@
 
 namespace Fluid.Core.IO.Interfaces
 {
+    /// <summary>
+    /// Interface for file system object.
+    /// </summary>
     public interface IFileSystemObject : IObject
     {
         /// <summary>
-        ///     Выбран ли объект.
-        /// </summary>
-        bool IsSelected { get; set; }
-
-        /// <summary>
-        ///     Является ли объект скрытым.
+        ///     Gets whether object is hidden.
         /// </summary>
         bool IsHidden { get; }
 
         /// <summary>
-        ///     Полный путь.
+        ///     Gets full name of object (full path).
         /// </summary>
         string FullName { get; }
 
         /// <summary>
-        ///     Родительский объект.
+        ///     Gets object's parent.
         /// </summary>
         IFileSystemObject Parent { get; }
     }

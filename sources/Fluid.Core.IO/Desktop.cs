@@ -6,19 +6,17 @@ using Fluid.Core.IO.Interfaces;
 
 namespace Fluid.Core.IO
 {
+    /// <summary>
+    /// Desktop.
+    /// </summary>
     public class Desktop : Directory
     {
         private readonly Directory _computer;
-
-        private readonly DirectoryInfo _directoryInfo;
         private readonly Directory _userDirectory;
-
-        private ObservableCollection<IFileSystemObject> _children = new ObservableCollection<IFileSystemObject>();
-
-        private DirectoryType _type = DirectoryType.Desktop;
+        private readonly DirectoryInfo _directoryInfo;
 
         /// <summary>
-        ///     Новый экземпляр директории.
+        ///     Creates new instance of desktop directory.
         /// </summary>
         public Desktop()
         {
@@ -29,7 +27,7 @@ namespace Fluid.Core.IO
                 _directoryInfo = new DirectoryInfo(desktopPath);
 
                 FullName = _directoryInfo.FullName;
-                Name = "Рабочий стол";
+                Name = "Desktop";      // TODO: Localization. 
                 Parent = null;
 
                 _computer = new Computer(this);
@@ -42,37 +40,13 @@ namespace Fluid.Core.IO
             }
         }
 
-        /// <summary>
-        ///     Тип директории
-        /// </summary>
-        public override DirectoryType Type
-        {
-            get => _type;
-            set
-            {
-                if (value == _type) return;
-                _type = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public override DirectoryType Type { get; internal set; } = DirectoryType.Desktop;
 
-        /// <summary>
-        ///     Объекты, содержащиеся в директории
-        /// </summary>
-        public override ObservableCollection<IFileSystemObject> Children
-        {
-            get => _children;
-            set
-            {
-                if (Equals(value, _children)) return;
-                _children = value;
-                OnPropertyChanged();
-            }
-        }
+        /// <inheritdoc />
+        public override ObservableCollection<IFileSystemObject> Children { get; protected set; } = new ObservableCollection<IFileSystemObject>();
 
-        /// <summary>
-        ///     Загрузка объектов, содержащихся в папке
-        /// </summary>
+        /// <inheritdoc />
         public override void LoadChildren()
         {
             Children.Clear();
