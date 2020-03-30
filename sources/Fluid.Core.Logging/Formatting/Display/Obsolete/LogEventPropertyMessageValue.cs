@@ -20,12 +20,13 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Formatting.Display.Obsolete
 {
     [Obsolete("Not used by the current output formatting implementation.")]
-    class LogEventPropertyMessageValue : LogEventPropertyValue
+    internal class LogEventPropertyMessageValue : LogEventPropertyValue
     {
-        readonly MessageTemplate _template;
-        readonly IReadOnlyDictionary<string, LogEventPropertyValue> _properties;
+        private readonly IReadOnlyDictionary<string, LogEventPropertyValue> _properties;
+        private readonly MessageTemplate _template;
 
-        public LogEventPropertyMessageValue(MessageTemplate template, IReadOnlyDictionary<string, LogEventPropertyValue> properties)
+        public LogEventPropertyMessageValue(MessageTemplate template,
+            IReadOnlyDictionary<string, LogEventPropertyValue> properties)
         {
             _template = template;
             _properties = properties;

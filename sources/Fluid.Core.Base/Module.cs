@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Module base class.
+    ///     Module base class.
     /// </summary>
     [Serializable]
     public abstract class Module : Object, IModule

@@ -18,35 +18,38 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Core.Enrichers
 {
     /// <summary>
-    /// Adds a new property enricher to the log event.
+    ///     Adds a new property enricher to the log event.
     /// </summary>
     public class PropertyEnricher : ILogEventEnricher
     {
-        readonly string _name;
-        readonly object _value;
-        readonly bool _destructureObjects;
+        private readonly bool _destructureObjects;
+        private readonly string _name;
+        private readonly object _value;
 
         /// <summary>
-        /// Create a new property enricher.
+        ///     Create a new property enricher.
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <param name="value">The value of the property.</param>
         /// <returns>A handle to later remove the property from the context.</returns>
-        /// <param name="destructureObjects">If true, and the value is a non-primitive, non-array type,
-        /// then the value will be converted to a structure; otherwise, unknown types will
-        /// be converted to scalars, which are generally stored as strings.</param>
+        /// <param name="destructureObjects">
+        ///     If true, and the value is a non-primitive, non-array type,
+        ///     then the value will be converted to a structure; otherwise, unknown types will
+        ///     be converted to scalars, which are generally stored as strings.
+        /// </param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         public PropertyEnricher(string name, object value, bool destructureObjects = false)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Property name must not be null or empty.", nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Property name must not be null or empty.", nameof(name));
             _name = name;
             _value = value;
             _destructureObjects = destructureObjects;
         }
 
         /// <summary>
-        /// Enrich the log event.
+        ///     Enrich the log event.
         /// </summary>
         /// <param name="logEvent">The log event to enrich.</param>
         /// <param name="propertyFactory">Factory for creating new properties to add to the event.</param>

@@ -1,7 +1,7 @@
 ﻿namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of color structures.
+    ///     Interface of color structures.
     /// </summary>
     public interface IColor
     {
@@ -46,7 +46,7 @@
         float ScA { get; }
 
         /// <summary>
-        /// Converts to HEX string.
+        ///     Converts to HEX string.
         /// </summary>
         /// <param name="isUseAlphaIsSet">Display alpha channel.</param>
         /// <param name="isHexPrefix">Display HEX prefix.</param>

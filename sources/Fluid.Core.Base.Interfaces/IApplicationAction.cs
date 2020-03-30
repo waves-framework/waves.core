@@ -1,12 +1,12 @@
 ﻿namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of application's action.
+    ///     Interface of application's action.
     /// </summary>
     public interface IApplicationAction : IAction
     {
         /// <summary>
-        /// Gets icon.
+        ///     Gets icon.
         /// </summary>
         string Icon { get; }
     }

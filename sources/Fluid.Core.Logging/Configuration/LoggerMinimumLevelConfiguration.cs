@@ -19,17 +19,18 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Configuration
 {
     /// <summary>
-    /// Controls sink configuration.
+    ///     Controls sink configuration.
     /// </summary>
     public class LoggerMinimumLevelConfiguration
     {
-        readonly LoggerConfiguration _loggerConfiguration;
-        readonly Action<LogEventLevel> _setMinimum;
-        readonly Action<LoggingLevelSwitch> _setLevelSwitch;
-        readonly Action<string, LoggingLevelSwitch> _addOverride;
+        private readonly Action<string, LoggingLevelSwitch> _addOverride;
+        private readonly LoggerConfiguration _loggerConfiguration;
+        private readonly Action<LoggingLevelSwitch> _setLevelSwitch;
+        private readonly Action<LogEventLevel> _setMinimum;
 
-        internal LoggerMinimumLevelConfiguration(LoggerConfiguration loggerConfiguration, Action<LogEventLevel> setMinimum,
-                                                 Action<LoggingLevelSwitch> setLevelSwitch, Action<string, LoggingLevelSwitch> addOverride)
+        internal LoggerMinimumLevelConfiguration(LoggerConfiguration loggerConfiguration,
+            Action<LogEventLevel> setMinimum,
+            Action<LoggingLevelSwitch> setLevelSwitch, Action<string, LoggingLevelSwitch> addOverride)
         {
             _loggerConfiguration = loggerConfiguration ?? throw new ArgumentNullException(nameof(loggerConfiguration));
             _setMinimum = setMinimum ?? throw new ArgumentNullException(nameof(setMinimum));
@@ -38,7 +39,7 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Sets the minimum level at which events will be passed to sinks.
+        ///     Sets the minimum level at which events will be passed to sinks.
         /// </summary>
         /// <param name="minimumLevel">The minimum level to set.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -49,7 +50,7 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Sets the minimum level to be dynamically controlled by the provided switch.
+        ///     Sets the minimum level to be dynamically controlled by the provided switch.
         /// </summary>
         /// <param name="levelSwitch">The switch.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -62,48 +63,66 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Anything and everything you might want to know about
-        /// a running block of code.
+        ///     Anything and everything you might want to know about
+        ///     a running block of code.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
-        public LoggerConfiguration Verbose() => Is(LogEventLevel.Verbose);
+        public LoggerConfiguration Verbose()
+        {
+            return Is(LogEventLevel.Verbose);
+        }
 
         /// <summary>
-        /// Internal system events that aren't necessarily
-        /// observable from the outside.
+        ///     Internal system events that aren't necessarily
+        ///     observable from the outside.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
-        public LoggerConfiguration Debug() => Is(LogEventLevel.Debug);
+        public LoggerConfiguration Debug()
+        {
+            return Is(LogEventLevel.Debug);
+        }
 
         /// <summary>
-        /// The lifeblood of operational intelligence - things
-        /// happen.
+        ///     The lifeblood of operational intelligence - things
+        ///     happen.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
-        public LoggerConfiguration Information() => Is(LogEventLevel.Information);
+        public LoggerConfiguration Information()
+        {
+            return Is(LogEventLevel.Information);
+        }
 
         /// <summary>
-        /// Service is degraded or endangered.
+        ///     Service is degraded or endangered.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
-        public LoggerConfiguration Warning() => Is(LogEventLevel.Warning);
+        public LoggerConfiguration Warning()
+        {
+            return Is(LogEventLevel.Warning);
+        }
 
         /// <summary>
-        /// Functionality is unavailable, invariants are broken
-        /// or data is lost.
+        ///     Functionality is unavailable, invariants are broken
+        ///     or data is lost.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
-        public LoggerConfiguration Error() => Is(LogEventLevel.Error);
+        public LoggerConfiguration Error()
+        {
+            return Is(LogEventLevel.Error);
+        }
 
         /// <summary>
-        /// If you have a pager, it goes off when one of these
-        /// occurs.
+        ///     If you have a pager, it goes off when one of these
+        ///     occurs.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
-        public LoggerConfiguration Fatal() => Is(LogEventLevel.Fatal);
+        public LoggerConfiguration Fatal()
+        {
+            return Is(LogEventLevel.Fatal);
+        }
 
         /// <summary>
-        /// Override the minimum level for events from a specific namespace or type name.
+        ///     Override the minimum level for events from a specific namespace or type name.
         /// </summary>
         /// <param name="source">The (partial) namespace or type name to set the override for.</param>
         /// <param name="levelSwitch">The switch controlling loggers for matching sources.</param>
@@ -122,7 +141,7 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Override the minimum level for events from a specific namespace or type name.
+        ///     Override the minimum level for events from a specific namespace or type name.
         /// </summary>
         /// <param name="source">The (partial) namespace or type name to set the override for.</param>
         /// <param name="minimumLevel">The minimum level applied to loggers for matching sources.</param>

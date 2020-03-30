@@ -20,11 +20,11 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Sinks
 {
-    class FilteringSink : ILogEventSink
+    internal class FilteringSink : ILogEventSink
     {
-        readonly ILogEventSink _sink;
-        readonly bool _propagateExceptions;
-        readonly ILogEventFilter[] _filters;
+        private readonly ILogEventFilter[] _filters;
+        private readonly bool _propagateExceptions;
+        private readonly ILogEventSink _sink;
 
         public FilteringSink(ILogEventSink sink, IEnumerable<ILogEventFilter> filters, bool propagateExceptions)
         {
@@ -39,10 +39,8 @@ namespace Fluid.Core.Logging.Core.Sinks
             try
             {
                 foreach (var logEventFilter in _filters)
-                {
                     if (!logEventFilter.IsEnabled(logEvent))
                         return;
-                }
 
                 _sink.Emit(logEvent);
             }

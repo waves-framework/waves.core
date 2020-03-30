@@ -22,27 +22,20 @@ using System.Collections.Generic;
 
 namespace Fluid.Core.Logging.Context
 {
-    class ImmutableStack<T> : IEnumerable<T>
+    internal class ImmutableStack<T> : IEnumerable<T>
     {
-        readonly ImmutableStack<T> _under;
-        readonly T _top;
+        private readonly ImmutableStack<T> _under;
 
-        ImmutableStack()
+        private ImmutableStack()
         {
         }
 
-        ImmutableStack(ImmutableStack<T> under, T top)
+        private ImmutableStack(ImmutableStack<T> under, T top)
         {
             _under = under ?? throw new ArgumentNullException(nameof(under));
             Count = under.Count + 1;
-            _top = top;
+            Top = top;
         }
-
-        public Enumerator GetEnumerator() => new Enumerator(this);
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator(this);
-
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
 
         public int Count { get; }
 
@@ -50,28 +43,45 @@ namespace Fluid.Core.Logging.Context
 
         public bool IsEmpty => _under == null;
 
-        public ImmutableStack<T> Push(T t) => new ImmutableStack<T>(this, t);
+        public T Top { get; }
 
-        public T Top => _top;
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        public ImmutableStack<T> Push(T t)
+        {
+            return new ImmutableStack<T>(this, t);
+        }
 
         internal struct Enumerator : IEnumerator<T>
         {
-            readonly ImmutableStack<T> _stack;
-            ImmutableStack<T> _top;
-            T _current;
+            private readonly ImmutableStack<T> _stack;
+            private ImmutableStack<T> _top;
 
             public Enumerator(ImmutableStack<T> stack)
             {
                 _stack = stack;
                 _top = stack;
-                _current = default;
+                Current = default;
             }
 
             public bool MoveNext()
             {
                 if (_top.IsEmpty)
                     return false;
-                _current = _top.Top;
+                Current = _top.Top;
                 _top = _top._under;
                 return true;
             }
@@ -79,12 +89,12 @@ namespace Fluid.Core.Logging.Context
             public void Reset()
             {
                 _top = _stack;
-                _current = default;
+                Current = default;
             }
 
-            public T Current => _current;
+            public T Current { get; private set; }
 
-            object IEnumerator.Current => _current;
+            object IEnumerator.Current => Current;
 
             public void Dispose()
             {

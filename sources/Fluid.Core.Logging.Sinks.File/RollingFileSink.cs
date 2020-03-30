@@ -23,38 +23,41 @@ using Fluid.Core.Logging.Formatting;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    sealed class RollingFileSink : ILogEventSink, IFlushableFileSink, IDisposable
+    internal sealed class RollingFileSink : ILogEventSink, IFlushableFileSink, IDisposable
     {
-        readonly PathRoller _roller;
-        readonly ITextFormatter _textFormatter;
-        readonly long? _fileSizeLimitBytes;
-        readonly int? _retainedFileCountLimit;
-        readonly Encoding _encoding;
-        readonly bool _buffered;
-        readonly bool _shared;
-        readonly bool _rollOnFileSizeLimit;
-        readonly FileLifecycleHooks _hooks;
+        private readonly bool _buffered;
+        private readonly Encoding _encoding;
+        private readonly long? _fileSizeLimitBytes;
+        private readonly FileLifecycleHooks _hooks;
+        private readonly int? _retainedFileCountLimit;
+        private readonly PathRoller _roller;
+        private readonly bool _rollOnFileSizeLimit;
+        private readonly bool _shared;
 
-        readonly object _syncRoot = new object();
-        bool _isDisposed;
-        DateTime? _nextCheckpoint;
-        IFileSink _currentFile;
-        int? _currentFileSequence;
+        private readonly object _syncRoot = new object();
+        private readonly ITextFormatter _textFormatter;
+        private IFileSink _currentFile;
+        private int? _currentFileSequence;
+        private bool _isDisposed;
+        private DateTime? _nextCheckpoint;
 
         public RollingFileSink(string path,
-                              ITextFormatter textFormatter,
-                              long? fileSizeLimitBytes,
-                              int? retainedFileCountLimit,
-                              Encoding encoding,
-                              bool buffered,
-                              bool shared,
-                              RollingInterval rollingInterval,
-                              bool rollOnFileSizeLimit,
-                              FileLifecycleHooks hooks)
+            ITextFormatter textFormatter,
+            long? fileSizeLimitBytes,
+            int? retainedFileCountLimit,
+            Encoding encoding,
+            bool buffered,
+            bool shared,
+            RollingInterval rollingInterval,
+            bool rollOnFileSizeLimit,
+            FileLifecycleHooks hooks)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
-            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0) throw new ArgumentException("Negative value provided; file size limit must be non-negative.");
-            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1) throw new ArgumentException("Zero or negative value provided; retained file count limit must be at least 1.");
+            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0)
+                throw new ArgumentException("Negative value provided; file size limit must be non-negative.");
+            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
+                throw new ArgumentException(
+                    "Zero or negative value provided; retained file count limit must be at least 1.");
 
             _roller = new PathRoller(path, rollingInterval);
             _textFormatter = textFormatter;
@@ -65,6 +68,24 @@ namespace Fluid.Core.Logging.Sinks.File
             _shared = shared;
             _rollOnFileSizeLimit = rollOnFileSizeLimit;
             _hooks = hooks;
+        }
+
+        public void Dispose()
+        {
+            lock (_syncRoot)
+            {
+                if (_currentFile == null) return;
+                CloseFile();
+                _isDisposed = true;
+            }
+        }
+
+        public void FlushToDisk()
+        {
+            lock (_syncRoot)
+            {
+                _currentFile?.FlushToDisk();
+            }
         }
 
         public void Emit(LogEvent logEvent)
@@ -79,13 +100,11 @@ namespace Fluid.Core.Logging.Sinks.File
                 AlignCurrentFileTo(now);
 
                 while (_currentFile?.EmitOrOverflow(logEvent) == false && _rollOnFileSizeLimit)
-                {
-                    AlignCurrentFileTo(now, nextSequence: true);
-                }
+                    AlignCurrentFileTo(now, true);
             }
         }
 
-        void AlignCurrentFileTo(DateTime now, bool nextSequence = false)
+        private void AlignCurrentFileTo(DateTime now, bool nextSequence = false)
         {
             if (!_nextCheckpoint.HasValue)
             {
@@ -107,7 +126,7 @@ namespace Fluid.Core.Logging.Sinks.File
             }
         }
 
-        void OpenFile(DateTime now, int? minSequence = null)
+        private void OpenFile(DateTime now, int? minSequence = null)
         {
             var currentCheckpoint = _roller.GetCurrentCheckpoint(now);
 
@@ -119,12 +138,12 @@ namespace Fluid.Core.Logging.Sinks.File
             try
             {
                 if (Directory.Exists(_roller.LogFileDirectory))
-                {
                     existingFiles = Directory.GetFiles(_roller.LogFileDirectory, _roller.DirectorySearchPattern)
-                                         .Select(Path.GetFileName);
-                }
+                        .Select(Path.GetFileName);
             }
-            catch (DirectoryNotFoundException) { }
+            catch (DirectoryNotFoundException)
+            {
+            }
 
             var latestForThisCheckpoint = _roller
                 .SelectMatches(existingFiles)
@@ -134,10 +153,8 @@ namespace Fluid.Core.Logging.Sinks.File
 
             var sequence = latestForThisCheckpoint?.SequenceNumber;
             if (minSequence != null)
-            {
                 if (sequence == null || sequence.Value < minSequence.Value)
                     sequence = minSequence;
-            }
 
             const int maxAttempts = 3;
             for (var attempt = 0; attempt < maxAttempts; attempt++)
@@ -146,7 +163,8 @@ namespace Fluid.Core.Logging.Sinks.File
 
                 try
                 {
-                    _currentFile = new FileSink(path, _textFormatter, _fileSizeLimitBytes, _encoding, _buffered, _hooks);
+                    _currentFile = new FileSink(path, _textFormatter, _fileSizeLimitBytes, _encoding, _buffered,
+                        _hooks);
 
                     _currentFileSequence = sequence;
                 }
@@ -154,7 +172,9 @@ namespace Fluid.Core.Logging.Sinks.File
                 {
                     if (IOErrors.IsLockedFile(ex))
                     {
-                        SelfLog.WriteLine("File target {0} was locked, attempting to open next in sequence (attempt {1})", path, attempt + 1);
+                        SelfLog.WriteLine(
+                            "File target {0} was locked, attempting to open next in sequence (attempt {1})", path,
+                            attempt + 1);
                         sequence = (sequence ?? 0) + 1;
                         continue;
                     }
@@ -167,7 +187,7 @@ namespace Fluid.Core.Logging.Sinks.File
             }
         }
 
-        void ApplyRetentionPolicy(string currentFilePath)
+        private void ApplyRetentionPolicy(string currentFilePath)
         {
             if (_retainedFileCountLimit == null) return;
 
@@ -177,7 +197,7 @@ namespace Fluid.Core.Logging.Sinks.File
             // because files are only opened on response to an event being processed.
             var potentialMatches = Directory.GetFiles(_roller.LogFileDirectory, _roller.DirectorySearchPattern)
                 .Select(Path.GetFileName)
-                .Union(new [] { currentFileName });
+                .Union(new[] {currentFileName});
 
             var newestFirst = _roller
                 .SelectMatches(potentialMatches)
@@ -205,17 +225,7 @@ namespace Fluid.Core.Logging.Sinks.File
             }
         }
 
-        public void Dispose()
-        {
-            lock (_syncRoot)
-            {
-                if (_currentFile == null) return;
-                CloseFile();
-                _isDisposed = true;
-            }
-        }
-
-        void CloseFile()
+        private void CloseFile()
         {
             if (_currentFile != null)
             {
@@ -224,14 +234,6 @@ namespace Fluid.Core.Logging.Sinks.File
             }
 
             _nextCheckpoint = null;
-        }
-
-        public void FlushToDisk()
-        {
-            lock (_syncRoot)
-            {
-                _currentFile?.FlushToDisk();
-            }
         }
     }
 }

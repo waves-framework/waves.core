@@ -17,9 +17,9 @@ using System.IO;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    sealed class WriteCountingStream : Stream
+    internal sealed class WriteCountingStream : Stream
     {
-        readonly Stream _stream;
+        private readonly Stream _stream;
 
         public WriteCountingStream(Stream stream)
         {
@@ -28,6 +28,17 @@ namespace Fluid.Core.Logging.Sinks.File
         }
 
         public long CountedLength { get; private set; }
+        public override bool CanRead => false;
+        public override bool CanSeek => _stream.CanSeek;
+        public override bool CanWrite => true;
+        public override long Length => _stream.Length;
+
+
+        public override long Position
+        {
+            get => _stream.Position;
+            set => throw new NotSupportedException();
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -43,22 +54,15 @@ namespace Fluid.Core.Logging.Sinks.File
             CountedLength += count;
         }
 
-        public override void Flush() => _stream.Flush();
-        public override bool CanRead => false;
-        public override bool CanSeek => _stream.CanSeek;
-        public override bool CanWrite => true;
-        public override long Length => _stream.Length;
-
-
-        public override long Position
+        public override void Flush()
         {
-            get => _stream.Position;
-            set => throw new NotSupportedException();
+            _stream.Flush();
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new InvalidOperationException($"Seek operations are not available through `{nameof(WriteCountingStream)}`.");
+            throw new InvalidOperationException(
+                $"Seek operations are not available through `{nameof(WriteCountingStream)}`.");
         }
 
         public override void SetLength(long value)

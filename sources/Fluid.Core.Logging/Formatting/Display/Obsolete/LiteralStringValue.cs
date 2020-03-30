@@ -22,9 +22,9 @@ namespace Fluid.Core.Logging.Formatting.Display.Obsolete
     // A special case (non-null) string value for use in output
     // templates. Does not apply "quoted" formatting by default.
     [Obsolete("Not used by the current output formatting implementation.")]
-    class LiteralStringValue : LogEventPropertyValue
+    internal class LiteralStringValue : LogEventPropertyValue
     {
-        readonly string _value;
+        private readonly string _value;
 
         public LiteralStringValue(string value)
         {
@@ -41,6 +41,9 @@ namespace Fluid.Core.Logging.Formatting.Display.Obsolete
             return obj is LiteralStringValue sv && Equals(_value, sv._value);
         }
 
-        public override int GetHashCode() => _value.GetHashCode();
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
     }
 }

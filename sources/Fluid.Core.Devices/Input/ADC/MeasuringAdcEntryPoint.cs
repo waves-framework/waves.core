@@ -6,9 +6,9 @@ namespace Fluid.Core.Devices.Input.ADC
     public abstract class MeasuringAdcEntryPoint : AdcEntryPoint, IMeasuringAdcEntryPoint
     {
         private double _digitalResolution;
-        private double _minimumVoltage;
-        private double _maximumVoltage;
         private bool _isPhantomPowerSupported;
+        private double _maximumVoltage;
+        private double _minimumVoltage;
 
         /// <inheritdoc />
         protected MeasuringAdcEntryPoint(IModule parent, bool isProperty) : base(parent, isProperty)

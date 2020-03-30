@@ -19,13 +19,14 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Formatting.Raw
 {
     /// <summary>
-    /// Formats log events as a raw dump of the message template and properties.
+    ///     Formats log events as a raw dump of the message template and properties.
     /// </summary>
-    [Obsolete("A JSON-based formatter such as `Serilog.Formatting.Compact.CompactJsonFormatter` is recommended for this task.")]
+    [Obsolete(
+        "A JSON-based formatter such as `Serilog.Formatting.Compact.CompactJsonFormatter` is recommended for this task.")]
     public class RawFormatter : ITextFormatter
     {
         /// <summary>
-        /// Format the log event into the output.
+        ///     Format the log event into the output.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
@@ -42,6 +43,7 @@ namespace Fluid.Core.Logging.Formatting.Raw
                 property.Value.Render(output);
                 output.WriteLine();
             }
+
             output.WriteLine();
         }
     }

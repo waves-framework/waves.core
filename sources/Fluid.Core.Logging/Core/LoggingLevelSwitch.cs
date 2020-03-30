@@ -17,15 +17,15 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Core
 {
     /// <summary>
-    /// Dynamically controls logging level.
+    ///     Dynamically controls logging level.
     /// </summary>
     public class LoggingLevelSwitch
     {
-        volatile LogEventLevel _minimumLevel;
+        private volatile LogEventLevel _minimumLevel;
 
         /// <summary>
-        /// Create a <see cref="LoggingLevelSwitch"/> at the initial
-        /// minimum level.
+        ///     Create a <see cref="LoggingLevelSwitch" /> at the initial
+        ///     minimum level.
         /// </summary>
         /// <param name="initialMinimumLevel">The initial level to which the switch is set.</param>
         public LoggingLevelSwitch(LogEventLevel initialMinimumLevel = LogEventLevel.Information)
@@ -34,15 +34,15 @@ namespace Fluid.Core.Logging.Core
         }
 
         /// <summary>
-        /// The current minimum level, below which no events
-        /// should be generated.
+        ///     The current minimum level, below which no events
+        ///     should be generated.
         /// </summary>
         // Reading this property generates a memory barrier,
         // so needs to be used judiciously in the logging pipeline.
         public LogEventLevel MinimumLevel
         {
-            get { return _minimumLevel; }
-            set { _minimumLevel = value; }
+            get => _minimumLevel;
+            set => _minimumLevel = value;
         }
     }
 }

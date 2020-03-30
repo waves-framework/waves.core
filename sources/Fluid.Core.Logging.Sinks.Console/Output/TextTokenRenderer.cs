@@ -18,10 +18,10 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class TextTokenRenderer : OutputTemplateTokenRenderer
+    internal class TextTokenRenderer : OutputTemplateTokenRenderer
     {
-        readonly ConsoleTheme _theme;
-        readonly string _text;
+        private readonly string _text;
+        private readonly ConsoleTheme _theme;
 
         public TextTokenRenderer(ConsoleTheme theme, string text)
         {
@@ -33,7 +33,9 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
         {
             var _ = 0;
             using (_theme.Apply(output, ConsoleThemeStyle.TertiaryText, ref _))
+            {
                 output.Write(_text);
+            }
         }
     }
 }

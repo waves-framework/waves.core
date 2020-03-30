@@ -20,51 +20,49 @@ using System.Linq;
 namespace Fluid.Core.Logging.Sinks.Console.Themes
 {
     /// <summary>
-    /// A console theme using the styling facilities of the <see cref="System.Console"/> class. Recommended
-    /// for Windows versions prior to Windows 10.
+    ///     A console theme using the styling facilities of the <see cref="System.Console" /> class. Recommended
+    ///     for Windows versions prior to Windows 10.
     /// </summary>
     public class SystemConsoleTheme : ConsoleTheme
     {
         /// <summary>
-        /// A theme using only gray, black and white.
-        /// </summary>
-        public static SystemConsoleTheme Grayscale { get; } = SystemConsoleThemes.Grayscale;
-
-        /// <summary>
-        /// A theme in the syle of the original <i>Serilog.Sinks.Literate</i>.
-        /// </summary>
-        public static SystemConsoleTheme Literate { get; } = SystemConsoleThemes.Literate;
-
-        /// <summary>
-        /// A theme based on the original Serilog "colored console" sink.
-        /// </summary>
-        public static SystemConsoleTheme Colored { get; } = SystemConsoleThemes.Colored;
-
-        readonly IReadOnlyDictionary<ConsoleThemeStyle, SystemConsoleThemeStyle> _styles;
-
-        /// <summary>
-        /// Construct a theme given a set of styles.
+        ///     Construct a theme given a set of styles.
         /// </summary>
         /// <param name="styles">Styles to apply within the theme.</param>
         public SystemConsoleTheme(IReadOnlyDictionary<ConsoleThemeStyle, SystemConsoleThemeStyle> styles)
         {
             if (styles == null) throw new ArgumentNullException(nameof(styles));
-            _styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);
+            Styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
-        /// <inheritdoc/>
-        public IReadOnlyDictionary<ConsoleThemeStyle, SystemConsoleThemeStyle> Styles => _styles;
+        /// <summary>
+        ///     A theme using only gray, black and white.
+        /// </summary>
+        public static SystemConsoleTheme Grayscale { get; } = SystemConsoleThemes.Grayscale;
 
-        /// <inheritdoc/>
+        /// <summary>
+        ///     A theme in the syle of the original <i>Serilog.Sinks.Literate</i>.
+        /// </summary>
+        public static SystemConsoleTheme Literate { get; } = SystemConsoleThemes.Literate;
+
+        /// <summary>
+        ///     A theme based on the original Serilog "colored console" sink.
+        /// </summary>
+        public static SystemConsoleTheme Colored { get; } = SystemConsoleThemes.Colored;
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<ConsoleThemeStyle, SystemConsoleThemeStyle> Styles { get; }
+
+        /// <inheritdoc />
         public override bool CanBuffer => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override int ResetCharCount { get; } = 0;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Set(TextWriter output, ConsoleThemeStyle style)
         {
-            if (_styles.TryGetValue(style, out var wcts))
+            if (Styles.TryGetValue(style, out var wcts))
             {
                 if (wcts.Foreground.HasValue)
                     System.Console.ForegroundColor = wcts.Foreground.Value;
@@ -75,7 +73,7 @@ namespace Fluid.Core.Logging.Sinks.Console.Themes
             return 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Reset(TextWriter output)
         {
             System.Console.ResetColor();

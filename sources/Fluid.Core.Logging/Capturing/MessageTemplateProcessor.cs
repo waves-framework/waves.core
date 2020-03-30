@@ -19,11 +19,11 @@ using Fluid.Core.Logging.Parsing;
 
 namespace Fluid.Core.Logging.Capturing
 {
-    class MessageTemplateProcessor : ILogEventPropertyFactory
+    internal class MessageTemplateProcessor : ILogEventPropertyFactory
     {
-        readonly MessageTemplateCache _parser = new MessageTemplateCache(new MessageTemplateParser());
-        readonly PropertyBinder _propertyBinder;
-        readonly PropertyValueConverter _propertyValueConverter;
+        private readonly MessageTemplateCache _parser = new MessageTemplateCache(new MessageTemplateParser());
+        private readonly PropertyBinder _propertyBinder;
+        private readonly PropertyValueConverter _propertyValueConverter;
 
         public MessageTemplateProcessor(PropertyValueConverter propertyValueConverter)
         {
@@ -31,15 +31,16 @@ namespace Fluid.Core.Logging.Capturing
             _propertyBinder = new PropertyBinder(_propertyValueConverter);
         }
 
-        public void Process(string messageTemplate, object[] messageTemplateParameters, out MessageTemplate parsedTemplate, out EventProperty[] properties)
-        {
-            parsedTemplate = _parser.Parse(messageTemplate);
-            properties = _propertyBinder.ConstructProperties(parsedTemplate, messageTemplateParameters);
-        }
-
         public LogEventProperty CreateProperty(string name, object value, bool destructureObjects = false)
         {
             return _propertyValueConverter.CreateProperty(name, value, destructureObjects);
+        }
+
+        public void Process(string messageTemplate, object[] messageTemplateParameters,
+            out MessageTemplate parsedTemplate, out EventProperty[] properties)
+        {
+            parsedTemplate = _parser.Parse(messageTemplate);
+            properties = _propertyBinder.ConstructProperties(parsedTemplate, messageTemplateParameters);
         }
 
         public LogEventPropertyValue CreatePropertyValue(object value, bool destructureObjects = false)

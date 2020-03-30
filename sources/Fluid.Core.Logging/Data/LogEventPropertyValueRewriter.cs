@@ -19,19 +19,21 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Data
 {
     /// <summary>
-    /// A base class for visitors that rewrite the value with modifications. For example, implementations
-    /// might remove all structure properties with a certain name, apply size/length limits, or convert scalar properties of
-    /// one type into scalar properties of another.
+    ///     A base class for visitors that rewrite the value with modifications. For example, implementations
+    ///     might remove all structure properties with a certain name, apply size/length limits, or convert scalar properties
+    ///     of
+    ///     one type into scalar properties of another.
     /// </summary>
     /// <typeparam name="TState"></typeparam>
-    public abstract class LogEventPropertyValueRewriter<TState> : LogEventPropertyValueVisitor<TState, LogEventPropertyValue>
+    public abstract class
+        LogEventPropertyValueRewriter<TState> : LogEventPropertyValueVisitor<TState, LogEventPropertyValue>
     {
         /// <summary>
-        /// Visit a <see cref="ScalarValue"/> value.
+        ///     Visit a <see cref="ScalarValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="scalar">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="scalar"/>.</returns>
+        /// <returns>The result of visiting <paramref name="scalar" />.</returns>
         protected override LogEventPropertyValue VisitScalarValue(TState state, ScalarValue scalar)
         {
             if (scalar == null) throw new ArgumentNullException(nameof(scalar));
@@ -39,11 +41,11 @@ namespace Fluid.Core.Logging.Data
         }
 
         /// <summary>
-        /// Visit a <see cref="SequenceValue"/> value.
+        ///     Visit a <see cref="SequenceValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="sequence">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="sequence"/>.</returns>
+        /// <returns>The result of visiting <paramref name="sequence" />.</returns>
         protected override LogEventPropertyValue VisitSequenceValue(TState state, SequenceValue sequence)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
@@ -57,15 +59,9 @@ namespace Fluid.Core.Logging.Data
 
                     // There's no need to visit any earlier elements: they all evaluated to
                     // a reference equal with the original so just fill in the array up until `i`.
-                    for (var j = 0; j < i; ++j)
-                    {
-                        contents[j] = sequence.Elements[j];
-                    }
+                    for (var j = 0; j < i; ++j) contents[j] = sequence.Elements[j];
 
-                    for (var k = i; k < contents.Length; ++k)
-                    {
-                        contents[k] = Visit(state, sequence.Elements[k]);
-                    }
+                    for (var k = i; k < contents.Length; ++k) contents[k] = Visit(state, sequence.Elements[k]);
 
                     return new SequenceValue(contents);
                 }
@@ -75,11 +71,11 @@ namespace Fluid.Core.Logging.Data
         }
 
         /// <summary>
-        /// Visit a <see cref="StructureValue"/> value.
+        ///     Visit a <see cref="StructureValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="structure">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="structure"/>.</returns>
+        /// <returns>The result of visiting <paramref name="structure" />.</returns>
         protected override LogEventPropertyValue VisitStructureValue(TState state, StructureValue structure)
         {
             if (structure == null) throw new ArgumentNullException(nameof(structure));
@@ -93,10 +89,7 @@ namespace Fluid.Core.Logging.Data
 
                     // There's no need to visit any earlier elements: they all evaluated to
                     // a reference equal with the original so just fill in the array up until `i`.
-                    for (var j = 0; j < i; ++j)
-                    {
-                        properties[j] = structure.Properties[j];
-                    }
+                    for (var j = 0; j < i; ++j) properties[j] = structure.Properties[j];
 
                     for (var k = i; k < properties.Length; ++k)
                     {
@@ -112,38 +105,33 @@ namespace Fluid.Core.Logging.Data
         }
 
         /// <summary>
-        /// Visit a <see cref="DictionaryValue"/> value.
+        ///     Visit a <see cref="DictionaryValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="dictionary">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="dictionary"/>.</returns>
+        /// <returns>The result of visiting <paramref name="dictionary" />.</returns>
         protected override LogEventPropertyValue VisitDictionaryValue(TState state, DictionaryValue dictionary)
         {
             if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
 
             foreach (var original in dictionary.Elements)
-            {
                 if (!ReferenceEquals(original.Value, Visit(state, original.Value)))
                 {
                     var elements = new Dictionary<ScalarValue, LogEventPropertyValue>(dictionary.Elements.Count);
-                    foreach (var element in dictionary.Elements)
-                    {
-                        elements[element.Key] = Visit(state, element.Value);
-                    }
+                    foreach (var element in dictionary.Elements) elements[element.Key] = Visit(state, element.Value);
 
                     return new DictionaryValue(elements);
                 }
-            }
 
             return dictionary;
         }
 
         /// <summary>
-        /// Visit a value of an unsupported type. Returns the value unchanged.
+        ///     Visit a value of an unsupported type. Returns the value unchanged.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="value">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="value"/>.</returns>
+        /// <returns>The result of visiting <paramref name="value" />.</returns>
         // ReSharper disable once UnusedParameter.Global
         // ReSharper disable once VirtualMemberNeverOverriden.Global
         protected override LogEventPropertyValue VisitUnsupportedValue(TState state, LogEventPropertyValue value)

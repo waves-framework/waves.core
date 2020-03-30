@@ -21,25 +21,27 @@ using Fluid.Core.Logging.Rendering;
 namespace Fluid.Core.Logging.Formatting.Display
 {
     /// <summary>
-    /// A <see cref="ITextFormatter"/> that supports the Serilog
-    /// message template format. Formatting log events for display
-    /// has a different set of requirements and expectations from
-    /// rendering the data within them. To meet this, the formatter
-    /// overrides some behavior: First, strings are always output
-    /// as literals (not quoted) unless some other format is applied
-    /// to them. Second, tokens without matching properties are skipped
-    /// rather than being written as raw text.
+    ///     A <see cref="ITextFormatter" /> that supports the Serilog
+    ///     message template format. Formatting log events for display
+    ///     has a different set of requirements and expectations from
+    ///     rendering the data within them. To meet this, the formatter
+    ///     overrides some behavior: First, strings are always output
+    ///     as literals (not quoted) unless some other format is applied
+    ///     to them. Second, tokens without matching properties are skipped
+    ///     rather than being written as raw text.
     /// </summary>
     public class MessageTemplateTextFormatter : ITextFormatter
     {
-        readonly IFormatProvider _formatProvider;
-        readonly MessageTemplate _outputTemplate;
+        private readonly IFormatProvider _formatProvider;
+        private readonly MessageTemplate _outputTemplate;
 
         /// <summary>
-        /// Construct a <see cref="MessageTemplateTextFormatter"/>.
+        ///     Construct a <see cref="MessageTemplateTextFormatter" />.
         /// </summary>
-        /// <param name="outputTemplate">A message template describing the
-        /// output messages.</param>
+        /// <param name="outputTemplate">
+        ///     A message template describing the
+        ///     output messages.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
         public MessageTemplateTextFormatter(string outputTemplate, IFormatProvider formatProvider = null)
         {
@@ -49,7 +51,7 @@ namespace Fluid.Core.Logging.Formatting.Display
         }
 
         /// <summary>
-        /// Format the log event into the output.
+        ///     Format the log event into the output.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
@@ -66,7 +68,7 @@ namespace Fluid.Core.Logging.Formatting.Display
                     continue;
                 }
 
-                var pt = (PropertyToken)token;
+                var pt = (PropertyToken) token;
                 if (pt.PropertyName == OutputProperties.LevelPropertyName)
                 {
                     var moniker = LevelOutputFormat.GetLevelMoniker(logEvent.Level, pt.Format);
@@ -89,7 +91,8 @@ namespace Fluid.Core.Logging.Formatting.Display
 
                     if (pt.PropertyName == OutputProperties.MessagePropertyName)
                     {
-                        MessageTemplateRenderer.Render(logEvent.MessageTemplate, logEvent.Properties, writer, pt.Format, _formatProvider);
+                        MessageTemplateRenderer.Render(logEvent.MessageTemplate, logEvent.Properties, writer, pt.Format,
+                            _formatProvider);
                     }
                     else if (pt.PropertyName == OutputProperties.TimestampPropertyName)
                     {
@@ -97,7 +100,8 @@ namespace Fluid.Core.Logging.Formatting.Display
                     }
                     else if (pt.PropertyName == OutputProperties.PropertiesPropertyName)
                     {
-                        PropertiesOutputFormat.Render(logEvent.MessageTemplate, logEvent.Properties, _outputTemplate, writer, pt.Format, _formatProvider);
+                        PropertiesOutputFormat.Render(logEvent.MessageTemplate, logEvent.Properties, _outputTemplate,
+                            writer, pt.Format, _formatProvider);
                     }
                     else
                     {
@@ -120,7 +124,7 @@ namespace Fluid.Core.Logging.Formatting.Display
                     }
 
                     if (pt.Alignment.HasValue)
-                        Padding.Apply(output, ((StringWriter)writer).ToString(), pt.Alignment);
+                        Padding.Apply(output, ((StringWriter) writer).ToString(), pt.Alignment);
                 }
             }
         }

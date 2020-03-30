@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Point base structure.
+    ///     Point base structure.
     /// </summary>
     [Serializable]
     public struct Point : IPoint

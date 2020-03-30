@@ -19,9 +19,9 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Policies
 {
-    class SimpleScalarConversionPolicy : IScalarConversionPolicy
+    internal class SimpleScalarConversionPolicy : IScalarConversionPolicy
     {
-        readonly HashSet<Type> _scalarTypes;
+        private readonly HashSet<Type> _scalarTypes;
 
         public SimpleScalarConversionPolicy(IEnumerable<Type> scalarTypes)
         {

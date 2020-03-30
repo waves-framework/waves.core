@@ -26,31 +26,36 @@ using Fluid.Core.Logging.Rendering;
 namespace Fluid.Core.Logging.Formatting.Json
 {
     /// <summary>
-    /// Formats log events in a simple JSON structure. Instances of this class
-    /// are safe for concurrent access by multiple threads.
+    ///     Formats log events in a simple JSON structure. Instances of this class
+    ///     are safe for concurrent access by multiple threads.
     /// </summary>
     public class JsonFormatter : ITextFormatter
     {
-        const string ExtensionPointObsoletionMessage = "Extension of JsonFormatter by subclassing is obsolete and will " +
-                                                       "be removed in a future Serilog version. Write a custom formatter " +
-                                                       "based on JsonValueFormatter instead. See https://github.com/serilog/serilog/pull/819.";
+        private const string ExtensionPointObsoletionMessage =
+            "Extension of JsonFormatter by subclassing is obsolete and will " +
+            "be removed in a future Serilog version. Write a custom formatter " +
+            "based on JsonValueFormatter instead. See https://github.com/serilog/serilog/pull/819.";
 
         // Ignore obsoletion errors
-        #pragma warning disable 618
+#pragma warning disable 618
 
-        readonly bool _omitEnclosingObject;
-        readonly string _closingDelimiter;
-        readonly bool _renderMessage;
-        readonly IFormatProvider _formatProvider;
-        readonly IDictionary<Type, Action<object, bool, TextWriter>> _literalWriters;
+        private readonly bool _omitEnclosingObject;
+        private readonly string _closingDelimiter;
+        private readonly bool _renderMessage;
+        private readonly IFormatProvider _formatProvider;
+        private readonly IDictionary<Type, Action<object, bool, TextWriter>> _literalWriters;
 
         /// <summary>
-        /// Construct a <see cref="JsonFormatter"/>.
+        ///     Construct a <see cref="JsonFormatter" />.
         /// </summary>
-        /// <param name="closingDelimiter">A string that will be written after each log event is formatted.
-        /// If null, <see cref="Environment.NewLine"/> will be used.</param>
-        /// <param name="renderMessage">If true, the message will be rendered and written to the output as a
-        /// property named RenderedMessage.</param>
+        /// <param name="closingDelimiter">
+        ///     A string that will be written after each log event is formatted.
+        ///     If null, <see cref="Environment.NewLine" /> will be used.
+        /// </param>
+        /// <param name="renderMessage">
+        ///     If true, the message will be rendered and written to the output as a
+        ///     property named RenderedMessage.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
         public JsonFormatter(
             string closingDelimiter = null,
@@ -61,16 +66,22 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Construct a <see cref="JsonFormatter"/>.
+        ///     Construct a <see cref="JsonFormatter" />.
         /// </summary>
-        /// <param name="omitEnclosingObject">If true, the properties of the event will be written to
-        /// the output without enclosing braces. Otherwise, if false, each event will be written as a well-formed
-        /// JSON object.</param>
-        /// <param name="closingDelimiter">A string that will be written after each log event is formatted.
-        /// If null, <see cref="Environment.NewLine"/> will be used. Ignored if <paramref name="omitEnclosingObject"/>
-        /// is true.</param>
-        /// <param name="renderMessage">If true, the message will be rendered and written to the output as a
-        /// property named RenderedMessage.</param>
+        /// <param name="omitEnclosingObject">
+        ///     If true, the properties of the event will be written to
+        ///     the output without enclosing braces. Otherwise, if false, each event will be written as a well-formed
+        ///     JSON object.
+        /// </param>
+        /// <param name="closingDelimiter">
+        ///     A string that will be written after each log event is formatted.
+        ///     If null, <see cref="Environment.NewLine" /> will be used. Ignored if <paramref name="omitEnclosingObject" />
+        ///     is true.
+        /// </param>
+        /// <param name="renderMessage">
+        ///     If true, the message will be rendered and written to the output as a
+        ///     property named RenderedMessage.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
         [Obsolete("The omitEnclosingObject parameter is obsolete and will be removed in a future Serilog version.")]
         public JsonFormatter(
@@ -86,31 +97,34 @@ namespace Fluid.Core.Logging.Formatting.Json
 
             _literalWriters = new Dictionary<Type, Action<object, bool, TextWriter>>
             {
-                { typeof(bool), (v, q, w) => WriteBoolean((bool)v, w) },
-                { typeof(char), (v, q, w) => WriteString(((char)v).ToString(), w) },
-                { typeof(byte), WriteToString },
-                { typeof(sbyte), WriteToString },
-                { typeof(short), WriteToString },
-                { typeof(ushort), WriteToString },
-                { typeof(int), WriteToString },
-                { typeof(uint), WriteToString },
-                { typeof(long), WriteToString },
-                { typeof(ulong), WriteToString },
-                { typeof(float), (v, q, w) => WriteSingle((float)v, w) },
-                { typeof(double), (v, q, w) => WriteDouble((double)v, w) },
-                { typeof(decimal), WriteToString },
-                { typeof(string), (v, q, w) => WriteString((string)v, w) },
-                { typeof(DateTime), (v, q, w) => WriteDateTime((DateTime)v, w) },
-                { typeof(DateTimeOffset), (v, q, w) => WriteOffset((DateTimeOffset)v, w) },
-                { typeof(ScalarValue), (v, q, w) => WriteLiteral(((ScalarValue)v).Value, w, q) },
-                { typeof(SequenceValue), (v, q, w) => WriteSequence(((SequenceValue)v).Elements, w) },
-                { typeof(DictionaryValue), (v, q, w) => WriteDictionary(((DictionaryValue)v).Elements, w) },
-                { typeof(StructureValue), (v, q, w) => WriteStructure(((StructureValue)v).TypeTag, ((StructureValue)v).Properties, w) },
+                {typeof(bool), (v, q, w) => WriteBoolean((bool) v, w)},
+                {typeof(char), (v, q, w) => WriteString(((char) v).ToString(), w)},
+                {typeof(byte), WriteToString},
+                {typeof(sbyte), WriteToString},
+                {typeof(short), WriteToString},
+                {typeof(ushort), WriteToString},
+                {typeof(int), WriteToString},
+                {typeof(uint), WriteToString},
+                {typeof(long), WriteToString},
+                {typeof(ulong), WriteToString},
+                {typeof(float), (v, q, w) => WriteSingle((float) v, w)},
+                {typeof(double), (v, q, w) => WriteDouble((double) v, w)},
+                {typeof(decimal), WriteToString},
+                {typeof(string), (v, q, w) => WriteString((string) v, w)},
+                {typeof(DateTime), (v, q, w) => WriteDateTime((DateTime) v, w)},
+                {typeof(DateTimeOffset), (v, q, w) => WriteOffset((DateTimeOffset) v, w)},
+                {typeof(ScalarValue), (v, q, w) => WriteLiteral(((ScalarValue) v).Value, w, q)},
+                {typeof(SequenceValue), (v, q, w) => WriteSequence(((SequenceValue) v).Elements, w)},
+                {typeof(DictionaryValue), (v, q, w) => WriteDictionary(((DictionaryValue) v).Elements, w)},
+                {
+                    typeof(StructureValue),
+                    (v, q, w) => WriteStructure(((StructureValue) v).TypeTag, ((StructureValue) v).Properties, w)
+                }
             };
         }
 
         /// <summary>
-        /// Format the log event into the output.
+        ///     Format the log event into the output.
         /// </summary>
         /// <param name="logEvent">The event to format.</param>
         /// <param name="output">The output.</param>
@@ -144,10 +158,7 @@ namespace Fluid.Core.Logging.Formatting.Json
                 .GroupBy(pt => pt.PropertyName)
                 .ToArray();
 
-            if (tokensWithFormat.Length != 0)
-            {
-                WriteRenderings(tokensWithFormat, logEvent.Properties, output);
-            }
+            if (tokensWithFormat.Length != 0) WriteRenderings(tokensWithFormat, logEvent.Properties, output);
 
             if (!_omitEnclosingObject)
             {
@@ -157,7 +168,7 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Adds a writer function for a given type.
+        ///     Adds a writer function for a given type.
         /// </summary>
         /// <param name="type">The type of values, which <paramref name="writer" /> handles.</param>
         /// <param name="writer">The function, which writes the values.</param>
@@ -171,10 +182,11 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out individual renderings of attached properties
+        ///     Writes out individual renderings of attached properties
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
-        protected virtual void WriteRenderings(IGrouping<string, PropertyToken>[] tokensWithFormat, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
+        protected virtual void WriteRenderings(IGrouping<string, PropertyToken>[] tokensWithFormat,
+            IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
         {
             output.Write(",\"{0}\":{{", "Renderings");
             WriteRenderingsValues(tokensWithFormat, properties, output);
@@ -182,10 +194,11 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out the values of individual renderings of attached properties
+        ///     Writes out the values of individual renderings of attached properties
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
-        protected virtual void WriteRenderingsValues(IGrouping<string, PropertyToken>[] tokensWithFormat, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
+        protected virtual void WriteRenderingsValues(IGrouping<string, PropertyToken>[] tokensWithFormat,
+            IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
         {
             var rdelim = "";
             foreach (var ptoken in tokensWithFormat)
@@ -208,7 +221,7 @@ namespace Fluid.Core.Logging.Formatting.Json
                     WriteJsonProperty("Format", format.Format, ref eldelim, output);
 
                     var sw = new StringWriter();
-                    MessageTemplateRenderer.RenderPropertyToken(format, properties, sw, _formatProvider, isLiteral: true, isJson: false);
+                    MessageTemplateRenderer.RenderPropertyToken(format, properties, sw, _formatProvider, true, false);
                     WriteJsonProperty("Rendering", sw.ToString(), ref eldelim, output);
 
                     output.Write("}");
@@ -219,10 +232,11 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out the attached properties
+        ///     Writes out the attached properties
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
-        protected virtual void WriteProperties(IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
+        protected virtual void WriteProperties(IReadOnlyDictionary<string, LogEventPropertyValue> properties,
+            TextWriter output)
         {
             output.Write(",\"{0}\":{{", "Properties");
             WritePropertiesValues(properties, output);
@@ -230,20 +244,19 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out the attached properties values
+        ///     Writes out the attached properties values
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
-        protected virtual void WritePropertiesValues(IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
+        protected virtual void WritePropertiesValues(IReadOnlyDictionary<string, LogEventPropertyValue> properties,
+            TextWriter output)
         {
             var precedingDelimiter = "";
             foreach (var property in properties)
-            {
                 WriteJsonProperty(property.Key, property.Value, ref precedingDelimiter, output);
-            }
         }
 
         /// <summary>
-        /// Writes out the attached exception
+        ///     Writes out the attached exception
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
         protected virtual void WriteException(Exception exception, ref string delim, TextWriter output)
@@ -252,7 +265,7 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// (Optionally) writes out the rendered message
+        ///     (Optionally) writes out the rendered message
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
         protected virtual void WriteRenderedMessage(string message, ref string delim, TextWriter output)
@@ -261,7 +274,7 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out the message template for the logevent.
+        ///     Writes out the message template for the logevent.
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
         protected virtual void WriteMessageTemplate(string template, ref string delim, TextWriter output)
@@ -270,7 +283,7 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out the log level
+        ///     Writes out the log level
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
         protected virtual void WriteLevel(LogEventLevel level, ref string delim, TextWriter output)
@@ -279,7 +292,7 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out the log timestamp
+        ///     Writes out the log timestamp
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
         protected virtual void WriteTimestamp(DateTimeOffset timestamp, ref string delim, TextWriter output)
@@ -288,10 +301,11 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out a structure property
+        ///     Writes out a structure property
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
-        protected virtual void WriteStructure(string typeTag, IEnumerable<LogEventProperty> properties, TextWriter output)
+        protected virtual void WriteStructure(string typeTag, IEnumerable<LogEventProperty> properties,
+            TextWriter output)
         {
             output.Write("{");
 
@@ -306,7 +320,7 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Writes out a sequence property
+        ///     Writes out a sequence property
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
         protected virtual void WriteSequence(IEnumerable elements, TextWriter output)
@@ -319,14 +333,16 @@ namespace Fluid.Core.Logging.Formatting.Json
                 delim = ",";
                 WriteLiteral(value, output);
             }
+
             output.Write("]");
         }
 
         /// <summary>
-        /// Writes out a dictionary
+        ///     Writes out a dictionary
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
-        protected virtual void WriteDictionary(IReadOnlyDictionary<ScalarValue, LogEventPropertyValue> elements, TextWriter output)
+        protected virtual void WriteDictionary(IReadOnlyDictionary<ScalarValue, LogEventPropertyValue> elements,
+            TextWriter output)
         {
             output.Write("{");
             var delim = "";
@@ -334,18 +350,20 @@ namespace Fluid.Core.Logging.Formatting.Json
             {
                 output.Write(delim);
                 delim = ",";
-                WriteLiteral(element.Key, output, forceQuotation: true);
+                WriteLiteral(element.Key, output, true);
                 output.Write(":");
                 WriteLiteral(element.Value, output);
             }
+
             output.Write("}");
         }
 
         /// <summary>
-        /// Writes out a json property with the specified value on output writer
+        ///     Writes out a json property with the specified value on output writer
         /// </summary>
         [Obsolete(ExtensionPointObsoletionMessage)]
-        protected virtual void WriteJsonProperty(string name, object value, ref string precedingDelimiter, TextWriter output)
+        protected virtual void WriteJsonProperty(string name, object value, ref string precedingDelimiter,
+            TextWriter output)
         {
             output.Write(precedingDelimiter);
             output.Write("\"");
@@ -356,7 +374,7 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Allows a subclass to write out objects that have no configured literal writer.
+        ///     Allows a subclass to write out objects that have no configured literal writer.
         /// </summary>
         /// <param name="value">The value to be written as a json construct</param>
         /// <param name="output">The writer to write on</param>
@@ -366,7 +384,7 @@ namespace Fluid.Core.Logging.Formatting.Json
             WriteString(value.ToString(), output);
         }
 
-        void WriteLiteral(object value, TextWriter output, bool forceQuotation = false)
+        private void WriteLiteral(object value, TextWriter output, bool forceQuotation = false)
         {
             if (value == null)
             {
@@ -383,7 +401,7 @@ namespace Fluid.Core.Logging.Formatting.Json
             WriteLiteralValue(value, output);
         }
 
-        static void WriteToString(object number, bool quote, TextWriter output)
+        private static void WriteToString(object number, bool quote, TextWriter output)
         {
             if (quote) output.Write('"');
 
@@ -395,46 +413,47 @@ namespace Fluid.Core.Logging.Formatting.Json
             if (quote) output.Write('"');
         }
 
-        static void WriteBoolean(bool value, TextWriter output)
+        private static void WriteBoolean(bool value, TextWriter output)
         {
             output.Write(value ? "true" : "false");
         }
 
-        static void WriteSingle(float value, TextWriter output)
+        private static void WriteSingle(float value, TextWriter output)
         {
             output.Write(value.ToString("R", CultureInfo.InvariantCulture));
         }
 
-        static void WriteDouble(double value, TextWriter output)
+        private static void WriteDouble(double value, TextWriter output)
         {
             output.Write(value.ToString("R", CultureInfo.InvariantCulture));
         }
 
-        static void WriteOffset(DateTimeOffset value, TextWriter output)
+        private static void WriteOffset(DateTimeOffset value, TextWriter output)
         {
             output.Write("\"");
             output.Write(value.ToString("o"));
             output.Write("\"");
         }
 
-        static void WriteDateTime(DateTime value, TextWriter output)
+        private static void WriteDateTime(DateTime value, TextWriter output)
         {
             output.Write("\"");
             output.Write(value.ToString("o"));
             output.Write("\"");
         }
 
-        static void WriteString(string value, TextWriter output)
+        private static void WriteString(string value, TextWriter output)
         {
             JsonValueFormatter.WriteQuotedJsonString(value, output);
         }
 
         /// <summary>
-        /// Perform simple JSON string escaping on <paramref name="s"/>.
+        ///     Perform simple JSON string escaping on <paramref name="s" />.
         /// </summary>
         /// <param name="s">A raw string.</param>
-        /// <returns>A JSON-escaped version of <paramref name="s"/>.</returns>
-        [Obsolete("Use JsonValueFormatter.WriteQuotedJsonString() instead."), EditorBrowsable(EditorBrowsableState.Never)]
+        /// <returns>A JSON-escaped version of <paramref name="s" />.</returns>
+        [Obsolete("Use JsonValueFormatter.WriteQuotedJsonString() instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static string Escape(string s)
         {
             if (s == null) return null;

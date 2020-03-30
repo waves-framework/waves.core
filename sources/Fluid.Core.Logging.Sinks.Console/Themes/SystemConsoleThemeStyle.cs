@@ -17,17 +17,17 @@ using System;
 namespace Fluid.Core.Logging.Sinks.Console.Themes
 {
     /// <summary>
-    /// Styling applied using the <see cref="System.ConsoleColor"/> enumeration.
+    ///     Styling applied using the <see cref="System.ConsoleColor" /> enumeration.
     /// </summary>
     public struct SystemConsoleThemeStyle
     {
         /// <summary>
-        /// The foreground color to apply.
+        ///     The foreground color to apply.
         /// </summary>
         public ConsoleColor? Foreground;
 
         /// <summary>
-        /// The background color to apply.
+        ///     The background color to apply.
         /// </summary>
         public ConsoleColor? Background;
     }

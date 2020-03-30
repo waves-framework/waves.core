@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Services.Interfaces
 {
-    public interface IModuleService : Interfaces.IService
+    public interface IModuleService : IService
     {
         /// <summary>
         ///     Пути к библиотекам модулей.

@@ -20,9 +20,9 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Formatting
 {
-    abstract class ThemedValueFormatter : LogEventPropertyValueVisitor<ThemedValueFormatterState, int>
+    internal abstract class ThemedValueFormatter : LogEventPropertyValueVisitor<ThemedValueFormatterState, int>
     {
-        readonly ConsoleTheme _theme;
+        private readonly ConsoleTheme _theme;
 
         protected ThemedValueFormatter(ConsoleTheme theme)
         {
@@ -36,7 +36,8 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
 
         public int Format(LogEventPropertyValue value, TextWriter output, string format, bool literalTopLevel = false)
         {
-            return Visit(new ThemedValueFormatterState { Output = output, Format = format, IsTopLevel = literalTopLevel }, value);
+            return Visit(new ThemedValueFormatterState {Output = output, Format = format, IsTopLevel = literalTopLevel},
+                value);
         }
 
         public abstract ThemedValueFormatter SwitchTheme(ConsoleTheme theme);

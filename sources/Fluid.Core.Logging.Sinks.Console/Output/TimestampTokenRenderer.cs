@@ -21,11 +21,11 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class TimestampTokenRenderer : OutputTemplateTokenRenderer
+    internal class TimestampTokenRenderer : OutputTemplateTokenRenderer
     {
-        readonly ConsoleTheme _theme;
-        readonly PropertyToken _token;
-        readonly IFormatProvider _formatProvider;
+        private readonly IFormatProvider _formatProvider;
+        private readonly ConsoleTheme _theme;
+        private readonly PropertyToken _token;
 
         public TimestampTokenRenderer(ConsoleTheme theme, PropertyToken token, IFormatProvider formatProvider)
         {
@@ -44,7 +44,9 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
             using (_theme.Apply(output, ConsoleThemeStyle.SecondaryText, ref _))
             {
                 if (_token.Alignment == null)
+                {
                     sv.Render(output, _token.Format, _formatProvider);
+                }
                 else
                 {
                     var buffer = new StringWriter();

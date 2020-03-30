@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace Fluid.Core.Logging.Sinks.Console.Themes
 {
-    static class AnsiConsoleThemes
+    internal static class AnsiConsoleThemes
     {
         public static AnsiConsoleTheme Literate { get; } = new AnsiConsoleTheme(
             new Dictionary<ConsoleThemeStyle, string>
@@ -54,7 +54,7 @@ namespace Fluid.Core.Logging.Sinks.Console.Themes
                 [ConsoleThemeStyle.Scalar] = "\x1b[1m\x1b[37;1m",
                 [ConsoleThemeStyle.LevelVerbose] = "\x1b[30;1m",
                 [ConsoleThemeStyle.LevelDebug] = "\x1b[30;1m",
-                [ConsoleThemeStyle.LevelInformation] ="\x1b[37;1m",
+                [ConsoleThemeStyle.LevelInformation] = "\x1b[37;1m",
                 [ConsoleThemeStyle.LevelWarning] = "\x1b[37;1m\x1b[47m",
                 [ConsoleThemeStyle.LevelError] = "\x1b[30m\x1b[47m",
                 [ConsoleThemeStyle.LevelFatal] = "\x1b[30m\x1b[47m"

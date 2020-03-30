@@ -22,13 +22,13 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Rendering
 {
-    class ThemedMessageTemplateRenderer
+    internal class ThemedMessageTemplateRenderer
     {
-        readonly ConsoleTheme _theme;
-        readonly ThemedValueFormatter _valueFormatter;
-        readonly bool _isLiteral;
-        static readonly ConsoleTheme NoTheme = new EmptyConsoleTheme();
-        readonly ThemedValueFormatter _unthemedValueFormatter;
+        private static readonly ConsoleTheme NoTheme = new EmptyConsoleTheme();
+        private readonly bool _isLiteral;
+        private readonly ConsoleTheme _theme;
+        private readonly ThemedValueFormatter _unthemedValueFormatter;
+        private readonly ThemedValueFormatter _valueFormatter;
 
         public ThemedMessageTemplateRenderer(ConsoleTheme theme, ThemedValueFormatter valueFormatter, bool isLiteral)
         {
@@ -38,47 +38,51 @@ namespace Fluid.Core.Logging.Sinks.Console.Rendering
             _unthemedValueFormatter = valueFormatter.SwitchTheme(NoTheme);
         }
 
-        public int Render(MessageTemplate template, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
+        public int Render(MessageTemplate template, IReadOnlyDictionary<string, LogEventPropertyValue> properties,
+            TextWriter output)
         {
             var count = 0;
             foreach (var token in template.Tokens)
-            {
                 if (token is TextToken tt)
                 {
                     count += RenderTextToken(tt, output);
                 }
                 else
                 {
-                    var pt = (PropertyToken)token;
+                    var pt = (PropertyToken) token;
                     count += RenderPropertyToken(pt, properties, output);
                 }
-            }
+
             return count;
         }
 
-        int RenderTextToken(TextToken tt, TextWriter output)
+        private int RenderTextToken(TextToken tt, TextWriter output)
         {
             var count = 0;
             using (_theme.Apply(output, ConsoleThemeStyle.Text, ref count))
+            {
                 output.Write(tt.Text);
+            }
+
             return count;
         }
 
-        int RenderPropertyToken(PropertyToken pt, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output)
+        private int RenderPropertyToken(PropertyToken pt, IReadOnlyDictionary<string, LogEventPropertyValue> properties,
+            TextWriter output)
         {
             LogEventPropertyValue propertyValue;
             if (!properties.TryGetValue(pt.PropertyName, out propertyValue))
             {
                 var count = 0;
                 using (_theme.Apply(output, ConsoleThemeStyle.Invalid, ref count))
+                {
                     output.Write(pt.ToString());
+                }
+
                 return count;
             }
 
-            if (!pt.Alignment.HasValue)
-            {
-                return RenderValue(_theme, _valueFormatter, propertyValue, output, pt.Format);
-            }
+            if (!pt.Alignment.HasValue) return RenderValue(_theme, _valueFormatter, propertyValue, output, pt.Format);
 
             var valueOutput = new StringWriter();
 
@@ -90,18 +94,15 @@ namespace Fluid.Core.Logging.Sinks.Console.Rendering
             var value = valueOutput.ToString();
 
             if (value.Length - invisibleCount >= pt.Alignment.Value.Width)
-            {
                 output.Write(value);
-            }
             else
-            {
                 Padding.Apply(output, value, pt.Alignment.Value.Widen(invisibleCount));
-            }
 
             return invisibleCount;
         }
 
-        int RenderAlignedPropertyTokenUnbuffered(PropertyToken pt, TextWriter output, LogEventPropertyValue propertyValue)
+        private int RenderAlignedPropertyTokenUnbuffered(PropertyToken pt, TextWriter output,
+            LogEventPropertyValue propertyValue)
         {
             var valueOutput = new StringWriter();
             RenderValue(NoTheme, _unthemedValueFormatter, propertyValue, valueOutput, pt.Format);
@@ -109,9 +110,7 @@ namespace Fluid.Core.Logging.Sinks.Console.Rendering
             var valueLength = valueOutput.ToString().Length;
             // ReSharper disable once PossibleInvalidOperationException
             if (valueLength >= pt.Alignment.Value.Width)
-            {
                 return RenderValue(_theme, _valueFormatter, propertyValue, output, pt.Format);
-            }
 
             if (pt.Alignment.Value.Direction == AlignmentDirection.Left)
             {
@@ -124,13 +123,17 @@ namespace Fluid.Core.Logging.Sinks.Console.Rendering
             return RenderValue(_theme, _valueFormatter, propertyValue, output, pt.Format);
         }
 
-        int RenderValue(ConsoleTheme theme, ThemedValueFormatter valueFormatter, LogEventPropertyValue propertyValue, TextWriter output, string format)
+        private int RenderValue(ConsoleTheme theme, ThemedValueFormatter valueFormatter,
+            LogEventPropertyValue propertyValue, TextWriter output, string format)
         {
             if (_isLiteral && propertyValue is ScalarValue sv && sv.Value is string)
             {
                 var count = 0;
                 using (theme.Apply(output, ConsoleThemeStyle.String, ref count))
+                {
                     output.Write(sv.Value);
+                }
+
                 return count;
             }
 

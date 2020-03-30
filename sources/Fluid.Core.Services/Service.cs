@@ -30,23 +30,8 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public abstract void SaveConfiguration(IConfiguration configuration);
 
-        /// <summary>
-        ///     Событие отправки сообщения
-        /// </summary>
-        public event EventHandler<IMessage> MessageReceived;
-
         /// <inheritdoc />
         public abstract void Dispose();
-
-        /// <summary>
-        ///     Уведомление об отправке сообщения
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="message"></param>
-        protected void OnMessageReceived(object sender, IMessage message)
-        {
-            MessageReceived?.Invoke(sender, message);
-        }
 
         /// <summary>
         ///     Загружает значение из конфигурации.

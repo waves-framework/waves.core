@@ -17,12 +17,12 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Core
 {
     /// <summary>
-    /// A destination for log events.
+    ///     A destination for log events.
     /// </summary>
     public interface ILogEventSink
     {
         /// <summary>
-        /// Emit the provided log event to the sink.
+        ///     Emit the provided log event to the sink.
         /// </summary>
         /// <param name="logEvent">The log event to write.</param>
         void Emit(LogEvent logEvent);

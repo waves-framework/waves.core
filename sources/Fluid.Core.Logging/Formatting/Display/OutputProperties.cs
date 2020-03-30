@@ -23,45 +23,45 @@ using Fluid.Core.Logging.Formatting.Display.Obsolete;
 namespace Fluid.Core.Logging.Formatting.Display
 {
     /// <summary>
-    /// Describes the properties available in standard message template-based
-    /// output format strings.
+    ///     Describes the properties available in standard message template-based
+    ///     output format strings.
     /// </summary>
     public static class OutputProperties
     {
-        static readonly LiteralStringValue LiteralNewLine = new LiteralStringValue(Environment.NewLine);
-
         /// <summary>
-        /// The message rendered from the log event.
+        ///     The message rendered from the log event.
         /// </summary>
         public const string MessagePropertyName = "Message";
 
         /// <summary>
-        /// The timestamp of the log event.
+        ///     The timestamp of the log event.
         /// </summary>
         public const string TimestampPropertyName = "Timestamp";
 
         /// <summary>
-        /// The level of the log event.
+        ///     The level of the log event.
         /// </summary>
         public const string LevelPropertyName = "Level";
 
         /// <summary>
-        /// A new line.
+        ///     A new line.
         /// </summary>
         public const string NewLinePropertyName = "NewLine";
 
         /// <summary>
-        /// The exception associated with the log event.
+        ///     The exception associated with the log event.
         /// </summary>
         public const string ExceptionPropertyName = "Exception";
 
         /// <summary>
-        /// The properties of the log event.
+        ///     The properties of the log event.
         /// </summary>
         public const string PropertiesPropertyName = "Properties";
 
+        private static readonly LiteralStringValue LiteralNewLine = new LiteralStringValue(Environment.NewLine);
+
         /// <summary>
-        /// Create properties from the provided log event.
+        ///     Create properties from the provided log event.
         /// </summary>
         /// <param name="logEvent">The log event.</param>
         /// <returns>A dictionary with properties representing the log event.</returns>
@@ -72,12 +72,13 @@ namespace Fluid.Core.Logging.Formatting.Display
         }
 
         /// <summary>
-        /// Create properties from the provided log event.
+        ///     Create properties from the provided log event.
         /// </summary>
         /// <param name="logEvent">The log event.</param>
         /// <param name="outputTemplate">The output template.</param>
         /// <returns>A dictionary with properties representing the log event.</returns>
-        internal static IReadOnlyDictionary<string, LogEventPropertyValue> GetOutputProperties(LogEvent logEvent, MessageTemplate outputTemplate)
+        internal static IReadOnlyDictionary<string, LogEventPropertyValue> GetOutputProperties(LogEvent logEvent,
+            MessageTemplate outputTemplate)
         {
             var result = logEvent.Properties.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -85,11 +86,13 @@ namespace Fluid.Core.Logging.Formatting.Display
             // when used in format strings; this doesn't affect the rendering of the message template,
             // which uses only the log event properties.
 
-            result[MessagePropertyName] = new LogEventPropertyMessageValue(logEvent.MessageTemplate, logEvent.Properties);
+            result[MessagePropertyName] =
+                new LogEventPropertyMessageValue(logEvent.MessageTemplate, logEvent.Properties);
             result[TimestampPropertyName] = new ScalarValue(logEvent.Timestamp);
             result[LevelPropertyName] = new LogEventLevelValue(logEvent.Level);
             result[NewLinePropertyName] = LiteralNewLine;
-            result[PropertiesPropertyName] = new LogEventPropertiesValue(logEvent.MessageTemplate, logEvent.Properties, outputTemplate);
+            result[PropertiesPropertyName] =
+                new LogEventPropertiesValue(logEvent.MessageTemplate, logEvent.Properties, outputTemplate);
 
             var exception = logEvent.Exception == null ? "" : logEvent.Exception + Environment.NewLine;
             result[ExceptionPropertyName] = new LiteralStringValue(exception);

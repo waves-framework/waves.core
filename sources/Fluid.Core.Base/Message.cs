@@ -5,7 +5,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Base message structure.
+    ///     Base message structure.
     /// </summary>
     public struct Message : IMessage
     {
@@ -27,7 +27,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Creates new instance of Message.
+        ///     Creates new instance of Message.
         /// </summary>
         /// <param name="exception">Exception.</param>
         /// <param name="isFatal">Is it a fatal error message?</param>

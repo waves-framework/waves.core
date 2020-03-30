@@ -20,18 +20,21 @@ using System.Text.RegularExpressions;
 
 namespace Fluid.Core.Logging.Settings.KeyValuePairs
 {
-    class SettingValueConversions
+    internal class SettingValueConversions
     {
         // should match "The.NameSpace.TypeName::MemberName" optionally followed by
         // usual assembly qualifiers like :
         // ", MyAssembly, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-        static Regex StaticMemberAccessorRegex = new Regex("^(?<shortTypeName>[^:]+)::(?<memberName>[A-Za-z][A-Za-z0-9]*)(?<typeNameExtraQualifiers>[^:]*)$");
+        private static readonly Regex StaticMemberAccessorRegex =
+            new Regex(
+                "^(?<shortTypeName>[^:]+)::(?<memberName>[A-Za-z][A-Za-z0-9]*)(?<typeNameExtraQualifiers>[^:]*)$");
 
-        static Dictionary<Type, Func<string, object>> ExtendedTypeConversions = new Dictionary<Type, Func<string, object>>
+        private static readonly Dictionary<Type, Func<string, object>> ExtendedTypeConversions =
+            new Dictionary<Type, Func<string, object>>
             {
-                { typeof(Uri), s => new Uri(s) },
-                { typeof(TimeSpan), s => TimeSpan.Parse(s) },
-                { typeof(Type), s => Type.GetType(s, throwOnError: true) },
+                {typeof(Uri), s => new Uri(s)},
+                {typeof(TimeSpan), s => TimeSpan.Parse(s)},
+                {typeof(Type), s => Type.GetType(s, true)}
             };
 
         public static object ConvertToType(string value, Type toType)
@@ -64,7 +67,7 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
                 // like "Namespace.TypeName::StaticProperty, AssemblyName"
                 if (TryParseStaticMemberAccessor(value, out var accessorTypeName, out var memberName))
                 {
-                    var accessorType = Type.GetType(accessorTypeName, throwOnError: true);
+                    var accessorType = Type.GetType(accessorTypeName, true);
                     // is there a public static property with that name ?
                     var publicStaticPropertyInfo = accessorType.GetTypeInfo().DeclaredProperties
                         .Where(x => x.Name == memberName)
@@ -73,9 +76,7 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
                         .FirstOrDefault(x => x.GetMethod.IsStatic);
 
                     if (publicStaticPropertyInfo != null)
-                    {
                         return publicStaticPropertyInfo.GetValue(null); // static property, no instance to pass
-                    }
 
                     // no property ? look for a public static field
                     var publicStaticFieldInfo = accessorType.GetTypeInfo().DeclaredFields
@@ -84,16 +85,15 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
                         .FirstOrDefault(x => x.IsStatic);
 
                     if (publicStaticFieldInfo != null)
-                    {
                         return publicStaticFieldInfo.GetValue(null); // static field, no instance to pass
-                    }
 
-                    throw new InvalidOperationException($"Could not find a public static property or field with name `{memberName}` on type `{accessorTypeName}`");
+                    throw new InvalidOperationException(
+                        $"Could not find a public static property or field with name `{memberName}` on type `{accessorTypeName}`");
                 }
 
                 // maybe it's the assembly-qualified type name of a concrete implementation
                 // with a default constructor
-                var type = Type.GetType(value.Trim(), throwOnError: false);
+                var type = Type.GetType(value.Trim(), false);
                 if (type != null)
                 {
                     var ctor = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(ci =>
@@ -113,7 +113,8 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
             return Convert.ChangeType(value, toType);
         }
 
-        internal static bool TryParseStaticMemberAccessor(string input, out string accessorTypeName, out string memberName)
+        internal static bool TryParseStaticMemberAccessor(string input, out string accessorTypeName,
+            out string memberName)
         {
             if (input == null)
             {
@@ -121,6 +122,7 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
                 memberName = null;
                 return false;
             }
+
             if (StaticMemberAccessorRegex.IsMatch(input))
             {
                 var match = StaticMemberAccessorRegex.Match(input);
@@ -132,6 +134,7 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
                 accessorTypeName = shortAccessorTypeName.Trim() + extraQualifiers.TrimEnd();
                 return true;
             }
+
             accessorTypeName = null;
             memberName = null;
             return false;

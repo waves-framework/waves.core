@@ -20,11 +20,10 @@ using Fluid.Core.Logging.Parsing;
 namespace Fluid.Core.Logging.Capturing
 {
     // Performance relevant - on the hot path when creating log events from existing templates.
-    class PropertyBinder
+    internal class PropertyBinder
     {
-        readonly PropertyValueConverter _valueConverter;
-
-        static readonly EventProperty[] NoProperties = new EventProperty[0];
+        private static readonly EventProperty[] NoProperties = new EventProperty[0];
+        private readonly PropertyValueConverter _valueConverter;
 
         public PropertyBinder(PropertyValueConverter valueConverter)
         {
@@ -32,13 +31,17 @@ namespace Fluid.Core.Logging.Capturing
         }
 
         /// <summary>
-        /// Create properties based on an ordered list of provided values.
+        ///     Create properties based on an ordered list of provided values.
         /// </summary>
         /// <param name="messageTemplate">The template that the parameters apply to.</param>
-        /// <param name="messageTemplateParameters">Objects corresponding to the properties
-        /// represented in the message template.</param>
-        /// <returns>A list of properties; if the template is malformed then
-        /// this will be empty.</returns>
+        /// <param name="messageTemplateParameters">
+        ///     Objects corresponding to the properties
+        ///     represented in the message template.
+        /// </param>
+        /// <returns>
+        ///     A list of properties; if the template is malformed then
+        ///     this will be empty.
+        /// </returns>
         public EventProperty[] ConstructProperties(MessageTemplate messageTemplate, object[] messageTemplateParameters)
         {
             if (messageTemplateParameters == null || messageTemplateParameters.Length == 0)
@@ -55,7 +58,8 @@ namespace Fluid.Core.Logging.Capturing
             return ConstructNamedProperties(messageTemplate, messageTemplateParameters);
         }
 
-        EventProperty[] ConstructPositionalProperties(MessageTemplate template, object[] messageTemplateParameters)
+        private EventProperty[] ConstructPositionalProperties(MessageTemplate template,
+            object[] messageTemplateParameters)
         {
             var positionalProperties = template.PositionalProperties;
 
@@ -64,7 +68,6 @@ namespace Fluid.Core.Logging.Capturing
 
             var result = new EventProperty[messageTemplateParameters.Length];
             foreach (var property in positionalProperties)
-            {
                 if (property.TryGetPositionalValue(out var position))
                 {
                     if (position < 0 || position >= messageTemplateParameters.Length)
@@ -72,17 +75,14 @@ namespace Fluid.Core.Logging.Capturing
                     else
                         result[position] = ConstructProperty(property, messageTemplateParameters[position]);
                 }
-            }
 
             var next = 0;
             for (var i = 0; i < result.Length; ++i)
-            {
                 if (!result[i].Equals(EventProperty.None))
                 {
                     result[next] = result[i];
                     ++next;
                 }
-            }
 
             if (next != result.Length)
                 Array.Resize(ref result, next);
@@ -90,7 +90,7 @@ namespace Fluid.Core.Logging.Capturing
             return result;
         }
 
-        EventProperty[] ConstructNamedProperties(MessageTemplate template, object[] messageTemplateParameters)
+        private EventProperty[] ConstructNamedProperties(MessageTemplate template, object[] messageTemplateParameters)
         {
             var namedProperties = template.NamedProperties;
             if (namedProperties == null)
@@ -116,14 +116,15 @@ namespace Fluid.Core.Logging.Capturing
                 var value = _valueConverter.CreatePropertyValue(messageTemplateParameters[i]);
                 result[i] = new EventProperty("__" + i, value);
             }
+
             return result;
         }
 
-        EventProperty ConstructProperty(PropertyToken propertyToken, object value)
+        private EventProperty ConstructProperty(PropertyToken propertyToken, object value)
         {
             return new EventProperty(
-                        propertyToken.PropertyName,
-                        _valueConverter.CreatePropertyValue(value, propertyToken.Destructuring));
+                propertyToken.PropertyName,
+                _valueConverter.CreatePropertyValue(value, propertyToken.Destructuring));
         }
     }
 }

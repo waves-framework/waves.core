@@ -19,26 +19,10 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core
 {
-    class LevelOverrideMap
+    internal class LevelOverrideMap
     {
-        readonly LogEventLevel _defaultMinimumLevel;
-        readonly LoggingLevelSwitch _defaultLevelSwitch;
-
-        struct LevelOverride
-        {
-            public LevelOverride(string context, LoggingLevelSwitch levelSwitch)
-            {
-                Context = context;
-                ContextPrefix = context + ".";
-                LevelSwitch = levelSwitch;
-            }
-
-            public string Context { get; }
-
-            public string ContextPrefix { get; }
-
-            public LoggingLevelSwitch LevelSwitch { get; }
-        }
+        private readonly LoggingLevelSwitch _defaultLevelSwitch;
+        private readonly LogEventLevel _defaultMinimumLevel;
 
         // There are two possible strategies to apply:
         //   1. Keep some bookkeeping data to consult when a new context is encountered, and a concurrent dictionary
@@ -46,7 +30,7 @@ namespace Fluid.Core.Logging.Core
         //   2. O(n) search over the raw configuration data every time (fast for small sets of overrides).
         // This implementation assumes there will only be a few overrides in each application, so chooses (2). This
         // is an assumption that's up for debate.
-        readonly LevelOverride[] _overrides;
+        private readonly LevelOverride[] _overrides;
 
         public LevelOverrideMap(
             IDictionary<string, LoggingLevelSwitch> overrides,
@@ -64,20 +48,35 @@ namespace Fluid.Core.Logging.Core
                 .ToArray();
         }
 
-        public void GetEffectiveLevel(string context, out LogEventLevel minimumLevel, out LoggingLevelSwitch levelSwitch)
+        public void GetEffectiveLevel(string context, out LogEventLevel minimumLevel,
+            out LoggingLevelSwitch levelSwitch)
         {
             foreach (var levelOverride in _overrides)
-            {
                 if (context.StartsWith(levelOverride.ContextPrefix) || context == levelOverride.Context)
                 {
                     minimumLevel = LevelAlias.Minimum;
                     levelSwitch = levelOverride.LevelSwitch;
                     return;
                 }
-            }
 
             minimumLevel = _defaultMinimumLevel;
             levelSwitch = _defaultLevelSwitch;
+        }
+
+        private struct LevelOverride
+        {
+            public LevelOverride(string context, LoggingLevelSwitch levelSwitch)
+            {
+                Context = context;
+                ContextPrefix = context + ".";
+                LevelSwitch = levelSwitch;
+            }
+
+            public string Context { get; }
+
+            public string ContextPrefix { get; }
+
+            public LoggingLevelSwitch LevelSwitch { get; }
         }
     }
 }

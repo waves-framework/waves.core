@@ -30,9 +30,9 @@ namespace Fluid.Core.Logging.Capturing
     // type system so that there is a better chance of code written with one sink in
     // mind working correctly with any other. This technique also makes the programmer
     // writing a log event (roughly) in control of the cost of recording that event.
-    partial class PropertyValueConverter : ILogEventPropertyFactory, ILogEventPropertyValueFactory
+    internal partial class PropertyValueConverter : ILogEventPropertyFactory, ILogEventPropertyValueFactory
     {
-        static readonly HashSet<Type> BuiltInScalarTypes = new HashSet<Type>
+        private static readonly HashSet<Type> BuiltInScalarTypes = new HashSet<Type>
         {
             typeof(bool),
             typeof(char),
@@ -43,12 +43,13 @@ namespace Fluid.Core.Logging.Capturing
             typeof(Guid), typeof(Uri)
         };
 
-        readonly IDestructuringPolicy[] _destructuringPolicies;
-        readonly IScalarConversionPolicy[] _scalarConversionPolicies;
-        readonly DepthLimiter _depthLimiter;
-        readonly int _maximumStringLength;
-        readonly int _maximumCollectionCount;
-        readonly bool _propagateExceptions;
+        private readonly DepthLimiter _depthLimiter;
+
+        private readonly IDestructuringPolicy[] _destructuringPolicies;
+        private readonly int _maximumCollectionCount;
+        private readonly int _maximumStringLength;
+        private readonly bool _propagateExceptions;
+        private readonly IScalarConversionPolicy[] _scalarConversionPolicies;
 
         public PropertyValueConverter(
             int maximumDestructuringDepth,
@@ -59,7 +60,8 @@ namespace Fluid.Core.Logging.Capturing
             bool propagateExceptions)
         {
             if (additionalScalarTypes == null) throw new ArgumentNullException(nameof(additionalScalarTypes));
-            if (additionalDestructuringPolicies == null) throw new ArgumentNullException(nameof(additionalDestructuringPolicies));
+            if (additionalDestructuringPolicies == null)
+                throw new ArgumentNullException(nameof(additionalDestructuringPolicies));
             if (maximumDestructuringDepth < 0) throw new ArgumentOutOfRangeException(nameof(maximumDestructuringDepth));
             if (maximumStringLength < 2) throw new ArgumentOutOfRangeException(nameof(maximumStringLength));
             if (maximumCollectionCount < 1) throw new ArgumentOutOfRangeException(nameof(maximumCollectionCount));
@@ -113,53 +115,38 @@ namespace Fluid.Core.Logging.Capturing
             }
         }
 
-        LogEventPropertyValue CreatePropertyValue(object value, bool destructureObjects, int depth)
+        private LogEventPropertyValue CreatePropertyValue(object value, bool destructureObjects, int depth)
         {
             return CreatePropertyValue(
                 value,
-                destructureObjects ?
-                    Destructuring.Destructure :
-                    Destructuring.Default,
+                destructureObjects ? Destructuring.Destructure : Destructuring.Default,
                 depth);
         }
 
-        LogEventPropertyValue CreatePropertyValue(object value, Destructuring destructuring, int depth)
+        private LogEventPropertyValue CreatePropertyValue(object value, Destructuring destructuring, int depth)
         {
             if (value == null)
                 return new ScalarValue(null);
 
-            if (destructuring == Destructuring.Stringify)
-            {
-                return Stringify(value);
-            }
+            if (destructuring == Destructuring.Stringify) return Stringify(value);
 
             if (destructuring == Destructuring.Destructure)
-            {
                 if (value is string stringValue)
-                {
                     value = TruncateIfNecessary(stringValue);
-                }
-            }
 
             if (value is string)
                 return new ScalarValue(value);
 
             foreach (var scalarConversionPolicy in _scalarConversionPolicies)
-            {
                 if (scalarConversionPolicy.TryConvertToScalar(value, out var converted))
                     return converted;
-            }
 
             DepthLimiter.SetCurrentDepth(depth);
 
             if (destructuring == Destructuring.Destructure)
-            {
                 foreach (var destructuringPolicy in _destructuringPolicies)
-                {
                     if (destructuringPolicy.TryDestructure(value, _depthLimiter, out var result))
                         return result;
-                }
-            }
 
             var valueType = value.GetType();
 
@@ -175,7 +162,8 @@ namespace Fluid.Core.Logging.Capturing
             return new ScalarValue(value.ToString());
         }
 
-        bool TryConvertEnumerable(object value, Destructuring destructuring, Type valueType, out LogEventPropertyValue result)
+        private bool TryConvertEnumerable(object value, Destructuring destructuring, Type valueType,
+            out LogEventPropertyValue result)
         {
             if (value is IEnumerable enumerable)
             {
@@ -192,18 +180,16 @@ namespace Fluid.Core.Logging.Capturing
                     result = new DictionaryValue(MapToDictionaryElements(dictionary, destructuring));
                     return true;
 
-                    IEnumerable<KeyValuePair<ScalarValue, LogEventPropertyValue>> MapToDictionaryElements(IDictionary dictionaryEntries, Destructuring destructure)
+                    IEnumerable<KeyValuePair<ScalarValue, LogEventPropertyValue>> MapToDictionaryElements(
+                        IDictionary dictionaryEntries, Destructuring destructure)
                     {
                         var count = 0;
                         foreach (DictionaryEntry entry in dictionaryEntries)
                         {
-                            if (++count > _maximumCollectionCount)
-                            {
-                                yield break;
-                            }
+                            if (++count > _maximumCollectionCount) yield break;
 
                             var pair = new KeyValuePair<ScalarValue, LogEventPropertyValue>(
-                                (ScalarValue)_depthLimiter.CreatePropertyValue(entry.Key, destructure),
+                                (ScalarValue) _depthLimiter.CreatePropertyValue(entry.Key, destructure),
                                 _depthLimiter.CreatePropertyValue(entry.Value, destructure));
 
                             if (pair.Key.Value != null)
@@ -215,15 +201,13 @@ namespace Fluid.Core.Logging.Capturing
                 result = new SequenceValue(MapToSequenceElements(enumerable, destructuring));
                 return true;
 
-                IEnumerable<LogEventPropertyValue> MapToSequenceElements(IEnumerable sequence, Destructuring destructure)
+                IEnumerable<LogEventPropertyValue> MapToSequenceElements(IEnumerable sequence,
+                    Destructuring destructure)
                 {
                     var count = 0;
                     foreach (var element in sequence)
                     {
-                        if (++count > _maximumCollectionCount)
-                        {
-                            yield break;
-                        }
+                        if (++count > _maximumCollectionCount) yield break;
 
                         yield return _depthLimiter.CreatePropertyValue(element, destructure);
                     }
@@ -234,7 +218,8 @@ namespace Fluid.Core.Logging.Capturing
             return false;
         }
 
-        bool TryConvertValueTuple(object value, Destructuring destructuring, Type valueType, out LogEventPropertyValue result)
+        private bool TryConvertValueTuple(object value, Destructuring destructuring, Type valueType,
+            out LogEventPropertyValue result)
         {
             if (!(value is IStructuralEquatable && valueType.IsConstructedGenericType))
             {
@@ -261,14 +246,12 @@ namespace Fluid.Core.Logging.Capturing
             {
                 var elements = new List<LogEventPropertyValue>();
                 foreach (var field in valueType.GetTypeInfo().DeclaredFields)
-                {
                     if (field.IsPublic && !field.IsStatic)
                     {
                         var fieldValue = field.GetValue(value);
                         var propertyValue = _depthLimiter.CreatePropertyValue(fieldValue, destructuring);
                         elements.Add(propertyValue);
                     }
-                }
 
                 result = new SequenceValue(elements);
                 return true;
@@ -278,15 +261,13 @@ namespace Fluid.Core.Logging.Capturing
             return false;
         }
 
-        bool TryConvertCompilerGeneratedType(object value, Destructuring destructuring, Type valueType, out LogEventPropertyValue result)
+        private bool TryConvertCompilerGeneratedType(object value, Destructuring destructuring, Type valueType,
+            out LogEventPropertyValue result)
         {
             if (destructuring == Destructuring.Destructure)
             {
                 var typeTag = valueType.Name;
-                if (typeTag.Length <= 0 || IsCompilerGeneratedType(valueType))
-                {
-                    typeTag = null;
-                }
+                if (typeTag.Length <= 0 || IsCompilerGeneratedType(valueType)) typeTag = null;
 
                 result = new StructureValue(GetProperties(value), typeTag);
                 return true;
@@ -296,30 +277,27 @@ namespace Fluid.Core.Logging.Capturing
             return false;
         }
 
-        LogEventPropertyValue Stringify(object value)
+        private LogEventPropertyValue Stringify(object value)
         {
             var stringified = value.ToString();
             var truncated = TruncateIfNecessary(stringified);
             return new ScalarValue(truncated);
         }
 
-        string TruncateIfNecessary(string text)
+        private string TruncateIfNecessary(string text)
         {
-            if (text.Length > _maximumStringLength)
-            {
-                return text.Substring(0, _maximumStringLength - 1) + "…";
-            }
+            if (text.Length > _maximumStringLength) return text.Substring(0, _maximumStringLength - 1) + "…";
 
             return text;
         }
 
-        static bool TryGetDictionary(object value, Type valueType, out IDictionary dictionary)
+        private static bool TryGetDictionary(object value, Type valueType, out IDictionary dictionary)
         {
             if (valueType.IsConstructedGenericType &&
                 valueType.GetGenericTypeDefinition() == typeof(Dictionary<,>) &&
                 IsValidDictionaryKeyType(valueType.GenericTypeArguments[0]))
             {
-                dictionary = (IDictionary)value;
+                dictionary = (IDictionary) value;
                 return true;
             }
 
@@ -327,13 +305,13 @@ namespace Fluid.Core.Logging.Capturing
             return false;
         }
 
-        static bool IsValidDictionaryKeyType(Type valueType)
+        private static bool IsValidDictionaryKeyType(Type valueType)
         {
             return BuiltInScalarTypes.Contains(valueType) ||
                    valueType.GetTypeInfo().IsEnum;
         }
 
-        IEnumerable<LogEventProperty> GetProperties(object value)
+        private IEnumerable<LogEventProperty> GetProperties(object value)
         {
             foreach (var prop in value.GetType().GetPropertiesRecursive())
             {
@@ -358,7 +336,9 @@ namespace Fluid.Core.Logging.Capturing
 
                     propValue = "The property accessor threw an exception: " + ex.InnerException?.GetType().Name;
                 }
-                yield return new LogEventProperty(prop.Name, _depthLimiter.CreatePropertyValue(propValue, Destructuring.Destructure));
+
+                yield return new LogEventProperty(prop.Name,
+                    _depthLimiter.CreatePropertyValue(propValue, Destructuring.Destructure));
             }
         }
 
@@ -370,8 +350,8 @@ namespace Fluid.Core.Logging.Capturing
 
             // C# Anonymous types always start with "<>" and VB's start with "VB$"
             return typeInfo.IsGenericType && typeInfo.IsSealed && typeInfo.IsNotPublic && type.Namespace == null
-                && (typeName[0] == '<'
-                    || (typeName.Length > 2 && typeName[0] == 'V' && typeName[1] == 'B' && typeName[2] == '$'));
+                   && (typeName[0] == '<'
+                       || typeName.Length > 2 && typeName[0] == 'V' && typeName[1] == 'B' && typeName[2] == '$');
         }
     }
 }

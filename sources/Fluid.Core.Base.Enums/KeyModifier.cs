@@ -3,33 +3,33 @@
 namespace Fluid.Core.Base.Enums
 {
     /// <summary>
-    /// Key modifiers enum.
+    ///     Key modifiers enum.
     /// </summary>
     [Flags]
     public enum KeyModifier
     {
         /// <summary>
-        /// None key.
+        ///     None key.
         /// </summary>
         None = 0b0000,
 
         /// <summary>
-        /// Alt key.
+        ///     Alt key.
         /// </summary>
         Alt = 0b0001,
 
         /// <summary>
-        /// Ctrl key.
+        ///     Ctrl key.
         /// </summary>
         Ctrl = 0b0010,
 
         /// <summary>
-        /// Shift key.
+        ///     Shift key.
         /// </summary>
         Shift = 0b0100,
 
         /// <summary>
-        /// Win key.
+        ///     Win key.
         /// </summary>
         Win = 0b1000
     }

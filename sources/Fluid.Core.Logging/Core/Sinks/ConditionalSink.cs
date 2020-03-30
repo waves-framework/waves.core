@@ -17,10 +17,10 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Sinks
 {
-    class ConditionalSink : ILogEventSink, IDisposable
+    internal class ConditionalSink : ILogEventSink, IDisposable
     {
-        readonly ILogEventSink _wrapped;
-        readonly Func<LogEvent, bool> _condition;
+        private readonly Func<LogEvent, bool> _condition;
+        private readonly ILogEventSink _wrapped;
 
         public ConditionalSink(ILogEventSink wrapped, Func<LogEvent, bool> condition)
         {
@@ -28,15 +28,15 @@ namespace Fluid.Core.Logging.Core.Sinks
             _condition = condition ?? throw new ArgumentNullException(nameof(condition));
         }
 
+        public void Dispose()
+        {
+            (_wrapped as IDisposable)?.Dispose();
+        }
+
         public void Emit(LogEvent logEvent)
         {
             if (_condition(logEvent))
                 _wrapped.Emit(logEvent);
-        }
-
-        public void Dispose()
-        {
-            (_wrapped as IDisposable)?.Dispose();
         }
     }
 }

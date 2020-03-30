@@ -19,44 +19,59 @@ using Fluid.Core.Logging.Rendering;
 namespace Fluid.Core.Logging.Formatting.Display
 {
     /// <summary>
-    /// Implements the {Level} element.
-    /// can now have a fixed width applied to it, as well as casing rules.
-    /// Width is set through formats like "u3" (uppercase three chars),
-    /// "w1" (one lowercase char), or "t4" (title case four chars).
+    ///     Implements the {Level} element.
+    ///     can now have a fixed width applied to it, as well as casing rules.
+    ///     Width is set through formats like "u3" (uppercase three chars),
+    ///     "w1" (one lowercase char), or "t4" (title case four chars).
     /// </summary>
-    static class LevelOutputFormat
+    internal static class LevelOutputFormat
     {
-        static readonly string[][] _titleCaseLevelMap = {
-            new []{ "V", "Vb", "Vrb", "Verb", "Verbo", "Verbos", "Verbose" },
-            new []{ "D", "De", "Dbg", "Dbug", "Debug" },
-            new []{ "I", "In", "Inf", "Info", "Infor", "Inform", "Informa", "Informat", "Informati", "Informatio", "Information" },
-            new []{ "W", "Wn", "Wrn", "Warn", "Warni", "Warnin", "Warning" },
-            new []{ "E", "Er", "Err", "Eror", "Error" },
-            new []{ "F", "Fa", "Ftl", "Fatl", "Fatal" }
+        private static readonly string[][] _titleCaseLevelMap =
+        {
+            new[] {"V", "Vb", "Vrb", "Verb", "Verbo", "Verbos", "Verbose"},
+            new[] {"D", "De", "Dbg", "Dbug", "Debug"},
+            new[]
+            {
+                "I", "In", "Inf", "Info", "Infor", "Inform", "Informa", "Informat", "Informati", "Informatio",
+                "Information"
+            },
+            new[] {"W", "Wn", "Wrn", "Warn", "Warni", "Warnin", "Warning"},
+            new[] {"E", "Er", "Err", "Eror", "Error"},
+            new[] {"F", "Fa", "Ftl", "Fatl", "Fatal"}
         };
 
-        static readonly string[][] _lowerCaseLevelMap = {
-            new []{ "v", "vb", "vrb", "verb", "verbo", "verbos", "verbose" },
-            new []{ "d", "de", "dbg", "dbug", "debug" },
-            new []{ "i", "in", "inf", "info", "infor", "inform", "informa", "informat", "informati", "informatio", "information" },
-            new []{ "w", "wn", "wrn", "warn", "warni", "warnin", "warning" },
-            new []{ "e", "er", "err", "eror", "error" },
-            new []{ "f", "fa", "ftl", "fatl", "fatal" }
+        private static readonly string[][] _lowerCaseLevelMap =
+        {
+            new[] {"v", "vb", "vrb", "verb", "verbo", "verbos", "verbose"},
+            new[] {"d", "de", "dbg", "dbug", "debug"},
+            new[]
+            {
+                "i", "in", "inf", "info", "infor", "inform", "informa", "informat", "informati", "informatio",
+                "information"
+            },
+            new[] {"w", "wn", "wrn", "warn", "warni", "warnin", "warning"},
+            new[] {"e", "er", "err", "eror", "error"},
+            new[] {"f", "fa", "ftl", "fatl", "fatal"}
         };
 
-        static readonly string[][] _upperCaseLevelMap = {
-            new []{ "V", "VB", "VRB", "VERB", "VERBO", "VERBOS", "VERBOSE" },
-            new []{ "D", "DE", "DBG", "DBUG", "DEBUG" },
-            new []{ "I", "IN", "INF", "INFO", "INFOR", "INFORM", "INFORMA", "INFORMAT", "INFORMATI", "INFORMATIO", "INFORMATION" },
-            new []{ "W", "WN", "WRN", "WARN", "WARNI", "WARNIN", "WARNING" },
-            new []{ "E", "ER", "ERR", "EROR", "ERROR" },
-            new []{ "F", "FA", "FTL", "FATL", "FATAL" }
+        private static readonly string[][] _upperCaseLevelMap =
+        {
+            new[] {"V", "VB", "VRB", "VERB", "VERBO", "VERBOS", "VERBOSE"},
+            new[] {"D", "DE", "DBG", "DBUG", "DEBUG"},
+            new[]
+            {
+                "I", "IN", "INF", "INFO", "INFOR", "INFORM", "INFORMA", "INFORMAT", "INFORMATI", "INFORMATIO",
+                "INFORMATION"
+            },
+            new[] {"W", "WN", "WRN", "WARN", "WARNI", "WARNIN", "WARNING"},
+            new[] {"E", "ER", "ERR", "EROR", "ERROR"},
+            new[] {"F", "FA", "FTL", "FATL", "FATAL"}
         };
 
         public static string GetLevelMoniker(LogEventLevel value, string format = null)
         {
-            var index = (int)value;
-            if (index < 0 || index > (int)LogEventLevel.Fatal)
+            var index = (int) value;
+            if (index < 0 || index > (int) LogEventLevel.Fatal)
                 return Casing.Format(value.ToString(), format);
 
             if (format == null || format.Length != 2 && format.Length != 3)
@@ -87,13 +102,13 @@ namespace Fluid.Core.Logging.Formatting.Display
             }
         }
 
-        static string GetLevelMoniker(string[][] caseLevelMap, int index, int width)
+        private static string GetLevelMoniker(string[][] caseLevelMap, int index, int width)
         {
             var caseLevel = caseLevelMap[index];
             return caseLevel[Math.Min(width, caseLevel.Length) - 1];
         }
 
-        static string GetLevelMoniker(string[][] caseLevelMap, int index)
+        private static string GetLevelMoniker(string[][] caseLevelMap, int index)
         {
             var caseLevel = caseLevelMap[index];
             return caseLevel[caseLevel.Length - 1];

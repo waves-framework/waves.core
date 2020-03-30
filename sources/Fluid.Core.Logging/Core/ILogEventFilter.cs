@@ -17,16 +17,18 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Core
 {
     /// <summary>
-    /// Provides filtering of the log event stream.
+    ///     Provides filtering of the log event stream.
     /// </summary>
     public interface ILogEventFilter
     {
         /// <summary>
-        /// Returns true if the provided event is enabled. Otherwise, false.
+        ///     Returns true if the provided event is enabled. Otherwise, false.
         /// </summary>
         /// <param name="logEvent">The event to test.</param>
-        /// <returns>True if the event is enabled by this filter. If false
-        /// is returned, the event will not be emitted.</returns>
+        /// <returns>
+        ///     True if the event is enabled by this filter. If false
+        ///     is returned, the event will not be emitted.
+        /// </returns>
         bool IsEnabled(LogEvent logEvent);
     }
 }

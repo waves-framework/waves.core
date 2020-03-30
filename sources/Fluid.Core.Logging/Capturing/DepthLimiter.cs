@@ -20,20 +20,32 @@ using Fluid.Core.Logging.Parsing;
 
 namespace Fluid.Core.Logging.Capturing
 {
-    partial class PropertyValueConverter
+    internal partial class PropertyValueConverter
     {
-        class DepthLimiter : ILogEventPropertyValueFactory
+        private class DepthLimiter : ILogEventPropertyValueFactory
         {
-            [ThreadStatic]
-            static int _currentDepth;
+            [ThreadStatic] private static int _currentDepth;
 
-            readonly int _maximumDestructuringDepth;
-            readonly PropertyValueConverter _propertyValueConverter;
+            private readonly int _maximumDestructuringDepth;
+            private readonly PropertyValueConverter _propertyValueConverter;
 
             public DepthLimiter(int maximumDepth, PropertyValueConverter propertyValueConverter)
             {
                 _maximumDestructuringDepth = maximumDepth;
                 _propertyValueConverter = propertyValueConverter;
+            }
+
+            LogEventPropertyValue ILogEventPropertyValueFactory.CreatePropertyValue(object value,
+                bool destructureObjects)
+            {
+                var storedDepth = _currentDepth;
+
+                var result = DefaultIfMaximumDepth(storedDepth) ??
+                             _propertyValueConverter.CreatePropertyValue(value, destructureObjects, storedDepth + 1);
+
+                _currentDepth = storedDepth;
+
+                return result;
             }
 
             public static void SetCurrentDepth(int depth)
@@ -46,26 +58,14 @@ namespace Fluid.Core.Logging.Capturing
                 var storedDepth = _currentDepth;
 
                 var result = DefaultIfMaximumDepth(storedDepth) ??
-                    _propertyValueConverter.CreatePropertyValue(value, destructuring, storedDepth + 1);
+                             _propertyValueConverter.CreatePropertyValue(value, destructuring, storedDepth + 1);
 
                 _currentDepth = storedDepth;
 
                 return result;
             }
 
-            LogEventPropertyValue ILogEventPropertyValueFactory.CreatePropertyValue(object value, bool destructureObjects)
-            {
-                var storedDepth = _currentDepth;
-
-                var result = DefaultIfMaximumDepth(storedDepth) ??
-                    _propertyValueConverter.CreatePropertyValue(value, destructureObjects, storedDepth + 1);
-
-                _currentDepth = storedDepth;
-
-                return result;
-            }
-
-            LogEventPropertyValue DefaultIfMaximumDepth(int depth)
+            private LogEventPropertyValue DefaultIfMaximumDepth(int depth)
             {
                 if (depth == _maximumDestructuringDepth)
                 {

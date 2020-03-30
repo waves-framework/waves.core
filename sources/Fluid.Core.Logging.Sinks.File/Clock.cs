@@ -16,12 +16,11 @@ using System;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    static class Clock
+    internal static class Clock
     {
-        static Func<DateTime> _dateTimeNow = () => DateTime.Now;
+        private static Func<DateTime> _dateTimeNow = () => DateTime.Now;
 
-        [ThreadStatic]
-        static DateTime _testDateTimeNow;
+        [ThreadStatic] private static DateTime _testDateTimeNow;
 
         public static DateTime DateTimeNow => _dateTimeNow();
 

@@ -20,31 +20,17 @@ using System.Linq;
 namespace Fluid.Core.Logging.Sinks.Console.Themes
 {
     /// <summary>
-    /// A console theme using the ANSI terminal escape sequences. Recommended
-    /// for Linux and Windows 10+.
+    ///     A console theme using the ANSI terminal escape sequences. Recommended
+    ///     for Linux and Windows 10+.
     /// </summary>
     public class AnsiConsoleTheme : ConsoleTheme
     {
-        /// <summary>
-        /// A 256-color theme along the lines of Visual Studio Code.
-        /// </summary>
-        public static AnsiConsoleTheme Code { get; } = AnsiConsoleThemes.Code;
+        private const string AnsiStyleReset = "\x1b[0m";
+
+        private readonly IReadOnlyDictionary<ConsoleThemeStyle, string> _styles;
 
         /// <summary>
-        /// A theme using only gray, black and white.
-        /// </summary>
-        public static AnsiConsoleTheme Grayscale { get; } = AnsiConsoleThemes.Grayscale;
-
-        /// <summary>
-        /// A theme in the syle of the original <i>Serilog.Sinks.Literate</i>.
-        /// </summary>
-        public static AnsiConsoleTheme Literate { get; } = AnsiConsoleThemes.Literate;
-
-        readonly IReadOnlyDictionary<ConsoleThemeStyle, string> _styles;
-        const string AnsiStyleReset = "\x1b[0m";
-
-        /// <summary>
-        /// Construct a theme given a set of styles.
+        ///     Construct a theme given a set of styles.
         /// </summary>
         /// <param name="styles">Styles to apply within the theme.</param>
         public AnsiConsoleTheme(IReadOnlyDictionary<ConsoleThemeStyle, string> styles)
@@ -53,13 +39,28 @@ namespace Fluid.Core.Logging.Sinks.Console.Themes
             _styles = styles.ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        ///     A 256-color theme along the lines of Visual Studio Code.
+        /// </summary>
+        public static AnsiConsoleTheme Code { get; } = AnsiConsoleThemes.Code;
+
+        /// <summary>
+        ///     A theme using only gray, black and white.
+        /// </summary>
+        public static AnsiConsoleTheme Grayscale { get; } = AnsiConsoleThemes.Grayscale;
+
+        /// <summary>
+        ///     A theme in the syle of the original <i>Serilog.Sinks.Literate</i>.
+        /// </summary>
+        public static AnsiConsoleTheme Literate { get; } = AnsiConsoleThemes.Literate;
+
+        /// <inheritdoc />
         public override bool CanBuffer => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override int ResetCharCount { get; } = AnsiStyleReset.Length;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Set(TextWriter output, ConsoleThemeStyle style)
         {
             if (_styles.TryGetValue(style, out var ansiStyle))
@@ -67,10 +68,11 @@ namespace Fluid.Core.Logging.Sinks.Console.Themes
                 output.Write(ansiStyle);
                 return ansiStyle.Length;
             }
+
             return 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Reset(TextWriter output)
         {
             output.Write(AnsiStyleReset);

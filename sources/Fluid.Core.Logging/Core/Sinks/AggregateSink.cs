@@ -20,9 +20,9 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Sinks
 {
-    class AggregateSink : ILogEventSink
+    internal class AggregateSink : ILogEventSink
     {
-        readonly ILogEventSink[] _sinks;
+        private readonly ILogEventSink[] _sinks;
 
         public AggregateSink(IEnumerable<ILogEventSink> sinks)
         {
@@ -34,7 +34,6 @@ namespace Fluid.Core.Logging.Core.Sinks
         {
             List<Exception> exceptions = null;
             foreach (var sink in _sinks)
-            {
                 try
                 {
                     sink.Emit(logEvent);
@@ -45,7 +44,6 @@ namespace Fluid.Core.Logging.Core.Sinks
                     exceptions = exceptions ?? new List<Exception>();
                     exceptions.Add(ex);
                 }
-            }
 
             if (exceptions != null)
                 throw new AggregateException("Failed to emit a log event.", exceptions);

@@ -21,9 +21,9 @@ namespace Fluid.Core.Logging.Policies
     // Byte arrays, when logged, need to be copied so that they are
     // safe from concurrent modification when written to asynchronous
     // sinks. Byte arrays larger than 1k are written as descriptive strings.
-    class ByteArrayScalarConversionPolicy : IScalarConversionPolicy
+    internal class ByteArrayScalarConversionPolicy : IScalarConversionPolicy
     {
-        const int MaximumByteArrayLength = 1024;
+        private const int MaximumByteArrayLength = 1024;
 
         public bool TryConvertToScalar(object value, out ScalarValue result)
         {

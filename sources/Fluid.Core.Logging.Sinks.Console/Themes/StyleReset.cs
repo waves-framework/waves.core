@@ -17,10 +17,10 @@ using System.IO;
 
 namespace Fluid.Core.Logging.Sinks.Console.Themes
 {
-    struct StyleReset : IDisposable
+    internal struct StyleReset : IDisposable
     {
-        readonly ConsoleTheme _theme;
-        readonly TextWriter _output;
+        private readonly ConsoleTheme _theme;
+        private readonly TextWriter _output;
 
         public StyleReset(ConsoleTheme theme, TextWriter output)
         {

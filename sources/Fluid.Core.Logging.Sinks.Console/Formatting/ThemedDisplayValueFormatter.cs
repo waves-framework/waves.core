@@ -20,9 +20,9 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Formatting
 {
-    class ThemedDisplayValueFormatter : ThemedValueFormatter
+    internal class ThemedDisplayValueFormatter : ThemedValueFormatter
     {
-        readonly IFormatProvider _formatProvider;
+        private readonly IFormatProvider _formatProvider;
 
         public ThemedDisplayValueFormatter(ConsoleTheme theme, IFormatProvider formatProvider)
             : base(theme)
@@ -50,21 +50,27 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             var count = 0;
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('[');
+            }
 
             var delim = "";
             for (var index = 0; index < sequence.Elements.Count; ++index)
             {
                 if (delim.Length != 0)
                     using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                    {
                         state.Output.Write(delim);
+                    }
 
                 delim = ", ";
                 Visit(state, sequence.Elements[index]);
             }
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write(']');
+            }
 
             return count;
         }
@@ -76,36 +82,48 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             if (structure.TypeTag != null)
             {
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.Name, ref count))
+                {
                     state.Output.Write(structure.TypeTag);
+                }
 
                 state.Output.Write(' ');
             }
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('{');
+            }
 
             var delim = "";
             for (var index = 0; index < structure.Properties.Count; ++index)
             {
                 if (delim.Length != 0)
                     using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                    {
                         state.Output.Write(delim);
+                    }
 
                 delim = ", ";
 
                 var property = structure.Properties[index];
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.Name, ref count))
+                {
                     state.Output.Write(property.Name);
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                {
                     state.Output.Write('=');
+                }
 
                 count += Visit(state.Nest(), property.Value);
             }
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('}');
+            }
 
             return count;
         }
@@ -115,31 +133,43 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             var count = 0;
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('{');
+            }
 
             var delim = "";
             foreach (var element in dictionary.Elements)
             {
                 if (delim.Length != 0)
                     using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                    {
                         state.Output.Write(delim);
+                    }
 
                 delim = ", ";
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                {
                     state.Output.Write('[');
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.String, ref count))
+                {
                     count += Visit(state.Nest(), element.Key);
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                {
                     state.Output.Write("]=");
+                }
 
                 count += Visit(state.Nest(), element.Value);
             }
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('}');
+            }
 
             return count;
         }
@@ -152,7 +182,10 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             if (value == null)
             {
                 using (ApplyStyle(output, ConsoleThemeStyle.Null, ref count))
+                {
                     output.Write("null");
+                }
+
                 return count;
             }
 
@@ -165,6 +198,7 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                     else
                         output.Write(str);
                 }
+
                 return count;
             }
 
@@ -175,14 +209,19 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                     value is ushort || value is float || value is double)
                 {
                     using (ApplyStyle(output, ConsoleThemeStyle.Number, ref count))
+                    {
                         scalar.Render(output, format, _formatProvider);
+                    }
+
                     return count;
                 }
 
                 if (value is bool b)
                 {
                     using (ApplyStyle(output, ConsoleThemeStyle.Boolean, ref count))
+                    {
                         output.Write(b);
+                    }
 
                     return count;
                 }
@@ -195,12 +234,15 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                         output.Write(ch);
                         output.Write('\'');
                     }
+
                     return count;
                 }
             }
 
             using (ApplyStyle(output, ConsoleThemeStyle.Scalar, ref count))
+            {
                 scalar.Render(output, format, _formatProvider);
+            }
 
             return count;
         }

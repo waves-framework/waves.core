@@ -4,48 +4,48 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Base color structure.
+    ///     Base color structure.
     /// </summary>
     [Serializable]
     public struct Color : IColor
     {
         /// <summary>
-        /// Red color.
+        ///     Red color.
         /// </summary>
         public static readonly Color Red = FromArgb(255, 255, 0, 0);
 
         /// <summary>
-        /// Green color.
+        ///     Green color.
         /// </summary>
         public static readonly Color Green = FromArgb(255, 0, 255, 0);
 
         /// <summary>
-        /// Blue color.
+        ///     Blue color.
         /// </summary>
         public static readonly Color Blue = FromArgb(255, 0, 0, 255);
 
         /// <summary>
-        /// White color.
+        ///     White color.
         /// </summary>
         public static readonly Color White = FromArgb(255, 255, 255, 255);
 
         /// <summary>
-        /// Gray color.
+        ///     Gray color.
         /// </summary>
         public static readonly Color Gray = FromArgb(255, 100, 100, 100);
 
         /// <summary>
-        /// Black color.
+        ///     Black color.
         /// </summary>
         public static readonly Color Black = FromArgb(255, 0, 0, 0);
 
         /// <summary>
-        /// Transparent color.
+        ///     Transparent color.
         /// </summary>
         public static readonly Color Transparent = FromArgb(0, 0, 0, 0);
 
         /// <summary>
-        /// Light gray color.
+        ///     Light gray color.
         /// </summary>
         public static readonly Color LightGray = FromHex("#d3d3d3");
 
@@ -95,7 +95,7 @@ namespace Fluid.Core.Base
         public float ScA => A / 255f;
 
         /// <summary>
-        /// Creates new instance of color structure.
+        ///     Creates new instance of color structure.
         /// </summary>
         /// <param name="a">Alpha value.</param>
         /// <param name="r">Red value.</param>
@@ -110,7 +110,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Creates new instance of color structure.
+        ///     Creates new instance of color structure.
         /// </summary>
         /// <param name="r">Red value.</param>
         /// <param name="g">Green value.</param>
@@ -124,7 +124,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Gets color from ARGB values.
+        ///     Gets color from ARGB values.
         /// </summary>
         /// <param name="a">Alpha value.</param>
         /// <param name="r">Red value.</param>
@@ -137,7 +137,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Converts color to string.
+        ///     Converts color to string.
         /// </summary>
         /// <returns>String.</returns>
         public override string ToString()
@@ -187,7 +187,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Converts HEX string to Color.
+        ///     Converts HEX string to Color.
         /// </summary>
         /// <param name="hexColor">HEX string.</param>
         /// <returns>Color.</returns>
@@ -223,7 +223,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Tries parsing HEX string to color.
+        ///     Tries parsing HEX string to color.
         /// </summary>
         /// <param name="hexColor">HEX string.</param>
         /// <param name="color">Output color.</param>

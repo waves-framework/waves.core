@@ -17,7 +17,7 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Context
 {
-    sealed class LogContextEnricher : ILogEventEnricher
+    internal sealed class LogContextEnricher : ILogEventEnricher
     {
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {

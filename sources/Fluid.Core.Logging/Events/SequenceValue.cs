@@ -20,14 +20,14 @@ using System.Linq;
 namespace Fluid.Core.Logging.Events
 {
     /// <summary>
-    /// A value represented as an ordered sequence of values.
+    ///     A value represented as an ordered sequence of values.
     /// </summary>
     public class SequenceValue : LogEventPropertyValue
     {
-        readonly LogEventPropertyValue[] _elements;
+        private readonly LogEventPropertyValue[] _elements;
 
         /// <summary>
-        /// Create a <see cref="SequenceValue"/> with the provided <paramref name="elements"/>.
+        ///     Create a <see cref="SequenceValue" /> with the provided <paramref name="elements" />.
         /// </summary>
         /// <param name="elements">The elements of the sequence.</param>
         /// <exception cref="ArgumentNullException"></exception>
@@ -38,17 +38,18 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// The elements of the sequence.
+        ///     The elements of the sequence.
         /// </summary>
         public IReadOnlyList<LogEventPropertyValue> Elements => _elements;
 
         /// <summary>
-        /// Render the value to the output.
+        ///     Render the value to the output.
         /// </summary>
         /// <param name="output">The output.</param>
         /// <param name="format">A format string applied to the value, or null.</param>
         /// <param name="formatProvider">A format provider to apply to the value, or null to use the default.</param>
-        /// <seealso cref="LogEventPropertyValue.ToString(string, IFormatProvider)"/>.
+        /// <seealso cref="LogEventPropertyValue.ToString(string, IFormatProvider)" />
+        /// .
         public override void Render(TextWriter output, string format = null, IFormatProvider formatProvider = null)
         {
             if (output == null) throw new ArgumentNullException(nameof(output));

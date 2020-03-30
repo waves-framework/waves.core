@@ -21,32 +21,42 @@ using Fluid.Core.Logging.Formatting;
 namespace Fluid.Core.Logging.Sinks.File
 {
     /// <summary>
-    /// Write log events to a disk file.
+    ///     Write log events to a disk file.
     /// </summary>
     public sealed class FileSink : IFileSink, IDisposable
     {
-        readonly TextWriter _output;
-        readonly FileStream _underlyingStream;
-        readonly ITextFormatter _textFormatter;
-        readonly long? _fileSizeLimitBytes;
-        readonly bool _buffered;
-        readonly object _syncRoot = new object();
-        readonly WriteCountingStream _countingStreamWrapper;
+        private readonly bool _buffered;
+        private readonly WriteCountingStream _countingStreamWrapper;
+        private readonly long? _fileSizeLimitBytes;
+        private readonly TextWriter _output;
+        private readonly object _syncRoot = new object();
+        private readonly ITextFormatter _textFormatter;
+        private readonly FileStream _underlyingStream;
 
-        /// <summary>Construct a <see cref="FileSink"/>.</summary>
+        /// <summary>Construct a <see cref="FileSink" />.</summary>
         /// <param name="path">Path to the file.</param>
         /// <param name="textFormatter">Formatter used to convert log events to text.</param>
-        /// <param name="fileSizeLimitBytes">The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-        /// For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the limit
-        /// will be written in full even if it exceeds the limit.</param>
+        /// <param name="fileSizeLimitBytes">
+        ///     The approximate maximum size, in bytes, to which a log file will be allowed to grow.
+        ///     For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
+        ///     limit
+        ///     will be written in full even if it exceeds the limit.
+        /// </param>
         /// <param name="encoding">Character encoding used to write the text file. The default is UTF-8 without BOM.</param>
-        /// <param name="buffered">Indicates if flushing to the output file can be buffered or not. The default
-        /// is false.</param>
+        /// <param name="buffered">
+        ///     Indicates if flushing to the output file can be buffered or not. The default
+        ///     is false.
+        /// </param>
         /// <returns>Configuration object allowing method chaining.</returns>
-        /// <remarks>This constructor preserves compatibility with early versions of the public API. New code should not depend on this type.</remarks>
+        /// <remarks>
+        ///     This constructor preserves compatibility with early versions of the public API. New code should not depend on
+        ///     this type.
+        /// </remarks>
         /// <exception cref="IOException"></exception>
-        [Obsolete("This type and constructor will be removed from the public API in a future version; use `WriteTo.File()` instead.")]
-        public FileSink(string path, ITextFormatter textFormatter, long? fileSizeLimitBytes, Encoding encoding = null, bool buffered = false)
+        [Obsolete(
+            "This type and constructor will be removed from the public API in a future version; use `WriteTo.File()` instead.")]
+        public FileSink(string path, ITextFormatter textFormatter, long? fileSizeLimitBytes, Encoding encoding = null,
+            bool buffered = false)
             : this(path, textFormatter, fileSizeLimitBytes, encoding, buffered, null)
         {
         }
@@ -61,33 +71,39 @@ namespace Fluid.Core.Logging.Sinks.File
             FileLifecycleHooks hooks)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
-            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0) throw new ArgumentException("Negative value provided; file size limit must be non-negative.");
+            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0)
+                throw new ArgumentException("Negative value provided; file size limit must be non-negative.");
             _textFormatter = textFormatter ?? throw new ArgumentNullException(nameof(textFormatter));
             _fileSizeLimitBytes = fileSizeLimitBytes;
             _buffered = buffered;
 
             var directory = Path.GetDirectoryName(path);
             if (!string.IsNullOrWhiteSpace(directory) && !Directory.Exists(directory))
-            {
                 Directory.CreateDirectory(directory);
-            }
 
-            Stream outputStream = _underlyingStream = System.IO.File.Open(path, FileMode.Append, FileAccess.Write, FileShare.Read);
+            Stream outputStream = _underlyingStream =
+                System.IO.File.Open(path, FileMode.Append, FileAccess.Write, FileShare.Read);
             if (_fileSizeLimitBytes != null)
-            {
                 outputStream = _countingStreamWrapper = new WriteCountingStream(_underlyingStream);
-            }
 
             // Parameter reassignment.
-            encoding = encoding ?? new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+            encoding = encoding ?? new UTF8Encoding(false);
 
             if (hooks != null)
-            {
                 outputStream = hooks.OnFileOpened(outputStream, encoding) ??
-                               throw new InvalidOperationException($"The file lifecycle hook `{nameof(FileLifecycleHooks.OnFileOpened)}(...)` returned `null`.");
-            }
+                               throw new InvalidOperationException(
+                                   $"The file lifecycle hook `{nameof(FileLifecycleHooks.OnFileOpened)}(...)` returned `null`.");
 
             _output = new StreamWriter(outputStream, encoding);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            lock (_syncRoot)
+            {
+                _output.Dispose();
+            }
         }
 
         bool IFileSink.EmitOrOverflow(LogEvent logEvent)
@@ -96,10 +112,8 @@ namespace Fluid.Core.Logging.Sinks.File
             lock (_syncRoot)
             {
                 if (_fileSizeLimitBytes != null)
-                {
                     if (_countingStreamWrapper.CountedLength >= _fileSizeLimitBytes.Value)
                         return false;
-                }
 
                 _textFormatter.Format(logEvent, _output);
                 if (!_buffered)
@@ -110,21 +124,12 @@ namespace Fluid.Core.Logging.Sinks.File
         }
 
         /// <summary>
-        /// Emit the provided log event to the sink.
+        ///     Emit the provided log event to the sink.
         /// </summary>
         /// <param name="logEvent">The log event to write.</param>
         public void Emit(LogEvent logEvent)
         {
             ((IFileSink) this).EmitOrOverflow(logEvent);
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            lock (_syncRoot)
-            {
-                _output.Dispose();
-            }
         }
 
         /// <inheritdoc />

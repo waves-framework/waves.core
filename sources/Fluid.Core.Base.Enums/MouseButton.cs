@@ -1,27 +1,27 @@
 ﻿namespace Fluid.Core.Base.Enums
 {
     /// <summary>
-    /// Mouse buttons enum.
+    ///     Mouse buttons enum.
     /// </summary>
     public enum MouseButton
     {
         /// <summary>
-        /// Left.
+        ///     Left.
         /// </summary>
         Left,
 
         /// <summary>
-        /// Right.
+        ///     Right.
         /// </summary>
         Right,
 
         /// <summary>
-        /// Middle.
+        ///     Middle.
         /// </summary>
         Middle,
 
         /// <summary>
-        /// None.
+        ///     None.
         /// </summary>
         None
     }

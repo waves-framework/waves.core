@@ -4,7 +4,7 @@ using Fluid.Core.Base.Enums;
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interfaces of fluid's message structures.
+    ///     Interfaces of fluid's message structures.
     /// </summary>
     public interface IMessage
     {

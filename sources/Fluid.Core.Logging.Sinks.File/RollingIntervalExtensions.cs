@@ -16,7 +16,7 @@ using System;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    static class RollingIntervalExtensions
+    internal static class RollingIntervalExtensions
     {
         public static string GetFormat(this RollingInterval interval)
         {
@@ -54,7 +54,8 @@ namespace Fluid.Core.Logging.Sinks.File
                 case RollingInterval.Hour:
                     return new DateTime(instant.Year, instant.Month, instant.Day, instant.Hour, 0, 0, instant.Kind);
                 case RollingInterval.Minute:
-                    return new DateTime(instant.Year, instant.Month, instant.Day, instant.Hour, instant.Minute, 0, instant.Kind);
+                    return new DateTime(instant.Year, instant.Month, instant.Day, instant.Hour, instant.Minute, 0,
+                        instant.Kind);
                 default:
                     throw new ArgumentException("Invalid rolling interval");
             }

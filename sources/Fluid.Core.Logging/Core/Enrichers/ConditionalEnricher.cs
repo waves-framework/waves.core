@@ -17,10 +17,10 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Enrichers
 {
-    class ConditionalEnricher : ILogEventEnricher, IDisposable
+    internal class ConditionalEnricher : ILogEventEnricher, IDisposable
     {
-        readonly ILogEventEnricher _wrapped;
-        readonly Func<LogEvent, bool> _condition;
+        private readonly Func<LogEvent, bool> _condition;
+        private readonly ILogEventEnricher _wrapped;
 
         public ConditionalEnricher(ILogEventEnricher wrapped, Func<LogEvent, bool> condition)
         {
@@ -28,15 +28,15 @@ namespace Fluid.Core.Logging.Core.Enrichers
             _condition = condition ?? throw new ArgumentNullException(nameof(condition));
         }
 
+        public void Dispose()
+        {
+            (_wrapped as IDisposable)?.Dispose();
+        }
+
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
             if (_condition(logEvent))
                 _wrapped.Enrich(logEvent, propertyFactory);
-        }
-
-        public void Dispose()
-        {
-            (_wrapped as IDisposable)?.Dispose();
         }
     }
 }

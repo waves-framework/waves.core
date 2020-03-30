@@ -19,11 +19,11 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class ExceptionTokenRenderer : OutputTemplateTokenRenderer
+    internal class ExceptionTokenRenderer : OutputTemplateTokenRenderer
     {
-        const string StackFrameLinePrefix = "   ";
+        private const string StackFrameLinePrefix = "   ";
 
-        readonly ConsoleTheme _theme;
+        private readonly ConsoleTheme _theme;
 
         public ExceptionTokenRenderer(ConsoleTheme theme, PropertyToken pt)
         {
@@ -41,10 +41,14 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
             string nextLine;
             while ((nextLine = lines.ReadLine()) != null)
             {
-                var style = nextLine.StartsWith(StackFrameLinePrefix) ? ConsoleThemeStyle.SecondaryText : ConsoleThemeStyle.Text;
+                var style = nextLine.StartsWith(StackFrameLinePrefix)
+                    ? ConsoleThemeStyle.SecondaryText
+                    : ConsoleThemeStyle.Text;
                 var _ = 0;
                 using (_theme.Apply(output, style, ref _))
+                {
                     output.WriteLine(nextLine);
+                }
             }
         }
     }

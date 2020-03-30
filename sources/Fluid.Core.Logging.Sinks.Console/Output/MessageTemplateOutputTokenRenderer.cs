@@ -22,31 +22,28 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class MessageTemplateOutputTokenRenderer : OutputTemplateTokenRenderer
+    internal class MessageTemplateOutputTokenRenderer : OutputTemplateTokenRenderer
     {
-        readonly ConsoleTheme _theme;
-        readonly PropertyToken _token;
-        readonly ThemedMessageTemplateRenderer _renderer;
+        private readonly ThemedMessageTemplateRenderer _renderer;
+        private readonly ConsoleTheme _theme;
+        private readonly PropertyToken _token;
 
-        public MessageTemplateOutputTokenRenderer(ConsoleTheme theme, PropertyToken token, IFormatProvider formatProvider)
+        public MessageTemplateOutputTokenRenderer(ConsoleTheme theme, PropertyToken token,
+            IFormatProvider formatProvider)
         {
             _theme = theme ?? throw new ArgumentNullException(nameof(theme));
             _token = token ?? throw new ArgumentNullException(nameof(token));
             bool isLiteral = false, isJson = false;
 
             if (token.Format != null)
-            {
                 for (var i = 0; i < token.Format.Length; ++i)
-                {
                     if (token.Format[i] == 'l')
                         isLiteral = true;
                     else if (token.Format[i] == 'j')
                         isJson = true;
-                }
-            }
 
             var valueFormatter = isJson
-                ? (ThemedValueFormatter)new ThemedJsonValueFormatter(theme, formatProvider)
+                ? (ThemedValueFormatter) new ThemedJsonValueFormatter(theme, formatProvider)
                 : new ThemedDisplayValueFormatter(theme, formatProvider);
 
             _renderer = new ThemedMessageTemplateRenderer(theme, valueFormatter, isLiteral);

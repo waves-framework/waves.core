@@ -1,7 +1,7 @@
 ﻿namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of point structures.
+    ///     Interface of point structures.
     /// </summary>
     public interface IPoint
     {
@@ -21,12 +21,12 @@
         float Length { get; }
 
         /// <summary>
-        /// Get square length of current vector.
+        ///     Get square length of current vector.
         /// </summary>
         float SquaredLength { get; }
 
         /// <summary>
-        /// Gets abs of vector angle.
+        ///     Gets abs of vector angle.
         /// </summary>
         float Angle { get; }
     }

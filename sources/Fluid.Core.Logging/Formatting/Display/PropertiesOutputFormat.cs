@@ -21,11 +21,13 @@ using Fluid.Core.Logging.Formatting.Json;
 
 namespace Fluid.Core.Logging.Formatting.Display
 {
-    static class PropertiesOutputFormat
+    internal static class PropertiesOutputFormat
     {
-        static readonly JsonValueFormatter JsonValueFormatter = new JsonValueFormatter("$type");
+        private static readonly JsonValueFormatter JsonValueFormatter = new JsonValueFormatter("$type");
 
-        public static void Render(MessageTemplate template, IReadOnlyDictionary<string, LogEventPropertyValue> properties, MessageTemplate outputTemplate, TextWriter output, string format, IFormatProvider formatProvider = null)
+        public static void Render(MessageTemplate template,
+            IReadOnlyDictionary<string, LogEventPropertyValue> properties, MessageTemplate outputTemplate,
+            TextWriter output, string format, IFormatProvider formatProvider = null)
         {
             if (format?.Contains("j") == true)
             {
@@ -44,9 +46,7 @@ namespace Fluid.Core.Logging.Formatting.Display
             {
                 if (TemplateContainsPropertyName(template, kvp.Key) ||
                     TemplateContainsPropertyName(outputTemplate, kvp.Key))
-                {
                     continue;
-                }
 
                 output.Write(delim);
                 delim = ", ";
@@ -58,33 +58,25 @@ namespace Fluid.Core.Logging.Formatting.Display
             output.Write(" }");
         }
 
-        static bool TemplateContainsPropertyName(MessageTemplate template, string propertyName)
+        private static bool TemplateContainsPropertyName(MessageTemplate template, string propertyName)
         {
             if (template.PositionalProperties != null)
             {
                 for (var i = 0; i < template.PositionalProperties.Length; i++)
                 {
                     var token = template.PositionalProperties[i];
-                    if (token.PropertyName == propertyName)
-                    {
-                        return true;
-                    }
+                    if (token.PropertyName == propertyName) return true;
                 }
 
                 return false;
             }
 
             if (template.NamedProperties != null)
-            {
                 for (var i = 0; i < template.NamedProperties.Length; i++)
                 {
                     var namedProperty = template.NamedProperties[i];
-                    if (namedProperty.PropertyName == propertyName)
-                    {
-                        return true;
-                    }
+                    if (namedProperty.PropertyName == propertyName) return true;
                 }
-            }
 
             return false;
         }

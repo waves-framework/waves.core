@@ -21,9 +21,9 @@ using Fluid.Core.Logging.Sinks.Console.Rendering;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class NewLineTokenRenderer : OutputTemplateTokenRenderer
+    internal class NewLineTokenRenderer : OutputTemplateTokenRenderer
     {
-        readonly Alignment? _alignment;
+        private readonly Alignment? _alignment;
 
         public NewLineTokenRenderer(Alignment? alignment)
         {

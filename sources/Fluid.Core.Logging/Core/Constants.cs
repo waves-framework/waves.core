@@ -15,14 +15,14 @@
 namespace Fluid.Core.Logging.Core
 {
     /// <summary>
-    /// Constants used in the core logging pipeline and associated types.
+    ///     Constants used in the core logging pipeline and associated types.
     /// </summary>
     public static class Constants
     {
         /// <summary>
-        /// The name of the property included in the emitted log events
-        /// when <code>ForContext&lt;T&gt;()</code> and overloads are
-        /// applied.
+        ///     The name of the property included in the emitted log events
+        ///     when <code>ForContext&lt;T&gt;()</code> and overloads are
+        ///     applied.
         /// </summary>
         public const string SourceContextPropertyName = "SourceContext";
     }

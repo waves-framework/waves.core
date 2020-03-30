@@ -14,13 +14,13 @@
 
 namespace Fluid.Core.Logging.Rendering
 {
-    static class Casing
+    internal static class Casing
     {
         /// <summary>
-        /// Apply upper or lower casing to <paramref name="value"/> when <paramref name="format"/> is provided.
-        /// Returns <paramref name="value"/> when no or invalid format provided
+        ///     Apply upper or lower casing to <paramref name="value" /> when <paramref name="format" /> is provided.
+        ///     Returns <paramref name="value" /> when no or invalid format provided
         /// </summary>
-        /// <returns>The provided <paramref name="value"/> with formatting applied</returns>
+        /// <returns>The provided <paramref name="value" /> with formatting applied</returns>
         public static string Format(string value, string format = null)
         {
             switch (format)

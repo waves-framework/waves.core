@@ -8,13 +8,12 @@ namespace Fluid.Core.IO
 {
     public class Directory : FileSystemObject
     {
-        private string _name;
-
         private readonly DirectoryInfo _directoryInfo;
 
-        private DirectoryType _type = DirectoryType.Directory;
-
         private ObservableCollection<IFileSystemObject> _children = new ObservableCollection<IFileSystemObject>();
+        private string _name;
+
+        private DirectoryType _type = DirectoryType.Directory;
 
         /// <summary>
         ///     Новый экземпляр директории.
@@ -47,21 +46,6 @@ namespace Fluid.Core.IO
             }
         }
 
-        /// <inheritdoc />
-        public override Guid Id { get; } = Guid.NewGuid();
-
-        /// <inheritdoc />
-        public sealed override string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == _name) return;
-                _name = value;
-                OnPropertyChanged();
-            }
-        }
-
         /// <summary>
         ///     Новый экземпляр директории.
         /// </summary>
@@ -84,6 +68,21 @@ namespace Fluid.Core.IO
             {
                 Console.WriteLine(e);
                 throw;
+            }
+        }
+
+        /// <inheritdoc />
+        public override Guid Id { get; } = Guid.NewGuid();
+
+        /// <inheritdoc />
+        public sealed override string Name
+        {
+            get => _name;
+            set
+            {
+                if (value == _name) return;
+                _name = value;
+                OnPropertyChanged();
             }
         }
 

@@ -20,9 +20,9 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Sinks
 {
-    class SafeAggregateSink : ILogEventSink
+    internal class SafeAggregateSink : ILogEventSink
     {
-        readonly ILogEventSink[] _sinks;
+        private readonly ILogEventSink[] _sinks;
 
         public SafeAggregateSink(IEnumerable<ILogEventSink> sinks)
         {
@@ -33,7 +33,6 @@ namespace Fluid.Core.Logging.Core.Sinks
         public void Emit(LogEvent logEvent)
         {
             foreach (var sink in _sinks)
-            {
                 try
                 {
                     sink.Emit(logEvent);
@@ -42,7 +41,6 @@ namespace Fluid.Core.Logging.Core.Sinks
                 {
                     SelfLog.WriteLine("Caught exception while emitting to sink {0}: {1}", sink, ex);
                 }
-            }
         }
     }
 }

@@ -3,12 +3,12 @@
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Size base structure.
+    ///     Size base structure.
     /// </summary>
     public struct Size : ISize
     {
         /// <summary>
-        /// Creates new instance of size (square).
+        ///     Creates new instance of size (square).
         /// </summary>
         /// <param name="length">Length.</param>
         public Size(float length)
@@ -42,7 +42,7 @@ namespace Fluid.Core.Base
         public float Aspect => Width / Height;
 
         /// <summary>
-        /// Gets whether two size structures are equals.
+        ///     Gets whether two size structures are equals.
         /// </summary>
         /// <param name="other">The second structure.</param>
         /// <returns>Return true if equals, false if not.</returns>

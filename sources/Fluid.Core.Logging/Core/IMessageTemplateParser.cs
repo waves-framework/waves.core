@@ -16,7 +16,7 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core
 {
-    interface IMessageTemplateParser
+    internal interface IMessageTemplateParser
     {
         MessageTemplate Parse(string messageTemplate);
     }

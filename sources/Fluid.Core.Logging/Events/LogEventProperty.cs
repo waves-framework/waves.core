@@ -17,12 +17,12 @@ using System;
 namespace Fluid.Core.Logging.Events
 {
     /// <summary>
-    /// A property associated with a <see cref="LogEvent"/>.
+    ///     A property associated with a <see cref="LogEvent" />.
     /// </summary>
     public class LogEventProperty
     {
         /// <summary>
-        /// Construct a <see cref="LogEventProperty"/> with the specified name and value.
+        ///     Construct a <see cref="LogEventProperty" /> with the specified name and value.
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <param name="value">The value of the property.</param>
@@ -39,7 +39,7 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// Construct a <see cref="LogEventProperty"/> from an existing <see cref="EventProperty"/> instance.
+        ///     Construct a <see cref="LogEventProperty" /> from an existing <see cref="EventProperty" /> instance.
         /// </summary>
         /// <param name="property">The existing property.</param>
         /// <exception cref="ArgumentException"></exception>
@@ -52,20 +52,23 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// The name of the property.
+        ///     The name of the property.
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// The value of the property.
+        ///     The value of the property.
         /// </summary>
         public LogEventPropertyValue Value { get; }
 
         /// <summary>
-        /// Test <paramref name="name" /> to determine if it is a valid property name.
+        ///     Test <paramref name="name" /> to determine if it is a valid property name.
         /// </summary>
         /// <param name="name">The name to check.</param>
         /// <returns>True if the name is valid; otherwise, false.</returns>
-        public static bool IsValidName(string name) => !string.IsNullOrWhiteSpace(name);
+        public static bool IsValidName(string name)
+        {
+            return !string.IsNullOrWhiteSpace(name);
+        }
     }
 }

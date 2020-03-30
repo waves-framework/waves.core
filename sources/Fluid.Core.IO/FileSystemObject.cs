@@ -5,13 +5,12 @@ namespace Fluid.Core.IO
 {
     public abstract class FileSystemObject : Object, IFileSystemObject
     {
-        private IFileSystemObject _parent;
+        private string _fullName;
 
         private bool _isHidden;
         private bool _isSelected;
-
-        private string _fullName;
         private string _name;
+        private IFileSystemObject _parent;
 
         /// <inheritdoc />
         public bool IsSelected

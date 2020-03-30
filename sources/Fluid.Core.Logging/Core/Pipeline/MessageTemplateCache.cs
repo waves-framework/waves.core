@@ -22,19 +22,19 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Pipeline
 {
-    class MessageTemplateCache : IMessageTemplateParser
+    internal class MessageTemplateCache : IMessageTemplateParser
     {
-        readonly IMessageTemplateParser _innerParser;
-        readonly object _templatesLock = new object();
+        private readonly IMessageTemplateParser _innerParser;
+        private readonly object _templatesLock = new object();
 
 #if HASHTABLE
         readonly Hashtable _templates = new Hashtable();
 #else
-        readonly Dictionary<string, MessageTemplate> _templates = new Dictionary<string, MessageTemplate>();
+        private readonly Dictionary<string, MessageTemplate> _templates = new Dictionary<string, MessageTemplate>();
 #endif
 
-        const int MaxCacheItems = 1000;
-        const int MaxCachedTemplateLength = 1024;
+        private const int MaxCacheItems = 1000;
+        private const int MaxCachedTemplateLength = 1024;
 
         public MessageTemplateCache(IMessageTemplateParser innerParser)
         {
@@ -57,8 +57,10 @@ namespace Fluid.Core.Logging.Core.Pipeline
 #else
             MessageTemplate result;
             lock (_templatesLock)
+            {
                 if (_templates.TryGetValue(messageTemplate, out result))
                     return result;
+            }
 #endif
 
             result = _innerParser.Parse(messageTemplate);

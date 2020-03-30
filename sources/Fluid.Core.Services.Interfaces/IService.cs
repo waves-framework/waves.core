@@ -17,7 +17,7 @@ namespace Fluid.Core.Services.Interfaces
         void Initialize();
 
         /// <summary>
-        /// Загрузка конфигурации.
+        ///     Загрузка конфигурации.
         /// </summary>
         void LoadConfiguration(IConfiguration configuration);
 
@@ -25,10 +25,5 @@ namespace Fluid.Core.Services.Interfaces
         ///     Сохранение конфигурации.
         /// </summary>
         void SaveConfiguration(IConfiguration configuration);
-
-        /// <summary>
-        ///     Событие отправки сообщенияю
-        /// </summary>
-        event EventHandler<IMessage> MessageReceived;
     }
 }

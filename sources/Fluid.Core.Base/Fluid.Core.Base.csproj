@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	
+
   <Import Project="../../props/Fluid.Core.props" />
-	
+
   <ItemGroup>
     <PackageReference Include="Fody" Version="6.1.1">
       <PrivateAssets>all</PrivateAssets>

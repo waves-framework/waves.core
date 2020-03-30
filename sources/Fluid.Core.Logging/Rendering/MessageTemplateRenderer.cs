@@ -22,25 +22,23 @@ using Fluid.Core.Logging.Parsing;
 
 namespace Fluid.Core.Logging.Rendering
 {
-    static class MessageTemplateRenderer
+    internal static class MessageTemplateRenderer
     {
-        static readonly JsonValueFormatter JsonValueFormatter = new JsonValueFormatter("$type");
+        private static readonly JsonValueFormatter JsonValueFormatter = new JsonValueFormatter("$type");
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Render(MessageTemplate messageTemplate, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output, string format = null, IFormatProvider formatProvider = null)
+        public static void Render(MessageTemplate messageTemplate,
+            IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output, string format = null,
+            IFormatProvider formatProvider = null)
         {
             bool isLiteral = false, isJson = false;
 
             if (format != null)
-            {
                 for (var i = 0; i < format.Length; ++i)
-                {
                     if (format[i] == 'l')
                         isLiteral = true;
                     else if (format[i] == 'j')
                         isJson = true;
-                }
-            }
 
             for (var ti = 0; ti < messageTemplate.TokenArray.Length; ++ti)
             {
@@ -51,7 +49,7 @@ namespace Fluid.Core.Logging.Rendering
                 }
                 else
                 {
-                    var pt = (PropertyToken)token;
+                    var pt = (PropertyToken) token;
                     RenderPropertyToken(pt, properties, output, formatProvider, isLiteral, isJson);
                 }
             }
@@ -62,7 +60,9 @@ namespace Fluid.Core.Logging.Rendering
             output.Write(tt.Text);
         }
 
-        public static void RenderPropertyToken(PropertyToken pt, IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output, IFormatProvider formatProvider, bool isLiteral, bool isJson)
+        public static void RenderPropertyToken(PropertyToken pt,
+            IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output,
+            IFormatProvider formatProvider, bool isLiteral, bool isJson)
         {
             if (!properties.TryGetValue(pt.PropertyName, out var propertyValue))
             {
@@ -89,20 +89,15 @@ namespace Fluid.Core.Logging.Rendering
             Padding.Apply(output, value, pt.Alignment.Value);
         }
 
-        static void RenderValue(LogEventPropertyValue propertyValue, bool literal, bool json, TextWriter output, string format, IFormatProvider formatProvider)
+        private static void RenderValue(LogEventPropertyValue propertyValue, bool literal, bool json, TextWriter output,
+            string format, IFormatProvider formatProvider)
         {
             if (literal && propertyValue is ScalarValue sv && sv.Value is string str)
-            {
                 output.Write(str);
-            }
             else if (json && format == null)
-            {
                 JsonValueFormatter.Format(propertyValue, output);
-            }
             else
-            {
                 propertyValue.Render(output, format, formatProvider);
-            }
         }
     }
 }

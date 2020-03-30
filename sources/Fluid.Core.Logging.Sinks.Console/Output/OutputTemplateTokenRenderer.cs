@@ -17,7 +17,7 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    abstract class OutputTemplateTokenRenderer
+    internal abstract class OutputTemplateTokenRenderer
     {
         public abstract void Render(LogEvent logEvent, TextWriter output);
     }

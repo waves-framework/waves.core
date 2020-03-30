@@ -27,35 +27,52 @@ using Fluid.Core.Logging.Formatting.Json;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    /// <summary>Extends <see cref="LoggerConfiguration"/> with methods to add file sinks.</summary>
+    /// <summary>Extends <see cref="LoggerConfiguration" /> with methods to add file sinks.</summary>
     public static class FileLoggerConfigurationExtensions
     {
-        const int DefaultRetainedFileCountLimit = 31; // A long month of logs
-        const long DefaultFileSizeLimitBytes = 1L * 1024 * 1024 * 1024;
-        const string DefaultOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+        private const int DefaultRetainedFileCountLimit = 31; // A long month of logs
+        private const long DefaultFileSizeLimitBytes = 1L * 1024 * 1024 * 1024;
+
+        private const string DefaultOutputTemplate =
+            "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}";
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        /// <param name="outputTemplate">A message template describing the format used to write to the sink.
-        /// the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".</param>
-        /// <param name="fileSizeLimitBytes">The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-        /// For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the limit
-        /// will be written in full even if it exceeds the limit.</param>
-        /// <param name="buffered">Indicates if flushing to the output file can be buffered or not. The default
-        /// is false.</param>
+        /// <param name="outputTemplate">
+        ///     A message template describing the format used to write to the sink.
+        ///     the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".
+        /// </param>
+        /// <param name="fileSizeLimitBytes">
+        ///     The approximate maximum size, in bytes, to which a log file will be allowed to grow.
+        ///     For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
+        ///     limit
+        ///     will be written in full even if it exceeds the limit.
+        /// </param>
+        /// <param name="buffered">
+        ///     Indicates if flushing to the output file can be buffered or not. The default
+        ///     is false.
+        /// </param>
         /// <param name="shared">Allow the log file to be shared by multiple processes. The default is false.</param>
-        /// <param name="flushToDiskInterval">If provided, a full disk flush will be performed periodically at the specified interval.</param>
+        /// <param name="flushToDiskInterval">
+        ///     If provided, a full disk flush will be performed periodically at the specified
+        ///     interval.
+        /// </param>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <remarks>The file will be written using the UTF-8 character set.</remarks>
-        [Obsolete("New code should not be compiled against this obsolete overload"), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("New code should not be compiled against this obsolete overload")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static LoggerConfiguration File(
             this LoggerSinkConfiguration sinkConfiguration,
             string path,
@@ -68,34 +85,51 @@ namespace Fluid.Core.Logging.Sinks.File
             bool shared,
             TimeSpan? flushToDiskInterval)
         {
-            return File(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider, fileSizeLimitBytes,
+            return File(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider,
+                fileSizeLimitBytes,
                 levelSwitch, buffered, shared, flushToDiskInterval, RollingInterval.Infinite, false, null, null, null);
         }
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
-        /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
-        /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="File(LoggerSinkConfiguration, string, LogEventLevel, string, IFormatProvider, long?, LoggingLevelSwitch, bool, bool, TimeSpan?)"/>
-        /// and specify the outputTemplate parameter instead.
+        /// <param name="formatter">
+        ///     A formatter, such as <see cref="JsonFormatter" />, to convert the log events into
+        ///     text for the file. If control of regular text formatting is required, use the other
+        ///     overload of
+        ///     <see
+        ///         cref="File(LoggerSinkConfiguration, string, LogEventLevel, string, IFormatProvider, long?, LoggingLevelSwitch, bool, bool, TimeSpan?)" />
+        ///     and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
-        /// <param name="fileSizeLimitBytes">The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-        /// For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the limit
-        /// will be written in full even if it exceeds the limit.</param>
-        /// <param name="buffered">Indicates if flushing to the output file can be buffered or not. The default
-        /// is false.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
+        /// <param name="fileSizeLimitBytes">
+        ///     The approximate maximum size, in bytes, to which a log file will be allowed to grow.
+        ///     For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
+        ///     limit
+        ///     will be written in full even if it exceeds the limit.
+        /// </param>
+        /// <param name="buffered">
+        ///     Indicates if flushing to the output file can be buffered or not. The default
+        ///     is false.
+        /// </param>
         /// <param name="shared">Allow the log file to be shared by multiple processes. The default is false.</param>
-        /// <param name="flushToDiskInterval">If provided, a full disk flush will be performed periodically at the specified interval.</param>
+        /// <param name="flushToDiskInterval">
+        ///     If provided, a full disk flush will be performed periodically at the specified
+        ///     interval.
+        /// </param>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <remarks>The file will be written using the UTF-8 character set.</remarks>
-        [Obsolete("New code should not be compiled against this obsolete overload"), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("New code should not be compiled against this obsolete overload")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static LoggerConfiguration File(
             this LoggerSinkConfiguration sinkConfiguration,
             ITextFormatter formatter,
@@ -112,32 +146,51 @@ namespace Fluid.Core.Logging.Sinks.File
         }
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        /// <param name="outputTemplate">A message template describing the format used to write to the sink.
-        /// the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".</param>
-        /// <param name="fileSizeLimitBytes">The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-        /// For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the limit
-        /// will be written in full even if it exceeds the limit.</param>
-        /// <param name="buffered">Indicates if flushing to the output file can be buffered or not. The default
-        /// is false.</param>
+        /// <param name="outputTemplate">
+        ///     A message template describing the format used to write to the sink.
+        ///     the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".
+        /// </param>
+        /// <param name="fileSizeLimitBytes">
+        ///     The approximate maximum size, in bytes, to which a log file will be allowed to grow.
+        ///     For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
+        ///     limit
+        ///     will be written in full even if it exceeds the limit.
+        /// </param>
+        /// <param name="buffered">
+        ///     Indicates if flushing to the output file can be buffered or not. The default
+        ///     is false.
+        /// </param>
         /// <param name="shared">Allow the log file to be shared by multiple processes. The default is false.</param>
-        /// <param name="flushToDiskInterval">If provided, a full disk flush will be performed periodically at the specified interval.</param>
+        /// <param name="flushToDiskInterval">
+        ///     If provided, a full disk flush will be performed periodically at the specified
+        ///     interval.
+        /// </param>
         /// <param name="rollingInterval">The interval at which logging will roll over to a new file.</param>
-        /// <param name="rollOnFileSizeLimit">If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
-        /// will have a number appended in the format <code>_NNN</code>, with the first filename given no number.</param>
-        /// <param name="retainedFileCountLimit">The maximum number of log files that will be retained,
-        /// including the current log file. For unlimited retention, pass null. The default is 31.</param>
+        /// <param name="rollOnFileSizeLimit">
+        ///     If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
+        ///     will have a number appended in the format <code>_NNN</code>, with the first filename given no number.
+        /// </param>
+        /// <param name="retainedFileCountLimit">
+        ///     The maximum number of log files that will be retained,
+        ///     including the current log file. For unlimited retention, pass null. The default is 31.
+        /// </param>
         /// <param name="encoding">Character encoding used to write the text file. The default is UTF-8 without BOM.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
-        [Obsolete("New code should not be compiled against this obsolete overload"), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("New code should not be compiled against this obsolete overload")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static LoggerConfiguration File(
             this LoggerSinkConfiguration sinkConfiguration,
             string path,
@@ -154,39 +207,61 @@ namespace Fluid.Core.Logging.Sinks.File
             int? retainedFileCountLimit,
             Encoding encoding)
         {
-            return File(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider, fileSizeLimitBytes, levelSwitch, buffered,
-                shared, flushToDiskInterval, rollingInterval, rollOnFileSizeLimit, retainedFileCountLimit, encoding, null);
+            return File(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider,
+                fileSizeLimitBytes, levelSwitch, buffered,
+                shared, flushToDiskInterval, rollingInterval, rollOnFileSizeLimit, retainedFileCountLimit, encoding,
+                null);
         }
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
-        /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
-        /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="File(LoggerSinkConfiguration, string, LogEventLevel, string, IFormatProvider, long?, LoggingLevelSwitch, bool, bool, TimeSpan?, RollingInterval, bool, int?, Encoding, FileLifecycleHooks)"/>
-        /// and specify the outputTemplate parameter instead.
+        /// <param name="formatter">
+        ///     A formatter, such as <see cref="JsonFormatter" />, to convert the log events into
+        ///     text for the file. If control of regular text formatting is required, use the other
+        ///     overload of
+        ///     <see
+        ///         cref="File(LoggerSinkConfiguration, string, LogEventLevel, string, IFormatProvider, long?, LoggingLevelSwitch, bool, bool, TimeSpan?, RollingInterval, bool, int?, Encoding, FileLifecycleHooks)" />
+        ///     and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
-        /// <param name="fileSizeLimitBytes">The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-        /// For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the limit
-        /// will be written in full even if it exceeds the limit.</param>
-        /// <param name="buffered">Indicates if flushing to the output file can be buffered or not. The default
-        /// is false.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
+        /// <param name="fileSizeLimitBytes">
+        ///     The approximate maximum size, in bytes, to which a log file will be allowed to grow.
+        ///     For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
+        ///     limit
+        ///     will be written in full even if it exceeds the limit.
+        /// </param>
+        /// <param name="buffered">
+        ///     Indicates if flushing to the output file can be buffered or not. The default
+        ///     is false.
+        /// </param>
         /// <param name="shared">Allow the log file to be shared by multiple processes. The default is false.</param>
-        /// <param name="flushToDiskInterval">If provided, a full disk flush will be performed periodically at the specified interval.</param>
+        /// <param name="flushToDiskInterval">
+        ///     If provided, a full disk flush will be performed periodically at the specified
+        ///     interval.
+        /// </param>
         /// <param name="rollingInterval">The interval at which logging will roll over to a new file.</param>
-        /// <param name="rollOnFileSizeLimit">If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
-        /// will have a number appended in the format <code>_NNN</code>, with the first filename given no number.</param>
-        /// <param name="retainedFileCountLimit">The maximum number of log files that will be retained,
-        /// including the current log file. For unlimited retention, pass null. The default is 31.</param>
+        /// <param name="rollOnFileSizeLimit">
+        ///     If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
+        ///     will have a number appended in the format <code>_NNN</code>, with the first filename given no number.
+        /// </param>
+        /// <param name="retainedFileCountLimit">
+        ///     The maximum number of log files that will be retained,
+        ///     including the current log file. For unlimited retention, pass null. The default is 31.
+        /// </param>
         /// <param name="encoding">Character encoding used to write the text file. The default is UTF-8 without BOM.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
-        [Obsolete("New code should not be compiled against this obsolete overload"), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("New code should not be compiled against this obsolete overload")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static LoggerConfiguration File(
             this LoggerSinkConfiguration sinkConfiguration,
             ITextFormatter formatter,
@@ -202,34 +277,54 @@ namespace Fluid.Core.Logging.Sinks.File
             int? retainedFileCountLimit,
             Encoding encoding)
         {
-            return File(sinkConfiguration, formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes, levelSwitch, buffered,
-                shared, flushToDiskInterval, rollingInterval, rollOnFileSizeLimit, retainedFileCountLimit, encoding, null);
+            return File(sinkConfiguration, formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes, levelSwitch,
+                buffered,
+                shared, flushToDiskInterval, rollingInterval, rollOnFileSizeLimit, retainedFileCountLimit, encoding,
+                null);
         }
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        /// <param name="outputTemplate">A message template describing the format used to write to the sink.
-        /// the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".</param>
-        /// <param name="fileSizeLimitBytes">The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-        /// For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the limit
-        /// will be written in full even if it exceeds the limit.</param>
-        /// <param name="buffered">Indicates if flushing to the output file can be buffered or not. The default
-        /// is false.</param>
+        /// <param name="outputTemplate">
+        ///     A message template describing the format used to write to the sink.
+        ///     the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".
+        /// </param>
+        /// <param name="fileSizeLimitBytes">
+        ///     The approximate maximum size, in bytes, to which a log file will be allowed to grow.
+        ///     For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
+        ///     limit
+        ///     will be written in full even if it exceeds the limit.
+        /// </param>
+        /// <param name="buffered">
+        ///     Indicates if flushing to the output file can be buffered or not. The default
+        ///     is false.
+        /// </param>
         /// <param name="shared">Allow the log file to be shared by multiple processes. The default is false.</param>
-        /// <param name="flushToDiskInterval">If provided, a full disk flush will be performed periodically at the specified interval.</param>
+        /// <param name="flushToDiskInterval">
+        ///     If provided, a full disk flush will be performed periodically at the specified
+        ///     interval.
+        /// </param>
         /// <param name="rollingInterval">The interval at which logging will roll over to a new file.</param>
-        /// <param name="rollOnFileSizeLimit">If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
-        /// will have a number appended in the format <code>_NNN</code>, with the first filename given no number.</param>
-        /// <param name="retainedFileCountLimit">The maximum number of log files that will be retained,
-        /// including the current log file. For unlimited retention, pass null. The default is 31.</param>
+        /// <param name="rollOnFileSizeLimit">
+        ///     If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
+        ///     will have a number appended in the format <code>_NNN</code>, with the first filename given no number.
+        /// </param>
+        /// <param name="retainedFileCountLimit">
+        ///     The maximum number of log files that will be retained,
+        ///     including the current log file. For unlimited retention, pass null. The default is 31.
+        /// </param>
         /// <param name="encoding">Character encoding used to write the text file. The default is UTF-8 without BOM.</param>
         /// <param name="hooks">Optionally enables hooking into log file lifecycle events.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -261,31 +356,50 @@ namespace Fluid.Core.Logging.Sinks.File
         }
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
-        /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
-        /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="File(LoggerSinkConfiguration, string, LogEventLevel, string, IFormatProvider, long?, LoggingLevelSwitch, bool, bool, TimeSpan?, RollingInterval, bool, int?, Encoding, FileLifecycleHooks)"/>
-        /// and specify the outputTemplate parameter instead.
+        /// <param name="formatter">
+        ///     A formatter, such as <see cref="JsonFormatter" />, to convert the log events into
+        ///     text for the file. If control of regular text formatting is required, use the other
+        ///     overload of
+        ///     <see
+        ///         cref="File(LoggerSinkConfiguration, string, LogEventLevel, string, IFormatProvider, long?, LoggingLevelSwitch, bool, bool, TimeSpan?, RollingInterval, bool, int?, Encoding, FileLifecycleHooks)" />
+        ///     and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
-        /// <param name="fileSizeLimitBytes">The approximate maximum size, in bytes, to which a log file will be allowed to grow.
-        /// For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the limit
-        /// will be written in full even if it exceeds the limit.</param>
-        /// <param name="buffered">Indicates if flushing to the output file can be buffered or not. The default
-        /// is false.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
+        /// <param name="fileSizeLimitBytes">
+        ///     The approximate maximum size, in bytes, to which a log file will be allowed to grow.
+        ///     For unrestricted growth, pass null. The default is 1 GB. To avoid writing partial events, the last event within the
+        ///     limit
+        ///     will be written in full even if it exceeds the limit.
+        /// </param>
+        /// <param name="buffered">
+        ///     Indicates if flushing to the output file can be buffered or not. The default
+        ///     is false.
+        /// </param>
         /// <param name="shared">Allow the log file to be shared by multiple processes. The default is false.</param>
-        /// <param name="flushToDiskInterval">If provided, a full disk flush will be performed periodically at the specified interval.</param>
+        /// <param name="flushToDiskInterval">
+        ///     If provided, a full disk flush will be performed periodically at the specified
+        ///     interval.
+        /// </param>
         /// <param name="rollingInterval">The interval at which logging will roll over to a new file.</param>
-        /// <param name="rollOnFileSizeLimit">If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
-        /// will have a number appended in the format <code>_NNN</code>, with the first filename given no number.</param>
-        /// <param name="retainedFileCountLimit">The maximum number of log files that will be retained,
-        /// including the current log file. For unlimited retention, pass null. The default is 31.</param>
+        /// <param name="rollOnFileSizeLimit">
+        ///     If <code>true</code>, a new file will be created when the file size limit is reached. Filenames
+        ///     will have a number appended in the format <code>_NNN</code>, with the first filename given no number.
+        /// </param>
+        /// <param name="retainedFileCountLimit">
+        ///     The maximum number of log files that will be retained,
+        ///     including the current log file. For unlimited retention, pass null. The default is 31.
+        /// </param>
         /// <param name="encoding">Character encoding used to write the text file. The default is UTF-8 without BOM.</param>
         /// <param name="hooks">Optionally enables hooking into log file lifecycle events.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -309,26 +423,34 @@ namespace Fluid.Core.Logging.Sinks.File
             if (formatter == null) throw new ArgumentNullException(nameof(formatter));
             if (path == null) throw new ArgumentNullException(nameof(path));
 
-            return ConfigureFile(sinkConfiguration.Sink, formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes, levelSwitch,
+            return ConfigureFile(sinkConfiguration.Sink, formatter, path, restrictedToMinimumLevel, fileSizeLimitBytes,
+                levelSwitch,
                 buffered, false, shared, flushToDiskInterval, encoding, rollingInterval, rollOnFileSizeLimit,
                 retainedFileCountLimit, hooks);
         }
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        /// <param name="outputTemplate">A message template describing the format used to write to the sink.
-        /// the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".</param>
+        /// <param name="outputTemplate">
+        ///     A message template describing the format used to write to the sink.
+        ///     the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".
+        /// </param>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <remarks>The file will be written using the UTF-8 character set.</remarks>
-        [Obsolete("New code should not be compiled against this obsolete overload"), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("New code should not be compiled against this obsolete overload")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static LoggerConfiguration File(
             this LoggerAuditSinkConfiguration sinkConfiguration,
             string path,
@@ -337,26 +459,34 @@ namespace Fluid.Core.Logging.Sinks.File
             IFormatProvider formatProvider,
             LoggingLevelSwitch levelSwitch)
         {
-            return File(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider, levelSwitch, null, null);
+            return File(sinkConfiguration, path, restrictedToMinimumLevel, outputTemplate, formatProvider, levelSwitch,
+                null, null);
         }
 
         /// <summary>
-        /// Write log events to the specified file.
+        ///     Write log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
-        /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
-        /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="File(LoggerAuditSinkConfiguration, string, LogEventLevel, string, IFormatProvider, LoggingLevelSwitch)"/>
-        /// and specify the outputTemplate parameter instead.
+        /// <param name="formatter">
+        ///     A formatter, such as <see cref="JsonFormatter" />, to convert the log events into
+        ///     text for the file. If control of regular text formatting is required, use the other
+        ///     overload of
+        ///     <see cref="File(LoggerAuditSinkConfiguration, string, LogEventLevel, string, IFormatProvider, LoggingLevelSwitch)" />
+        ///     and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <remarks>The file will be written using the UTF-8 character set.</remarks>
-        [Obsolete("New code should not be compiled against this obsolete overload"), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("New code should not be compiled against this obsolete overload")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static LoggerConfiguration File(
             this LoggerAuditSinkConfiguration sinkConfiguration,
             ITextFormatter formatter,
@@ -366,19 +496,25 @@ namespace Fluid.Core.Logging.Sinks.File
         {
             return File(sinkConfiguration, formatter, path, restrictedToMinimumLevel, levelSwitch, null, null);
         }
-        
+
         /// <summary>
-        /// Write audit log events to the specified file.
+        ///     Write audit log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        /// <param name="outputTemplate">A message template describing the format used to write to the sink.
-        /// the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".</param>
+        /// <param name="outputTemplate">
+        ///     A message template describing the format used to write to the sink.
+        ///     the default is "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}".
+        /// </param>
         /// <param name="encoding">Character encoding used to write the text file. The default is UTF-8 without BOM.</param>
         /// <param name="hooks">Optionally enables hooking into log file lifecycle events.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -401,19 +537,26 @@ namespace Fluid.Core.Logging.Sinks.File
         }
 
         /// <summary>
-        /// Write audit log events to the specified file.
+        ///     Write audit log events to the specified file.
         /// </summary>
         /// <param name="sinkConfiguration">Logger sink configuration.</param>
-        /// <param name="formatter">A formatter, such as <see cref="JsonFormatter"/>, to convert the log events into
-        /// text for the file. If control of regular text formatting is required, use the other
-        /// overload of <see cref="File(LoggerAuditSinkConfiguration, string, LogEventLevel, string, IFormatProvider, LoggingLevelSwitch, Encoding, FileLifecycleHooks)"/>
-        /// and specify the outputTemplate parameter instead.
+        /// <param name="formatter">
+        ///     A formatter, such as <see cref="JsonFormatter" />, to convert the log events into
+        ///     text for the file. If control of regular text formatting is required, use the other
+        ///     overload of
+        ///     <see
+        ///         cref="File(LoggerAuditSinkConfiguration, string, LogEventLevel, string, IFormatProvider, LoggingLevelSwitch, Encoding, FileLifecycleHooks)" />
+        ///     and specify the outputTemplate parameter instead.
         /// </param>
         /// <param name="path">Path to the file.</param>
-        /// <param name="restrictedToMinimumLevel">The minimum level for
-        /// events passed through the sink. Ignored when <paramref name="levelSwitch"/> is specified.</param>
-        /// <param name="levelSwitch">A switch allowing the pass-through minimum level
-        /// to be changed at runtime.</param>
+        /// <param name="restrictedToMinimumLevel">
+        ///     The minimum level for
+        ///     events passed through the sink. Ignored when <paramref name="levelSwitch" /> is specified.
+        /// </param>
+        /// <param name="levelSwitch">
+        ///     A switch allowing the pass-through minimum level
+        ///     to be changed at runtime.
+        /// </param>
         /// <param name="encoding">Character encoding used to write the text file. The default is UTF-8 without BOM.</param>
         /// <param name="hooks">Optionally enables hooking into log file lifecycle events.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -430,11 +573,12 @@ namespace Fluid.Core.Logging.Sinks.File
             if (formatter == null) throw new ArgumentNullException(nameof(formatter));
             if (path == null) throw new ArgumentNullException(nameof(path));
 
-            return ConfigureFile(sinkConfiguration.Sink, formatter, path, restrictedToMinimumLevel, null, levelSwitch, false, true,
+            return ConfigureFile(sinkConfiguration.Sink, formatter, path, restrictedToMinimumLevel, null, levelSwitch,
+                false, true,
                 false, null, encoding, RollingInterval.Infinite, false, null, hooks);
         }
 
-        static LoggerConfiguration ConfigureFile(
+        private static LoggerConfiguration ConfigureFile(
             this Func<ILogEventSink, LogEventLevel, LoggingLevelSwitch, LoggerConfiguration> addSink,
             ITextFormatter formatter,
             string path,
@@ -454,19 +598,24 @@ namespace Fluid.Core.Logging.Sinks.File
             if (addSink == null) throw new ArgumentNullException(nameof(addSink));
             if (formatter == null) throw new ArgumentNullException(nameof(formatter));
             if (path == null) throw new ArgumentNullException(nameof(path));
-            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0) throw new ArgumentException("Negative value provided; file size limit must be non-negative.", nameof(fileSizeLimitBytes));
-            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1) throw new ArgumentException("At least one file must be retained.", nameof(retainedFileCountLimit));
-            if (shared && buffered) throw new ArgumentException("Buffered writes are not available when file sharing is enabled.", nameof(buffered));
-            if (shared && hooks != null) throw new ArgumentException("File lifecycle hooks are not currently supported for shared log files.", nameof(hooks));
+            if (fileSizeLimitBytes.HasValue && fileSizeLimitBytes < 0)
+                throw new ArgumentException("Negative value provided; file size limit must be non-negative.",
+                    nameof(fileSizeLimitBytes));
+            if (retainedFileCountLimit.HasValue && retainedFileCountLimit < 1)
+                throw new ArgumentException("At least one file must be retained.", nameof(retainedFileCountLimit));
+            if (shared && buffered)
+                throw new ArgumentException("Buffered writes are not available when file sharing is enabled.",
+                    nameof(buffered));
+            if (shared && hooks != null)
+                throw new ArgumentException("File lifecycle hooks are not currently supported for shared log files.",
+                    nameof(hooks));
 
             ILogEventSink sink;
 
             if (rollOnFileSizeLimit || rollingInterval != RollingInterval.Infinite)
-            {
-                sink = new RollingFileSink(path, formatter, fileSizeLimitBytes, retainedFileCountLimit, encoding, buffered, shared, rollingInterval, rollOnFileSizeLimit, hooks);
-            }
+                sink = new RollingFileSink(path, formatter, fileSizeLimitBytes, retainedFileCountLimit, encoding,
+                    buffered, shared, rollingInterval, rollOnFileSizeLimit, hooks);
             else
-            {
                 try
                 {
                     sink = new FileSink(path, formatter, fileSizeLimitBytes, encoding, buffered, hooks);
@@ -480,7 +629,6 @@ namespace Fluid.Core.Logging.Sinks.File
 
                     return addSink(new NullSink(), LevelAlias.Maximum, null);
                 }
-            }
 
             if (flushToDiskInterval.HasValue)
             {

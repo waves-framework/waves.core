@@ -15,17 +15,17 @@
 namespace Fluid.Core.Logging.Parsing
 {
     /// <summary>
-    /// Defines the direction of the alignment.
+    ///     Defines the direction of the alignment.
     /// </summary>
     public enum AlignmentDirection
     {
         /// <summary>
-        /// Text will be left-aligned.
+        ///     Text will be left-aligned.
         /// </summary>
         Left,
 
         /// <summary>
-        /// Text will be right-aligned.
+        ///     Text will be right-aligned.
         /// </summary>
         Right
     }

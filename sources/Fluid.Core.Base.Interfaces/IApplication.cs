@@ -4,22 +4,22 @@ using System.Collections.Generic;
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of application classes.
+    ///     Interface of application classes.
     /// </summary>
     public interface IApplication : IObject, IDisposable
     {
         /// <summary>
-        ///     Gets whether the application is initialized. 
+        ///     Gets whether the application is initialized.
         /// </summary>
         bool IsInitialized { get; }
 
         /// <summary>
-        /// Gets icon's background color.
+        ///     Gets icon's background color.
         /// </summary>
         IColor IconBackgroundColor { get; }
 
         /// <summary>
-        /// Gets icon's foreground color.
+        ///     Gets icon's foreground color.
         /// </summary>
         IColor IconForegroundColor { get; }
 

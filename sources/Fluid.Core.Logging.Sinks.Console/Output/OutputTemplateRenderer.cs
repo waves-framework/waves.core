@@ -23,9 +23,9 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class OutputTemplateRenderer : ITextFormatter
+    internal class OutputTemplateRenderer : ITextFormatter
     {
-        readonly OutputTemplateTokenRenderer[] _renderers;
+        private readonly OutputTemplateTokenRenderer[] _renderers;
 
         public OutputTemplateRenderer(ConsoleTheme theme, string outputTemplate, IFormatProvider formatProvider)
         {
@@ -41,35 +41,21 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
                     continue;
                 }
 
-                var pt = (PropertyToken)token;
+                var pt = (PropertyToken) token;
                 if (pt.PropertyName == OutputProperties.LevelPropertyName)
-                {
                     renderers.Add(new LevelTokenRenderer(theme, pt));
-                }
                 else if (pt.PropertyName == OutputProperties.NewLinePropertyName)
-                {
                     renderers.Add(new NewLineTokenRenderer(pt.Alignment));
-                }
                 else if (pt.PropertyName == OutputProperties.ExceptionPropertyName)
-                {
                     renderers.Add(new ExceptionTokenRenderer(theme, pt));
-                }
                 else if (pt.PropertyName == OutputProperties.MessagePropertyName)
-                {
                     renderers.Add(new MessageTemplateOutputTokenRenderer(theme, pt, formatProvider));
-                }
                 else if (pt.PropertyName == OutputProperties.TimestampPropertyName)
-                {
                     renderers.Add(new TimestampTokenRenderer(theme, pt, formatProvider));
-                }
                 else if (pt.PropertyName == "Properties")
-                {
                     renderers.Add(new PropertiesTokenRenderer(theme, pt, template, formatProvider));
-                }
                 else
-                {
                     renderers.Add(new EventPropertyTokenRenderer(theme, pt, formatProvider));
-                }
             }
 
             _renderers = renderers.ToArray();

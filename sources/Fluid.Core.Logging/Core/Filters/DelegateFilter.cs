@@ -17,9 +17,9 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Filters
 {
-    class DelegateFilter : ILogEventFilter
+    internal class DelegateFilter : ILogEventFilter
     {
-        readonly Func<LogEvent, bool> _isEnabled;
+        private readonly Func<LogEvent, bool> _isEnabled;
 
         public DelegateFilter(Func<LogEvent, bool> isEnabled)
         {

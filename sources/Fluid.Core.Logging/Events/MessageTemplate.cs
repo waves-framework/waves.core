@@ -23,53 +23,51 @@ using Fluid.Core.Logging.Rendering;
 namespace Fluid.Core.Logging.Events
 {
     /// <summary>
-    /// Represents a message template passed to a log method. The template
-    /// can subsequently render the template in textual form given the list
-    /// of properties.
+    ///     Represents a message template passed to a log method. The template
+    ///     can subsequently render the template in textual form given the list
+    ///     of properties.
     /// </summary>
     public class MessageTemplate
     {
         /// <summary>
-        /// Represents the empty message template.
-        /// </summary>
-        public static MessageTemplate Empty { get; } = new MessageTemplate(Enumerable.Empty<MessageTemplateToken>());
-
-        readonly MessageTemplateToken[] _tokens;
-
-        /// <summary>
-        /// Construct a message template using manually-defined text and property tokens.
+        ///     Construct a message template using manually-defined text and property tokens.
         /// </summary>
         /// <param name="tokens">The text and property tokens defining the template.</param>
         public MessageTemplate(IEnumerable<MessageTemplateToken> tokens)
             // ReSharper disable PossibleMultipleEnumeration
             : this(string.Concat(tokens), tokens)
-            // ReSharper enable PossibleMultipleEnumeration
+        // ReSharper enable PossibleMultipleEnumeration
         {
         }
 
         /// <summary>
-        /// Construct a message template using manually-defined text and property tokens.
+        ///     Represents the empty message template.
         /// </summary>
-        /// <param name="text">The full text of the template; used by Serilog internally to avoid unneeded
-        /// string concatenation.</param>
+        public static MessageTemplate Empty { get; } = new MessageTemplate(Enumerable.Empty<MessageTemplateToken>());
+
+        /// <summary>
+        ///     Construct a message template using manually-defined text and property tokens.
+        /// </summary>
+        /// <param name="text">
+        ///     The full text of the template; used by Serilog internally to avoid unneeded
+        ///     string concatenation.
+        /// </param>
         /// <param name="tokens">The text and property tokens defining the template.</param>
         public MessageTemplate(string text, IEnumerable<MessageTemplateToken> tokens)
         {
             Text = text ?? throw new ArgumentNullException(nameof(text));
-            _tokens = (tokens ?? throw new ArgumentNullException(nameof(tokens))).ToArray();
+            TokenArray = (tokens ?? throw new ArgumentNullException(nameof(tokens))).ToArray();
 
-            var propertyTokens = GetElementsOfTypeToArray<PropertyToken>(_tokens);
+            var propertyTokens = GetElementsOfTypeToArray<PropertyToken>(TokenArray);
             if (propertyTokens.Length != 0)
             {
                 var allPositional = true;
                 var anyPositional = false;
                 foreach (var propertyToken in propertyTokens)
-                {
                     if (propertyToken.IsPositional)
                         anyPositional = true;
                     else
                         allPositional = false;
-                }
 
                 if (allPositional)
                 {
@@ -86,54 +84,56 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// Similar to <see cref="Enumerable.OfType{TResult}"/>, but faster.
+        ///     Similar to <see cref="Enumerable.OfType{TResult}" />, but faster.
         /// </summary>
-        static TResult[] GetElementsOfTypeToArray<TResult>(MessageTemplateToken[] tokens)
+        private static TResult[] GetElementsOfTypeToArray<TResult>(MessageTemplateToken[] tokens)
             where TResult : class
         {
             var result = new List<TResult>(tokens.Length / 2);
             for (var i = 0; i < tokens.Length; i++)
-            {
                 if (tokens[i] is TResult token)
-                {
                     result.Add(token);
-                }
-            }
             return result.ToArray();
         }
 
         /// <summary>
-        /// The raw text describing the template.
+        ///     The raw text describing the template.
         /// </summary>
         public string Text { get; }
 
         /// <summary>
-        /// Render the template as a string.
+        ///     Render the template as a string.
         /// </summary>
         /// <returns>The string representation of the template.</returns>
-        public override string ToString() => Text;
+        public override string ToString()
+        {
+            return Text;
+        }
 
         /// <summary>
-        /// The tokens parsed from the template.
+        ///     The tokens parsed from the template.
         /// </summary>
-        public IEnumerable<MessageTemplateToken> Tokens => _tokens;
+        public IEnumerable<MessageTemplateToken> Tokens => TokenArray;
 
-        internal MessageTemplateToken[] TokenArray => _tokens;
+        internal MessageTemplateToken[] TokenArray { get; }
 
         internal PropertyToken[] NamedProperties { get; }
 
         internal PropertyToken[] PositionalProperties { get; }
 
         /// <summary>
-        /// Convert the message template into a textual message, given the
-        /// properties matching the tokens in the message template.
+        ///     Convert the message template into a textual message, given the
+        ///     properties matching the tokens in the message template.
         /// </summary>
         /// <param name="properties">Properties matching template tokens.</param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        /// <returns>The message created from the template and properties. If the
-        /// properties are mismatched with the template, the template will be
-        /// returned with incomplete substitution.</returns>
-        public string Render(IReadOnlyDictionary<string, LogEventPropertyValue> properties, IFormatProvider formatProvider = null)
+        /// <returns>
+        ///     The message created from the template and properties. If the
+        ///     properties are mismatched with the template, the template will be
+        ///     returned with incomplete substitution.
+        /// </returns>
+        public string Render(IReadOnlyDictionary<string, LogEventPropertyValue> properties,
+            IFormatProvider formatProvider = null)
         {
             var writer = new StringWriter(formatProvider);
             Render(properties, writer, formatProvider);
@@ -141,15 +141,18 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// Convert the message template into a textual message, given the
-        /// properties matching the tokens in the message template.
+        ///     Convert the message template into a textual message, given the
+        ///     properties matching the tokens in the message template.
         /// </summary>
         /// <param name="properties">Properties matching template tokens.</param>
-        /// <param name="output">The message created from the template and properties. If the
-        /// properties are mismatched with the template, the template will be
-        /// returned with incomplete substitution.</param>
+        /// <param name="output">
+        ///     The message created from the template and properties. If the
+        ///     properties are mismatched with the template, the template will be
+        ///     returned with incomplete substitution.
+        /// </param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        public void Render(IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output, IFormatProvider formatProvider = null)
+        public void Render(IReadOnlyDictionary<string, LogEventPropertyValue> properties, TextWriter output,
+            IFormatProvider formatProvider = null)
         {
             if (properties == null) throw new ArgumentNullException(nameof(properties));
             if (output == null) throw new ArgumentNullException(nameof(output));

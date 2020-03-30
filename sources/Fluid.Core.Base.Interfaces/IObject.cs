@@ -3,17 +3,17 @@
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of base fluid's object.
+    ///     Interface of base fluid's object.
     /// </summary>
     public interface IObject : IObservableObject
     {
         /// <summary>
-        /// Gets object's ID.
+        ///     Gets object's ID.
         /// </summary>
         Guid Id { get; }
 
         /// <summary>
-        /// Gets object's name.
+        ///     Gets object's name.
         /// </summary>
         string Name { get; }
 

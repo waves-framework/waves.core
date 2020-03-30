@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of configuration classes.
+    ///     Interface of configuration classes.
     /// </summary>
     public interface IConfiguration : IObject, ICloneable
     {

@@ -16,7 +16,7 @@ using System.IO;
 
 namespace Fluid.Core.Logging.Sinks.Console.Themes
 {
-    class EmptyConsoleTheme : ConsoleTheme
+    internal class EmptyConsoleTheme : ConsoleTheme
     {
         public override bool CanBuffer => true;
 

@@ -15,20 +15,22 @@
 namespace Fluid.Core.Logging.Events
 {
     /// <summary>
-    /// Descriptive aliases for <see cref="LogEventLevel"/>.
+    ///     Descriptive aliases for <see cref="LogEventLevel" />.
     /// </summary>
-    /// <remarks>These do not appear as members of the enumeration
-    /// as duplicated underlying values result in issues when presenting
-    /// enum values with <see cref="object.ToString()"/>.</remarks>
+    /// <remarks>
+    ///     These do not appear as members of the enumeration
+    ///     as duplicated underlying values result in issues when presenting
+    ///     enum values with <see cref="object.ToString()" />.
+    /// </remarks>
     public static class LevelAlias
     {
         /// <summary>
-        /// The least significant level of event.
+        ///     The least significant level of event.
         /// </summary>
         public const LogEventLevel Minimum = LogEventLevel.Verbose;
 
         /// <summary>
-        /// The most significant level of event.
+        ///     The most significant level of event.
         /// </summary>
         public const LogEventLevel Maximum = LogEventLevel.Fatal;
     }

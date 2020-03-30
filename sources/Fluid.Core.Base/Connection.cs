@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Connection base class.
+    ///     Connection base class.
     /// </summary>
     [Serializable]
     public class Connection : Object, IConnection
@@ -31,19 +31,6 @@ namespace Fluid.Core.Base
         /// <inheritdoc />
         public IEntryPoint Output { get; set; }
 
-        /// <summary>
-        /// Entry point initialization.
-        /// </summary>
-        /// <param name="input">Input point.</param>
-        /// <param name="output">Output point.</param>
-        public void Initialize(IEntryPoint input, IEntryPoint output)
-        {
-            if (input == null || output == null) return;
-
-            Input = input;
-            Output = output;
-        }
-
         /// <inheritdoc />
         public object Clone()
         {
@@ -56,6 +43,19 @@ namespace Fluid.Core.Base
         {
             Input = null;
             Output = null;
+        }
+
+        /// <summary>
+        ///     Entry point initialization.
+        /// </summary>
+        /// <param name="input">Input point.</param>
+        /// <param name="output">Output point.</param>
+        public void Initialize(IEntryPoint input, IEntryPoint output)
+        {
+            if (input == null || output == null) return;
+
+            Input = input;
+            Output = output;
         }
     }
 }

@@ -17,9 +17,9 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Enrichers
 {
-    class FixedPropertyEnricher : ILogEventEnricher
+    internal class FixedPropertyEnricher : ILogEventEnricher
     {
-        readonly EventProperty _eventProperty;
+        private readonly EventProperty _eventProperty;
 
         public FixedPropertyEnricher(in EventProperty eventProperty)
         {

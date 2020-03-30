@@ -16,7 +16,7 @@ using System;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    class RollingLogFile
+    internal class RollingLogFile
     {
         public RollingLogFile(string filename, DateTime? dateTime, int? sequenceNumber)
         {
@@ -31,4 +31,4 @@ namespace Fluid.Core.Logging.Sinks.File
 
         public int? SequenceNumber { get; }
     }
-} 
+}

@@ -19,12 +19,12 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Filters
 {
     /// <summary>
-    /// Predicates applied to log events that can be used
+    ///     Predicates applied to log events that can be used
     /// </summary>
     public static class Matching
     {
         /// <summary>
-        /// Matches events from the specified source type.
+        ///     Matches events from the specified source type.
         /// </summary>
         /// <typeparam name="TSource">The source type.</typeparam>
         /// <returns>A predicate for matching events.</returns>
@@ -34,8 +34,8 @@ namespace Fluid.Core.Logging.Filters
         }
 
         /// <summary>
-        /// Matches events from the specified source type or namespace and
-        /// nested types or namespaces.
+        ///     Matches events from the specified source type or namespace and
+        ///     nested types or namespaces.
         /// </summary>
         /// <param name="source">A dotted source type or namespace identifier.</param>
         /// <returns>A function that matches log events emitted by the source.</returns>
@@ -43,12 +43,13 @@ namespace Fluid.Core.Logging.Filters
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             var sourcePrefix = source + ".";
-            return WithProperty<string>(Constants.SourceContextPropertyName, s => s != null && (s == source || s.StartsWith(sourcePrefix)));
+            return WithProperty<string>(Constants.SourceContextPropertyName,
+                s => s != null && (s == source || s.StartsWith(sourcePrefix)));
         }
 
         /// <summary>
-        /// Matches events with the specified property attached,
-        /// regardless of its value.
+        ///     Matches events with the specified property attached,
+        ///     regardless of its value.
         /// </summary>
         /// <param name="propertyName">The name of the property to match.</param>
         /// <returns>A predicate for matching events.</returns>
@@ -59,11 +60,13 @@ namespace Fluid.Core.Logging.Filters
         }
 
         /// <summary>
-        /// Matches events with the specified property value.
+        ///     Matches events with the specified property value.
         /// </summary>
         /// <param name="propertyName">The name of the property to match.</param>
-        /// <param name="scalarValue">The property value to match; must be a scalar type.
-        /// Null is allowed.</param>
+        /// <param name="scalarValue">
+        ///     The property value to match; must be a scalar type.
+        ///     Null is allowed.
+        /// </param>
         /// <returns>A predicate for matching events.</returns>
         public static Func<LogEvent, bool> WithProperty(string propertyName, object scalarValue)
         {
@@ -72,12 +75,12 @@ namespace Fluid.Core.Logging.Filters
             return e =>
             {
                 return e.Properties.TryGetValue(propertyName, out var propertyValue) &&
-                    scalar.Equals(propertyValue);
+                       scalar.Equals(propertyValue);
             };
         }
 
         /// <summary>
-        /// Matches events with the specified property value.
+        ///     Matches events with the specified property value.
         /// </summary>
         /// <param name="propertyName">The name of the property to match.</param>
         /// <param name="predicate">A predicate for testing </param>
@@ -92,9 +95,7 @@ namespace Fluid.Core.Logging.Filters
             {
                 if (!e.Properties.TryGetValue(propertyName, out var propertyValue)) return false;
 
-                return propertyValue is ScalarValue s &&
-                       ((s.Value is TScalar value) &&
-                        predicate(value));
+                return propertyValue is ScalarValue s && s.Value is TScalar value && predicate(value);
             };
         }
     }

@@ -18,9 +18,10 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Policies
 {
-    class DelegateDestructuringPolicy : IDestructuringPolicy
+    internal class DelegateDestructuringPolicy : IDestructuringPolicy
     {
-        public bool TryDestructure(object value, ILogEventPropertyValueFactory propertyValueFactory, out LogEventPropertyValue result)
+        public bool TryDestructure(object value, ILogEventPropertyValueFactory propertyValueFactory,
+            out LogEventPropertyValue result)
         {
             if (value is Delegate del)
             {

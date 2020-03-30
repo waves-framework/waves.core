@@ -20,16 +20,16 @@ using Fluid.Core.Logging.Policies;
 namespace Fluid.Core.Logging.Configuration
 {
     /// <summary>
-    /// Controls template parameter destructuring configuration.
+    ///     Controls template parameter destructuring configuration.
     /// </summary>
     public class LoggerDestructuringConfiguration
     {
-        readonly LoggerConfiguration _loggerConfiguration;
-        readonly Action<Type> _addScalar;
-        readonly Action<IDestructuringPolicy> _addPolicy;
-        readonly Action<int> _setMaximumDepth;
-        readonly Action<int> _setMaximumStringLength;
-        readonly Action<int> _setMaximumCollectionCount;
+        private readonly Action<IDestructuringPolicy> _addPolicy;
+        private readonly Action<Type> _addScalar;
+        private readonly LoggerConfiguration _loggerConfiguration;
+        private readonly Action<int> _setMaximumCollectionCount;
+        private readonly Action<int> _setMaximumDepth;
+        private readonly Action<int> _setMaximumStringLength;
 
         internal LoggerDestructuringConfiguration(
             LoggerConfiguration loggerConfiguration,
@@ -43,13 +43,15 @@ namespace Fluid.Core.Logging.Configuration
             _addScalar = addScalar ?? throw new ArgumentNullException(nameof(addScalar));
             _addPolicy = addPolicy ?? throw new ArgumentNullException(nameof(addPolicy));
             _setMaximumDepth = setMaximumDepth ?? throw new ArgumentNullException(nameof(setMaximumDepth));
-            _setMaximumStringLength = setMaximumStringLength ?? throw new ArgumentNullException(nameof(setMaximumStringLength));
-            _setMaximumCollectionCount = setMaximumCollectionCount ?? throw new ArgumentNullException(nameof(setMaximumCollectionCount));
+            _setMaximumStringLength =
+                setMaximumStringLength ?? throw new ArgumentNullException(nameof(setMaximumStringLength));
+            _setMaximumCollectionCount = setMaximumCollectionCount ??
+                                         throw new ArgumentNullException(nameof(setMaximumCollectionCount));
         }
 
         /// <summary>
-        /// Treat objects of the specified type as scalar values, i.e., don't break
-        /// them down into properties event when destructuring complex types.
+        ///     Treat objects of the specified type as scalar values, i.e., don't break
+        ///     them down into properties event when destructuring complex types.
         /// </summary>
         /// <param name="scalarType">Type to treat as scalar.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -61,15 +63,18 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Treat objects of the specified type as scalar values, i.e., don't break
-        /// them down into properties event when destructuring complex types.
+        ///     Treat objects of the specified type as scalar values, i.e., don't break
+        ///     them down into properties event when destructuring complex types.
         /// </summary>
         /// <typeparam name="TScalar">Type to treat as scalar.</typeparam>
         /// <returns>Configuration object allowing method chaining.</returns>
-        public LoggerConfiguration AsScalar<TScalar>() => AsScalar(typeof(TScalar));
+        public LoggerConfiguration AsScalar<TScalar>()
+        {
+            return AsScalar(typeof(TScalar));
+        }
 
         /// <summary>
-        /// When destructuring objects, transform instances with the provided policies.
+        ///     When destructuring objects, transform instances with the provided policies.
         /// </summary>
         /// <param name="destructuringPolicies">Policies to apply when destructuring.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -83,11 +88,12 @@ namespace Fluid.Core.Logging.Configuration
                     throw new ArgumentException("Null policy is not allowed.");
                 _addPolicy(destructuringPolicy);
             }
+
             return _loggerConfiguration;
         }
 
         /// <summary>
-        /// When destructuring objects, transform instances with the provided policy.
+        ///     When destructuring objects, transform instances with the provided policy.
         /// </summary>
         /// <typeparam name="TDestructuringPolicy">Policy to apply when destructuring.</typeparam>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -98,11 +104,13 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// When destructuring objects, transform instances of the specified type with
-        /// the provided function.
+        ///     When destructuring objects, transform instances of the specified type with
+        ///     the provided function.
         /// </summary>
-        /// <param name="transformation">Function mapping instances of <typeparamref name="TValue"/>
-        /// to an alternative representation.</param>
+        /// <param name="transformation">
+        ///     Function mapping instances of <typeparamref name="TValue" />
+        ///     to an alternative representation.
+        /// </param>
         /// <typeparam name="TValue">Type of values to transform.</typeparam>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -110,19 +118,23 @@ namespace Fluid.Core.Logging.Configuration
         {
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
             var policy = new ProjectedDestructuringPolicy(t => t == typeof(TValue),
-                                                          o => transformation((TValue)o));
+                o => transformation((TValue) o));
             return With(policy);
         }
 
         /// <summary>
-        /// When destructuring objects, transform instances of the specified type with
-        /// the provided function, if the predicate returns true. Be careful to avoid any
-        /// intensive work in the predicate, as it can slow down the pipeline significantly.
+        ///     When destructuring objects, transform instances of the specified type with
+        ///     the provided function, if the predicate returns true. Be careful to avoid any
+        ///     intensive work in the predicate, as it can slow down the pipeline significantly.
         /// </summary>
-        /// <param name="predicate">A predicate used to determine if the transform applies to
-        /// a specific type of value</param>
-        /// <param name="transformation">Function mapping instances of <typeparamref name="TValue"/>
-        /// to an alternative representation.</param>
+        /// <param name="predicate">
+        ///     A predicate used to determine if the transform applies to
+        ///     a specific type of value
+        /// </param>
+        /// <param name="transformation">
+        ///     Function mapping instances of <typeparamref name="TValue" />
+        ///     to an alternative representation.
+        /// </param>
         /// <typeparam name="TValue">Type of values to transform.</typeparam>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -132,14 +144,14 @@ namespace Fluid.Core.Logging.Configuration
         {
             if (transformation == null) throw new ArgumentNullException(nameof(transformation));
             var policy = new ProjectedDestructuringPolicy(predicate,
-                                                          o => transformation((TValue)o));
+                o => transformation((TValue) o));
             return With(policy);
         }
 
         /// <summary>
-        /// When destructuring objects, depth will be limited to 10 property traversals deep to
-        /// guard against ballooning space when recursive/cyclic structures are accidentally passed. To
-        /// change this limit pass a new maximum depth.
+        ///     When destructuring objects, depth will be limited to 10 property traversals deep to
+        ///     guard against ballooning space when recursive/cyclic structures are accidentally passed. To
+        ///     change this limit pass a new maximum depth.
         /// </summary>
         /// <param name="maximumDestructuringDepth">The maximum depth to use.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -152,31 +164,35 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// When destructuring objects, string values can be restricted to specified length
-        /// thus avoiding bloating payload. Limit is applied to each value separately,
-        /// sum of length of strings can exceed limit.
+        ///     When destructuring objects, string values can be restricted to specified length
+        ///     thus avoiding bloating payload. Limit is applied to each value separately,
+        ///     sum of length of strings can exceed limit.
         /// </summary>
         /// <param name="maximumStringLength">The maximum string length.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When passed length is less than 2</exception>
         public LoggerConfiguration ToMaximumStringLength(int maximumStringLength)
         {
-            if (maximumStringLength < 2) throw new ArgumentOutOfRangeException(nameof(maximumStringLength), maximumStringLength, "Maximum string length must be at least two.");
+            if (maximumStringLength < 2)
+                throw new ArgumentOutOfRangeException(nameof(maximumStringLength), maximumStringLength,
+                    "Maximum string length must be at least two.");
             _setMaximumStringLength(maximumStringLength);
             return _loggerConfiguration;
         }
 
         /// <summary>
-        /// When destructuring objects, collections be restricted to specified count
-        /// thus avoiding bloating payload. Limit is applied to each collection separately,
-        /// sum of length of collection can exceed limit.
-        /// Applies limit to all <see cref="IEnumerable"/> including dictionaries.
+        ///     When destructuring objects, collections be restricted to specified count
+        ///     thus avoiding bloating payload. Limit is applied to each collection separately,
+        ///     sum of length of collection can exceed limit.
+        ///     Applies limit to all <see cref="IEnumerable" /> including dictionaries.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
         /// <exception cref="ArgumentOutOfRangeException">When passed length is less than 1</exception>
         public LoggerConfiguration ToMaximumCollectionCount(int maximumCollectionCount)
         {
-            if (maximumCollectionCount < 1) throw new ArgumentOutOfRangeException(nameof(maximumCollectionCount), maximumCollectionCount, "Maximum collection length must be at least one.");
+            if (maximumCollectionCount < 1)
+                throw new ArgumentOutOfRangeException(nameof(maximumCollectionCount), maximumCollectionCount,
+                    "Maximum collection length must be at least one.");
             _setMaximumCollectionCount(maximumCollectionCount);
             return _loggerConfiguration;
         }

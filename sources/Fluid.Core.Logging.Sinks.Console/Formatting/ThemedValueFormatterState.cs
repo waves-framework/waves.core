@@ -16,7 +16,7 @@ using System.IO;
 
 namespace Fluid.Core.Logging.Sinks.Console.Formatting
 {
-    struct ThemedValueFormatterState
+    internal struct ThemedValueFormatterState
     {
         public TextWriter Output;
         public string Format;

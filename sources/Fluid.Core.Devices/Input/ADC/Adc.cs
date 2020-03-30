@@ -5,11 +5,11 @@ namespace Fluid.Core.Devices.Input.ADC
 {
     public abstract class Adc : InputDevice, IAdc
     {
-        private double _sampleRate;
-        private short _bitsPerSample;
+        private ICollection<short> _availableBitsPerSampleValues = new List<short>();
 
         private ICollection<double> _availableSampleRates = new List<double>();
-        private ICollection<short> _availableBitsPerSampleValues = new List<short>();
+        private short _bitsPerSample;
+        private double _sampleRate;
 
         /// <inheritdoc />
         public double SampleRate

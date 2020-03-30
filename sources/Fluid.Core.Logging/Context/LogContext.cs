@@ -30,49 +30,52 @@ using System.Runtime.Remoting.Messaging;
 namespace Fluid.Core.Logging.Context
 {
     /// <summary>
-    /// Holds ambient properties that can be attached to log events. To
-    /// configure, use the <see cref="LoggerEnrichmentConfiguration.FromLogContext"/> method.
+    ///     Holds ambient properties that can be attached to log events. To
+    ///     configure, use the <see cref="LoggerEnrichmentConfiguration.FromLogContext" /> method.
     /// </summary>
     /// <example>
-    /// Configuration:
-    /// <code lang="C#">
+    ///     Configuration:
+    ///     <code lang="C#">
     /// var log = new LoggerConfiguration()
     ///     .Enrich.FromLogContext()
     ///     ...
     /// </code>
-    /// Usage:
-    /// <code lang="C#">
+    ///     Usage:
+    ///     <code lang="C#">
     /// using (LogContext.PushProperty("MessageId", message.Id))
     /// {
     ///     Log.Information("The MessageId property will be attached to this event");
     /// }
     /// </code>
     /// </example>
-    /// <remarks>The scope of the context is the current logical thread, using AsyncLocal
-    /// (and so is preserved across async/await calls).</remarks>
+    /// <remarks>
+    ///     The scope of the context is the current logical thread, using AsyncLocal
+    ///     (and so is preserved across async/await calls).
+    /// </remarks>
     public static class LogContext
     {
 #if ASYNCLOCAL
-        static readonly AsyncLocal<ImmutableStack<ILogEventEnricher>> Data = new AsyncLocal<ImmutableStack<ILogEventEnricher>>();
+        static readonly AsyncLocal<ImmutableStack<ILogEventEnricher>> Data =
+ new AsyncLocal<ImmutableStack<ILogEventEnricher>>();
 #elif REMOTING
         static readonly string DataSlotName = typeof(LogContext).FullName + "@" + Guid.NewGuid();
 #else // DOTNET_51
-        [ThreadStatic]
-        static ImmutableStack<ILogEventEnricher> Data;
 #endif
 
         /// <summary>
-        /// Push a property onto the context, returning an <see cref="IDisposable"/>
-        /// that must later be used to remove the property, along with any others that
-        /// may have been pushed on top of it and not yet popped. The property must
-        /// be popped from the same thread/logical call context.
+        ///     Push a property onto the context, returning an <see cref="IDisposable" />
+        ///     that must later be used to remove the property, along with any others that
+        ///     may have been pushed on top of it and not yet popped. The property must
+        ///     be popped from the same thread/logical call context.
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <param name="value">The value of the property.</param>
         /// <returns>A handle to later remove the property from the context.</returns>
-        /// <param name="destructureObjects">If true, and the value is a non-primitive, non-array type,
-        /// then the value will be converted to a structure; otherwise, unknown types will
-        /// be converted to scalars, which are generally stored as strings.</param>
+        /// <param name="destructureObjects">
+        ///     If true, and the value is a non-primitive, non-array type,
+        ///     then the value will be converted to a structure; otherwise, unknown types will
+        ///     be converted to scalars, which are generally stored as strings.
+        /// </param>
         /// <returns>A token that must be disposed, in order, to pop properties back off the stack.</returns>
         public static IDisposable PushProperty(string name, object value, bool destructureObjects = false)
         {
@@ -80,10 +83,10 @@ namespace Fluid.Core.Logging.Context
         }
 
         /// <summary>
-        /// Push an enricher onto the context, returning an <see cref="IDisposable"/>
-        /// that must later be used to remove the property, along with any others that
-        /// may have been pushed on top of it and not yet popped. The property must
-        /// be popped from the same thread/logical call context.
+        ///     Push an enricher onto the context, returning an <see cref="IDisposable" />
+        ///     that must later be used to remove the property, along with any others that
+        ///     may have been pushed on top of it and not yet popped. The property must
+        ///     be popped from the same thread/logical call context.
         /// </summary>
         /// <param name="enricher">An enricher to push onto the log context</param>
         /// <returns>A token that must be disposed, in order, to pop properties back off the stack.</returns>
@@ -101,12 +104,13 @@ namespace Fluid.Core.Logging.Context
         }
 
         /// <summary>
-        /// Push multiple enrichers onto the context, returning an <see cref="IDisposable"/>
-        /// that must later be used to remove the property, along with any others that
-        /// may have been pushed on top of it and not yet popped. The property must
-        /// be popped from the same thread/logical call context.
+        ///     Push multiple enrichers onto the context, returning an <see cref="IDisposable" />
+        ///     that must later be used to remove the property, along with any others that
+        ///     may have been pushed on top of it and not yet popped. The property must
+        ///     be popped from the same thread/logical call context.
         /// </summary>
-        /// <seealso cref="PropertyEnricher"/>.
+        /// <seealso cref="PropertyEnricher" />
+        /// .
         /// <param name="enrichers">Enrichers to push onto the log context</param>
         /// <returns>A token that must be disposed, in order, to pop properties back off the stack.</returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -126,8 +130,8 @@ namespace Fluid.Core.Logging.Context
         }
 
         /// <summary>
-        /// Push enrichers onto the log context. This method is obsolete, please
-        /// use <see cref="Push(Fluid.Core.Logging.Core.ILogEventEnricher[])"/> instead.
+        ///     Push enrichers onto the log context. This method is obsolete, please
+        ///     use <see cref="Push(Fluid.Core.Logging.Core.ILogEventEnricher[])" /> instead.
         /// </summary>
         /// <param name="properties">Enrichers to push onto the log context</param>
         /// <returns>A token that must be disposed, in order, to pop properties back off the stack.</returns>
@@ -140,10 +144,10 @@ namespace Fluid.Core.Logging.Context
         }
 
         /// <summary>
-        /// Obtain an enricher that represents the current contents of the <see cref="LogContext"/>. This
-        /// can be pushed back onto the context in a different location/thread when required.
+        ///     Obtain an enricher that represents the current contents of the <see cref="LogContext" />. This
+        ///     can be pushed back onto the context in a different location/thread when required.
         /// </summary>
-        /// <returns>An enricher that represents the current contents of the <see cref="LogContext"/>.</returns>
+        /// <returns>An enricher that represents the current contents of the <see cref="LogContext" />.</returns>
         public static ILogEventEnricher Clone()
         {
             var stack = GetOrCreateEnricherStack();
@@ -151,8 +155,8 @@ namespace Fluid.Core.Logging.Context
         }
 
         /// <summary>
-        /// Remove all enrichers from the <see cref="LogContext"/>, returning an <see cref="IDisposable"/>
-        /// that must later be used to restore enrichers that were on the stack before <see cref="Suspend"/> was called.
+        ///     Remove all enrichers from the <see cref="LogContext" />, returning an <see cref="IDisposable" />
+        ///     that must later be used to restore enrichers that were on the stack before <see cref="Suspend" /> was called.
         /// </summary>
         /// <returns>A token that must be disposed, in order, to restore properties back to the stack.</returns>
         public static IDisposable Suspend()
@@ -166,17 +170,15 @@ namespace Fluid.Core.Logging.Context
         }
 
         /// <summary>
-        /// Remove all enrichers from <see cref="LogContext"/> for the current async scope.
+        ///     Remove all enrichers from <see cref="LogContext" /> for the current async scope.
         /// </summary>
         public static void Reset()
         {
             if (Enrichers != null && Enrichers != ImmutableStack<ILogEventEnricher>.Empty)
-            {
                 Enrichers = ImmutableStack<ILogEventEnricher>.Empty;
-            }
         }
 
-        static ImmutableStack<ILogEventEnricher> GetOrCreateEnricherStack()
+        private static ImmutableStack<ILogEventEnricher> GetOrCreateEnricherStack()
         {
             var enrichers = Enrichers;
             if (enrichers == null)
@@ -184,6 +186,7 @@ namespace Fluid.Core.Logging.Context
                 enrichers = ImmutableStack<ILogEventEnricher>.Empty;
                 Enrichers = enrichers;
             }
+
             return enrichers;
         }
 
@@ -193,15 +196,12 @@ namespace Fluid.Core.Logging.Context
             if (enrichers == null || enrichers == ImmutableStack<ILogEventEnricher>.Empty)
                 return;
 
-            foreach (var enricher in enrichers)
-            {
-                enricher.Enrich(logEvent, propertyFactory);
-            }
+            foreach (var enricher in enrichers) enricher.Enrich(logEvent, propertyFactory);
         }
 
-        sealed class ContextStackBookmark : IDisposable
+        private sealed class ContextStackBookmark : IDisposable
         {
-            readonly ImmutableStack<ILogEventEnricher> _bookmark;
+            private readonly ImmutableStack<ILogEventEnricher> _bookmark;
 
             public ContextStackBookmark(ImmutableStack<ILogEventEnricher> bookmark)
             {
@@ -215,7 +215,6 @@ namespace Fluid.Core.Logging.Context
         }
 
 #if ASYNCLOCAL
-
         static ImmutableStack<ILogEventEnricher> Enrichers
         {
             get => Data.Value;
@@ -223,7 +222,6 @@ namespace Fluid.Core.Logging.Context
         }
 
 #elif REMOTING
-
         static ImmutableStack<ILogEventEnricher> Enrichers
         {
             get
@@ -270,11 +268,7 @@ namespace Fluid.Core.Logging.Context
 
 #else // DOTNET_51
 
-        static ImmutableStack<ILogEventEnricher> Enrichers
-        {
-            get => Data;
-            set => Data = value;
-        }
+        [field: ThreadStatic] private static ImmutableStack<ILogEventEnricher> Enrichers { get; set; }
 #endif
     }
 }

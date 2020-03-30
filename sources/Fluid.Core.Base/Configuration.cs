@@ -5,7 +5,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Configuration base class.
+    ///     Configuration base class.
     /// </summary>
     [Serializable]
     public class Configuration : Object, IConfiguration
@@ -53,7 +53,8 @@ namespace Fluid.Core.Base
             }
             else
             {
-                throw new Exception("The specified property does not support serialization " + "(" + property.Name + ").");
+                throw new Exception("The specified property does not support serialization " + "(" + property.Name +
+                                    ").");
             }
         }
 

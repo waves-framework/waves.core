@@ -19,9 +19,10 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Policies
 {
-    class ReflectionTypesScalarDestructuringPolicy : IDestructuringPolicy
+    internal class ReflectionTypesScalarDestructuringPolicy : IDestructuringPolicy
     {
-        public bool TryDestructure(object value, ILogEventPropertyValueFactory propertyValueFactory, out LogEventPropertyValue result)
+        public bool TryDestructure(object value, ILogEventPropertyValueFactory propertyValueFactory,
+            out LogEventPropertyValue result)
         {
             // These types and their subclasses are property-laden and deep;
             // most sinks will convert them to strings.

@@ -3,12 +3,12 @@
 namespace Fluid.Core.Base.EventArgs
 {
     /// <summary>
-    /// Event args for keyboard events.
+    ///     Event args for keyboard events.
     /// </summary>
     public class KeyEventArgs
     {
         /// <summary>
-        ///    Creates new instance of key event args.
+        ///     Creates new instance of key event args.
         /// </summary>
         /// <param name="eventType">Event type.</param>
         /// <param name="key">Virtual key.</param>
@@ -23,32 +23,32 @@ namespace Fluid.Core.Base.EventArgs
         }
 
         /// <summary>
-        /// Gets key event type.
+        ///     Gets key event type.
         /// </summary>
         public KeyEventType EventType { get; }
 
         /// <summary>
-        /// Gets virtual key.
+        ///     Gets virtual key.
         /// </summary>
         public VirtualKey Key { get; }
 
         /// <summary>
-        /// Gets modifier.
+        ///     Gets modifier.
         /// </summary>
         public KeyModifier Modifier { get; }
 
         /// <summary>
-        /// Gets key character.
+        ///     Gets key character.
         /// </summary>
         public char KeyCharacter { get; }
 
         /// <summary>
-        /// Gets whether the modifiers pressed.
+        ///     Gets whether the modifiers pressed.
         /// </summary>
         public bool NoModifiersPressed => Modifier == KeyModifier.None;
 
         /// <summary>
-        /// Gets whether key is pressed only.
+        ///     Gets whether key is pressed only.
         /// </summary>
         /// <param name="modifiers">Modifier.</param>
         /// <returns>True if pressed, false if not.</returns>
@@ -58,7 +58,7 @@ namespace Fluid.Core.Base.EventArgs
         }
 
         /// <summary>
-        /// Gets whether key is pressed.
+        ///     Gets whether key is pressed.
         /// </summary>
         /// <param name="modifiers">Modifier.</param>
         /// <returns>True if pressed, false if not.</returns>

@@ -23,14 +23,13 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console
 {
-    class ConsoleSink : ILogEventSink
+    internal class ConsoleSink : ILogEventSink
     {
-        readonly LogEventLevel? _standardErrorFromLevel;
-        readonly ConsoleTheme _theme;
-        readonly ITextFormatter _formatter;
-        readonly object _syncRoot = new object();
-
-        const int DefaultWriteBuffer = 256;
+        private const int DefaultWriteBuffer = 256;
+        private readonly ITextFormatter _formatter;
+        private readonly LogEventLevel? _standardErrorFromLevel;
+        private readonly object _syncRoot = new object();
+        private readonly ConsoleTheme _theme;
 
         static ConsoleSink()
         {
@@ -74,7 +73,7 @@ namespace Fluid.Core.Logging.Sinks.Console
             }
         }
 
-        TextWriter SelectOutputStream(LogEventLevel logEventLevel)
+        private TextWriter SelectOutputStream(LogEventLevel logEventLevel)
         {
             if (!_standardErrorFromLevel.HasValue)
                 return System.Console.Out;

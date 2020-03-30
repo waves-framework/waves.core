@@ -7,7 +7,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Module library base class.
+    ///     Module library base class.
     /// </summary>
     public abstract class ModuleLibrary : IModuleLibrary
     {
@@ -24,7 +24,7 @@ namespace Fluid.Core.Base
         public abstract Version Version { get; }
 
         /// <inheritdoc />
-        public ICollection<IModule> Modules { get; private set; } = new List<IModule>();
+        public ICollection<IModule> Modules { get; } = new List<IModule>();
 
         /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
@@ -42,6 +42,15 @@ namespace Fluid.Core.Base
         protected virtual void OnMessageReceived(IMessage e)
         {
             MessageReceived?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Notifies when property changed.
+        /// </summary>
+        /// <param name="propertyName">Property name.</param>
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

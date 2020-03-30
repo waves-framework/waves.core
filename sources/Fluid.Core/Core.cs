@@ -18,17 +18,17 @@ namespace Fluid.Core
     public static class Core
     {
         /// <summary>
-        /// Инициализировано ли логирование.
+        ///     Инициализировано ли логирование.
         /// </summary>
-        public static bool IsLogInitialized { get; private set; } = false;
+        public static bool IsLogInitialized { get; private set; }
 
         /// <summary>
-        /// Инициализирована ли конфигурация.
+        ///     Инициализирована ли конфигурация.
         /// </summary>
-        public static bool IsConfigurationInitialized { get; private set; } = false;
+        public static bool IsConfigurationInitialized { get; private set; }
 
         /// <summary>
-        /// Инициализированы ли сервисы.
+        ///     Инициализированы ли сервисы.
         /// </summary>
         public static bool IsServicesInitialized { get; private set; }
 
@@ -53,16 +53,19 @@ namespace Fluid.Core
 
                 InitializeLog();
 
-				WriteLog("--------------------------------------------");
-                WriteLogMessage(new Message("Запуск ядра", "Инициализация запуска ядра...", "Core", MessageType.Information));
+                WriteLog("--------------------------------------------");
+                WriteLogMessage(new Message("Запуск ядра", "Инициализация запуска ядра...", "Core",
+                    MessageType.Information));
 
                 InitializeConfiguration();
                 InitializeServices();
 
                 if (IsLogInitialized && IsConfigurationInitialized && IsServicesInitialized)
-                    WriteLogMessage(new Message("Запуск ядра", "Ядро успешно запущено.", "Core", MessageType.Information));
+                    WriteLogMessage(new Message("Запуск ядра", "Ядро успешно запущено.", "Core",
+                        MessageType.Information));
                 else
-                    WriteLogMessage(new Message("Запуск ядра", "Ядро запущено, но не все компоненты инициализированы.", "Core", MessageType.Information));
+                    WriteLogMessage(new Message("Запуск ядра", "Ядро запущено, но не все компоненты инициализированы.",
+                        "Core", MessageType.Information));
             }
             catch (Exception e)
             {
@@ -80,7 +83,8 @@ namespace Fluid.Core
             {
                 SaveConfiguration();
 
-                WriteLogMessage(new Message("Остановка ядра", "Инициализация остановки ядра...", "Core", MessageType.Information));
+                WriteLogMessage(new Message("Остановка ядра", "Инициализация остановки ядра...", "Core",
+                    MessageType.Information));
             }
             catch (Exception e)
             {
@@ -90,7 +94,7 @@ namespace Fluid.Core
         }
 
         /// <summary>
-        /// Сохраняет конфигурацию.
+        ///     Сохраняет конфигурацию.
         /// </summary>
         public static void SaveConfiguration()
         {
@@ -110,7 +114,9 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core", new Message("Ошибка", "При записи файла конфигурации возникла ошибка:\r\n" + e, "Core", MessageType.Error));
+                OnServiceMessageReceived("Core",
+                    new Message("Ошибка", "При записи файла конфигурации возникла ошибка:\r\n" + e, "Core",
+                        MessageType.Error));
             }
         }
 
@@ -123,11 +129,13 @@ namespace Fluid.Core
         {
             try
             {
-                return (T)ContainerCore.GetInstance(typeof(T), null);
+                return (T) ContainerCore.GetInstance(typeof(T), null);
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core", new Message("Ошибка", "При получении сервиса " + typeof(T) + " возникла ошибка:\r\n" + e, "Core", MessageType.Error));
+                OnServiceMessageReceived("Core",
+                    new Message("Ошибка", "При получении сервиса " + typeof(T) + " возникла ошибка:\r\n" + e, "Core",
+                        MessageType.Error));
                 return default;
             }
         }
@@ -156,7 +164,9 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core", new Message("Ошибка", "При регистрации сервиса" + instance + " возникла ошибка:\r\n" + e, "Core", MessageType.Error));
+                OnServiceMessageReceived("Core",
+                    new Message("Ошибка", "При регистрации сервиса" + instance + " возникла ошибка:\r\n" + e, "Core",
+                        MessageType.Error));
             }
         }
 
@@ -177,7 +187,9 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core", new Message("Ошибка", "При инициализации логов возникла ошибка:\r\n" + e, "Core", MessageType.Error));
+                OnServiceMessageReceived("Core",
+                    new Message("Ошибка", "При инициализации логов возникла ошибка:\r\n" + e, "Core",
+                        MessageType.Error));
             }
         }
 
@@ -203,7 +215,9 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core", new Message("Ошибка", "При инициализации конфигурации возникла ошибка:\r\n" + e, "Core", MessageType.Error));
+                OnServiceMessageReceived("Core",
+                    new Message("Ошибка", "При инициализации конфигурации возникла ошибка:\r\n" + e, "Core",
+                        MessageType.Error));
             }
         }
 
@@ -232,7 +246,7 @@ namespace Fluid.Core
         }
 
         /// <summary>
-        /// Запись строки в лог.
+        ///     Запись строки в лог.
         /// </summary>
         /// <param name="text"></param>
         public static void WriteLog(string text)
@@ -291,7 +305,7 @@ namespace Fluid.Core
 
             Log.Error("{0} [{1}]: {2} - {3}",
                 DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
-                "Вызвано исключение:", sender, exception.Message + "\r\n" + exception.ToString());
+                "Вызвано исключение:", sender, exception.Message + "\r\n" + exception);
         }
 
         /// <summary>

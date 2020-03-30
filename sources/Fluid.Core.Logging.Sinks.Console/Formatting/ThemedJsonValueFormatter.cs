@@ -21,10 +21,10 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Formatting
 {
-    class ThemedJsonValueFormatter : ThemedValueFormatter
+    internal class ThemedJsonValueFormatter : ThemedValueFormatter
     {
-        readonly ThemedDisplayValueFormatter _displayFormatter;
-        readonly IFormatProvider _formatProvider;
+        private readonly ThemedDisplayValueFormatter _displayFormatter;
+        private readonly IFormatProvider _formatProvider;
 
         public ThemedJsonValueFormatter(ConsoleTheme theme, IFormatProvider formatProvider)
             : base(theme)
@@ -58,21 +58,27 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             var count = 0;
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('[');
+            }
 
             var delim = "";
             for (var index = 0; index < sequence.Elements.Count; ++index)
             {
                 if (delim.Length != 0)
                     using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                    {
                         state.Output.Write(delim);
+                    }
 
                 delim = ", ";
                 Visit(state.Nest(), sequence.Elements[index]);
             }
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write(']');
+            }
 
             return count;
         }
@@ -82,24 +88,32 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             var count = 0;
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('{');
+            }
 
             var delim = "";
             for (var index = 0; index < structure.Properties.Count; ++index)
             {
                 if (delim.Length != 0)
                     using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                    {
                         state.Output.Write(delim);
+                    }
 
                 delim = ", ";
 
                 var property = structure.Properties[index];
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.Name, ref count))
+                {
                     JsonValueFormatter.WriteQuotedJsonString(property.Name, state.Output);
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                {
                     state.Output.Write(": ");
+                }
 
                 count += Visit(state.Nest(), property.Value);
             }
@@ -107,20 +121,30 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             if (structure.TypeTag != null)
             {
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                {
                     state.Output.Write(delim);
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.Name, ref count))
+                {
                     JsonValueFormatter.WriteQuotedJsonString("$type", state.Output);
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                {
                     state.Output.Write(": ");
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.String, ref count))
+                {
                     JsonValueFormatter.WriteQuotedJsonString(structure.TypeTag, state.Output);
+                }
             }
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('}');
+            }
 
             return count;
         }
@@ -130,14 +154,18 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             var count = 0;
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('{');
+            }
 
             var delim = "";
             foreach (var element in dictionary.Elements)
             {
                 if (delim.Length != 0)
                     using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                    {
                         state.Output.Write(delim);
+                    }
 
                 delim = ", ";
 
@@ -148,21 +176,27 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                         : ConsoleThemeStyle.Scalar;
 
                 using (ApplyStyle(state.Output, style, ref count))
+                {
                     JsonValueFormatter.WriteQuotedJsonString((element.Key.Value ?? "null").ToString(), state.Output);
+                }
 
                 using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+                {
                     state.Output.Write(": ");
+                }
 
                 count += Visit(state.Nest(), element.Value);
             }
 
             using (ApplyStyle(state.Output, ConsoleThemeStyle.TertiaryText, ref count))
+            {
                 state.Output.Write('}');
+            }
 
             return count;
         }
 
-        int FormatLiteralValue(ScalarValue scalar, TextWriter output)
+        private int FormatLiteralValue(ScalarValue scalar, TextWriter output)
         {
             var value = scalar.Value;
             var count = 0;
@@ -170,23 +204,33 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
             if (value == null)
             {
                 using (ApplyStyle(output, ConsoleThemeStyle.Null, ref count))
+                {
                     output.Write("null");
+                }
+
                 return count;
             }
 
             if (value is string str)
             {
                 using (ApplyStyle(output, ConsoleThemeStyle.String, ref count))
+                {
                     JsonValueFormatter.WriteQuotedJsonString(str, output);
+                }
+
                 return count;
             }
 
             if (value is ValueType)
             {
-                if (value is int || value is uint || value is long || value is ulong || value is decimal || value is byte || value is sbyte || value is short || value is ushort)
+                if (value is int || value is uint || value is long || value is ulong || value is decimal ||
+                    value is byte || value is sbyte || value is short || value is ushort)
                 {
                     using (ApplyStyle(output, ConsoleThemeStyle.Number, ref count))
-                        output.Write(((IFormattable)value).ToString(null, CultureInfo.InvariantCulture));
+                    {
+                        output.Write(((IFormattable) value).ToString(null, CultureInfo.InvariantCulture));
+                    }
+
                     return count;
                 }
 
@@ -199,6 +243,7 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                         else
                             output.Write(d.ToString("R", CultureInfo.InvariantCulture));
                     }
+
                     return count;
                 }
 
@@ -211,13 +256,16 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                         else
                             output.Write(f.ToString("R", CultureInfo.InvariantCulture));
                     }
+
                     return count;
                 }
 
                 if (value is bool b)
                 {
                     using (ApplyStyle(output, ConsoleThemeStyle.Boolean, ref count))
+                    {
                         output.Write(b ? "true" : "false");
+                    }
 
                     return count;
                 }
@@ -225,7 +273,10 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                 if (value is char ch)
                 {
                     using (ApplyStyle(output, ConsoleThemeStyle.Scalar, ref count))
+                    {
                         JsonValueFormatter.WriteQuotedJsonString(ch.ToString(), output);
+                    }
+
                     return count;
                 }
 
@@ -234,15 +285,18 @@ namespace Fluid.Core.Logging.Sinks.Console.Formatting
                     using (ApplyStyle(output, ConsoleThemeStyle.Scalar, ref count))
                     {
                         output.Write('"');
-                        output.Write(((IFormattable)value).ToString("O", CultureInfo.InvariantCulture));
+                        output.Write(((IFormattable) value).ToString("O", CultureInfo.InvariantCulture));
                         output.Write('"');
                     }
+
                     return count;
                 }
             }
 
             using (ApplyStyle(output, ConsoleThemeStyle.Scalar, ref count))
+            {
                 JsonValueFormatter.WriteQuotedJsonString(value.ToString(), output);
+            }
 
             return count;
         }

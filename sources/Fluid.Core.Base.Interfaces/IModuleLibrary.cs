@@ -5,12 +5,12 @@ using System.ComponentModel;
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of Fluid's Module Library classes.
+    ///     Interface of Fluid's Module Library classes.
     /// </summary>
-    public interface IModuleLibrary :  INotifyPropertyChanged
+    public interface IModuleLibrary : INotifyPropertyChanged
     {
         /// <summary>
-        /// Gets name of module library.
+        ///     Gets name of module library.
         /// </summary>
         string Name { get; }
 

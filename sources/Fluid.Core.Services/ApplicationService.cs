@@ -13,9 +13,9 @@ namespace Fluid.Core.Services
 {
     public class ApplicationService : Service, IApplicationService
     {
-        private List<string> _paths = new List<string>();
-        private IEnumerable<IApplication> _applications;
         private ICollection<IApplicationAction> _applicationActions = new List<IApplicationAction>();
+        private IEnumerable<IApplication> _applications;
+        private List<string> _paths = new List<string>();
 
         /// <inheritdoc />
         public List<string> Paths

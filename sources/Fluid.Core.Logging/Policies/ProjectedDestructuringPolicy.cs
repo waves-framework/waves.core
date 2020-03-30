@@ -18,10 +18,10 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Policies
 {
-    class ProjectedDestructuringPolicy : IDestructuringPolicy
+    internal class ProjectedDestructuringPolicy : IDestructuringPolicy
     {
-        readonly Func<Type, bool> _canApply;
-        readonly Func<object, object> _projection;
+        private readonly Func<Type, bool> _canApply;
+        private readonly Func<object, object> _projection;
 
         public ProjectedDestructuringPolicy(Func<Type, bool> canApply, Func<object, object> projection)
         {
@@ -29,7 +29,8 @@ namespace Fluid.Core.Logging.Policies
             _projection = projection ?? throw new ArgumentNullException(nameof(projection));
         }
 
-        public bool TryDestructure(object value, ILogEventPropertyValueFactory propertyValueFactory, out LogEventPropertyValue result)
+        public bool TryDestructure(object value, ILogEventPropertyValueFactory propertyValueFactory,
+            out LogEventPropertyValue result)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
@@ -40,7 +41,7 @@ namespace Fluid.Core.Logging.Policies
             }
 
             var projected = _projection(value);
-            result = propertyValueFactory.CreatePropertyValue(projected, destructureObjects: true);
+            result = propertyValueFactory.CreatePropertyValue(projected, true);
             return true;
         }
     }

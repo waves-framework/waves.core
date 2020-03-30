@@ -17,13 +17,13 @@ using System;
 namespace Fluid.Core.Logging.Debugging
 {
     /// <summary>
-    /// May be thrown by log event sinks when a failure occurs. Should not be used in cases
-    /// where the exception would propagate out to callers.
+    ///     May be thrown by log event sinks when a failure occurs. Should not be used in cases
+    ///     where the exception would propagate out to callers.
     /// </summary>
     public class LoggingFailedException : Exception
     {
         /// <summary>
-        /// Construct a <see cref="LoggingFailedException"/> to communicate a logging failure.
+        ///     Construct a <see cref="LoggingFailedException" /> to communicate a logging failure.
         /// </summary>
         /// <param name="message">A message describing the logging failure.</param>
         public LoggingFailedException(string message)

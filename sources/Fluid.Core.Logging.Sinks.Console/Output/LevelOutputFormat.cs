@@ -18,38 +18,41 @@ using Fluid.Core.Logging.Sinks.Console.Rendering;
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
     /// <summary>
-    /// Implements the {Level} element.
-    /// can now have a fixed width applied to it, as well as casing rules.
-    /// Width is set through formats like "u3" (uppercase three chars),
-    /// "w1" (one lowercase char), or "t4" (title case four chars).
+    ///     Implements the {Level} element.
+    ///     can now have a fixed width applied to it, as well as casing rules.
+    ///     Width is set through formats like "u3" (uppercase three chars),
+    ///     "w1" (one lowercase char), or "t4" (title case four chars).
     /// </summary>
-    static class LevelOutputFormat
+    internal static class LevelOutputFormat
     {
-        static readonly string[][] TitleCaseLevelMap = {
-            new []{ "V", "Vb", "Vrb", "Verb" },
-            new []{ "D", "De", "Dbg", "Dbug" },
-            new []{ "I", "In", "Inf", "Info" },
-            new []{ "W", "Wn", "Wrn", "Warn" },
-            new []{ "E", "Er", "Err", "Eror" },
-            new []{ "F", "Fa", "Ftl", "Fatl" }
+        private static readonly string[][] TitleCaseLevelMap =
+        {
+            new[] {"V", "Vb", "Vrb", "Verb"},
+            new[] {"D", "De", "Dbg", "Dbug"},
+            new[] {"I", "In", "Inf", "Info"},
+            new[] {"W", "Wn", "Wrn", "Warn"},
+            new[] {"E", "Er", "Err", "Eror"},
+            new[] {"F", "Fa", "Ftl", "Fatl"}
         };
 
-        static readonly string[][] LowercaseLevelMap = {
-            new []{ "v", "vb", "vrb", "verb" },
-            new []{ "d", "de", "dbg", "dbug" },
-            new []{ "i", "in", "inf", "info" },
-            new []{ "w", "wn", "wrn", "warn" },
-            new []{ "e", "er", "err", "eror" },
-            new []{ "f", "fa", "ftl", "fatl" }
+        private static readonly string[][] LowercaseLevelMap =
+        {
+            new[] {"v", "vb", "vrb", "verb"},
+            new[] {"d", "de", "dbg", "dbug"},
+            new[] {"i", "in", "inf", "info"},
+            new[] {"w", "wn", "wrn", "warn"},
+            new[] {"e", "er", "err", "eror"},
+            new[] {"f", "fa", "ftl", "fatl"}
         };
 
-        static readonly string[][] UppercaseLevelMap = {
-            new []{ "V", "VB", "VRB", "VERB" },
-            new []{ "D", "DE", "DBG", "DBUG" },
-            new []{ "I", "IN", "INF", "INFO" },
-            new []{ "W", "WN", "WRN", "WARN" },
-            new []{ "E", "ER", "ERR", "EROR" },
-            new []{ "F", "FA", "FTL", "FATL" }
+        private static readonly string[][] UppercaseLevelMap =
+        {
+            new[] {"V", "VB", "VRB", "VERB"},
+            new[] {"D", "DE", "DBG", "DBUG"},
+            new[] {"I", "IN", "INF", "INFO"},
+            new[] {"W", "WN", "WRN", "WARN"},
+            new[] {"E", "ER", "ERR", "EROR"},
+            new[] {"F", "FA", "FTL", "FATL"}
         };
 
         public static string GetLevelMoniker(LogEventLevel value, string format = null)
@@ -77,9 +80,8 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
                 return Casing.Format(stringValue);
             }
 
-            var index = (int)value;
+            var index = (int) value;
             if (index >= 0 && index <= (int) LogEventLevel.Fatal)
-            {
                 switch (format[0])
                 {
                     case 'w':
@@ -89,7 +91,6 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
                     case 't':
                         return TitleCaseLevelMap[index][width - 1];
                 }
-            }
 
             return Casing.Format(value.ToString(), format);
         }

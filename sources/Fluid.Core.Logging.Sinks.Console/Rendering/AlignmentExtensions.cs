@@ -16,7 +16,7 @@ using Fluid.Core.Logging.Parsing;
 
 namespace Fluid.Core.Logging.Sinks.Console.Rendering
 {
-    static class AlignmentExtensions
+    internal static class AlignmentExtensions
     {
         public static Alignment Widen(this Alignment alignment, int amount)
         {

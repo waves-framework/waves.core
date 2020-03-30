@@ -3,7 +3,7 @@
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of property classes.
+    ///     Interface of property classes.
     /// </summary>
     public interface IProperty : IObject, ICloneable
     {

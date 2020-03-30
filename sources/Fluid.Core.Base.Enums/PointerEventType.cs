@@ -6,57 +6,57 @@
     public enum PointerEventType
     {
         /// <summary>
-        /// None.
+        ///     None.
         /// </summary>
         None,
 
         /// <summary>
-        /// Press.
+        ///     Press.
         /// </summary>
         Press,
 
         /// <summary>
-        /// Release.
+        ///     Release.
         /// </summary>
         Release,
 
         /// <summary>
-        /// Double press.
+        ///     Double press.
         /// </summary>
         DoublePress,
 
         /// <summary>
-        /// Vertical scroll.
+        ///     Vertical scroll.
         /// </summary>
         VerticalScroll,
 
         /// <summary>
-        /// Horizontal scroll.
+        ///     Horizontal scroll.
         /// </summary>
         HorizontalScroll,
 
         /// <summary>
-        /// Move.
+        ///     Move.
         /// </summary>
         Move,
 
         /// <summary>
-        /// Enter.
+        ///     Enter.
         /// </summary>
         Enter,
 
         /// <summary>
-        /// Leave.
+        ///     Leave.
         /// </summary>
         Leave,
 
         /// <summary>
-        /// Touch zoom.
+        ///     Touch zoom.
         /// </summary>
         TouchZoom,
 
         /// <summary>
-        /// Touch move.
+        ///     Touch move.
         /// </summary>
         TouchMove
     }

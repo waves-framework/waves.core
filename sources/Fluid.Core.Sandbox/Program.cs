@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace Fluid.Core.Sandbox
+﻿namespace Fluid.Core.Sandbox
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            
         }
     }
 }

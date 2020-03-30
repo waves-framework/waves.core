@@ -15,12 +15,12 @@
 namespace Fluid.Core.Logging.Configuration
 {
     /// <summary>
-    /// Implemented on types that apply settings to a logger configuration.
+    ///     Implemented on types that apply settings to a logger configuration.
     /// </summary>
     public interface ILoggerSettings
     {
         /// <summary>
-        /// Apply the settings to the logger configuration.
+        ///     Apply the settings to the logger configuration.
         /// </summary>
         /// <param name="loggerConfiguration">The logger configuration to apply settings to.</param>
         void Configure(LoggerConfiguration loggerConfiguration);

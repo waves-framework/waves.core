@@ -23,25 +23,27 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Settings.KeyValuePairs
 {
     /// <summary>
-    /// Contains "fake extension" methods for the Serilog configuration API.
-    /// By default the settings knows how to find extension methods, but some configuration
-    /// are actually "regular" method calls and would not be found otherwise.
-    ///
-    /// This static class contains internal methods that can be used instead.
-    ///
-    /// See also <seealso cref="CallableConfigurationMethodFinder"/>
+    ///     Contains "fake extension" methods for the Serilog configuration API.
+    ///     By default the settings knows how to find extension methods, but some configuration
+    ///     are actually "regular" method calls and would not be found otherwise.
+    ///     This static class contains internal methods that can be used instead.
+    ///     See also <seealso cref="CallableConfigurationMethodFinder" />
     /// </summary>
-    static class SurrogateConfigurationMethods
+    internal static class SurrogateConfigurationMethods
     {
-        static readonly Dictionary<Type, MethodInfo[]> SurrogateMethodCandidates = typeof(SurrogateConfigurationMethods)
-            .GetTypeInfo().DeclaredMethods
-            .GroupBy(m => m.GetParameters().First().ParameterType)
-            .ToDictionary(g => g.Key, g => g.ToArray());
+        private static readonly Dictionary<Type, MethodInfo[]> SurrogateMethodCandidates =
+            typeof(SurrogateConfigurationMethods)
+                .GetTypeInfo().DeclaredMethods
+                .GroupBy(m => m.GetParameters().First().ParameterType)
+                .ToDictionary(g => g.Key, g => g.ToArray());
 
         internal static readonly MethodInfo[] WriteTo = SurrogateMethodCandidates[typeof(LoggerSinkConfiguration)];
         internal static readonly MethodInfo[] AuditTo = SurrogateMethodCandidates[typeof(LoggerAuditSinkConfiguration)];
         internal static readonly MethodInfo[] Enrich = SurrogateMethodCandidates[typeof(LoggerEnrichmentConfiguration)];
-        internal static readonly MethodInfo[] Destructure = SurrogateMethodCandidates[typeof(LoggerDestructuringConfiguration)];
+
+        internal static readonly MethodInfo[] Destructure =
+            SurrogateMethodCandidates[typeof(LoggerDestructuringConfiguration)];
+
         internal static readonly MethodInfo[] Filter = SurrogateMethodCandidates[typeof(LoggerFilterConfiguration)];
 
         internal static LoggerConfiguration Sink(
@@ -62,7 +64,8 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
             return auditSinkConfiguration.Sink(sink, restrictedToMinimumLevel, levelSwitch);
         }
 
-        internal static LoggerConfiguration With(LoggerEnrichmentConfiguration loggerEnrichmentConfiguration, ILogEventEnricher enricher)
+        internal static LoggerConfiguration With(LoggerEnrichmentConfiguration loggerEnrichmentConfiguration,
+            ILogEventEnricher enricher)
         {
             return loggerEnrichmentConfiguration.With(enricher);
         }
@@ -84,19 +87,22 @@ namespace Fluid.Core.Logging.Settings.KeyValuePairs
             return loggerDestructuringConfiguration.AsScalar(scalarType);
         }
 
-        internal static LoggerConfiguration ToMaximumCollectionCount(LoggerDestructuringConfiguration loggerDestructuringConfiguration,
+        internal static LoggerConfiguration ToMaximumCollectionCount(
+            LoggerDestructuringConfiguration loggerDestructuringConfiguration,
             int maximumCollectionCount)
         {
             return loggerDestructuringConfiguration.ToMaximumCollectionCount(maximumCollectionCount);
         }
 
-        internal static LoggerConfiguration ToMaximumDepth(LoggerDestructuringConfiguration loggerDestructuringConfiguration,
+        internal static LoggerConfiguration ToMaximumDepth(
+            LoggerDestructuringConfiguration loggerDestructuringConfiguration,
             int maximumDestructuringDepth)
         {
             return loggerDestructuringConfiguration.ToMaximumDepth(maximumDestructuringDepth);
         }
 
-        internal static LoggerConfiguration ToMaximumStringLength(LoggerDestructuringConfiguration loggerDestructuringConfiguration,
+        internal static LoggerConfiguration ToMaximumStringLength(
+            LoggerDestructuringConfiguration loggerDestructuringConfiguration,
             int maximumStringLength)
         {
             return loggerDestructuringConfiguration.ToMaximumStringLength(maximumStringLength);

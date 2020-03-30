@@ -17,10 +17,10 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Sinks
 {
-    class RestrictedSink : ILogEventSink, IDisposable
+    internal class RestrictedSink : ILogEventSink, IDisposable
     {
-        readonly ILogEventSink _sink;
-        readonly LoggingLevelSwitch _levelSwitch;
+        private readonly LoggingLevelSwitch _levelSwitch;
+        private readonly ILogEventSink _sink;
 
         public RestrictedSink(ILogEventSink sink, LoggingLevelSwitch levelSwitch)
         {
@@ -28,19 +28,19 @@ namespace Fluid.Core.Logging.Core.Sinks
             _levelSwitch = levelSwitch ?? throw new ArgumentNullException(nameof(levelSwitch));
         }
 
+        public void Dispose()
+        {
+            (_sink as IDisposable)?.Dispose();
+        }
+
         public void Emit(LogEvent logEvent)
         {
             if (logEvent == null) throw new ArgumentNullException(nameof(logEvent));
 
-            if ((int)logEvent.Level < (int)_levelSwitch.MinimumLevel)
+            if ((int) logEvent.Level < (int) _levelSwitch.MinimumLevel)
                 return;
 
             _sink.Emit(logEvent);
-        }
-
-        public void Dispose()
-        {
-           (_sink as IDisposable)?.Dispose();
         }
     }
 }

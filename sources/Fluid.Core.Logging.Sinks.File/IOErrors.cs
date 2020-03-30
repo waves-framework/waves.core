@@ -16,7 +16,7 @@ using System.IO;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    static class IOErrors
+    internal static class IOErrors
     {
         public static bool IsLockedFile(IOException ex)
         {

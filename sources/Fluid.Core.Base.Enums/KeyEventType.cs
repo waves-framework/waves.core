@@ -6,12 +6,12 @@
     public enum KeyEventType
     {
         /// <summary>
-        /// Key pressed.
+        ///     Key pressed.
         /// </summary>
         Pressed,
 
         /// <summary>
-        /// Key released.
+        ///     Key released.
         /// </summary>
         Released
     }

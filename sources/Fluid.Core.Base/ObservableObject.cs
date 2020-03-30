@@ -5,7 +5,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Observable object base class.
+    ///     Observable object base class.
     /// </summary>
     public class ObservableObject : IObservableObject
     {

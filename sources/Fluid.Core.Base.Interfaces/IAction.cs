@@ -3,12 +3,12 @@
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface for fluid's action.
+    ///     Interface for fluid's action.
     /// </summary>
     public interface IAction : IObject
     {
         /// <summary>
-        /// Gets description.
+        ///     Gets description.
         /// </summary>
         string Description { get; }
 

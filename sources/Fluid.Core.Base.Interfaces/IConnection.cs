@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface for connection classes.
+    ///     Interface for connection classes.
     /// </summary>
     public interface IConnection : IObject, INotifyPropertyChanged, IDisposable, ICloneable
     {

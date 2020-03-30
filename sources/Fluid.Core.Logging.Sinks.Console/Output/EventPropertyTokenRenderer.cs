@@ -21,11 +21,11 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class EventPropertyTokenRenderer : OutputTemplateTokenRenderer
+    internal class EventPropertyTokenRenderer : OutputTemplateTokenRenderer
     {
-        readonly ConsoleTheme _theme;
-        readonly PropertyToken _token;
-        readonly IFormatProvider _formatProvider;
+        private readonly IFormatProvider _formatProvider;
+        private readonly ConsoleTheme _theme;
+        private readonly PropertyToken _token;
 
         public EventPropertyTokenRenderer(ConsoleTheme theme, PropertyToken token, IFormatProvider formatProvider)
         {

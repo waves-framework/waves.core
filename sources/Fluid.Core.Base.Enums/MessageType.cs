@@ -1,37 +1,37 @@
 namespace Fluid.Core.Base.Enums
 {
     /// <summary>
-    /// Enum of messages structures types.
+    ///     Enum of messages structures types.
     /// </summary>
     public enum MessageType
     {
         /// <summary>
-        /// Information.
+        ///     Information.
         /// </summary>
         Information = 0,
 
         /// <summary>
-        /// Warning.
+        ///     Warning.
         /// </summary>
         Warning = 1,
 
         /// <summary>
-        /// Error.
+        ///     Error.
         /// </summary>
         Error = 2,
 
         /// <summary>
-        /// Fatal error.
+        ///     Fatal error.
         /// </summary>
         Fatal = 3,
 
         /// <summary>
-        /// Success.
+        ///     Success.
         /// </summary>
         Success = 4,
 
         /// <summary>
-        /// Debug.
+        ///     Debug.
         /// </summary>
         Debug = 5
     }

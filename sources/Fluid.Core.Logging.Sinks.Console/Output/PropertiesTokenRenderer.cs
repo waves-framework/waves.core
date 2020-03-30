@@ -24,14 +24,15 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class PropertiesTokenRenderer : OutputTemplateTokenRenderer
+    internal class PropertiesTokenRenderer : OutputTemplateTokenRenderer
     {
-        readonly MessageTemplate _outputTemplate;
-        readonly ConsoleTheme _theme;
-        readonly PropertyToken _token;
-        readonly ThemedValueFormatter _valueFormatter;
+        private readonly MessageTemplate _outputTemplate;
+        private readonly ConsoleTheme _theme;
+        private readonly PropertyToken _token;
+        private readonly ThemedValueFormatter _valueFormatter;
 
-        public PropertiesTokenRenderer(ConsoleTheme theme, PropertyToken token, MessageTemplate outputTemplate, IFormatProvider formatProvider)
+        public PropertiesTokenRenderer(ConsoleTheme theme, PropertyToken token, MessageTemplate outputTemplate,
+            IFormatProvider formatProvider)
         {
             _outputTemplate = outputTemplate;
             _theme = theme ?? throw new ArgumentNullException(nameof(theme));
@@ -39,16 +40,12 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
             var isJson = false;
 
             if (token.Format != null)
-            {
                 for (var i = 0; i < token.Format.Length; ++i)
-                {
                     if (token.Format[i] == 'j')
                         isJson = true;
-                }
-            }
 
             _valueFormatter = isJson
-                ? (ThemedValueFormatter)new ThemedJsonValueFormatter(theme, formatProvider)
+                ? (ThemedValueFormatter) new ThemedJsonValueFormatter(theme, formatProvider)
                 : new ThemedDisplayValueFormatter(theme, formatProvider);
         }
 
@@ -73,16 +70,12 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
             Padding.Apply(output, str, _token.Alignment.Value.Widen(invisible));
         }
 
-        static bool TemplateContainsPropertyName(MessageTemplate template, string propertyName)
+        private static bool TemplateContainsPropertyName(MessageTemplate template, string propertyName)
         {
             foreach (var token in template.Tokens)
-            {
                 if (token is PropertyToken namedProperty &&
                     namedProperty.PropertyName == propertyName)
-                {
                     return true;
-                }
-            }
 
             return false;
         }

@@ -21,19 +21,21 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Parsing
 {
     /// <summary>
-    /// Parses message template strings into sequences of text or property
-    /// tokens.
+    ///     Parses message template strings into sequences of text or property
+    ///     tokens.
     /// </summary>
     public class MessageTemplateParser : IMessageTemplateParser
     {
         /// <summary>
-        /// Parse the supplied message template.
+        ///     Parse the supplied message template.
         /// </summary>
         /// <param name="messageTemplate">The message template to parse.</param>
-        /// <returns>A sequence of text or property tokens. Where the template
-        /// is not syntactically valid, text tokens will be returned. The parser
-        /// will make a best effort to extract valid property tokens even in the
-        /// presence of parsing issues.</returns>
+        /// <returns>
+        ///     A sequence of text or property tokens. Where the template
+        ///     is not syntactically valid, text tokens will be returned. The parser
+        ///     will make a best effort to extract valid property tokens even in the
+        ///     presence of parsing issues.
+        /// </returns>
         public MessageTemplate Parse(string messageTemplate)
         {
             if (messageTemplate == null)
@@ -41,7 +43,7 @@ namespace Fluid.Core.Logging.Parsing
             return new MessageTemplate(messageTemplate, Tokenize(messageTemplate));
         }
 
-        static IEnumerable<MessageTemplateToken> Tokenize(string messageTemplate)
+        private static IEnumerable<MessageTemplateToken> Tokenize(string messageTemplate)
         {
             if (messageTemplate.Length == 0)
             {
@@ -70,7 +72,7 @@ namespace Fluid.Core.Logging.Parsing
             }
         }
 
-        static MessageTemplateToken ParsePropertyToken(int startAt, string messageTemplate, out int next)
+        private static MessageTemplateToken ParsePropertyToken(int startAt, string messageTemplate, out int next)
         {
             var first = startAt;
             startAt++;
@@ -90,7 +92,8 @@ namespace Fluid.Core.Logging.Parsing
             if (tagContent.Length == 0)
                 return new TextToken(rawText, first);
 
-            if (!TrySplitTagContent(tagContent, out var propertyNameAndDestructuring, out var format, out var alignment))
+            if (!TrySplitTagContent(tagContent, out var propertyNameAndDestructuring, out var format,
+                out var alignment))
                 return new TextToken(rawText, first);
 
             var propertyName = propertyNameAndDestructuring;
@@ -109,14 +112,12 @@ namespace Fluid.Core.Logging.Parsing
             }
 
             if (format != null)
-            {
                 for (var i = 0; i < format.Length; ++i)
                 {
                     var c = format[i];
                     if (!IsValidInFormat(c))
                         return new TextToken(rawText, first);
                 }
-            }
 
             Alignment? alignmentValue = null;
             if (alignment != null)
@@ -135,9 +136,7 @@ namespace Fluid.Core.Logging.Parsing
                 if (!int.TryParse(lastDash == -1 ? alignment : alignment.Substring(1), out var width) || width == 0)
                     return new TextToken(rawText, first);
 
-                var direction = lastDash == -1 ?
-                    AlignmentDirection.Right :
-                    AlignmentDirection.Left;
+                var direction = lastDash == -1 ? AlignmentDirection.Right : AlignmentDirection.Left;
 
                 alignmentValue = new Alignment(direction, width);
             }
@@ -151,7 +150,8 @@ namespace Fluid.Core.Logging.Parsing
                 first);
         }
 
-        static bool TrySplitTagContent(string tagContent, out string propertyNameAndDestructuring, out string format, out string alignment)
+        private static bool TrySplitTagContent(string tagContent, out string propertyNameAndDestructuring,
+            out string format, out string alignment)
         {
             var formatDelim = tagContent.IndexOf(':');
             var alignmentDelim = tagContent.IndexOf(',');
@@ -163,12 +163,10 @@ namespace Fluid.Core.Logging.Parsing
             }
             else
             {
-                if (alignmentDelim == -1 || (formatDelim != -1 && alignmentDelim > formatDelim))
+                if (alignmentDelim == -1 || formatDelim != -1 && alignmentDelim > formatDelim)
                 {
                     propertyNameAndDestructuring = tagContent.Substring(0, formatDelim);
-                    format = formatDelim == tagContent.Length - 1 ?
-                        null :
-                        tagContent.Substring(formatDelim + 1);
+                    format = formatDelim == tagContent.Length - 1 ? null : tagContent.Substring(formatDelim + 1);
                     alignment = null;
                 }
                 else
@@ -194,9 +192,7 @@ namespace Fluid.Core.Logging.Parsing
                         }
 
                         alignment = tagContent.Substring(alignmentDelim + 1, formatDelim - alignmentDelim - 1);
-                        format = formatDelim == tagContent.Length - 1 ?
-                            null :
-                            tagContent.Substring(formatDelim + 1);
+                        format = formatDelim == tagContent.Length - 1 ? null : tagContent.Substring(formatDelim + 1);
                     }
                 }
             }
@@ -204,60 +200,63 @@ namespace Fluid.Core.Logging.Parsing
             return true;
         }
 
-        static bool IsValidInPropertyTag(char c)
+        private static bool IsValidInPropertyTag(char c)
         {
             return IsValidInDestructuringHint(c) ||
-                IsValidInPropertyName(c) ||
-                IsValidInFormat(c) ||
-                c == ':';
+                   IsValidInPropertyName(c) ||
+                   IsValidInFormat(c) ||
+                   c == ':';
         }
 
-        static bool IsValidInPropertyName(char c) => char.IsLetterOrDigit(c) || c == '_';
+        private static bool IsValidInPropertyName(char c)
+        {
+            return char.IsLetterOrDigit(c) || c == '_';
+        }
 
-        static bool TryGetDestructuringHint(char c, out Destructuring destructuring)
+        private static bool TryGetDestructuringHint(char c, out Destructuring destructuring)
         {
             switch (c)
             {
                 case '@':
-                    {
-                        destructuring = Destructuring.Destructure;
-                        return true;
-                    }
+                {
+                    destructuring = Destructuring.Destructure;
+                    return true;
+                }
                 case '$':
-                    {
-                        destructuring = Destructuring.Stringify;
-                        return true;
-                    }
+                {
+                    destructuring = Destructuring.Stringify;
+                    return true;
+                }
                 default:
-                    {
-                        destructuring = Destructuring.Default;
-                        return false;
-                    }
+                {
+                    destructuring = Destructuring.Default;
+                    return false;
+                }
             }
         }
 
-        static bool IsValidInDestructuringHint(char c)
+        private static bool IsValidInDestructuringHint(char c)
         {
             return c == '@' ||
                    c == '$';
         }
 
-        static bool IsValidInAlignment(char c)
+        private static bool IsValidInAlignment(char c)
         {
             return char.IsDigit(c) ||
                    c == '-';
         }
 
-        static bool IsValidInFormat(char c)
+        private static bool IsValidInFormat(char c)
         {
             return c != '}' &&
-                (char.IsLetterOrDigit(c) ||
-                 char.IsPunctuation(c) ||
-                 c == ' ' ||
-                 c == '+');
+                   (char.IsLetterOrDigit(c) ||
+                    char.IsPunctuation(c) ||
+                    c == ' ' ||
+                    c == '+');
         }
 
-        static TextToken ParseTextToken(int startAt, string messageTemplate, out int next)
+        private static TextToken ParseTextToken(int startAt, string messageTemplate, out int next)
         {
             var first = startAt;
 
@@ -282,13 +281,9 @@ namespace Fluid.Core.Logging.Parsing
                 {
                     accum.Append(nc);
                     if (nc == '}')
-                    {
                         if (startAt + 1 < messageTemplate.Length &&
                             messageTemplate[startAt + 1] == '}')
-                        {
                             startAt++;
-                        }
-                    }
                 }
 
                 startAt++;

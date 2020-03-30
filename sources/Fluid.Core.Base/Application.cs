@@ -5,7 +5,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Base abstract application class.
+    ///     Base abstract application class.
     /// </summary>
     public abstract class Application : Object, IApplication
     {
@@ -19,7 +19,7 @@ namespace Fluid.Core.Base
         public abstract IColor IconForegroundColor { get; }
 
         /// <inheritdoc />
-        public IConfiguration Configuration { get; private set; } = new Configuration();
+        public IConfiguration Configuration { get; } = new Configuration();
 
         /// <inheritdoc />
         public abstract override Guid Id { get; }
@@ -40,7 +40,7 @@ namespace Fluid.Core.Base
         public abstract Version Version { get; }
 
         /// <inheritdoc />
-        public ICollection<IApplicationAction> Actions { get; private set; } = new List<IApplicationAction>();
+        public ICollection<IApplicationAction> Actions { get; } = new List<IApplicationAction>();
 
         /// <inheritdoc />
         public event EventHandler ActionsUpdated;

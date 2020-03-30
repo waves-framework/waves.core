@@ -20,18 +20,17 @@ using System.Text.RegularExpressions;
 
 namespace Fluid.Core.Logging.Sinks.File
 {
-    class PathRoller
+    internal class PathRoller
     {
-        const string PeriodMatchGroup = "period";
-        const string SequenceNumberMatchGroup = "sequence";
+        private const string PeriodMatchGroup = "period";
+        private const string SequenceNumberMatchGroup = "sequence";
 
-        readonly string _directory;
-        readonly string _filenamePrefix;
-        readonly string _filenameSuffix;
-        readonly Regex _filenameMatcher;
+        private readonly Regex _filenameMatcher;
+        private readonly string _filenamePrefix;
+        private readonly string _filenameSuffix;
 
-        readonly RollingInterval _interval;
-        readonly string _periodFormat;
+        private readonly RollingInterval _interval;
+        private readonly string _periodFormat;
 
         public PathRoller(string path, RollingInterval interval)
         {
@@ -43,7 +42,7 @@ namespace Fluid.Core.Logging.Sinks.File
             if (string.IsNullOrEmpty(pathDirectory))
                 pathDirectory = Directory.GetCurrentDirectory();
 
-            _directory = Path.GetFullPath(pathDirectory);
+            LogFileDirectory = Path.GetFullPath(pathDirectory);
             _filenamePrefix = Path.GetFileNameWithoutExtension(path);
             _filenameSuffix = Path.GetExtension(path);
             _filenameMatcher = new Regex(
@@ -58,7 +57,7 @@ namespace Fluid.Core.Logging.Sinks.File
             DirectorySearchPattern = $"{_filenamePrefix}*{_filenameSuffix}";
         }
 
-        public string LogFileDirectory => _directory;
+        public string LogFileDirectory { get; }
 
         public string DirectorySearchPattern { get; }
 
@@ -71,7 +70,7 @@ namespace Fluid.Core.Logging.Sinks.File
             if (sequenceNumber != null)
                 tok += "_" + sequenceNumber.Value.ToString("000", CultureInfo.InvariantCulture);
 
-            path = Path.Combine(_directory, _filenamePrefix + tok + _filenameSuffix);
+            path = Path.Combine(LogFileDirectory, _filenamePrefix + tok + _filenameSuffix);
         }
 
         public IEnumerable<RollingLogFile> SelectMatches(IEnumerable<string> filenames)
@@ -101,17 +100,21 @@ namespace Fluid.Core.Logging.Sinks.File
                         CultureInfo.InvariantCulture,
                         DateTimeStyles.None,
                         out var dateTime))
-                    {
                         period = dateTime;
-                    }
                 }
 
                 yield return new RollingLogFile(filename, period, inc);
             }
         }
 
-        public DateTime? GetCurrentCheckpoint(DateTime instant) => _interval.GetCurrentCheckpoint(instant);
+        public DateTime? GetCurrentCheckpoint(DateTime instant)
+        {
+            return _interval.GetCurrentCheckpoint(instant);
+        }
 
-        public DateTime? GetNextCheckpoint(DateTime instant) => _interval.GetNextCheckpoint(instant);
+        public DateTime? GetNextCheckpoint(DateTime instant)
+        {
+            return _interval.GetNextCheckpoint(instant);
+        }
     }
 }

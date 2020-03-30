@@ -18,7 +18,7 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Policies
 {
-    class EnumScalarConversionPolicy : IScalarConversionPolicy
+    internal class EnumScalarConversionPolicy : IScalarConversionPolicy
     {
         public bool TryConvertToScalar(object value, out ScalarValue result)
         {

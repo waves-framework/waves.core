@@ -15,24 +15,24 @@
 namespace Fluid.Core.Logging.Parsing
 {
     /// <summary>
-    /// Instructs the logger on how to store information about provided
-    /// parameters.
+    ///     Instructs the logger on how to store information about provided
+    ///     parameters.
     /// </summary>
     public enum Destructuring
     {
         /// <summary>
-        /// Convert known types and objects to scalars, arrays to sequences.
+        ///     Convert known types and objects to scalars, arrays to sequences.
         /// </summary>
         Default,
 
         /// <summary>
-        /// Convert all types to scalar strings. Prefix name with '$'.
+        ///     Convert all types to scalar strings. Prefix name with '$'.
         /// </summary>
         Stringify,
 
         /// <summary>
-        /// Convert known types to scalars, destructure objects and collections
-        /// into sequences and structures. Prefix name with '@'.
+        ///     Convert known types to scalars, destructure objects and collections
+        ///     into sequences and structures. Prefix name with '@'.
         /// </summary>
         Destructure
     }

@@ -20,12 +20,12 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Configuration
 {
     /// <summary>
-    /// Controls filter configuration.
+    ///     Controls filter configuration.
     /// </summary>
     public class LoggerFilterConfiguration
     {
-        readonly LoggerConfiguration _loggerConfiguration;
-        readonly Action<ILogEventFilter> _addFilter;
+        private readonly Action<ILogEventFilter> _addFilter;
+        private readonly LoggerConfiguration _loggerConfiguration;
 
         internal LoggerFilterConfiguration(
             LoggerConfiguration loggerConfiguration,
@@ -36,7 +36,7 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Filter out log events from the stream based on the provided filter.
+        ///     Filter out log events from the stream based on the provided filter.
         /// </summary>
         /// <param name="filters">The filters to apply.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -49,11 +49,12 @@ namespace Fluid.Core.Logging.Configuration
                     throw new ArgumentException("Null filter is not allowed.");
                 _addFilter(logEventFilter);
             }
+
             return _loggerConfiguration;
         }
 
         /// <summary>
-        /// Filter out log events from the stream based on the provided filter.
+        ///     Filter out log events from the stream based on the provided filter.
         /// </summary>
         /// <typeparam name="TFilter">The filters to apply.</typeparam>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -64,10 +65,12 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Filter out log events that match a predicate.
+        ///     Filter out log events that match a predicate.
         /// </summary>
-        /// <param name="exclusionPredicate">Function that returns true when an event
-        /// should be excluded (silenced).</param>
+        /// <param name="exclusionPredicate">
+        ///     Function that returns true when an event
+        ///     should be excluded (silenced).
+        /// </param>
         /// <returns>Configuration object allowing method chaining.</returns>
         public LoggerConfiguration ByExcluding(Func<LogEvent, bool> exclusionPredicate)
         {
@@ -75,10 +78,12 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Filter log events to include only those that match a predicate.
+        ///     Filter log events to include only those that match a predicate.
         /// </summary>
-        /// <param name="inclusionPredicate">Function that returns true when an event
-        /// should be included (emitted).</param>
+        /// <param name="inclusionPredicate">
+        ///     Function that returns true when an event
+        ///     should be included (emitted).
+        /// </param>
         /// <returns>Configuration object allowing method chaining.</returns>
         public LoggerConfiguration ByIncludingOnly(Func<LogEvent, bool> inclusionPredicate)
         {

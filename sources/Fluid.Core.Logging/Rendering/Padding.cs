@@ -18,12 +18,13 @@ using Fluid.Core.Logging.Parsing;
 
 namespace Fluid.Core.Logging.Rendering
 {
-    static class Padding
+    internal static class Padding
     {
-        static readonly char[] PaddingChars = Enumerable.Repeat(' ', 80).ToArray();
+        private static readonly char[] PaddingChars = Enumerable.Repeat(' ', 80).ToArray();
 
         /// <summary>
-        /// Writes the provided value to the output, applying direction-based padding when <paramref name="alignment"/> is provided.
+        ///     Writes the provided value to the output, applying direction-based padding when <paramref name="alignment" /> is
+        ///     provided.
         /// </summary>
         public static void Apply(TextWriter output, string value, Alignment? alignment)
         {
@@ -39,13 +40,9 @@ namespace Fluid.Core.Logging.Rendering
                 output.Write(value);
 
             if (pad <= PaddingChars.Length)
-            {
                 output.Write(PaddingChars, 0, pad);
-            }
             else
-            {
                 output.Write(new string(' ', pad));
-            }
 
             if (alignment.Value.Direction == AlignmentDirection.Right)
                 output.Write(value);

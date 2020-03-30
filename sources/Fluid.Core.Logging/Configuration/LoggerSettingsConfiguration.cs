@@ -19,11 +19,11 @@ using Fluid.Core.Logging.Settings.KeyValuePairs;
 namespace Fluid.Core.Logging.Configuration
 {
     /// <summary>
-    /// Allows additional setting sources to drive the logger configuration.
+    ///     Allows additional setting sources to drive the logger configuration.
     /// </summary>
     public class LoggerSettingsConfiguration
     {
-        readonly LoggerConfiguration _loggerConfiguration;
+        private readonly LoggerConfiguration _loggerConfiguration;
 
         internal LoggerSettingsConfiguration(LoggerConfiguration loggerConfiguration)
         {
@@ -31,7 +31,7 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Apply external settings to the logger configuration.
+        ///     Apply external settings to the logger configuration.
         /// </summary>
         /// <returns>Configuration object allowing method chaining.</returns>
         public LoggerConfiguration Settings(ILoggerSettings settings)
@@ -44,7 +44,7 @@ namespace Fluid.Core.Logging.Configuration
         }
 
         /// <summary>
-        /// Apply settings specified in the Serilog key-value setting format to the logger configuration.
+        ///     Apply settings specified in the Serilog key-value setting format to the logger configuration.
         /// </summary>
         /// <param name="settings">A list of key-value pairs describing logger settings.</param>
         /// <returns>Configuration object allowing method chaining.</returns>
@@ -53,14 +53,11 @@ namespace Fluid.Core.Logging.Configuration
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             var uniqueSettings = new Dictionary<string, string>();
-            foreach (var kvp in settings)
-            {
-                uniqueSettings[kvp.Key] = kvp.Value;
-            }
+            foreach (var kvp in settings) uniqueSettings[kvp.Key] = kvp.Value;
             return KeyValuePairs(uniqueSettings);
         }
 
-        LoggerConfiguration KeyValuePairs(IReadOnlyDictionary<string, string> settings)
+        private LoggerConfiguration KeyValuePairs(IReadOnlyDictionary<string, string> settings)
         {
             return Settings(new KeyValuePairSettings(settings));
         }

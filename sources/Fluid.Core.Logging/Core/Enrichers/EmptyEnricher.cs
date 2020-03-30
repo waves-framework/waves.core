@@ -16,7 +16,7 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Enrichers
 {
-    class EmptyEnricher : ILogEventEnricher
+    internal class EmptyEnricher : ILogEventEnricher
     {
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {

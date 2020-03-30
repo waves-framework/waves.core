@@ -1,19 +1,14 @@
 ﻿using System;
 using Fluid.Core.Base.Interfaces;
-using PropertyChanged;
 
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Property base class.
+    ///     Property base class.
     /// </summary>
     [Serializable]
     public class Property : Object, IProperty
     {
-        private bool _isReadOnly;
-        private string _name;
-        private object _value;
-
         /// <summary>
         ///     Creates new instance of property.
         /// </summary>

@@ -20,9 +20,9 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Enrichers
 {
-    class SafeAggregateEnricher : ILogEventEnricher
+    internal class SafeAggregateEnricher : ILogEventEnricher
     {
-        readonly ILogEventEnricher[] _enrichers;
+        private readonly ILogEventEnricher[] _enrichers;
 
         public SafeAggregateEnricher(IEnumerable<ILogEventEnricher> enrichers)
         {
@@ -33,7 +33,6 @@ namespace Fluid.Core.Logging.Core.Enrichers
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
             foreach (var enricher in _enrichers)
-            {
                 try
                 {
                     enricher.Enrich(logEvent, propertyFactory);
@@ -42,7 +41,6 @@ namespace Fluid.Core.Logging.Core.Enrichers
                 {
                     SelfLog.WriteLine("Exception {0} caught while enriching {1} with {2}.", ex, logEvent, enricher);
                 }
-            }
         }
     }
 }

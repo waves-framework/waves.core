@@ -9,13 +9,13 @@ namespace Fluid.Core.IO
     public class Desktop : Directory
     {
         private readonly Directory _computer;
-        private readonly Directory _userDirectory;
 
         private readonly DirectoryInfo _directoryInfo;
-
-        private DirectoryType _type = DirectoryType.Desktop;
+        private readonly Directory _userDirectory;
 
         private ObservableCollection<IFileSystemObject> _children = new ObservableCollection<IFileSystemObject>();
+
+        private DirectoryType _type = DirectoryType.Desktop;
 
         /// <summary>
         ///     Новый экземпляр директории.

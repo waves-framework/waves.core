@@ -18,23 +18,38 @@ using Fluid.Core.Logging.Events;
 
 namespace Fluid.Core.Logging.Core.Pipeline
 {
-    class SilentLogger : ILogger
+    internal class SilentLogger : ILogger
     {
         public static readonly ILogger Instance = new SilentLogger();
 
-        SilentLogger()
+        private SilentLogger()
         {
         }
 
-        public ILogger ForContext(ILogEventEnricher enricher) => this;
+        public ILogger ForContext(ILogEventEnricher enricher)
+        {
+            return this;
+        }
 
-        public ILogger ForContext(IEnumerable<ILogEventEnricher> enrichers) => this;
+        public ILogger ForContext(IEnumerable<ILogEventEnricher> enrichers)
+        {
+            return this;
+        }
 
-        public ILogger ForContext(string propertyName, object value, bool destructureObjects = false) => this;
+        public ILogger ForContext(string propertyName, object value, bool destructureObjects = false)
+        {
+            return this;
+        }
 
-        public ILogger ForContext<TSource>() => this;
+        public ILogger ForContext<TSource>()
+        {
+            return this;
+        }
 
-        public ILogger ForContext(Type source) => this;
+        public ILogger ForContext(Type source)
+        {
+            return this;
+        }
 
         public void Write(LogEvent logEvent)
         {
@@ -52,7 +67,8 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Write<T0, T1, T2>(LogEventLevel level, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Write<T0, T1, T2>(LogEventLevel level, string messageTemplate, T0 propertyValue0, T1 propertyValue1,
+            T2 propertyValue2)
         {
         }
 
@@ -68,19 +84,25 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Write<T0, T1>(LogEventLevel level, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+        public void Write<T0, T1>(LogEventLevel level, Exception exception, string messageTemplate, T0 propertyValue0,
+            T1 propertyValue1)
         {
         }
 
-        public void Write<T0, T1, T2>(LogEventLevel level, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Write<T0, T1, T2>(LogEventLevel level, Exception exception, string messageTemplate,
+            T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
         }
 
-        public void Write(LogEventLevel level, Exception exception, string messageTemplate, params object[] propertyValues)
+        public void Write(LogEventLevel level, Exception exception, string messageTemplate,
+            params object[] propertyValues)
         {
         }
 
-        public bool IsEnabled(LogEventLevel level) => false;
+        public bool IsEnabled(LogEventLevel level)
+        {
+            return false;
+        }
 
         public void Verbose(string messageTemplate)
         {
@@ -114,7 +136,8 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Verbose<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Verbose<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0,
+            T1 propertyValue1, T2 propertyValue2)
         {
         }
 
@@ -154,7 +177,8 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Debug<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Debug<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1,
+            T2 propertyValue2)
         {
         }
 
@@ -174,7 +198,8 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Information<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Information<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1,
+            T2 propertyValue2)
         {
         }
 
@@ -190,11 +215,13 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Information<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+        public void Information<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0,
+            T1 propertyValue1)
         {
         }
 
-        public void Information<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Information<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0,
+            T1 propertyValue1, T2 propertyValue2)
         {
         }
 
@@ -234,7 +261,8 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Warning<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Warning<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0,
+            T1 propertyValue1, T2 propertyValue2)
         {
         }
 
@@ -274,7 +302,8 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Error<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Error<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1,
+            T2 propertyValue2)
         {
         }
 
@@ -314,7 +343,8 @@ namespace Fluid.Core.Logging.Core.Pipeline
         {
         }
 
-        public void Fatal<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+        public void Fatal<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1,
+            T2 propertyValue2)
         {
         }
 
@@ -323,14 +353,16 @@ namespace Fluid.Core.Logging.Core.Pipeline
         }
 
         [MessageTemplateFormatMethod("messageTemplate")]
-        public bool BindMessageTemplate(string messageTemplate, object[] propertyValues, out MessageTemplate parsedTemplate, out IEnumerable<LogEventProperty> boundProperties)
+        public bool BindMessageTemplate(string messageTemplate, object[] propertyValues,
+            out MessageTemplate parsedTemplate, out IEnumerable<LogEventProperty> boundProperties)
         {
             parsedTemplate = null;
             boundProperties = null;
             return false;
         }
 
-        public bool BindProperty(string propertyName, object value, bool destructureObjects, out LogEventProperty property)
+        public bool BindProperty(string propertyName, object value, bool destructureObjects,
+            out LogEventProperty property)
         {
             property = null;
             return false;

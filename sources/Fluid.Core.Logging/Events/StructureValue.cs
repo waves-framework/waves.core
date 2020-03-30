@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 // Copyright 2013-2015 Serilog Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,17 +20,19 @@ using System.Linq;
 namespace Fluid.Core.Logging.Events
 {
     /// <summary>
-    /// A value represented as a collection of name-value properties.
+    ///     A value represented as a collection of name-value properties.
     /// </summary>
     public class StructureValue : LogEventPropertyValue
     {
-        readonly LogEventProperty[] _properties;
+        private readonly LogEventProperty[] _properties;
 
         /// <summary>
-        /// Construct a <see cref="StructureValue"/> with the provided properties.
+        ///     Construct a <see cref="StructureValue" /> with the provided properties.
         /// </summary>
-        /// <param name="typeTag">Optionally, a piece of metadata describing the "type" of the
-        /// structure.</param>
+        /// <param name="typeTag">
+        ///     Optionally, a piece of metadata describing the "type" of the
+        ///     structure.
+        /// </param>
         /// <param name="properties">The properties of the structure.</param>
         /// <exception cref="ArgumentNullException"></exception>
         public StructureValue(IEnumerable<LogEventProperty> properties, string typeTag = null)
@@ -40,26 +43,29 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// A piece of metadata describing the "type" of the
-        /// structure, or null.
+        ///     A piece of metadata describing the "type" of the
+        ///     structure, or null.
         /// </summary>
         public string TypeTag { get; }
 
         /// <summary>
-        /// The properties of the structure.
+        ///     The properties of the structure.
         /// </summary>
-        /// <remarks>Not presented as a dictionary because dictionary construction is
-        /// relatively expensive; it is cheaper to build a dictionary over properties only
-        /// when the structure is of interest.</remarks>
+        /// <remarks>
+        ///     Not presented as a dictionary because dictionary construction is
+        ///     relatively expensive; it is cheaper to build a dictionary over properties only
+        ///     when the structure is of interest.
+        /// </remarks>
         public IReadOnlyList<LogEventProperty> Properties => _properties;
 
         /// <summary>
-        /// Render the value to the output.
+        ///     Render the value to the output.
         /// </summary>
         /// <param name="output">The output.</param>
         /// <param name="format">A format string applied to the value, or null.</param>
         /// <param name="formatProvider">A format provider to apply to the value, or null to use the default.</param>
-        /// <seealso cref="LogEventPropertyValue.ToString(string, IFormatProvider)"/>.
+        /// <seealso cref="LogEventPropertyValue.ToString(string, IFormatProvider)" />
+        /// .
         public override void Render(TextWriter output, string format = null, IFormatProvider formatProvider = null)
         {
             if (output == null) throw new ArgumentNullException(nameof(output));
@@ -69,6 +75,7 @@ namespace Fluid.Core.Logging.Events
                 output.Write(TypeTag);
                 output.Write(' ');
             }
+
             output.Write("{ ");
             var allButLast = _properties.Length - 1;
             for (var i = 0; i < allButLast; i++)
@@ -87,7 +94,7 @@ namespace Fluid.Core.Logging.Events
             output.Write(" }");
         }
 
-        static void Render(TextWriter output, LogEventProperty property, IFormatProvider formatProvider = null)
+        private static void Render(TextWriter output, LogEventProperty property, IFormatProvider formatProvider = null)
         {
             output.Write(property.Name);
             output.Write(": ");

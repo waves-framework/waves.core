@@ -3,17 +3,17 @@ using System;
 namespace Fluid.Core.Logging.Core
 {
     /// <summary>
-    /// Indicates that the marked method logs data using a message template and (optional) arguments.
-    /// The name of the parameter which contains the message template should be given in the constructor.
+    ///     Indicates that the marked method logs data using a message template and (optional) arguments.
+    ///     The name of the parameter which contains the message template should be given in the constructor.
     /// </summary>
     /// <example>
-    /// <code>
+    ///     <code>
     /// [LoggerMethod("messageTemplate")]
     /// public void Information(string messageTemplate, params object[] propertyValues)
     /// {
     ///     // Do something
     /// }
-    ///
+    /// 
     /// public void Foo()
     /// {
     ///     Information("Hello, {Name}!") // Warning: Non-existing argument in message template.
@@ -24,7 +24,7 @@ namespace Fluid.Core.Logging.Core
     public sealed class MessageTemplateFormatMethodAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MessageTemplateFormatMethodAttribute"/> class.
+        ///     Initializes a new instance of the <see cref="MessageTemplateFormatMethodAttribute" /> class.
         /// </summary>
         /// <param name="messageTemplateParameterName">Name of the message template parameter.</param>
         public MessageTemplateFormatMethodAttribute(string messageTemplateParameterName)
@@ -33,9 +33,9 @@ namespace Fluid.Core.Logging.Core
         }
 
         /// <summary>
-        /// Gets the name of the message template parameter.
+        ///     Gets the name of the message template parameter.
         /// </summary>
         /// <value>The name of the message template parameter.</value>
-        public string MessageTemplateParameterName { get; private set; }
+        public string MessageTemplateParameterName { get; }
     }
 }

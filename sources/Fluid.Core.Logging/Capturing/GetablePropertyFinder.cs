@@ -19,7 +19,7 @@ using System.Reflection;
 
 namespace Fluid.Core.Logging.Capturing
 {
-    static class GetablePropertyFinder
+    internal static class GetablePropertyFinder
     {
         internal static IEnumerable<PropertyInfo> GetPropertiesRecursive(this Type type)
         {
@@ -30,8 +30,11 @@ namespace Fluid.Core.Logging.Capturing
             while (currentTypeInfo.AsType() != typeof(object))
             {
                 var unseenProperties = currentTypeInfo.DeclaredProperties.Where(p => p.CanRead &&
-                    p.GetMethod.IsPublic && !p.GetMethod.IsStatic &&
-                    (p.Name != "Item" || p.GetIndexParameters().Length == 0) && !seenNames.Contains(p.Name));
+                                                                                     p.GetMethod.IsPublic &&
+                                                                                     !p.GetMethod.IsStatic &&
+                                                                                     (p.Name != "Item" ||
+                                                                                      p.GetIndexParameters().Length == 0
+                                                                                     ) && !seenNames.Contains(p.Name));
 
                 foreach (var propertyInfo in unseenProperties)
                 {
@@ -40,10 +43,7 @@ namespace Fluid.Core.Logging.Capturing
                 }
 
                 var baseType = currentTypeInfo.BaseType;
-                if (baseType == null)
-                {
-                    yield break;
-                }
+                if (baseType == null) yield break;
 
                 currentTypeInfo = baseType.GetTypeInfo();
             }

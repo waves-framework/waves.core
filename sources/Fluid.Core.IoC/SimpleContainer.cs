@@ -22,7 +22,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        /// Инициализирует новый экземпляр <see cref="SimpleContainer" /> class.
+        ///     Инициализирует новый экземпляр <see cref="SimpleContainer" /> class.
         /// </summary>
         private SimpleContainer(IEnumerable<ContainerEntry> entries)
         {
@@ -39,7 +39,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        /// Регистрация экземпляра.
+        ///     Регистрация экземпляра.
         /// </summary>
         /// <typeparam name="TService"></typeparam>
         /// <param name="implementation"></param>
@@ -176,17 +176,14 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        /// Request all instances.
+        ///     Request all instances.
         /// </summary>
         /// <returns></returns>
         public IEnumerable<object> GetAllInstances()
         {
             var list = new List<object>();
 
-            foreach (var entry in _entries)
-            {
-                list.Add(entry);
-            }
+            foreach (var entry in _entries) list.Add(entry);
 
             return list;
         }

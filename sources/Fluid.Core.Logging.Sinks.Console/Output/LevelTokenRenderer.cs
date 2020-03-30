@@ -21,19 +21,21 @@ using Fluid.Core.Logging.Sinks.Console.Themes;
 
 namespace Fluid.Core.Logging.Sinks.Console.Output
 {
-    class LevelTokenRenderer : OutputTemplateTokenRenderer
+    internal class LevelTokenRenderer : OutputTemplateTokenRenderer
     {
-        readonly ConsoleTheme _theme;
-        readonly PropertyToken _levelToken;
-        static readonly Dictionary<LogEventLevel, ConsoleThemeStyle> Levels = new Dictionary<LogEventLevel, ConsoleThemeStyle>
-        {
-            { LogEventLevel.Verbose, ConsoleThemeStyle.LevelVerbose },
-            { LogEventLevel.Debug, ConsoleThemeStyle.LevelDebug },
-            { LogEventLevel.Information, ConsoleThemeStyle.LevelInformation },
-            { LogEventLevel.Warning, ConsoleThemeStyle.LevelWarning },
-            { LogEventLevel.Error, ConsoleThemeStyle.LevelError },
-            { LogEventLevel.Fatal, ConsoleThemeStyle.LevelFatal }
-        };
+        private static readonly Dictionary<LogEventLevel, ConsoleThemeStyle> Levels =
+            new Dictionary<LogEventLevel, ConsoleThemeStyle>
+            {
+                {LogEventLevel.Verbose, ConsoleThemeStyle.LevelVerbose},
+                {LogEventLevel.Debug, ConsoleThemeStyle.LevelDebug},
+                {LogEventLevel.Information, ConsoleThemeStyle.LevelInformation},
+                {LogEventLevel.Warning, ConsoleThemeStyle.LevelWarning},
+                {LogEventLevel.Error, ConsoleThemeStyle.LevelError},
+                {LogEventLevel.Fatal, ConsoleThemeStyle.LevelFatal}
+            };
+
+        private readonly PropertyToken _levelToken;
+        private readonly ConsoleTheme _theme;
 
         public LevelTokenRenderer(ConsoleTheme theme, PropertyToken levelToken)
         {
@@ -53,7 +55,9 @@ namespace Fluid.Core.Logging.Sinks.Console.Output
 
             var _ = 0;
             using (_theme.Apply(output, levelStyle, ref _))
+            {
                 Padding.Apply(output, moniker, _levelToken.Alignment);
+            }
         }
     }
 }

@@ -7,10 +7,9 @@ namespace Fluid.Core.Devices.Input.ADC
 {
     public abstract class AdcEntryPoint : EntryPoint, IAdcEntryPoint
     {
-        private double _managedGain;
-        private double _digitalGain = 1.0f;
-
         private ICollection<double> _availableManagedGains;
+        private double _digitalGain = 1.0f;
+        private double _managedGain;
 
         /// <inheritdoc />
         protected AdcEntryPoint(IModule parent, bool isProperty) : base(parent, isProperty)

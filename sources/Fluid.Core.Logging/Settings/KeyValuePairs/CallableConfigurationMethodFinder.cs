@@ -21,9 +21,10 @@ using Fluid.Core.Logging.Configuration;
 
 namespace Fluid.Core.Logging.Settings.KeyValuePairs
 {
-    static class CallableConfigurationMethodFinder
+    internal static class CallableConfigurationMethodFinder
     {
-        internal static IList<MethodInfo> FindConfigurationMethods(IEnumerable<Assembly> configurationAssemblies, Type configType)
+        internal static IList<MethodInfo> FindConfigurationMethods(IEnumerable<Assembly> configurationAssemblies,
+            Type configType)
         {
             var methods = configurationAssemblies
                 .SelectMany(a => a.ExportedTypes

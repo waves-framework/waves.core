@@ -3,12 +3,12 @@
 namespace Fluid.Core.Base.EventArgs
 {
     /// <summary>
-    /// Event args for data receiving handling.
+    ///     Event args for data receiving handling.
     /// </summary>
     public class DataReceivedEventArgs
     {
         /// <summary>
-        /// Creates new instance of DataReceivedEventArgs.
+        ///     Creates new instance of DataReceivedEventArgs.
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="data">Data.</param>
@@ -19,13 +19,13 @@ namespace Fluid.Core.Base.EventArgs
         }
 
         /// <summary>
-        /// Gets sender.
+        ///     Gets sender.
         /// </summary>
-        public IObject Sender { get; private set; }
+        public IObject Sender { get; }
 
         /// <summary>
-        /// Gets data.
+        ///     Gets data.
         /// </summary>
-        public object Data { get; private set; }
+        public object Data { get; }
     }
 }

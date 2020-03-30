@@ -17,12 +17,12 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Core
 {
     /// <summary>
-    /// Applied during logging to add additional information to log events.
+    ///     Applied during logging to add additional information to log events.
     /// </summary>
     public interface ILogEventEnricher
     {
         /// <summary>
-        /// Enrich the log event.
+        ///     Enrich the log event.
         /// </summary>
         /// <param name="logEvent">The log event to enrich.</param>
         /// <param name="propertyFactory">Factory for creating new properties to add to the event.</param>

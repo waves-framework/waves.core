@@ -5,17 +5,17 @@ using System.ComponentModel;
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of module classes.
+    ///     Interface of module classes.
     /// </summary>
     public interface IModule : IObject, ICloneable, IDisposable, INotifyPropertyChanged
     {
         /// <summary>
-        /// Gets whether the module is initialized.
+        ///     Gets whether the module is initialized.
         /// </summary>
         bool IsInitialized { get; }
 
         /// <summary>
-        /// Gets icon of the module.
+        ///     Gets icon of the module.
         /// </summary>
         string Icon { get; }
 

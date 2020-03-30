@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base
 {
     /// <summary>
-    /// Entry point base class.
+    ///     Entry point base class.
     /// </summary>
     public class EntryPoint : Object, IEntryPoint
     {

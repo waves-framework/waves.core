@@ -1,7 +1,7 @@
 ﻿namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
-    /// Interface of Size structures.
+    ///     Interface of Size structures.
     /// </summary>
     public interface ISize
     {
@@ -24,5 +24,5 @@
         ///     Gets or sets aspect ratio of size structure.
         /// </summary>
         float Aspect { get; }
-}
+    }
 }

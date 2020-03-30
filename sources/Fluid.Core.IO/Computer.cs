@@ -8,9 +8,8 @@ namespace Fluid.Core.IO
 {
     public class Computer : Directory
     {
-        private DirectoryType _type = DirectoryType.Pc;
-
         private ObservableCollection<IFileSystemObject> _children = new ObservableCollection<IFileSystemObject>();
+        private DirectoryType _type = DirectoryType.Pc;
 
         /// <summary>
         ///     Новый экземпляр директории.

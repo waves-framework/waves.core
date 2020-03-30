@@ -97,7 +97,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        /// Получение все экземпляров сервисов.
+        ///     Получение все экземпляров сервисов.
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<object> GetAllInstances()

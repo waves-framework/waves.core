@@ -19,13 +19,13 @@ using System.IO;
 namespace Fluid.Core.Logging.Events
 {
     /// <summary>
-    /// A property value corresponding to a simple, scalar type.
+    ///     A property value corresponding to a simple, scalar type.
     /// </summary>
     public class ScalarValue : LogEventPropertyValue
     {
         /// <summary>
-        /// Construct a <see cref="ScalarValue"/> with the specified
-        /// value.
+        ///     Construct a <see cref="ScalarValue" /> with the specified
+        ///     value.
         /// </summary>
         /// <param name="value">The value, which may be <code>null</code>.</param>
         public ScalarValue(object value)
@@ -34,23 +34,25 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// The value, which may be <code>null</code>.
+        ///     The value, which may be <code>null</code>.
         /// </summary>
         public object Value { get; }
 
         /// <summary>
-        /// Render the value to the output.
+        ///     Render the value to the output.
         /// </summary>
         /// <param name="output">The output.</param>
         /// <param name="format">A format string applied to the value, or null.</param>
         /// <param name="formatProvider">A format provider to apply to the value, or null to use the default.</param>
-        /// <seealso cref="LogEventPropertyValue.ToString(string, IFormatProvider)"/>.
+        /// <seealso cref="LogEventPropertyValue.ToString(string, IFormatProvider)" />
+        /// .
         public override void Render(TextWriter output, string format = null, IFormatProvider formatProvider = null)
         {
             Render(Value, output, format, formatProvider);
         }
 
-        internal static void Render(object value, TextWriter output, string format = null, IFormatProvider formatProvider = null)
+        internal static void Render(object value, TextWriter output, string format = null,
+            IFormatProvider formatProvider = null)
         {
             if (output == null) throw new ArgumentNullException(nameof(output));
 
@@ -72,12 +74,13 @@ namespace Fluid.Core.Logging.Events
                 {
                     output.Write(s);
                 }
+
                 return;
             }
 
             if (formatProvider != null)
             {
-                var custom = (ICustomFormatter)formatProvider.GetFormat(typeof(ICustomFormatter));
+                var custom = (ICustomFormatter) formatProvider.GetFormat(typeof(ICustomFormatter));
                 if (custom != null)
                 {
                     output.Write(custom.Format(format, value, formatProvider));
@@ -86,17 +89,13 @@ namespace Fluid.Core.Logging.Events
             }
 
             if (value is IFormattable f)
-            {
                 output.Write(f.ToString(format, formatProvider ?? CultureInfo.InvariantCulture));
-            }
             else
-            {
                 output.Write(value.ToString());
-            }
         }
 
         /// <summary>
-        /// Determine if this instance is equal to <paramref name="obj"/>.
+        ///     Determine if this instance is equal to <paramref name="obj" />.
         /// </summary>
         /// <param name="obj">The instance to compare with.</param>
         /// <returns>True if the instances are equal; otherwise, false.</returns>
@@ -106,7 +105,7 @@ namespace Fluid.Core.Logging.Events
         }
 
         /// <summary>
-        /// Get a hash code representing the value.
+        ///     Get a hash code representing the value.
         /// </summary>
         /// <returns>The instance's hash code.</returns>
         public override int GetHashCode()

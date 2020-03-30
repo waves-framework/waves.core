@@ -18,10 +18,10 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Sinks.File
 {
     /// <summary>
-    /// An instance of this sink may be substituted when an instance of the
-    /// <see cref="FileSink"/> is unable to be constructed.
+    ///     An instance of this sink may be substituted when an instance of the
+    ///     <see cref="FileSink" /> is unable to be constructed.
     /// </summary>
-    class NullSink : ILogEventSink
+    internal class NullSink : ILogEventSink
     {
         public void Emit(LogEvent logEvent)
         {

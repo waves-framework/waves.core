@@ -21,28 +21,29 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Formatting.Json
 {
     /// <summary>
-    /// Converts Serilog's structured property value format into JSON.
+    ///     Converts Serilog's structured property value format into JSON.
     /// </summary>
     public class JsonValueFormatter : LogEventPropertyValueVisitor<TextWriter, bool>
     {
-        readonly string _typeTagName;
-
-        const string DefaultTypeTagName = "_typeTag";
+        private const string DefaultTypeTagName = "_typeTag";
+        private readonly string _typeTagName;
 
         /// <summary>
-        /// Construct a <see cref="JsonFormatter"/>.
+        ///     Construct a <see cref="JsonFormatter" />.
         /// </summary>
-        /// <param name="typeTagName">When serializing structured (object) values,
-        /// the property name to use for the Serilog <see cref="StructureValue.TypeTag"/> field
-        /// in the resulting JSON. If null, no type tag field will be written. The default is
-        /// "_typeTag".</param>
+        /// <param name="typeTagName">
+        ///     When serializing structured (object) values,
+        ///     the property name to use for the Serilog <see cref="StructureValue.TypeTag" /> field
+        ///     in the resulting JSON. If null, no type tag field will be written. The default is
+        ///     "_typeTag".
+        /// </param>
         public JsonValueFormatter(string typeTagName = DefaultTypeTagName)
         {
             _typeTagName = typeTagName;
         }
 
         /// <summary>
-        /// Format <paramref name="value"/> as JSON to <paramref name="output"/>.
+        ///     Format <paramref name="value" /> as JSON to <paramref name="output" />.
         /// </summary>
         /// <param name="value">The value to format</param>
         /// <param name="output">The output</param>
@@ -55,11 +56,11 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Visit a <see cref="ScalarValue"/> value.
+        ///     Visit a <see cref="ScalarValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="scalar">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="scalar"/>.</returns>
+        /// <returns>The result of visiting <paramref name="scalar" />.</returns>
         protected override bool VisitScalarValue(TextWriter state, ScalarValue scalar)
         {
             if (scalar == null) throw new ArgumentNullException(nameof(scalar));
@@ -68,11 +69,11 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Visit a <see cref="SequenceValue"/> value.
+        ///     Visit a <see cref="SequenceValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="sequence">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="sequence"/>.</returns>
+        /// <returns>The result of visiting <paramref name="sequence" />.</returns>
         protected override bool VisitSequenceValue(TextWriter state, SequenceValue sequence)
         {
             if (sequence == null) throw new ArgumentNullException(nameof(sequence));
@@ -84,16 +85,17 @@ namespace Fluid.Core.Logging.Formatting.Json
                 delim = ",";
                 Visit(state, sequence.Elements[i]);
             }
+
             state.Write(']');
             return false;
         }
 
         /// <summary>
-        /// Visit a <see cref="StructureValue"/> value.
+        ///     Visit a <see cref="StructureValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="structure">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="structure"/>.</returns>
+        /// <returns>The result of visiting <paramref name="structure" />.</returns>
         protected override bool VisitStructureValue(TextWriter state, StructureValue structure)
         {
             state.Write('{');
@@ -123,11 +125,11 @@ namespace Fluid.Core.Logging.Formatting.Json
         }
 
         /// <summary>
-        /// Visit a <see cref="DictionaryValue"/> value.
+        ///     Visit a <see cref="DictionaryValue" /> value.
         /// </summary>
         /// <param name="state">Operation state.</param>
         /// <param name="dictionary">The value to visit.</param>
-        /// <returns>The result of visiting <paramref name="dictionary"/>.</returns>
+        /// <returns>The result of visiting <paramref name="dictionary" />.</returns>
         protected override bool VisitDictionaryValue(TextWriter state, DictionaryValue dictionary)
         {
             state.Write('{');
@@ -140,15 +142,16 @@ namespace Fluid.Core.Logging.Formatting.Json
                 state.Write(':');
                 Visit(state, element.Value);
             }
+
             state.Write('}');
             return false;
         }
 
         /// <summary>
-        /// Write a literal as a single JSON value, e.g. as a number or string. Override to
-        /// support more value types. Don't write arrays/structures through this method - the
-        /// active destructuring policies have already indicated the value should be scalar at
-        /// this point.
+        ///     Write a literal as a single JSON value, e.g. as a number or string. Override to
+        ///     support more value types. Don't write arrays/structures through this method - the
+        ///     active destructuring policies have already indicated the value should be scalar at
+        ///     this point.
         /// </summary>
         /// <param name="value">The value to write.</param>
         /// <param name="output">The output</param>
@@ -177,7 +180,7 @@ namespace Fluid.Core.Logging.Formatting.Json
                 if (value is int || value is uint || value is long || value is ulong || value is decimal ||
                     value is byte || value is sbyte || value is short || value is ushort)
                 {
-                    FormatExactNumericValue((IFormattable)value, output);
+                    FormatExactNumericValue((IFormattable) value, output);
                     return;
                 }
 
@@ -207,7 +210,7 @@ namespace Fluid.Core.Logging.Formatting.Json
 
                 if (value is DateTime || value is DateTimeOffset)
                 {
-                    FormatDateTimeValue((IFormattable)value, output);
+                    FormatDateTimeValue((IFormattable) value, output);
                     return;
                 }
 
@@ -221,12 +224,12 @@ namespace Fluid.Core.Logging.Formatting.Json
             FormatLiteralObjectValue(value, output);
         }
 
-        static void FormatBooleanValue(bool value, TextWriter output)
+        private static void FormatBooleanValue(bool value, TextWriter output)
         {
             output.Write(value ? "true" : "false");
         }
 
-        static void FormatFloatValue(float value, TextWriter output)
+        private static void FormatFloatValue(float value, TextWriter output)
         {
             if (float.IsNaN(value) || float.IsInfinity(value))
             {
@@ -237,7 +240,7 @@ namespace Fluid.Core.Logging.Formatting.Json
             output.Write(value.ToString("R", CultureInfo.InvariantCulture));
         }
 
-        static void FormatDoubleValue(double value, TextWriter output)
+        private static void FormatDoubleValue(double value, TextWriter output)
         {
             if (double.IsNaN(value) || double.IsInfinity(value))
             {
@@ -248,43 +251,43 @@ namespace Fluid.Core.Logging.Formatting.Json
             output.Write(value.ToString("R", CultureInfo.InvariantCulture));
         }
 
-        static void FormatExactNumericValue(IFormattable value, TextWriter output)
+        private static void FormatExactNumericValue(IFormattable value, TextWriter output)
         {
             output.Write(value.ToString(null, CultureInfo.InvariantCulture));
         }
 
-        static void FormatDateTimeValue(IFormattable value, TextWriter output)
+        private static void FormatDateTimeValue(IFormattable value, TextWriter output)
         {
             output.Write('\"');
             output.Write(value.ToString("O", CultureInfo.InvariantCulture));
             output.Write('\"');
         }
 
-        static void FormatTimeSpanValue(TimeSpan value, TextWriter output)
+        private static void FormatTimeSpanValue(TimeSpan value, TextWriter output)
         {
             output.Write('\"');
             output.Write(value.ToString());
             output.Write('\"');
         }
 
-        static void FormatLiteralObjectValue(object value, TextWriter output)
+        private static void FormatLiteralObjectValue(object value, TextWriter output)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
             FormatStringValue(value.ToString(), output);
         }
 
-        static void FormatStringValue(string str, TextWriter output)
+        private static void FormatStringValue(string str, TextWriter output)
         {
             WriteQuotedJsonString(str, output);
         }
 
-        static void FormatNullValue(TextWriter output)
+        private static void FormatNullValue(TextWriter output)
         {
             output.Write("null");
         }
 
         /// <summary>
-        /// Write a valid JSON string literal, escaping as necessary.
+        ///     Write a valid JSON string literal, escaping as necessary.
         /// </summary>
         /// <param name="str">The string value to write.</param>
         /// <param name="output">The output.</param>
@@ -298,7 +301,7 @@ namespace Fluid.Core.Logging.Formatting.Json
             for (var i = 0; i < str.Length; ++i)
             {
                 var c = str[i];
-                if (c < (char)32 || c == '\\' || c == '"')
+                if (c < (char) 32 || c == '\\' || c == '"')
                 {
                     anyEscaped = true;
 
@@ -308,41 +311,41 @@ namespace Fluid.Core.Logging.Formatting.Json
                     switch (c)
                     {
                         case '"':
-                            {
-                                output.Write("\\\"");
-                                break;
-                            }
+                        {
+                            output.Write("\\\"");
+                            break;
+                        }
                         case '\\':
-                            {
-                                output.Write("\\\\");
-                                break;
-                            }
+                        {
+                            output.Write("\\\\");
+                            break;
+                        }
                         case '\n':
-                            {
-                                output.Write("\\n");
-                                break;
-                            }
+                        {
+                            output.Write("\\n");
+                            break;
+                        }
                         case '\r':
-                            {
-                                output.Write("\\r");
-                                break;
-                            }
+                        {
+                            output.Write("\\r");
+                            break;
+                        }
                         case '\f':
-                            {
-                                output.Write("\\f");
-                                break;
-                            }
+                        {
+                            output.Write("\\f");
+                            break;
+                        }
                         case '\t':
-                            {
-                                output.Write("\\t");
-                                break;
-                            }
+                        {
+                            output.Write("\\t");
+                            break;
+                        }
                         default:
-                            {
-                                output.Write("\\u");
-                                output.Write(((int)c).ToString("X4"));
-                                break;
-                            }
+                        {
+                            output.Write("\\u");
+                            output.Write(((int) c).ToString("X4"));
+                            break;
+                        }
                     }
                 }
             }

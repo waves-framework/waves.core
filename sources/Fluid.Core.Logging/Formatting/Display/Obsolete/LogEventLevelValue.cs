@@ -19,9 +19,9 @@ using Fluid.Core.Logging.Events;
 namespace Fluid.Core.Logging.Formatting.Display.Obsolete
 {
     [Obsolete("Not used by the current output formatting implementation.")]
-    class LogEventLevelValue : LogEventPropertyValue
+    internal class LogEventLevelValue : LogEventPropertyValue
     {
-        readonly LogEventLevel _value;
+        private readonly LogEventLevel _value;
 
         public LogEventLevelValue(LogEventLevel value)
         {
@@ -29,7 +29,7 @@ namespace Fluid.Core.Logging.Formatting.Display.Obsolete
         }
 
         /// <summary>
-        /// This method will apply only upper or lower case formatting, not fixed width
+        ///     This method will apply only upper or lower case formatting, not fixed width
         /// </summary>
         public override void Render(TextWriter output, string format = null, IFormatProvider formatProvider = null)
         {

@@ -8,7 +8,7 @@ namespace Fluid.Core.Native.Windows
         private const string Dll = "kernel32";
 
         /// <summary>
-        /// Загрузка библиотеки из файла
+        ///     Загрузка библиотеки из файла
         /// </summary>
         /// <param name="dllToLoad"></param>
         /// <returns></returns>

@@ -17,14 +17,14 @@ namespace Fluid.Core.Services
 {
     public class ModuleService : Service, IModuleService
     {
+        private readonly List<IModule> _clonedModules = new List<IModule>();
         private IEnumerable<IModuleLibrary> _libraries;
 
-        private List<string> _nativeLibrariesNames = new List<string>();
-        private List<string> _modulesPaths = new List<string>();
-        private List<string> _nativeLibrariesPaths = new List<string>();
-
         private List<IModule> _modules = new List<IModule>();
-        private readonly List<IModule> _clonedModules = new List<IModule>();
+        private List<string> _modulesPaths = new List<string>();
+
+        private List<string> _nativeLibrariesNames = new List<string>();
+        private List<string> _nativeLibrariesPaths = new List<string>();
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("F21B05E5-6648-448E-9AC9-C7D06A79D346");
@@ -265,7 +265,8 @@ namespace Fluid.Core.Services
                     }
                     catch (Exception)
                     {
-                        OnMessageReceived(this, new Message(
+                        OnMessageReceived(this, 
+                            new Message(
                             "Ошибка загрузки библиотеки",
                             "Библиотека " + file.Name + " не поддерживается данной системой.",
                             Name,
