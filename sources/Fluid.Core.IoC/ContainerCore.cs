@@ -3,15 +3,18 @@ using System.Collections.Generic;
 
 namespace Fluid.Core.IoC
 {
+    /// <summary>
+    /// Container core.
+    /// </summary>
     public static class ContainerCore
     {
         /// <summary>
-        ///     Контейнер сервисов
+        ///     Gets container.
         /// </summary>
         private static readonly SimpleContainer Container = new SimpleContainer();
 
         /// <summary>
-        ///     Конструктор ядра
+        ///     Creates new instance of container core.
         /// </summary>
         static ContainerCore()
         {
@@ -19,9 +22,9 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        ///     Инициализировано ли ядро
+        ///     Gets or sets whether core is initialized.
         /// </summary>
-        public static bool IsInitialized { get; set; }
+        public static bool IsInitialized { get; private set; }
 
         /// <summary>
         ///     Начальная загрузка
@@ -31,84 +34,90 @@ namespace Fluid.Core.IoC
             if (IsInitialized)
                 return;
 
-            IsInitialized = true;
-
             IoC.GetInstance = GetInstance;
             IoC.GetAllInstances = GetAllInstances;
             IoC.BuildUp = BuildUp;
 
             Container.RegisterInstance<SimpleContainer>(Container);
+
+            IsInitialized = true;
         }
 
         /// <summary>
-        ///     Регистрация сервиса
+        ///     Registers new service.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
+        /// <typeparam name="T">Service type.</typeparam>
+        /// <param name="instance">Instance of service.</param>
         public static void RegisterService<T>(T instance)
         {
             Container.RegisterInstance<T>(instance);
         }
 
+        /// <summary>
+        ///     Registers new service.
+        /// </summary>
+        /// <typeparam name="T">Service type.</typeparam>
+        /// <param name="instance">Instance of service.</param>
+        /// <param name="key">Key.</param>
         public static void RegisterService<T>(T instance, string key)
         {
             Container.RegisterInstance<T>(instance, key);
         }
 
         /// <summary>
-        ///     Регистрация сервиса
+        ///     Registers new service.
         /// </summary>
-        /// <typeparam name="TInterface"></typeparam>
-        /// <typeparam name="TImpl"></typeparam>
+        /// <typeparam name="TInterface">Service type.</typeparam>
+        /// <typeparam name="TImpl">Implementation type.</typeparam>
         public static void RegisterService<TInterface, TImpl>()
         {
             Container.RegisterSingleton<TInterface, TImpl>();
         }
 
         /// <summary>
-        ///     Получение экземпляра сервиса
+        ///     Gets service instance.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">Service type.</typeparam>
+        /// <returns>The instance.</returns>
         public static T GetInstance<T>()
         {
             return (T) Container.GetInstance(typeof(T), null);
         }
 
         /// <summary>
-        ///     Получение экземпляра сервиса
+        ///      Gets service instance.
         /// </summary>
-        /// <param name="serviceType"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
+        /// <param name="serviceType">Service type.</param>
+        /// <param name="key">Key.</param>
+        /// <returns>The instance.</returns>
         public static object GetInstance(Type serviceType, string key)
         {
             return Container.GetInstance(serviceType, key);
         }
 
         /// <summary>
-        ///     Получение всех экземпляров сервисов
+        ///     Gets all of services by current type.
         /// </summary>
-        /// <param name="serviceType"></param>
-        /// <returns></returns>
+        /// <param name="serviceType">Service type.</param>
+        /// <returns>All of service instances.</returns>
         public static IEnumerable<object> GetAllInstances(Type serviceType)
         {
             return Container.GetAllInstances(serviceType);
         }
 
         /// <summary>
-        ///     Получение все экземпляров сервисов.
+        ///    Gets all of services.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All of services.</returns>
         public static IEnumerable<object> GetAllInstances()
         {
             return Container.GetAllInstances();
         }
 
         /// <summary>
-        ///     ...
+        ///     Build up IoC action.
         /// </summary>
-        /// <param name="instance"></param>
+        /// <param name="instance">The instance.</param>
         public static void BuildUp(object instance)
         {
             Container.BuildUp(instance);

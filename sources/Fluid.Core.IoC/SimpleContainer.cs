@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace Fluid.Core.IoC
 {
+    /// <summary>
+    /// Simple container.
+    /// </summary>
     public class SimpleContainer
     {
         private static readonly Type DelegateType = typeof(Delegate);
@@ -14,7 +17,7 @@ namespace Fluid.Core.IoC
         private readonly List<ContainerEntry> _entries;
 
         /// <summary>
-        ///     Инициализирует новый экземпляр <see cref="SimpleContainer" /> class.
+        ///     Creates new instance <see cref="SimpleContainer" /> class.
         /// </summary>
         public SimpleContainer()
         {
@@ -22,7 +25,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        ///     Инициализирует новый экземпляр <see cref="SimpleContainer" /> class.
+        ///     Creates new instance <see cref="SimpleContainer" /> class.
         /// </summary>
         private SimpleContainer(IEnumerable<ContainerEntry> entries)
         {
@@ -39,11 +42,11 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        ///     Регистрация экземпляра.
+        ///    Registers the instance.
         /// </summary>
-        /// <typeparam name="TService"></typeparam>
-        /// <param name="implementation"></param>
-        /// <param name="key"></param>
+        /// <typeparam name="TService">Service type.</typeparam>
+        /// <param name="implementation">The implenentation.</param>
+        /// <param name="key">Key.</param>
         public void RegisterInstance<TService>(object implementation, string key)
         {
             RegisterHandler(typeof(TService), key, container => implementation);

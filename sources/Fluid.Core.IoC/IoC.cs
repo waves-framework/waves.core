@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Fluid.Core.IoC
 {
+    /// <summary>
+    /// IoC.
+    /// </summary>
     public static class IoC
     {
         /// <summary>
@@ -45,6 +48,11 @@ namespace Fluid.Core.IoC
             return GetAllInstances(typeof(T)).Cast<T>();
         }
 
+        /// <summary>
+        /// Creates instance for object.
+        /// </summary>
+        /// <typeparam name="T">Object type.</typeparam>
+        /// <returns>Instance.</returns>
         public static T Create<T>()
         {
             var result = Get<SimpleContainer>().BuildInstance(typeof(T));

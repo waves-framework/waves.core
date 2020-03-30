@@ -3,9 +3,19 @@ using System.Collections.Generic;
 
 namespace Fluid.Core.IoC
 {
+    /// <summary>
+    /// Container entry.
+    /// </summary>
     internal class ContainerEntry : List<Func<SimpleContainer, object>>
     {
-        public string Key;
-        public Type Service;
+        /// <summary>
+        /// Key.
+        /// </summary>
+        public string Key { get; set; }
+
+        /// <summary>
+        /// Type.
+        /// </summary>
+        public Type Service { get; set; }
     }
 }
