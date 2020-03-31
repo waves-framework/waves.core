@@ -1,9 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <Import Project="../../props/Fluid.Core.props" />
-
-  <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Logging\Fluid.Core.Logging.csproj" />
-  </ItemGroup>
-
-</Project>

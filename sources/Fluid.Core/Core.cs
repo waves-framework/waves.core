@@ -15,37 +15,37 @@ using Fluid.Utils.Serialization;
 
 namespace Fluid.Core
 {
-    public static class Core
+    public class Core
     {
         /// <summary>
         ///     Инициализировано ли логирование.
         /// </summary>
-        public static bool IsLogInitialized { get; private set; }
+        public bool IsLogInitialized { get; private set; }
 
         /// <summary>
         ///     Инициализирована ли конфигурация.
         /// </summary>
-        public static bool IsConfigurationInitialized { get; private set; }
+        public bool IsConfigurationInitialized { get; private set; }
 
         /// <summary>
         ///     Инициализированы ли сервисы.
         /// </summary>
-        public static bool IsServicesInitialized { get; private set; }
+        public bool IsServicesInitialized { get; private set; }
 
         /// <summary>
         ///     Конфигурация ядра.
         /// </summary>
-        public static IConfiguration Configuration { get; private set; }
+        public IConfiguration Configuration { get; private set; }
 
         /// <summary>
         ///     Коллекция загруженных сервисов.
         /// </summary>
-        public static ICollection<IService> Services { get; } = new List<IService>();
+        public ICollection<IService> Services { get; } = new List<IService>();
 
         /// <summary>
         ///     Запуск ядра.
         /// </summary>
-        public static void Start()
+        public void Start()
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Остановка ядра.
         /// </summary>
-        public static void Stop()
+        public void Stop()
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Сохраняет конфигурацию.
         /// </summary>
-        public static void SaveConfiguration()
+        public void SaveConfiguration()
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Fluid.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T GetService<T>()
+        public T GetService<T>()
         {
             try
             {
@@ -145,7 +145,7 @@ namespace Fluid.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
-        public static void RegisterService<T>(T instance)
+        public void RegisterService<T>(T instance)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Инициализация логирования.
         /// </summary>
-        private static void InitializeLog()
+        private void InitializeLog()
         {
             try
             {
@@ -196,7 +196,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Инициализация конфигурации ядра.
         /// </summary>
-        private static void InitializeConfiguration()
+        private void InitializeConfiguration()
         {
             try
             {
@@ -224,7 +224,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Инициализация сервисов ядра.
         /// </summary>
-        private static void InitializeServices()
+        private void InitializeServices()
         {
             var moduleService = new ModuleService();
 
@@ -240,7 +240,7 @@ namespace Fluid.Core
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="message"></param>
-        private static void OnServiceMessageReceived(object sender, IMessage message)
+        private void OnServiceMessageReceived(object sender, IMessage message)
         {
             WriteLogMessage(message);
         }
@@ -249,7 +249,7 @@ namespace Fluid.Core
         ///     Запись строки в лог.
         /// </summary>
         /// <param name="text"></param>
-        public static void WriteLog(string text)
+        public void WriteLog(string text)
         {
             Log.Information(text);
         }
@@ -258,7 +258,7 @@ namespace Fluid.Core
         ///     Записывает сообщение в лог.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        public static void WriteLogMessage(IMessage message)
+        public void WriteLogMessage(IMessage message)
         {
             if (!IsLogInitialized) return;
 
@@ -299,7 +299,7 @@ namespace Fluid.Core
         /// </summary>
         /// <param name="exception">Исключение.</param>
         /// <param name="sender">Отправитель.</param>
-        public static void WriteLogMessage(Exception exception, string sender)
+        public void WriteLogMessage(Exception exception, string sender)
         {
             if (!IsLogInitialized) return;
 
@@ -311,7 +311,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Проверка директории.
         /// </summary>
-        private static void CheckConfigurationDirectory()
+        private void CheckConfigurationDirectory()
         {
             var directoryName = Path.Combine(
                 Environment.CurrentDirectory,
