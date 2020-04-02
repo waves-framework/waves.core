@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../../props/Fluid.Core.Services.props" />
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
+      <ProjectReference Include="..\Fluid.Core.Services\Fluid.Core.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Fody" Version="6.1.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+      <PackageReference Include="PropertyChanged.Fody" Version="3.2.7" />
+    </ItemGroup>
+
+</Project>
