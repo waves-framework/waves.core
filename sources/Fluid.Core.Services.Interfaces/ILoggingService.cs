@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Services.Interfaces
@@ -41,6 +40,7 @@ namespace Fluid.Core.Services.Interfaces
         /// Writes exception to log.
         /// </summary>
         /// <param name="exception">Exception.</param>
-        void WriteExceptionToLog(Exception exception);
+        /// <param name="sender">Sender.</param>
+        void WriteExceptionToLog(Exception exception, string sender);
     }
 }

@@ -8,23 +8,9 @@ namespace Fluid.Core.Sandbox
     {
         private static void Main(string[] args)
         {
-            var obj = new ModuleService();
-
-            obj.PropertyChanged += OnTestObjectPropertyChanged;
-
-            obj.Name = "Property";
-
-            Console.ReadLine();
-        }
-
-        /// <summary>
-        /// Notifies when test object's property changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static void OnTestObjectPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Console.WriteLine(e.PropertyName + " was changed!");
+            var core = new Core();
+            core.Start();
+            core.Stop();
         }
     }
 }

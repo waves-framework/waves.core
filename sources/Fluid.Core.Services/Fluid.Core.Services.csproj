@@ -16,8 +16,6 @@
     <ProjectReference Include="..\Fluid.Core.Base.EventArgs\Fluid.Core.Base.EventArgs.csproj" />
     <ProjectReference Include="..\Fluid.Core.Base.Interfaces\Fluid.Core.Base.Interfaces.csproj" />
     <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
-    <ProjectReference Include="..\Fluid.Core.Devices.Interfaces\Fluid.Core.Devices.Interfaces.csproj" />
-    <ProjectReference Include="..\Fluid.Core.IoC\Fluid.Core.IoC.csproj" />
     <ProjectReference Include="..\Fluid.Core.Native.Windows\Fluid.Core.Native.Windows.csproj" />
     <ProjectReference Include="..\Fluid.Core.Services.Interfaces\Fluid.Core.Services.Interfaces.csproj" />
   </ItemGroup>

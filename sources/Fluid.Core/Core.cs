@@ -1,49 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Fluid.Core.Base;
 using Fluid.Core.Base.Enums;
 using Fluid.Core.Base.Interfaces;
 using Fluid.Core.IoC;
-using Fluid.Core.Logging;
-using Fluid.Core.Logging.Events;
-using Fluid.Core.Logging.Sinks.Console;
-using Fluid.Core.Logging.Sinks.File;
 using Fluid.Core.Services;
 using Fluid.Core.Services.Interfaces;
 using Fluid.Utils.Serialization;
 
 namespace Fluid.Core
 {
+    /// <summary>
+    /// Core.
+    /// </summary>
     public class Core
     {
+        private ILoggingService _loggingService;
+        
         /// <summary>
-        ///     Инициализировано ли логирование.
-        /// </summary>
-        public bool IsLogInitialized { get; private set; }
-
-        /// <summary>
-        ///     Инициализирована ли конфигурация.
+        ///     Gets or sets whether configuration initiliazed.
         /// </summary>
         public bool IsConfigurationInitialized { get; private set; }
-
+        
         /// <summary>
-        ///     Инициализированы ли сервисы.
+        /// Gets or sets whetger logging initialized.
         /// </summary>
-        public bool IsServicesInitialized { get; private set; }
+        public bool IsLoggingInitialized{ get; private set; }
 
         /// <summary>
-        ///     Конфигурация ядра.
+        ///     Gets or sets configuration.
         /// </summary>
         public IConfiguration Configuration { get; private set; }
 
         /// <summary>
-        ///     Коллекция загруженных сервисов.
+        ///     Gets or sets collection of services.
         /// </summary>
         public ICollection<IService> Services { get; } = new List<IService>();
 
         /// <summary>
-        ///     Запуск ядра.
+        ///     Starts core working.
         /// </summary>
         public void Start()
         {
@@ -51,31 +48,19 @@ namespace Fluid.Core
             {
                 ContainerCore.Start();
 
-                InitializeLog();
-
-                WriteLog("--------------------------------------------");
-                WriteLogMessage(new Message("Запуск ядра", "Инициализация запуска ядра...", "Core",
-                    MessageType.Information));
-
                 InitializeConfiguration();
                 InitializeServices();
 
-                if (IsLogInitialized && IsConfigurationInitialized && IsServicesInitialized)
-                    WriteLogMessage(new Message("Запуск ядра", "Ядро успешно запущено.", "Core",
-                        MessageType.Information));
-                else
-                    WriteLogMessage(new Message("Запуск ядра", "Ядро запущено, но не все компоненты инициализированы.",
-                        "Core", MessageType.Information));
+                WriteLogMessage(new Message("Core launching.", "Core launching successfully.", "Core",MessageType.Information));
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Запуск ядра", "Ошибка запуска ядра:\r\n" + e, "Core", MessageType.Error));
-                throw;
+                WriteLogMessage(new Message("Core launching.", "Error starting kernel:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
         /// <summary>
-        ///     Остановка ядра.
+        ///     Stops core working.
         /// </summary>
         public void Stop()
         {
@@ -83,18 +68,16 @@ namespace Fluid.Core
             {
                 SaveConfiguration();
 
-                WriteLogMessage(new Message("Остановка ядра", "Инициализация остановки ядра...", "Core",
-                    MessageType.Information));
+                WriteLogMessage(new Message("Core stopping.", "Core stopping successfully.", "Core",MessageType.Information));
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                WriteLogMessage(new Message("Core stopping.", "Error stopping kernel:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
         /// <summary>
-        ///     Сохраняет конфигурацию.
+        ///     Saves configuration.
         /// </summary>
         public void SaveConfiguration()
         {
@@ -114,17 +97,15 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core",
-                    new Message("Ошибка", "При записи файла конфигурации возникла ошибка:\r\n" + e, "Core",
-                        MessageType.Error));
+                WriteLogMessage(new Message("Configuration saving.", "Error configuration saving:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
         /// <summary>
-        ///     Получение сервиса
+        ///     Gets service by type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <returns>Service.</returns>
         public T GetService<T>()
         {
             try
@@ -133,18 +114,17 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core",
-                    new Message("Ошибка", "При получении сервиса " + typeof(T) + " возникла ошибка:\r\n" + e, "Core",
-                        MessageType.Error));
+                WriteLogMessage(new Message("Getting service.", "Error getting service:\r\n" + e, "Core", MessageType.Error));
+                
                 return default;
             }
         }
 
         /// <summary>
-        ///     Регистрация сервиса
+        ///     Registers service.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <param name="instance">Instance.</param>
         public void RegisterService<T>(T instance)
         {
             try
@@ -164,37 +144,12 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core",
-                    new Message("Ошибка", "При регистрации сервиса" + instance + " возникла ошибка:\r\n" + e, "Core",
-                        MessageType.Error));
+                WriteLogMessage(new Message("Registering service.", "Error registering service:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
         /// <summary>
-        ///     Инициализация логирования.
-        /// </summary>
-        private void InitializeLog()
-        {
-            try
-            {
-                Log.Logger = new LoggerConfiguration()
-                    .MinimumLevel.Debug()
-                    .WriteTo.Console()
-                    .WriteTo.File("logs\\log.txt", LogEventLevel.Debug, "{Message:lj}{NewLine}")
-                    .CreateLogger();
-
-                IsLogInitialized = true;
-            }
-            catch (Exception e)
-            {
-                OnServiceMessageReceived("Core",
-                    new Message("Ошибка", "При инициализации логов возникла ошибка:\r\n" + e, "Core",
-                        MessageType.Error));
-            }
-        }
-
-        /// <summary>
-        ///     Инициализация конфигурации ядра.
+        ///     Initializes core configuration.
         /// </summary>
         private void InitializeConfiguration()
         {
@@ -215,101 +170,88 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                OnServiceMessageReceived("Core",
-                    new Message("Ошибка", "При инициализации конфигурации возникла ошибка:\r\n" + e, "Core",
-                        MessageType.Error));
+                WriteLogMessage(new Message("Configuration initialization.", "Error configuration initialization:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
         /// <summary>
-        ///     Инициализация сервисов ядра.
+        ///     Initializes base core services.
         /// </summary>
         private void InitializeServices()
         {
-            var moduleService = new ModuleService();
+            RegisterService(Manager.GetService<ILoggingService>().FirstOrDefault());
 
-            RegisterService<IModuleService>(moduleService);
-            RegisterService<IApplicationService>(new ApplicationService());
-            RegisterService<IInputService>(new InputService());
-
-            IsServicesInitialized = true;
+            InitializeLogging();
+            
+            RegisterService(Manager.GetService<IInputService>().FirstOrDefault());
+            RegisterService(Manager.GetService<IModuleService>().FirstOrDefault());
+            RegisterService(Manager.GetService<IApplicationService>().FirstOrDefault());
         }
 
         /// <summary>
-        ///     Уведомление о приеме сообщения от сервиса.
+        /// Initializes logging.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="message"></param>
+        private void InitializeLogging()
+        {
+            try
+            {
+                _loggingService = GetService<ILoggingService>();
+
+                IsLoggingInitialized = true;
+            }
+            catch (Exception)
+            {
+                IsLoggingInitialized = false;
+            }
+            
+        }
+
+        /// <summary>
+        ///     Notifies when service receive message.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="message">Message.</param>
         private void OnServiceMessageReceived(object sender, IMessage message)
         {
             WriteLogMessage(message);
         }
 
         /// <summary>
-        ///     Запись строки в лог.
+        ///     Writes text to log.
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">Text.</param>
         public void WriteLog(string text)
         {
-            Log.Information(text);
+            if (!IsLoggingInitialized) return;
+            
+            _loggingService.WriteTextToLog(text);
         }
 
         /// <summary>
-        ///     Записывает сообщение в лог.
+        ///     Writes message to log.
         /// </summary>
-        /// <param name="message">Сообщение.</param>
+        /// <param name="message">Message..</param>
         public void WriteLogMessage(IMessage message)
         {
-            if (!IsLogInitialized) return;
-
-            switch (message.Type)
-            {
-                case MessageType.Information:
-                    Log.Information("{0} [{1}]: {2} - {3}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
-                    break;
-                case MessageType.Warning:
-                    Log.Warning("{0} [{1}]: {2} - {3}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
-                    break;
-                case MessageType.Error:
-                    Log.Error("{0} [{1}]: {2} - {3}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
-                    break;
-                case MessageType.Success:
-                    Log.Information("{0} [{1}]: {2} - {3}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
-                    break;
-                case MessageType.Debug:
-                    Log.Debug("{0} [{1}]: {2} - {3}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            if (!IsLoggingInitialized) return;
+            
+            _loggingService.WriteMessageToLog(message);
         }
 
         /// <summary>
-        ///     Записывает исключение в лог.
+        ///     Writes exception to log.
         /// </summary>
-        /// <param name="exception">Исключение.</param>
-        /// <param name="sender">Отправитель.</param>
+        /// <param name="exception">Exception.</param>
+        /// <param name="sender">Sender.</param>
         public void WriteLogMessage(Exception exception, string sender)
         {
-            if (!IsLogInitialized) return;
-
-            Log.Error("{0} [{1}]: {2} - {3}",
-                DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
-                "Вызвано исключение:", sender, exception.Message + "\r\n" + exception);
+            if (!IsLoggingInitialized) return;
+            
+            _loggingService.WriteExceptionToLog(exception, sender);
         }
 
         /// <summary>
-        ///     Проверка директории.
+        ///     Checks configuration directory.
         /// </summary>
         private void CheckConfigurationDirectory()
         {

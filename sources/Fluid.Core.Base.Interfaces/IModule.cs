@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Fluid.Core.Base.Interfaces
 {
     /// <summary>
     ///     Interface of module classes.
     /// </summary>
-    public interface IModule : IObject, ICloneable, IDisposable, INotifyPropertyChanged
+    public interface IModule : IObject, ICloneable, IDisposable
     {
         /// <summary>
         ///     Gets whether the module is initialized.
