@@ -20,6 +20,11 @@ namespace Fluid.Core
         private ILoggingService _loggingService;
         
         /// <summary>
+        ///     Gets or sets collection of services.
+        /// </summary>
+        private readonly ICollection<IService> _services = new List<IService>();
+        
+        /// <summary>
         ///     Gets or sets whether configuration initiliazed.
         /// </summary>
         public bool IsConfigurationInitialized { get; private set; }
@@ -33,11 +38,6 @@ namespace Fluid.Core
         ///     Gets or sets configuration.
         /// </summary>
         public IConfiguration Configuration { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets collection of services.
-        /// </summary>
-        public ICollection<IService> Services { get; } = new List<IService>();
 
         /// <summary>
         ///     Starts core working.
@@ -67,6 +67,7 @@ namespace Fluid.Core
             try
             {
                 SaveConfiguration();
+                StopServices();
 
                 WriteLogMessage(new Message("Core stopping.", "Core stopping successfully.", "Core",MessageType.Information));
             }
@@ -140,7 +141,7 @@ namespace Fluid.Core
                 service.LoadConfiguration(Configuration);
 
                 if (service.IsInitialized)
-                    Services.Add(service);
+                    _services.Add(service);
             }
             catch (Exception e)
             {
@@ -197,13 +198,24 @@ namespace Fluid.Core
             {
                 _loggingService = GetService<ILoggingService>();
 
-                IsLoggingInitialized = true;
+                if (_loggingService != null)
+                    IsLoggingInitialized = true;
             }
             catch (Exception)
             {
                 IsLoggingInitialized = false;
             }
-            
+        }
+        
+        /// <summary>
+        /// Stops services.
+        /// </summary>
+        private void StopServices()
+        {
+            foreach (var service in _services)
+            {
+                service.Dispose();
+            }
         }
 
         /// <summary>

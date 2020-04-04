@@ -61,11 +61,14 @@ namespace Fluid.Core.Services
 
             if (!Directory.Exists(DefaultServicesPath)) 
                 Directory.CreateDirectory(DefaultServicesPath);
+            
+            var files = Directory.GetFiles(DefaultServicesPath, "*.dll", SearchOption.AllDirectories);
 
-            foreach (var file in Directory.GetFiles(DefaultServicesPath, "*.dll", SearchOption.AllDirectories))
+            foreach (var file in files)
             {
                 var hasItem = false;
                 var fileInfo = new FileInfo(file);
+                
                 foreach (var assembly in assemblies)
                 {
                     var name = assembly.GetName().Name;

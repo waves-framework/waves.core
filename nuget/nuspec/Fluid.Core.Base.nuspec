@@ -9,7 +9,7 @@
     <projectUrl>https://ambertape.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Библиотека основных абстрактных классов Fluid.Core</description>
+    <description>Библиотека основных абстрактных классов Fluid.Core.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
     <tags>fluid core base</tags>

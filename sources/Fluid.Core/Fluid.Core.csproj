@@ -3,16 +3,13 @@
   <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="Fluid.Utils.Serialization" Version="2020.1.1" />
+    <PackageReference Include="Fluid.Utils.Serialization" Version="2020.1.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Fluid.Core.Base.Interfaces\Fluid.Core.Base.Interfaces.csproj" />
     <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
     <ProjectReference Include="..\Fluid.Core.IoC\Fluid.Core.IoC.csproj" />
-    <ProjectReference Include="..\Fluid.Core.Logging.Sinks.Console\Fluid.Core.Logging.Sinks.Console.csproj" />
-    <ProjectReference Include="..\Fluid.Core.Logging.Sinks.File\Fluid.Core.Logging.Sinks.File.csproj" />
-    <ProjectReference Include="..\Fluid.Core.Logging\Fluid.Core.Logging.csproj" />
     <ProjectReference Include="..\Fluid.Core.Services.Interfaces\Fluid.Core.Services.Interfaces.csproj" />
     <ProjectReference Include="..\Fluid.Core.Services\Fluid.Core.Services.csproj" />
   </ItemGroup>
