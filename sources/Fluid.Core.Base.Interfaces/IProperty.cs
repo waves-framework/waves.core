@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Fluid.Core.Base.Interfaces
 {
@@ -12,9 +13,20 @@ namespace Fluid.Core.Base.Interfaces
         /// </summary>
         bool IsReadOnly { get; }
 
+        ///// <summary>
+        /////     Gets or sets value of property.
+        ///// </summary>
+        //object Value { get; set; }
+
         /// <summary>
-        ///     Gets or sets value of property.
+        /// Gets value of property.
         /// </summary>
-        object Value { get; set; }
+        object GetValue();
+
+        /// <summary>
+        /// Sets value of property.
+        /// </summary>
+        /// <param name="value">Value.</param>
+        void SetValue(object value);
     }
 }

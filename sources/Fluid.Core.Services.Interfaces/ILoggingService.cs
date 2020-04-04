@@ -13,12 +13,7 @@ namespace Fluid.Core.Services.Interfaces
         /// Gets number of last messages.
         /// </summary>
         int LastMessagesCount { get; }
-        
-        /// <summary>
-        /// Get log path.
-        /// </summary>
-        string LogPath { get; }
-        
+
         /// <summary>
         /// Gets collection of last log messages.
         /// </summary>

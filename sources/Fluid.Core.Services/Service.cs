@@ -38,15 +38,26 @@ namespace Fluid.Core.Services
         /// <typeparam name="T">Property type.</typeparam>
         /// <param name="configuration">Configuration instance.</param>
         /// <param name="key">Property key.</param>
+        /// <param name="defaultValue">Default value.</param>
         /// <returns>Value.</returns>
-        public static T LoadConfigurationValue<T>(IConfiguration configuration, string key)
+        public static T LoadConfigurationValue<T>(IConfiguration configuration, string key, T defaultValue)
         {
-            if (configuration.Contains(key))
-                return (T) configuration.GetPropertyValue(key);
+            try
+            {
+                if (configuration == null)
+                    throw new Exception("Configuration is null.\r\n");
 
-            configuration.AddProperty(new Property(key, default, false));
+                if (configuration.Contains(key))
+                    return (T)configuration.GetPropertyValue(key);
 
-            return default;
+                configuration.AddProperty(key, defaultValue, false);
+
+                return (T) defaultValue;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error loading configuration value.\r\n" + e.Message);
+            }
         }
     }
 }

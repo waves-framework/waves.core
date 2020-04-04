@@ -7,7 +7,7 @@ namespace Fluid.Core.Base
     ///     Property base class.
     /// </summary>
     [Serializable]
-    public class Property : Object, IProperty
+    public class Property<T> : Object, IProperty
     {
         /// <summary>
         ///     Creates new instance of property.
@@ -15,7 +15,7 @@ namespace Fluid.Core.Base
         /// <param name="name">Name.</param>
         /// <param name="value">Value.</param>
         /// <param name="isReadOnly">Is property read only.</param>
-        public Property(string name, object value, bool isReadOnly)
+        public Property(string name, T value, bool isReadOnly)
         {
             IsReadOnly = isReadOnly;
             Name = name;
@@ -31,13 +31,30 @@ namespace Fluid.Core.Base
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
-        /// <inheritdoc />
-        public object Value { get; set; }
+        /// <summary>
+        /// Gets or sets value.
+        /// </summary>
+        public T Value { get; private set; }
 
         /// <inheritdoc />
+        public object GetValue()
+        {
+            return Value;
+        }
+
+        /// <inheritdoc />
+        public void SetValue(object value)
+        {
+            Value = (T)value;
+        }
+
+        /// <summary>
+        /// Clones property.
+        /// </summary>
+        /// <returns>Property.</returns>
         public object Clone()
         {
-            return new Property(Name, Value, IsReadOnly);
+            return new Property<T>(Name, Value, IsReadOnly);
         }
     }
 }

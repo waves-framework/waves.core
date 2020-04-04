@@ -25,7 +25,7 @@ namespace Fluid.Core.Services
         /// Gets or sets collection of services.
         /// </summary>
         [ImportMany]
-        private static IEnumerable<IService> Services { get; set; }
+        public static IEnumerable<IService> Services { get; set; }
 
         /// <summary>
         /// Creates new instance of service manager.
@@ -42,11 +42,11 @@ namespace Fluid.Core.Services
         public static ICollection<T> GetService<T>()
         {
             var collection = new List<T>();
-            
+
             foreach (var service in Services)
             {
-                if (service.GetType() == typeof(T))
-                    collection.Add((T)service);
+                if (service is T currentService)
+                    collection.Add(currentService);
             }
 
             return collection;

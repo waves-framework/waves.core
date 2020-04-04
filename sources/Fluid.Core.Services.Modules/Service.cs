@@ -105,15 +105,14 @@ namespace Fluid.Core.Services.Modules
 
             IsInitialized = true;
 
-            OnMessageReceived(this, new Message("Initialization.", "Service was initialized.", Name, MessageType.Information));
+            OnMessageReceived(this, new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
         }
 
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
-            ModulesPaths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ModuleService-ModulesPaths"));
-            NativeLibrariesPaths.AddRange(
-                LoadConfigurationValue<List<string>>(configuration, "ModuleService-NativeLibrariesPaths"));
+            ModulesPaths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ModuleService-ModulesPaths", new List<string>()));
+            NativeLibrariesPaths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ModuleService-NativeLibrariesPaths", new List<string>()));
         }
 
         /// <inheritdoc />
@@ -148,7 +147,7 @@ namespace Fluid.Core.Services.Modules
                 {
                     OnMessageReceived(this,
                         new Message(
-                            "Loading path error.",
+                            "Loading path error",
                             "Path to application ( " + path + ") doesn't exists or was deleted.",
                             Name,
                             MessageType.Error));
@@ -213,7 +212,7 @@ namespace Fluid.Core.Services.Modules
                     {
                         OnMessageReceived(this, 
                             new Message(
-                            "Native library loading error.",
+                            "Native library loading error",
                             "Library " + file.Name + " can't be loaded on current system.",
                             Name,
                             MessageType.Error));

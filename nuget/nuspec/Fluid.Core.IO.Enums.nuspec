@@ -30,5 +30,13 @@
     <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.IO.Enums.xml" target="runtimes\win10-x86\lib\netcoreapp3.1"/>
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.IO.Enums.dll" target="runtimes\win10-x64\lib\netcoreapp3.1"/>
     <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.IO.Enums.xml" target="runtimes\win10-x64\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.IO.Enums.dll" target="runtimes\osx-x86\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.IO.Enums.xml" target="runtimes\osx-x86\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.IO.Enums.dll" target="runtimes\osx-x64\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.IO.Enums.xml" target="runtimes\osx-x64\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.IO.Enums.dll" target="runtimes\linux-x86\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.IO.Enums.xml" target="runtimes\linux-x86\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.IO.Enums.dll" target="runtimes\linux-x64\lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.IO.Enums.xml" target="runtimes\linux-x64\lib\netcoreapp3.1"/>
   </files>   
 </package>

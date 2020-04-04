@@ -52,7 +52,7 @@ namespace Fluid.Core.Services.Input
         {
             if (IsInitialized) return;
 
-            OnMessageReceived(this, new Message("Initialization.", "Service was initialized.", Name, MessageType.Information));
+            OnMessageReceived(this, new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
 
             IsInitialized = true;
         }

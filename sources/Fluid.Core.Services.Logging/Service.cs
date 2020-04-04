@@ -6,8 +6,9 @@ using Fluid.Core.Base;
 using Fluid.Core.Base.Enums;
 using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Services.Interfaces;
-using Serilog;
-using Serilog.Events;
+using NLog;
+using NLog.Common;
+using NLog.Fluent;
 
 namespace Fluid.Core.Services.Logging
 {
@@ -17,13 +18,9 @@ namespace Fluid.Core.Services.Logging
     [Export(typeof(IService))]
     public class Service : Services.Service, ILoggingService
     {
+        private Logger _logger;
         private readonly string _currentDirectory = Environment.CurrentDirectory;
-        
-        /// <summary>
-        /// Gets default log path.
-        /// </summary>
-        private string DefaultLogPath => Path.Combine(_currentDirectory, "logs");
-        
+
         /// <inheritdoc />
         public override Guid Id => Guid.Parse("D17B3463-C126-4023-B22F-1A031636A343");
 
@@ -32,9 +29,6 @@ namespace Fluid.Core.Services.Logging
 
         /// <inheritdoc />
         public int LastMessagesCount { get; private set; } = 250;
-
-        /// <inheritdoc />
-        public string LogPath { get; private set;}
 
         /// <inheritdoc />
         public ICollection<IMessage> LastMessages { get; private set; } = new List<IMessage>(); 
@@ -46,41 +40,28 @@ namespace Fluid.Core.Services.Logging
 
             IsInitialized = true;
 
-            OnMessageReceived(this, new Message("Initialization.", "Service was initialized.", Name, MessageType.Information));
+            _logger = LogManager.GetCurrentClassLogger();
+
+            InternalLogger.LogToConsole = false;
+
+            OnMessageReceived(this, new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
         }
 
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
-            LastMessagesCount = LoadConfigurationValue<int>(configuration, "ModuleService-ModulesPaths");
-            LogPath = LoadConfigurationValue<string>(configuration, "ModuleService-LogPath");
-
-            // if null log path.
-            if (string.IsNullOrEmpty(LogPath))
-            {
-                if (!Directory.Exists(DefaultLogPath))
-                    Directory.CreateDirectory(DefaultLogPath);
-
-                LogPath = Path.Combine(DefaultLogPath, "log.txt");
-            }
-            
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.File(LogPath, LogEventLevel.Debug, "{Message:lj}{NewLine}")
-                .CreateLogger();
+            LastMessagesCount = LoadConfigurationValue<int>(configuration, "LoggingService-LastMessagesCount", 250);
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
             configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
-            configuration.SetPropertyValue("LoggingService-LogPath", LogPath);
         }
 
         /// <inheritdoc />
         public override void Dispose()
         {
-            Log.CloseAndFlush();
         }
 
         /// <inheritdoc />
@@ -92,7 +73,7 @@ namespace Fluid.Core.Services.Logging
             
             AddMessageToCollection(message);
 
-            Log.Information("{0} [{1}]: {2}",
+            _logger.Info("{0} {1}: {2}",
                 DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
                 text);
         }
@@ -107,29 +88,29 @@ namespace Fluid.Core.Services.Logging
             switch (message.Type)
             {
                 case MessageType.Information:
-                    Log.Information("{0} [{1}]: {2} - {3}",
+                    _logger.Info("{0} {1}: {2} - {3}",
                         message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
+                        message.Sender, message.Title, message.Text);
                     break;
                 case MessageType.Warning:
-                    Log.Warning("{0} [{1}]: {2} - {3}",
+                    _logger.Warn("{0} {1}: {2} - {3}",
                         message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
+                        message.Sender, message.Title, message.Text);
                     break;
                 case MessageType.Error:
-                    Log.Error("{0} [{1}]: {2} - {3}",
+                    _logger.Error("{0} {1}: {2} - {3}",
                         message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
+                        message.Sender, message.Title, message.Text);
                     break;
                 case MessageType.Success:
-                    Log.Information("{0} [{1}]: {2} - {3}",
+                    _logger.Info("{0} {1}: {2} - {3}",
                         message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
+                        message.Sender, message.Title, message.Text);
                     break;
                 case MessageType.Debug:
-                    Log.Debug("{0} [{1}]: {2} - {3}",
+                    _logger.Debug("{0} {1}: {2} - {3}",
                         message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        message.Title, message.Sender, message.Text);
+                        message.Sender, message.Title, message.Text);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -145,9 +126,9 @@ namespace Fluid.Core.Services.Logging
             
             AddMessageToCollection(message);
 
-            Log.Error("{0} [{1}]: {2} - {3}",
+            _logger.Error("{0} {1}: {2} {3}",
                 DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
-                "An exception thrown: ", sender, exception.Message + "\r\n" + exception);
+                sender, "An exception thrown:", exception.Message + "\r\n" + exception);
         }
 
         /// <summary>

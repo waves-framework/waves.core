@@ -14,10 +14,13 @@ namespace Fluid.Core.Base.Interfaces
         ICollection<IProperty> Properties { get; }
 
         /// <summary>
-        ///     Adds new property.
+        /// Adds new property.
         /// </summary>
-        /// <param name="property">Instance of property.</param>
-        void AddProperty(IProperty property);
+        /// <typeparam name="T">Property type.</typeparam>
+        /// <param name="name">Property name.</param>
+        /// <param name="value">Value.</param>
+        /// <param name="isReadOnly">Whether is property read only.</param>
+        void AddProperty<T>(string name, T value, bool isReadOnly);
 
         /// <summary>
         ///     Gets property value.

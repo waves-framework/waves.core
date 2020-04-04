@@ -51,11 +51,11 @@ namespace Fluid.Core
                 InitializeConfiguration();
                 InitializeServices();
 
-                WriteLogMessage(new Message("Core launching.", "Core launching successfully.", "Core",MessageType.Information));
+                WriteLogMessage(new Message("Core launching", "Core launching successfully.", "Core",MessageType.Information));
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core launching.", "Error starting kernel:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Core launching", "Error starting kernel:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
@@ -69,11 +69,11 @@ namespace Fluid.Core
                 SaveConfiguration();
                 StopServices();
 
-                WriteLogMessage(new Message("Core stopping.", "Core stopping successfully.", "Core",MessageType.Information));
+                WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",MessageType.Information));
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core stopping.", "Error stopping kernel:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Core stopping", "Error stopping kernel:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
@@ -98,7 +98,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Configuration saving.", "Error configuration saving:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Configuration saving", "Error configuration saving:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
@@ -115,7 +115,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Getting service.", "Error getting service:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Getting service", "Error getting service:\r\n" + e, "Core", MessageType.Error));
                 
                 return default;
             }
@@ -145,7 +145,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Registering service.", "Error registering service:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Registering service", "Error registering service:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
@@ -171,7 +171,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Configuration initialization.", "Error configuration initialization:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Configuration initialization", "Error configuration initialization:\r\n" + e, "Core", MessageType.Error));
             }
         }
 

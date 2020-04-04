@@ -4,6 +4,7 @@
     
     <ItemGroup>
       <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
+      <ProjectReference Include="..\Fluid.Core.Services.Interfaces\Fluid.Core.Services.Interfaces.csproj" />
       <ProjectReference Include="..\Fluid.Core.Services\Fluid.Core.Services.csproj" />
     </ItemGroup>
 

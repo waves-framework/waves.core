@@ -47,7 +47,7 @@ namespace Fluid.Core.Services.Applications
 
                 OnMessageReceived(this,
                     new Message(
-                        "Initialization.",
+                        "Initialization",
                         "Service was initialized.",
                         Name,
                         MessageType.Information));
@@ -63,7 +63,7 @@ namespace Fluid.Core.Services.Applications
         {
             try
             {
-                Paths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ApplicationService-Paths"));
+                Paths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ApplicationService-Paths", new List<string>()));
             }
             catch (Exception e)
             {
@@ -172,7 +172,7 @@ namespace Fluid.Core.Services.Applications
                     {
                         OnMessageReceived(this,
                             new Message(
-                                "Loading path error.",
+                                "Loading path error",
                                 "Path to application ( " + path + ") doesn't exists or was deleted.",
                                 Name,
                                 MessageType.Error));

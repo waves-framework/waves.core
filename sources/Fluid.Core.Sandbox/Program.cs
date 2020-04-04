@@ -10,7 +10,15 @@ namespace Fluid.Core.Sandbox
         {
             var core = new Core();
             core.Start();
-            core.Stop();
+            
+            Console.WriteLine("Write \"stop\" to stop core working:");
+
+            var word = Console.ReadLine();
+
+            if (word != null && word.Equals("stop"))
+            {
+                core.Stop();
+            }
         }
     }
 }

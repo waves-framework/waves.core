@@ -36,26 +36,19 @@ namespace Fluid.Core.Base
         public ICollection<IProperty> Properties { get; private set; } = new List<IProperty>();
 
         /// <inheritdoc />
-        public void AddProperty(IProperty property)
+        public void AddProperty<T>(string name, T value, bool isReadOnly)
         {
-            if (string.IsNullOrEmpty(property.Name) ||
-                property.Value == null)
+            if (string.IsNullOrEmpty(name))
                 throw new Exception("When adding a property, invalid input was specified!");
 
-            if (property.Value.GetType().IsSerializable)
-            {
-                // Проверяем есть ли свойство с таким же именем
-                foreach (var p in Properties)
-                    if (p.Name == property.Name)
-                        throw new Exception("A property with the same name already exists (" + property.Name + ").");
+            if (!typeof(T).IsSerializable)
+                throw new Exception("The specified property does not support serialization " + "(" + name + ").");
 
-                Properties.Add(property);
-            }
-            else
-            {
-                throw new Exception("The specified property does not support serialization " + "(" + property.Name +
-                                    ").");
-            }
+            foreach (var p in Properties)
+                if (p.Name == name)
+                    throw new Exception("A property with the same name already exists (" + name + ").");
+
+            Properties.Add(new Property<T>(name, value, isReadOnly));
         }
 
         /// <inheritdoc />
@@ -64,7 +57,7 @@ namespace Fluid.Core.Base
             foreach (var property in Properties)
             {
                 if (property.Name != name) continue;
-                return property.Value;
+                return property.GetValue();
             }
 
             throw new Exception("Properties with the same name do not exist " + "(" + name + ").");
@@ -78,7 +71,7 @@ namespace Fluid.Core.Base
                 if (property.IsReadOnly) continue;
                 if (property.Name != name) continue;
 
-                property.Value = value;
+                property.SetValue(value);
                 return;
             }
 
@@ -114,7 +107,7 @@ namespace Fluid.Core.Base
             var configuration = new Configuration();
 
             foreach (var property in Properties)
-                configuration.Properties.Add((Property) property.Clone());
+                configuration.Properties.Add((Property<dynamic>) property.Clone());
 
             return configuration;
         }
