@@ -15,12 +15,7 @@ namespace Fluid.Core.Services
     public static class Manager
     {
         private static readonly string CurrentDirectory = Environment.CurrentDirectory;
-        
-        /// <summary>
-        /// Gets default log path.
-        /// </summary>
-        private static string DefaultServicesPath => Path.Combine(CurrentDirectory, "services");
-         
+       
         /// <summary>
         /// Gets or sets collection of services.
         /// </summary>
@@ -59,10 +54,7 @@ namespace Fluid.Core.Services
         {
             var assemblies = new List<Assembly>();
 
-            if (!Directory.Exists(DefaultServicesPath)) 
-                Directory.CreateDirectory(DefaultServicesPath);
-            
-            var files = Directory.GetFiles(DefaultServicesPath, "*.dll", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(CurrentDirectory, "*.dll", SearchOption.AllDirectories);
 
             foreach (var file in files)
             {
