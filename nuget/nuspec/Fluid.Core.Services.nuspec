@@ -15,11 +15,11 @@
     <tags>fluid core presentation</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Base.EventArgs" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Base.Interfaces" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Native.Windows" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Services.Interfaces" version="(,2020.2]" />
+        <dependency id="Fluid.Core.Base" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Base.EventArgs" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Base.Interfaces" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Native.Windows" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Services.Interfaces" version="[2020.1.20,2020.2)" />
         <dependency id="System.Composition.AttributedModel" version="1.3.0" />
         <dependency id="System.Composition.TypedParts" version="1.3.0" />
         <dependency id="Fody" version="6.1.1" />

@@ -15,9 +15,9 @@
     <tags>fluid core services input</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Services" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Services.Interfaces" version="(,2020.2]" />
+        <dependency id="Fluid.Core.Base" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Services" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Services.Interfaces" version="[2020.1.20,2020.2)" />
         <dependency id="Fody" version="6.1.1" />
         <dependency id="PropertyChanged.Fody" version="3.2.7" />
       </group>

@@ -15,12 +15,12 @@
     <tags>fluid core</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Base.Interfaces" version="(,2020.2]" />
-        <dependency id="Fluid.Core.IoC" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Services" version="(,2020.2]" />
-        <dependency id="Fluid.Core.Services.Interfaces" version="(,2020.2]" />
-        <dependency id="Fluid.Utils.Serialization" version="(,2020.2]" />
+        <dependency id="Fluid.Core.Base" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Base.Interfaces" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.IoC" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Services" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Services.Interfaces" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Utils.Serialization" version="[2020.1.5,2020.2)" />
       </group>
     </dependencies>
     <frameworkReferences>
