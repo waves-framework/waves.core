@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Fluid.Core.Services.Interfaces</id>
-    <version>2020.1</version>
+    <version>{$NUGETVERSION}</version>
     <authors>Fluid</authors>
     <owners>Fluid</owners>
     <licenseUrl>https://ambertape.ru</licenseUrl>
@@ -15,8 +15,8 @@
     <tags>fluid core presentation</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base.EventArgs" version="[2020.1.20,2020.2)" />
-        <dependency id="Fluid.Core.Devices.Interfaces" version="[2020.1.20,2020.2)" />
+        <dependency id="Fluid.Core.Base.EventArgs" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Core.Devices.Interfaces" version="[{$NUGETVERSION},2020.2)" />
       </group>
     </dependencies>
     <frameworkReferences>
