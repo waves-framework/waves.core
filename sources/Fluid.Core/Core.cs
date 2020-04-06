@@ -18,7 +18,7 @@ namespace Fluid.Core
     public class Core
     {
         private ILoggingService _loggingService;
-        
+
         /// <summary>
         ///     Gets or sets collection of services.
         /// </summary>
@@ -68,8 +68,6 @@ namespace Fluid.Core
             {
                 SaveConfiguration();
                 StopServices();
-
-                Manager.MessageReceived -= OnServiceMessageReceived;
 
                 WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",MessageType.Information));
             }
