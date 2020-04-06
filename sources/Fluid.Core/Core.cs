@@ -15,7 +15,7 @@ namespace Fluid.Core
     /// <summary>
     /// Core.
     /// </summary>
-    public abstract class Core
+    public class Core
     {
         private ILoggingService _loggingService;
 
