@@ -15,7 +15,7 @@ namespace Fluid.Core
     /// <summary>
     /// Core.
     /// </summary>
-    public class Core
+    public abstract class Core
     {
         private ILoggingService _loggingService;
 
@@ -42,7 +42,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Starts core working.
         /// </summary>
-        public void Start()
+        public virtual void Start()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Stops core working.
         /// </summary>
-        public void Stop()
+        public virtual void Stop()
         {
             try
             {
