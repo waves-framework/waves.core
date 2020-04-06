@@ -5,6 +5,9 @@ using System.Composition.Hosting;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
+using Fluid.Core.Base;
+using Fluid.Core.Base.Enums;
+using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Services.Interfaces;
 
 namespace Fluid.Core.Services
@@ -15,7 +18,12 @@ namespace Fluid.Core.Services
     public static class Manager
     {
         private static readonly string CurrentDirectory = Environment.CurrentDirectory;
-       
+
+        /// <summary>
+        /// Event for message receiving handling.
+        /// </summary>
+        public static event EventHandler<IMessage> MessageReceived; 
+
         /// <summary>
         /// Gets or sets collection of services.
         /// </summary>
@@ -38,13 +46,23 @@ namespace Fluid.Core.Services
         {
             var collection = new List<T>();
 
-            foreach (var service in Services)
+            try
             {
-                if (service is T currentService)
-                    collection.Add(currentService);
+                foreach (var service in Services)
+                {
+                    if (service is T currentService)
+                        collection.Add(currentService);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(new Message(e, false));
             }
 
             return collection;
+
         }
 
         /// <summary>
@@ -58,23 +76,57 @@ namespace Fluid.Core.Services
 
             foreach (var file in files)
             {
-                var hasItem = false;
-                var fileInfo = new FileInfo(file);
-                
-                foreach (var assembly in assemblies)
+                try
                 {
-                    var name = assembly.GetName().Name;
-                    if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
-                }
+                    var hasItem = false;
+                    var fileInfo = new FileInfo(file);
 
-                if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
+                    OnMessageReceived(new Message("Assembly loading", "Trying to load assembly " + fileInfo.Name, "Service manager", MessageType.Information));
+
+                    foreach (var assembly in assemblies)
+                    {
+                        var name = assembly.GetName().Name;
+                        if (name == fileInfo.Name.Replace(fileInfo.Extension, ""))
+                            hasItem = true;
+                    }
+
+                    if (!hasItem)
+                    {
+                        assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
+                        OnMessageReceived(new Message("Assembly loading", "Assembly " + fileInfo.Name + " suitable for loading.", "Service manager", MessageType.Information));
+                    }
+                }
+                catch (Exception e)
+                {
+                    OnMessageReceived(new Message(e, false));
+                }
             }
 
-            var configuration = new ContainerConfiguration()
-                .WithAssemblies(assemblies);
+            try
+            {
+                OnMessageReceived(new Message("Assembly loading", "Trying to load suitable assemblies.", "Service manager", MessageType.Information));
 
-            using var container = configuration.CreateContainer();
-            Services = container.GetExports<IService>();
+                var configuration = new ContainerConfiguration()
+                    .WithAssemblies(assemblies);
+
+                using var container = configuration.CreateContainer();
+                Services = container.GetExports<IService>();
+
+                OnMessageReceived(new Message("Assembly loading", "Suitable assemblies loaded.", "Service manager", MessageType.Information));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(new Message(e, false));
+            }
+        }
+
+        /// <summary>
+        /// Notifies when message received.
+        /// </summary>
+        /// <param name="e">Message.</param>
+        private static void OnMessageReceived(IMessage e)
+        {
+            MessageReceived?.Invoke(null, e);
         }
     }
 }

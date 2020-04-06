@@ -69,6 +69,8 @@ namespace Fluid.Core
                 SaveConfiguration();
                 StopServices();
 
+                Manager.MessageReceived -= OnServiceMessageReceived;
+
                 WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",MessageType.Information));
             }
             catch (Exception e)
@@ -180,23 +182,62 @@ namespace Fluid.Core
         /// </summary>
         private void InitializeServices()
         {
-            RegisterService(Manager.GetService<ILoggingService>().FirstOrDefault());
+            Manager.MessageReceived += OnServiceMessageReceived;
 
-            InitializeLogging();
-            
-            RegisterService(Manager.GetService<IInputService>().FirstOrDefault());
-            RegisterService(Manager.GetService<IModuleService>().FirstOrDefault());
-            RegisterService(Manager.GetService<IApplicationService>().FirstOrDefault());
+            // logging
+            var loggingService = Manager.GetService<ILoggingService>().First();
+            if (loggingService == null)
+            {
+                WriteLogMessage(new Message("Service loading", "Logging service is not loaded", "Core", MessageType.Warning));
+            }
+            else
+            {
+                InitializeLogging(loggingService);
+                RegisterService(loggingService);
+            }
+
+            // input
+            var inputService = Manager.GetService<IInputService>().First();
+            if (inputService == null)
+            {
+                WriteLogMessage(new Message("Service loading", "Input service is not loaded", "Core", MessageType.Warning));
+            }
+            else
+            {
+                RegisterService(inputService);
+            }
+
+            // module
+            var moduleService = Manager.GetService<IModuleService>().First();
+            if (moduleService == null)
+            {
+                WriteLogMessage(new Message("Service loading", "Module service is not loaded", "Core", MessageType.Warning));
+            }
+            else
+            {
+                RegisterService(moduleService);
+            }
+
+            // application
+            var applicationService = Manager.GetService<IApplicationService>().First();
+            if (applicationService == null)
+            {
+                WriteLogMessage(new Message("Service loading", "Application service is not loaded", "Core", MessageType.Warning));
+            }
+            else
+            {
+                RegisterService(applicationService);
+            }
         }
 
         /// <summary>
         /// Initializes logging.
         /// </summary>
-        private void InitializeLogging()
+        private void InitializeLogging(ILoggingService service)
         {
             try
             {
-                _loggingService = GetService<ILoggingService>();
+                _loggingService = service;
 
                 if (_loggingService != null)
                     IsLoggingInitialized = true;
@@ -234,6 +275,11 @@ namespace Fluid.Core
         /// <param name="text">Text.</param>
         public void WriteLog(string text)
         {
+
+#if DEBUG
+            Console.WriteLine(text);
+#endif
+
             if (!IsLoggingInitialized) return;
             
             _loggingService.WriteTextToLog(text);
@@ -245,6 +291,10 @@ namespace Fluid.Core
         /// <param name="message">Message..</param>
         public void WriteLogMessage(IMessage message)
         {
+#if DEBUG
+            Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
+#endif
+
             if (!IsLoggingInitialized) return;
             
             _loggingService.WriteMessageToLog(message);
@@ -257,6 +307,10 @@ namespace Fluid.Core
         /// <param name="sender">Sender.</param>
         public void WriteLogMessage(Exception exception, string sender)
         {
+#if DEBUG
+            Console.WriteLine("Core exception: {0}", exception);
+#endif
+
             if (!IsLoggingInitialized) return;
             
             _loggingService.WriteExceptionToLog(exception, sender);
