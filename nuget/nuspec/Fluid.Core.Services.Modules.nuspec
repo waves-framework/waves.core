@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Fluid.Core.Services.Modules</id>
-    <version>2020.1</version>
+    <version>{$NUGETVERSION}</version>
     <authors>Fluid</authors>
     <owners>Fluid</owners>
     <licenseUrl>https://ambertape.ru</licenseUrl>
@@ -15,9 +15,9 @@
     <tags>fluid core services modules</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base" version="[2020.1.1,2020.2]" />
-        <dependency id="Fluid.Core.Services" version="[2020.1.1,2020.2]" />
-        <dependency id="Fluid.Core.Services.Interfaces" version="[2020.1.1,2020.2]" />
+        <dependency id="Fluid.Core.Base" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Core.Services" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Core.Services.Interfaces" version="[{$NUGETVERSION},2020.2)" />
         <dependency id="Fody" version="6.1.1" />
         <dependency id="PropertyChanged.Fody" version="3.2.7" />
       </group>

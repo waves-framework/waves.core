@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Fluid.Core</id>
-    <version>2020.1</version>
+    <version>{$NUGETVERSION}</version>
     <authors>Fluid</authors>
     <owners>Fluid</owners>
     <licenseUrl>https://ambertape.ru</licenseUrl>
@@ -15,12 +15,12 @@
     <tags>fluid core</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base" version="[2020.1.1,2020.2]" />
-        <dependency id="Fluid.Core.Base.Interfaces" version="[2020.1.1,2020.2]" />
-        <dependency id="Fluid.Core.IoC" version="[2020.1.1,2020.2]" />
-        <dependency id="Fluid.Core.Services" version="[2020.1.1,2020.2]" />
-        <dependency id="Fluid.Core.Services.Interfaces" version="[2020.1.1,2020.2]" />
-        <dependency id="Fluid.Utils.Serialization" version="[2020.1.1,2020.2]" />
+        <dependency id="Fluid.Core.Base" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Core.Base.Interfaces" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Core.IoC" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Core.Services" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Core.Services.Interfaces" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Fluid.Utils.Serialization" version="[2020.1.5,2020.2)" />
       </group>
     </dependencies>
     <frameworkReferences>
