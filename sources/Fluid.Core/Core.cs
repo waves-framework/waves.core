@@ -27,9 +27,14 @@ namespace Fluid.Core
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        ///     Gets whether configuration initiliazed.
+        ///     Gets whether configuration is initialized.
         /// </summary>
         public bool IsConfigurationInitialized { get; private set; }
+
+        /// <summary>
+        /// Gets whether container is initialized.
+        /// </summary>
+        public bool IsContainerInitialized { get; private set; }
         
         /// <summary>
         /// Gets whether logging initialized.
@@ -48,9 +53,8 @@ namespace Fluid.Core
         {
             try
             {
-                ContainerCore.Start();
-
                 InitializeConfiguration();
+                InitializeContainer();
                 InitializeServices();
 
                 IsRunning = true;
@@ -180,11 +184,32 @@ namespace Fluid.Core
         }
 
         /// <summary>
+        /// Initializes container.
+        /// </summary>
+        private void InitializeContainer()
+        {
+            try
+            {
+                ContainerCore.Start();
+
+                IsContainerInitialized = true;
+            }
+            catch (Exception e)
+            {
+                IsContainerInitialized = false;
+
+                WriteLogMessage(new Message("Container initialization", "Error container initialization:\r\n" + e, "Core", MessageType.Error));
+            }
+            
+        }
+
+        /// <summary>
         ///     Initializes base core services.
         /// </summary>
         private void InitializeServices()
         {
             Manager.MessageReceived += OnServiceMessageReceived;
+            Manager.Initialize();
 
             // logging
             var loggingService = Manager.GetService<ILoggingService>().First();

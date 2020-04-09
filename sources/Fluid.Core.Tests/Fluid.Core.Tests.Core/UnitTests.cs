@@ -25,7 +25,16 @@ namespace Fluid.Core.Tests.Core
         [Test]
         public void CoreStart_IsConfigurationInitialized_True()
         {
-            Assert.AreEqual(_core.IsConfigurationInitialized, true);
+            Assert.AreEqual(true, _core.IsConfigurationInitialized);
+        }
+
+        /// <summary>
+        /// Tests is logging initialized successfully.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsContainerInitialized_True()
+        {
+            Assert.AreEqual(true, _core.IsContainerInitialized);
         }
 
         /// <summary>
@@ -34,7 +43,7 @@ namespace Fluid.Core.Tests.Core
         [Test]
         public void CoreStart_IsLoggingInitialized_True()
         {
-            Assert.AreEqual(_core.IsLoggingInitialized, true);
+            Assert.AreEqual(true, _core.IsLoggingInitialized);
         }
     }
 }

@@ -35,6 +35,14 @@ namespace Fluid.Core.Services
         /// </summary>
         static Manager()
         {
+            
+        }
+
+        /// <summary>
+        /// Initializes service manager.
+        /// </summary>
+        public static void Initialize()
+        {
             LoadServices();
         }
 
