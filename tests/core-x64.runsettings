@@ -1,0 +1,11 @@
+<RunSettings>
+  
+  <!-- Configurations that affect the Test Framework -->
+  <RunConfiguration>
+
+    <!-- x86 or x64 -->
+    <TargetPlatform>x64</TargetPlatform>
+
+  </RunConfiguration>
+
+</RunSettings>
