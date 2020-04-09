@@ -5,7 +5,7 @@ namespace Fluid.Core.Tests.Core
     /// <summary>
     /// Core test class.
     /// </summary>
-    public class Tests
+    public class UnitTests
     {
         private readonly Fluid.Core.Core _core = new Fluid.Core.Core();
 
