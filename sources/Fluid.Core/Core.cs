@@ -19,23 +19,25 @@ namespace Fluid.Core
     {
         private ILoggingService _loggingService;
 
-        /// <summary>
-        ///     Gets or sets collection of services.
-        /// </summary>
         private readonly ICollection<IService> _services = new List<IService>();
         
         /// <summary>
-        ///     Gets or sets whether configuration initiliazed.
+        /// Gets whether Core is running.
+        /// </summary>
+        public bool IsRunning { get; private set; }
+
+        /// <summary>
+        ///     Gets whether configuration initiliazed.
         /// </summary>
         public bool IsConfigurationInitialized { get; private set; }
         
         /// <summary>
-        /// Gets or sets whetger logging initialized.
+        /// Gets whether logging initialized.
         /// </summary>
         public bool IsLoggingInitialized{ get; private set; }
 
         /// <summary>
-        ///     Gets or sets configuration.
+        ///     Gets configuration.
         /// </summary>
         public IConfiguration Configuration { get; private set; }
 
@@ -50,6 +52,8 @@ namespace Fluid.Core
 
                 InitializeConfiguration();
                 InitializeServices();
+
+                IsRunning = true;
 
                 WriteLogMessage(new Message("Core launching", "Core launching successfully.", "Core",MessageType.Information));
             }

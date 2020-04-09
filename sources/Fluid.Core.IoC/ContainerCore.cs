@@ -22,7 +22,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        ///     Gets or sets whether core is initialized.
+        ///     Gets whether core is initialized.
         /// </summary>
         public static bool IsInitialized { get; private set; }
 
