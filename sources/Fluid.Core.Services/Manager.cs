@@ -82,6 +82,8 @@ namespace Fluid.Core.Services
 
             var files = Directory.GetFiles(CurrentDirectory, "*.dll", SearchOption.AllDirectories);
 
+            OnMessageReceived(new Message("Assembly loading", "Trying to load assemblies...", "Service manager", MessageType.Information));
+
             foreach (var file in files)
             {
                 try
@@ -101,7 +103,6 @@ namespace Fluid.Core.Services
                     if (!hasItem)
                     {
                         assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
-                        OnMessageReceived(new Message("Assembly loading", "Assembly " + fileInfo.Name + " suitable for loading.", "Service manager", MessageType.Information));
                     }
                 }
                 catch (Exception e)
@@ -120,6 +121,11 @@ namespace Fluid.Core.Services
                 using var container = configuration.CreateContainer();
                 Services = container.GetExports<IService>();
 
+                foreach (var service in Services)
+                {
+                    OnMessageReceived(new Message("Assembly loading", "Service assembly \""+ service.Name + "\" loaded.", "Service manager", MessageType.Information));
+                }
+                
                 OnMessageReceived(new Message("Assembly loading", "Suitable assemblies loaded.", "Service manager", MessageType.Information));
             }
             catch (Exception e)
