@@ -19,6 +19,7 @@ namespace Fluid.Core.Services.Logging
     public class Service : Services.Service, ILoggingService
     {
         private Logger _logger;
+
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 
         /// <inheritdoc />

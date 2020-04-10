@@ -21,6 +21,8 @@ namespace Fluid.Core.Services.Modules
     [Export(typeof(IService))]
     public class Service: Fluid.Core.Services.Service, IModuleService
     {
+        private readonly string _currentDirectory = Environment.CurrentDirectory;
+
         private readonly List<IModule> _clonedModules = new List<IModule>();
 
         /// <inheritdoc />
@@ -105,6 +107,8 @@ namespace Fluid.Core.Services.Modules
 
             IsInitialized = true;
 
+            UpdateLibraries();
+
             OnMessageReceived(this, new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
         }
 
@@ -139,6 +143,11 @@ namespace Fluid.Core.Services.Modules
         /// </summary>
         private void UpdateMefLibraries()
         {
+            var defaultDirectory = Path.Combine(_currentDirectory, "modules");
+
+            if (!Directory.Exists(defaultDirectory))
+                Directory.CreateDirectory(defaultDirectory);
+
             var assemblies = new List<Assembly>();
 
             foreach (var path in ModulesPaths)
@@ -182,6 +191,11 @@ namespace Fluid.Core.Services.Modules
         /// </summary>
         private void UpdateNativeLibraries()
         {
+            var defaultDirectory = Path.Combine(_currentDirectory, "native");
+
+            if (!Directory.Exists(defaultDirectory))
+                Directory.CreateDirectory(defaultDirectory);
+
             NativeLibrariesNames.Clear();
 
             foreach (var path in NativeLibrariesPaths)

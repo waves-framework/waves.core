@@ -201,7 +201,6 @@ namespace Fluid.Core
 
                 WriteLogMessage(new Message("Container initialization", "Error container initialization:\r\n" + e, "Core", MessageType.Error));
             }
-            
         }
 
         /// <summary>
@@ -303,7 +302,9 @@ namespace Fluid.Core
         /// <param name="text">Text.</param>
         public void WriteLog(string text)
         {
+#if DEBUG
             Console.WriteLine(text);
+#endif
 
             if (!IsLoggingInitialized) return;
             
@@ -316,7 +317,9 @@ namespace Fluid.Core
         /// <param name="message">Message..</param>
         public void WriteLogMessage(IMessage message)
         {
+#if DEBUG
             Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
+#endif
 
             if (!IsLoggingInitialized) return;
             
@@ -330,7 +333,9 @@ namespace Fluid.Core
         /// <param name="sender">Sender.</param>
         public void WriteLogMessage(Exception exception, string sender)
         {
+#if DEBUG
             Console.WriteLine("Core exception: {0}", exception);
+#endif
 
             if (!IsLoggingInitialized) return;
             
