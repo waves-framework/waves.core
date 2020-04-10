@@ -78,6 +78,7 @@ namespace Fluid.Core
                 StopServices();
 
                 WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",MessageType.Information));
+                WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
             {
@@ -302,7 +303,6 @@ namespace Fluid.Core
         /// <param name="text">Text.</param>
         public void WriteLog(string text)
         {
-
 #if DEBUG
             Console.WriteLine(text);
 #endif

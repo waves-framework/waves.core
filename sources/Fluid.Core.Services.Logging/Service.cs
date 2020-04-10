@@ -73,7 +73,7 @@ namespace Fluid.Core.Services.Logging
             
             AddMessageToCollection(message);
 
-            _logger.Info("{0} {1}: {2}",
+            _logger.Info("{0} {1}",
                 DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
                 text);
         }
