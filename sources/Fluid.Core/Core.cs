@@ -19,6 +19,8 @@ namespace Fluid.Core
     {
         private ILoggingService _loggingService;
 
+        private ServiceManager _serviceManager = new ServiceManager();
+
         private readonly ICollection<IService> _services = new List<IService>();
         
         /// <summary>
@@ -76,6 +78,8 @@ namespace Fluid.Core
             {
                 SaveConfiguration();
                 StopServices();
+
+                _serviceManager.MessageReceived -= OnServiceMessageReceived;
 
                 WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",MessageType.Information));
                 WriteLog("----------------------------------------------------");
@@ -208,11 +212,11 @@ namespace Fluid.Core
         /// </summary>
         private void InitializeServices()
         {
-            Manager.MessageReceived += OnServiceMessageReceived;
-            Manager.Initialize();
+            _serviceManager.MessageReceived += OnServiceMessageReceived;
+            _serviceManager.Initialize();
 
             // logging
-            var loggingService = Manager.GetService<ILoggingService>().First();
+            var loggingService = _serviceManager.GetService<ILoggingService>().First();
             if (loggingService == null)
             {
                 WriteLogMessage(new Message("Service loading", "Logging service is not loaded", "Core", MessageType.Warning));
@@ -224,7 +228,7 @@ namespace Fluid.Core
             }
 
             // input
-            var inputService = Manager.GetService<IInputService>().First();
+            var inputService = _serviceManager.GetService<IInputService>().First();
             if (inputService == null)
             {
                 WriteLogMessage(new Message("Service loading", "Input service is not loaded", "Core", MessageType.Warning));
@@ -235,7 +239,7 @@ namespace Fluid.Core
             }
 
             // module
-            var moduleService = Manager.GetService<IModuleService>().First();
+            var moduleService = _serviceManager.GetService<IModuleService>().First();
             if (moduleService == null)
             {
                 WriteLogMessage(new Message("Service loading", "Module service is not loaded", "Core", MessageType.Warning));
@@ -246,7 +250,7 @@ namespace Fluid.Core
             }
 
             // application
-            var applicationService = Manager.GetService<IApplicationService>().First();
+            var applicationService = _serviceManager.GetService<IApplicationService>().First();
             if (applicationService == null)
             {
                 WriteLogMessage(new Message("Service loading", "Application service is not loaded", "Core", MessageType.Warning));

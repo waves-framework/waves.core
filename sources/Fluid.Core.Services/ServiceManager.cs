@@ -15,33 +15,25 @@ namespace Fluid.Core.Services
     /// <summary>
     /// Service manager.
     /// </summary>
-    public static class Manager
+    public class ServiceManager
     {
-        private static readonly string CurrentDirectory = Environment.CurrentDirectory;
+        private readonly string _currentDirectory = Environment.CurrentDirectory;
 
         /// <summary>
         /// Event for message receiving handling.
         /// </summary>
-        public static event EventHandler<IMessage> MessageReceived; 
+        public event EventHandler<IMessage> MessageReceived; 
 
         /// <summary>
         /// Gets or sets collection of services.
         /// </summary>
         [ImportMany]
-        public static IEnumerable<IService> Services { get; set; }
-
-        /// <summary>
-        /// Creates new instance of service manager.
-        /// </summary>
-        static Manager()
-        {
-            
-        }
+        public IEnumerable<IService> Services { get; set; }
 
         /// <summary>
         /// Initializes service manager.
         /// </summary>
-        public static void Initialize()
+        public void Initialize()
         {
             LoadServices();
         }
@@ -50,7 +42,7 @@ namespace Fluid.Core.Services
         /// Loads services.
         /// </summary>
         /// <returns></returns>
-        public static ICollection<T> GetService<T>()
+        public ICollection<T> GetService<T>()
         {
             var collection = new List<T>();
 
@@ -76,11 +68,11 @@ namespace Fluid.Core.Services
         /// <summary>
         /// Loads services.
         /// </summary>
-        private static void LoadServices()
+        private void LoadServices()
         {
             var assemblies = new List<Assembly>();
 
-            var files = Directory.GetFiles(CurrentDirectory, "*.dll", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(_currentDirectory, "*.dll", SearchOption.AllDirectories);
 
             OnMessageReceived(new Message("Assembly loading", "Trying to load assemblies...", "Service manager", MessageType.Information));
 
@@ -138,7 +130,7 @@ namespace Fluid.Core.Services
         /// Notifies when message received.
         /// </summary>
         /// <param name="e">Message.</param>
-        private static void OnMessageReceived(IMessage e)
+        private void OnMessageReceived(IMessage e)
         {
             MessageReceived?.Invoke(null, e);
         }
