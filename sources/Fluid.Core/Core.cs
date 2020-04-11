@@ -19,10 +19,15 @@ namespace Fluid.Core
     {
         private ILoggingService _loggingService;
 
-        private ServiceManager _serviceManager = new ServiceManager();
+        private readonly ServiceManager _serviceManager = new ServiceManager();
 
         private readonly ICollection<IService> _services = new List<IService>();
-        
+
+        /// <summary>
+        /// Event for message receiving handling.
+        /// </summary>
+        private event EventHandler<IMessage> MessageReceived; 
+
         /// <summary>
         /// Gets whether Core is running.
         /// </summary>
@@ -311,7 +316,9 @@ namespace Fluid.Core
 #endif
 
             if (!IsLoggingInitialized) return;
-            
+
+            OnMessageReceived(new Message(string.Empty, text, string.Empty, MessageType.Information));
+
             _loggingService.WriteTextToLog(text);
         }
 
@@ -325,6 +332,8 @@ namespace Fluid.Core
             Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
 #endif
 
+            OnMessageReceived(message);
+
             if (!IsLoggingInitialized) return;
             
             _loggingService.WriteMessageToLog(message);
@@ -335,15 +344,26 @@ namespace Fluid.Core
         /// </summary>
         /// <param name="exception">Exception.</param>
         /// <param name="sender">Sender.</param>
-        public void WriteLogMessage(Exception exception, string sender)
+        public void WriteLogException(Exception exception, string sender)
         {
 #if DEBUG
             Console.WriteLine("Core exception: {0}", exception);
 #endif
 
+            OnMessageReceived(new Message(exception, false));
+
             if (!IsLoggingInitialized) return;
             
             _loggingService.WriteExceptionToLog(exception, sender);
+        }
+
+        /// <summary>
+        /// Invokes message received event.
+        /// </summary>
+        /// <param name="e"></param>
+        protected virtual void OnMessageReceived(IMessage e)
+        {
+            MessageReceived?.Invoke(this, e);
         }
 
         /// <summary>
