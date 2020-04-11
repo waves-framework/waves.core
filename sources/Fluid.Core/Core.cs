@@ -34,24 +34,28 @@ namespace Fluid.Core
         public bool IsRunning { get; private set; }
 
         /// <summary>
-        ///     Gets whether configuration is initialized.
-        /// </summary>
-        public bool IsConfigurationInitialized { get; private set; }
-
-        /// <summary>
-        /// Gets whether container is initialized.
-        /// </summary>
-        public bool IsContainerInitialized { get; private set; }
-        
-        /// <summary>
-        /// Gets whether logging initialized.
-        /// </summary>
-        public bool IsLoggingInitialized{ get; private set; }
-
-        /// <summary>
         ///     Gets configuration.
         /// </summary>
         public IConfiguration Configuration { get; private set; }
+
+        /// <summary>
+        /// Gets collections of registered services.
+        /// </summary>
+        public ICollection<IService> Services => _services;
+
+        /// <summary>
+        /// Gets service initialization information dictionary.
+        /// Dictionary includes info about base service by default.
+        /// </summary>
+        public Dictionary<string, bool> CoreInitializationInformationDictionary { get; } = new Dictionary<string, bool>()
+        {
+            {"Configuration Loader Service", false },
+            {"Service Container", false },
+            {"Application Loader Service", false },
+            {"Keyboard and Mouse Input Service", false },
+            {"Logging Service", false },
+            {"Module Loader Service", false },
+        };
 
         /// <summary>
         ///     Starts core working.
@@ -159,11 +163,18 @@ namespace Fluid.Core
                 service.LoadConfiguration(Configuration);
 
                 if (service.IsInitialized)
+                {
                     _services.Add(service);
+                    CoreInitializationInformationDictionary[service.Name] = true;
+                }
             }
             catch (Exception e)
             {
                 WriteLogMessage(new Message("Registering service", "Error registering service:\r\n" + e, "Core", MessageType.Error));
+
+                if (!(instance is IService service)) return;
+
+                CoreInitializationInformationDictionary[service.Name] = false;
             }
         }
 
@@ -185,7 +196,7 @@ namespace Fluid.Core
                     ? Json.ReadFile<Configuration>(fileName)
                     : new Configuration();
 
-                IsConfigurationInitialized = true;
+                CoreInitializationInformationDictionary["Configuration Loader Service"] = true;
             }
             catch (Exception e)
             {
@@ -202,13 +213,13 @@ namespace Fluid.Core
             {
                 ContainerCore.Start();
 
-                IsContainerInitialized = true;
+                CoreInitializationInformationDictionary["Service Container"] = true;
             }
             catch (Exception e)
             {
-                IsContainerInitialized = false;
-
                 WriteLogMessage(new Message("Container initialization", "Error container initialization:\r\n" + e, "Core", MessageType.Error));
+
+                CoreInitializationInformationDictionary["Service Container"] = false;
             }
         }
 
@@ -218,72 +229,15 @@ namespace Fluid.Core
         private void InitializeServices()
         {
             _serviceManager.MessageReceived += OnServiceMessageReceived;
+
             _serviceManager.Initialize();
 
-            // logging
-            var loggingService = _serviceManager.GetService<ILoggingService>().First();
-            if (loggingService == null)
-            {
-                WriteLogMessage(new Message("Service loading", "Logging service is not loaded", "Core", MessageType.Warning));
-            }
-            else
-            {
-                InitializeLogging(loggingService);
-                RegisterService(loggingService);
-            }
-
-            // input
-            var inputService = _serviceManager.GetService<IInputService>().First();
-            if (inputService == null)
-            {
-                WriteLogMessage(new Message("Service loading", "Input service is not loaded", "Core", MessageType.Warning));
-            }
-            else
-            {
-                RegisterService(inputService);
-            }
-
-            // module
-            var moduleService = _serviceManager.GetService<IModuleService>().First();
-            if (moduleService == null)
-            {
-                WriteLogMessage(new Message("Service loading", "Module service is not loaded", "Core", MessageType.Warning));
-            }
-            else
-            {
-                RegisterService(moduleService);
-            }
-
-            // application
-            var applicationService = _serviceManager.GetService<IApplicationService>().First();
-            if (applicationService == null)
-            {
-                WriteLogMessage(new Message("Service loading", "Application service is not loaded", "Core", MessageType.Warning));
-            }
-            else
-            {
-                RegisterService(applicationService);
-            }
+            RegisterService(_serviceManager.GetService<ILoggingService>().First());
+            RegisterService(_serviceManager.GetService<IInputService>().First());
+            RegisterService(_serviceManager.GetService<IModuleService>().First());
+            RegisterService(_serviceManager.GetService<IApplicationService>().First());
         }
 
-        /// <summary>
-        /// Initializes logging.
-        /// </summary>
-        private void InitializeLogging(ILoggingService service)
-        {
-            try
-            {
-                _loggingService = service;
-
-                if (_loggingService != null)
-                    IsLoggingInitialized = true;
-            }
-            catch (Exception)
-            {
-                IsLoggingInitialized = false;
-            }
-        }
-        
         /// <summary>
         /// Stops services.
         /// </summary>
@@ -315,9 +269,11 @@ namespace Fluid.Core
             Console.WriteLine(text);
 #endif
 
-            if (!IsLoggingInitialized) return;
+            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
 
             OnMessageReceived(new Message(string.Empty, text, string.Empty, MessageType.Information));
+
+            CheckLoggingService();
 
             _loggingService.WriteTextToLog(text);
         }
@@ -334,8 +290,10 @@ namespace Fluid.Core
 
             OnMessageReceived(message);
 
-            if (!IsLoggingInitialized) return;
-            
+            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
+
+            CheckLoggingService();
+
             _loggingService.WriteMessageToLog(message);
         }
 
@@ -352,8 +310,10 @@ namespace Fluid.Core
 
             OnMessageReceived(new Message(exception, false));
 
-            if (!IsLoggingInitialized) return;
-            
+            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
+
+            CheckLoggingService();
+
             _loggingService.WriteExceptionToLog(exception, sender);
         }
 
@@ -364,6 +324,12 @@ namespace Fluid.Core
         protected virtual void OnMessageReceived(IMessage e)
         {
             MessageReceived?.Invoke(this, e);
+        }
+
+        private void CheckLoggingService()
+        {
+            if (_loggingService == null)
+                _loggingService = GetService<ILoggingService>();
         }
 
         /// <summary>

@@ -20,30 +20,39 @@ namespace Fluid.Core.Tests.Core
         }
 
         /// <summary>
-        /// Tests is configuration initialized successfully.
+        /// Tests whether configuration is initialized successfully.
         /// </summary>
         [Test]
         public void CoreStart_IsConfigurationInitialized_True()
         {
-            Assert.AreEqual(true, _core.IsConfigurationInitialized);
+            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Configuration Loader Service"]);
         }
 
         /// <summary>
-        /// Tests is logging initialized successfully.
+        /// Tests whether IoC container is initialized successfully.
         /// </summary>
         [Test]
         public void CoreStart_IsContainerInitialized_True()
         {
-            Assert.AreEqual(true, _core.IsContainerInitialized);
+            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Service Container"]);
         }
 
         /// <summary>
-        /// Tests is logging initialized successfully.
+        /// Tests whether logging is initialized successfully.
         /// </summary>
         [Test]
         public void CoreStart_IsLoggingInitialized_True()
         {
-            Assert.AreEqual(true, _core.IsLoggingInitialized);
+            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Logging Service"]);
+        }
+
+        /// <summary>
+        /// Tests whether core is initialized successfully.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsRunning_True()
+        {
+            Assert.AreEqual(true, _core.IsRunning);
         }
     }
 }
