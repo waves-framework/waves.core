@@ -26,7 +26,7 @@ namespace Fluid.Core
         /// <summary>
         /// Event for message receiving handling.
         /// </summary>
-        private event EventHandler<IMessage> MessageReceived; 
+        public event EventHandler<IMessage> MessageReceived; 
 
         /// <summary>
         /// Gets whether Core is running.
