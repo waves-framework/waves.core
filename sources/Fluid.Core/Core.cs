@@ -111,6 +111,9 @@ namespace Fluid.Core
         {
             try
             {
+                foreach (var service in Services) 
+                    service.SaveConfiguration(Configuration);
+
                 CheckConfigurationDirectory();
 
                 var fileName = Path.Combine(
