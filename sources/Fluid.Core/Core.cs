@@ -39,6 +39,11 @@ namespace Fluid.Core
         public IConfiguration Configuration { get; private set; }
 
         /// <summary>
+        /// Gets service manager.
+        /// </summary>
+        public ServiceManager ServiceManager => _serviceManager;
+
+        /// <summary>
         /// Gets collections of registered services.
         /// </summary>
         public ICollection<IService> Services => _services;
