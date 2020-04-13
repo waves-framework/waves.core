@@ -111,8 +111,18 @@ namespace Fluid.Core
         {
             try
             {
-                foreach (var service in Services) 
-                    service.SaveConfiguration(Configuration);
+                foreach (var service in Services)
+                {
+                    try
+                    {
+                        service.SaveConfiguration(Configuration);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Error saving \"" + service.Name + "\" configuration.");
+                    }
+                    
+                }
 
                 CheckConfigurationDirectory();
 

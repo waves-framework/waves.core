@@ -122,10 +122,17 @@ namespace Fluid.Core.Services.Modules
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
-            configuration.SetPropertyValue("ModuleService-ModulesPaths",
+            if (ModulesPaths.Count > 0)
+            {
+                configuration.SetPropertyValue("ModuleService-ModulesPaths",
                 ModulesPaths.GetRange(1, ModulesPaths.Count - 1));
-            configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths",
+            }
+
+            if (NativeLibrariesPaths.Count > 0)
+            {
+                configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths",
                 NativeLibrariesPaths.GetRange(1, NativeLibrariesPaths.Count - 1));
+            }
         }
 
         /// <inheritdoc />
