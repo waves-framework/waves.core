@@ -14,7 +14,7 @@ namespace Fluid.Core.Base.Interfaces
         ICollection<IProperty> Properties { get; }
 
         /// <summary>
-        /// Adds new property.
+        ///     Adds new property.
         /// </summary>
         /// <typeparam name="T">Property type.</typeparam>
         /// <param name="name">Property name.</param>

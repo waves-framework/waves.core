@@ -13,10 +13,10 @@ using Fluid.Core.Services.Interfaces;
 namespace Fluid.Core.Services.Applications
 {
     /// <summary>
-    /// Application service.
+    ///     Application service.
     /// </summary>
     [Export(typeof(IService))]
-    public class Service: Fluid.Core.Services.Service, IApplicationService
+    public class Service : Services.Service, IApplicationService
     {
         /// <inheritdoc />
         public List<string> Paths { get; set; } = new List<string>();
@@ -26,7 +26,7 @@ namespace Fluid.Core.Services.Applications
         public IEnumerable<IApplication> Applications { get; private set; }
 
         /// <inheritdoc />
-        public ICollection<IApplicationAction> ApplicationActions { get; private set; } = new List<IApplicationAction>();
+        public ICollection<IApplicationAction> ApplicationActions { get; } = new List<IApplicationAction>();
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("B709823E-22BE-4297-982B-59A90B82D977");
@@ -63,7 +63,7 @@ namespace Fluid.Core.Services.Applications
         {
             try
             {
-                Paths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ApplicationService-Paths", new List<string>()));
+                Paths.AddRange(LoadConfigurationValue(configuration, "ApplicationService-Paths", new List<string>()));
             }
             catch (Exception e)
             {
@@ -76,7 +76,8 @@ namespace Fluid.Core.Services.Applications
         {
             try
             {
-                configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
+                if (Paths.Count > 1)
+                    configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
             }
             catch (Exception e)
             {
@@ -88,7 +89,7 @@ namespace Fluid.Core.Services.Applications
         public override void Dispose()
         {
             if (Applications == null) return;
-            
+
             try
             {
                 foreach (var application in Applications)
@@ -272,7 +273,7 @@ namespace Fluid.Core.Services.Applications
         }
 
         /// <summary>
-        ///    Notifies when applications collection updated.
+        ///     Notifies when applications collection updated.
         /// </summary>
         protected virtual void OnApplicationsUpdated()
         {

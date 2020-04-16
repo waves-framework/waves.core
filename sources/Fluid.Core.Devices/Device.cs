@@ -5,7 +5,7 @@ using Fluid.Core.Devices.Interfaces;
 namespace Fluid.Core.Devices
 {
     /// <summary>
-    /// Abstract device base class.
+    ///     Abstract device base class.
     /// </summary>
     public abstract class Device : Module, IDevice
     {

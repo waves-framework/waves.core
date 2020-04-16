@@ -4,7 +4,7 @@ using Fluid.Core.Base.EventArgs;
 namespace Fluid.Core.Services.Interfaces
 {
     /// <summary>
-    /// Interface for input service classes.
+    ///     Interface for input service classes.
     /// </summary>
     public interface IInputService : IService
     {

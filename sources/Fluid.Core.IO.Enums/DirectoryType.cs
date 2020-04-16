@@ -1,62 +1,62 @@
 ﻿namespace Fluid.Core.IO.Enums
 {
     /// <summary>
-    /// Enum of directory types.
+    ///     Enum of directory types.
     /// </summary>
     public enum DirectoryType
     {
         /// <summary>
-        /// Simple directory.
+        ///     Simple directory.
         /// </summary>
         Directory,
 
         /// <summary>
-        /// Network share directory.
+        ///     Network share directory.
         /// </summary>
         NetworkDirectory,
 
         /// <summary>
-        /// HDD.
+        ///     HDD.
         /// </summary>
         HardDrive,
 
         /// <summary>
-        /// Optical drive.
+        ///     Optical drive.
         /// </summary>
         OpticalDrive,
 
         /// <summary>
-        /// Unknown.
+        ///     Unknown.
         /// </summary>
         Unknown,
 
         /// <summary>
-        /// Directory with no root.
+        ///     Directory with no root.
         /// </summary>
         NoRootDirectory,
 
         /// <summary>
-        /// Removable device.
+        ///     Removable device.
         /// </summary>
         Removable,
 
         /// <summary>
-        /// RAM.
+        ///     RAM.
         /// </summary>
         Ram,
 
         /// <summary>
-        /// Desktop directory.
+        ///     Desktop directory.
         /// </summary>
         Desktop,
 
         /// <summary>
-        /// PC directory.
+        ///     PC directory.
         /// </summary>
         Computer,
 
         /// <summary>
-        /// User directory.
+        ///     User directory.
         /// </summary>
         User
     }

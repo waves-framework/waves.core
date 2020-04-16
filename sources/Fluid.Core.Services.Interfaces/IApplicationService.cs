@@ -5,7 +5,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Services.Interfaces
 {
     /// <summary>
-    /// Interface for Application service classes.
+    ///     Interface for Application service classes.
     /// </summary>
     public interface IApplicationService : IService
     {

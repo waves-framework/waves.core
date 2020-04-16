@@ -7,7 +7,7 @@ using System.Reflection;
 namespace Fluid.Core.IoC
 {
     /// <summary>
-    /// Simple container.
+    ///     Simple container.
     /// </summary>
     public class SimpleContainer
     {
@@ -42,7 +42,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        ///    Registers the instance.
+        ///     Registers the instance.
         /// </summary>
         /// <typeparam name="TService">Service type.</typeparam>
         /// <param name="implementation">The implenentation.</param>

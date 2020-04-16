@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Devices.Interfaces
 {
     /// <summary>
-    /// Interface for devices instances.
+    ///     Interface for devices instances.
     /// </summary>
     public interface IDevice : IModule
     {

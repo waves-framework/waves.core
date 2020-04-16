@@ -5,7 +5,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Services.Interfaces
 {
     /// <summary>
-    /// Interface for module service classes.
+    ///     Interface for module service classes.
     /// </summary>
     public interface IModuleService : IService
     {
@@ -41,7 +41,7 @@ namespace Fluid.Core.Services.Interfaces
         IModule GetModule(string id);
 
         /// <summary>
-        /// Adds modules directory path.
+        ///     Adds modules directory path.
         /// </summary>
         /// <param name="path">Path.</param>
         void AddModulePath(string path);
@@ -53,7 +53,7 @@ namespace Fluid.Core.Services.Interfaces
         void AddNativeLibraryPath(string path);
 
         /// <summary>
-        /// Removes modules directory path.
+        ///     Removes modules directory path.
         /// </summary>
         /// <param name="path">Path.</param>
         void RemoveModulePath(string path);

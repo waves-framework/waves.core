@@ -7,7 +7,7 @@ using Fluid.Core.IO.Interfaces;
 namespace Fluid.Core.IO
 {
     /// <summary>
-    /// Directory.
+    ///     Directory.
     /// </summary>
     public class Directory : FileSystemObject
     {
@@ -16,7 +16,7 @@ namespace Fluid.Core.IO
         /// <summary>
         ///     Creates new instance of Directory.
         /// </summary>
-        public Directory() : base()
+        public Directory()
         {
         }
 
@@ -83,7 +83,8 @@ namespace Fluid.Core.IO
         /// <summary>
         ///     Directory children collection.
         /// </summary>
-        public virtual ObservableCollection<IFileSystemObject> Children { get; protected set; } = new ObservableCollection<IFileSystemObject>();
+        public virtual ObservableCollection<IFileSystemObject> Children { get; protected set; } =
+            new ObservableCollection<IFileSystemObject>();
 
         /// <summary>
         ///     Loads directory's children.

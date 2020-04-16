@@ -3,14 +3,14 @@ using NUnit.Framework;
 namespace Fluid.Core.Tests.Core
 {
     /// <summary>
-    /// Core test class.
+    ///     Core test class.
     /// </summary>
     public class UnitTests
     {
         private readonly Fluid.Core.Core _core = new Fluid.Core.Core();
 
         /// <summary>
-        /// Runs core if it is not running.
+        ///     Runs core if it is not running.
         /// </summary>
         [SetUp]
         public void Setup()
@@ -20,7 +20,7 @@ namespace Fluid.Core.Tests.Core
         }
 
         /// <summary>
-        /// Tests whether configuration is initialized successfully.
+        ///     Tests whether configuration is initialized successfully.
         /// </summary>
         [Test]
         public void CoreStart_IsConfigurationInitialized_True()
@@ -29,7 +29,7 @@ namespace Fluid.Core.Tests.Core
         }
 
         /// <summary>
-        /// Tests whether IoC container is initialized successfully.
+        ///     Tests whether IoC container is initialized successfully.
         /// </summary>
         [Test]
         public void CoreStart_IsContainerInitialized_True()
@@ -38,7 +38,7 @@ namespace Fluid.Core.Tests.Core
         }
 
         /// <summary>
-        /// Tests whether logging is initialized successfully.
+        ///     Tests whether logging is initialized successfully.
         /// </summary>
         [Test]
         public void CoreStart_IsLoggingInitialized_True()
@@ -47,7 +47,7 @@ namespace Fluid.Core.Tests.Core
         }
 
         /// <summary>
-        /// Tests whether core is initialized successfully.
+        ///     Tests whether core is initialized successfully.
         /// </summary>
         [Test]
         public void CoreStart_IsRunning_True()

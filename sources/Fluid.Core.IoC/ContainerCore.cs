@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Fluid.Core.IoC
 {
     /// <summary>
-    /// Container core.
+    ///     Container core.
     /// </summary>
     public static class ContainerCore
     {
@@ -85,7 +85,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        ///      Gets service instance.
+        ///     Gets service instance.
         /// </summary>
         /// <param name="serviceType">Service type.</param>
         /// <param name="key">Key.</param>
@@ -106,7 +106,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        ///    Gets all of services.
+        ///     Gets all of services.
         /// </summary>
         /// <returns>All of services.</returns>
         public static IEnumerable<object> GetAllInstances()

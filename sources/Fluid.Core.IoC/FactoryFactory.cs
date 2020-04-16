@@ -3,7 +3,7 @@
 namespace Fluid.Core.IoC
 {
     /// <summary>
-    /// Factory of Factory.
+    ///     Factory of Factory.
     /// </summary>
     /// <typeparam name="T">Type.</typeparam>
     internal class FactoryFactory<T>

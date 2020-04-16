@@ -34,7 +34,7 @@ namespace Fluid.Core.Base
         public Message(Exception exception, bool isFatal)
         {
             Title = "An exception was received";
-            Text = exception.Message;
+            Text = exception.Message + ":\r\n" + exception;
             Type = isFatal ? MessageType.Fatal : MessageType.Error;
             Sender = exception.Source;
             DateTime = DateTime.Now;

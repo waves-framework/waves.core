@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Base.EventArgs
 {
     /// <summary>
-    /// Pointer event arguments.
+    ///     Pointer event arguments.
     /// </summary>
     public class PointerEventArgs
     {
