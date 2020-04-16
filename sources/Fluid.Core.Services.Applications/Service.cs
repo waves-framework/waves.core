@@ -76,7 +76,8 @@ namespace Fluid.Core.Services.Applications
         {
             try
             {
-                configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
+                if (Paths.Count > 1)
+                    configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
             }
             catch (Exception e)
             {
