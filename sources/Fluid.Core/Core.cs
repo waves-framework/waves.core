@@ -19,10 +19,6 @@ namespace Fluid.Core
     {
         private ILoggingService _loggingService;
 
-        private readonly ServiceManager _serviceManager = new ServiceManager();
-
-        private readonly ICollection<IService> _services = new List<IService>();
-
         /// <summary>
         /// Event for message receiving handling.
         /// </summary>
@@ -41,12 +37,12 @@ namespace Fluid.Core
         /// <summary>
         /// Gets service manager.
         /// </summary>
-        public ServiceManager ServiceManager => _serviceManager;
+        public ServiceManager ServiceManager { get; } = new ServiceManager();
 
         /// <summary>
         /// Gets collections of registered services.
         /// </summary>
-        public ICollection<IService> Services => _services;
+        public ICollection<IService> Services { get;  } = new List<IService>();
 
         /// <summary>
         /// Gets service initialization information dictionary.
@@ -93,7 +89,7 @@ namespace Fluid.Core
                 SaveConfiguration();
                 StopServices();
 
-                _serviceManager.MessageReceived -= OnServiceMessageReceived;
+                ServiceManager.MessageReceived -= OnServiceMessageReceived;
 
                 WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",MessageType.Information));
                 WriteLog("----------------------------------------------------");
@@ -182,7 +178,7 @@ namespace Fluid.Core
 
                 if (service.IsInitialized)
                 {
-                    _services.Add(service);
+                    Services.Add(service);
                     CoreInitializationInformationDictionary[service.Name] = true;
                 }
             }
@@ -194,6 +190,64 @@ namespace Fluid.Core
 
                 CoreInitializationInformationDictionary[service.Name] = false;
             }
+        }
+
+        /// <summary>
+        ///     Writes text to log.
+        /// </summary>
+        /// <param name="text">Text.</param>
+        public virtual void WriteLog(string text)
+        {
+#if DEBUG
+            Console.WriteLine(text);
+#endif
+
+            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
+
+            OnMessageReceived(new Message(string.Empty, text, string.Empty, MessageType.Information));
+
+            CheckLoggingService();
+
+            _loggingService.WriteTextToLog(text);
+        }
+
+        /// <summary>
+        ///     Writes message to log.
+        /// </summary>
+        /// <param name="message">Message..</param>
+        public virtual void WriteLogMessage(IMessage message)
+        {
+#if DEBUG
+            Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
+#endif
+
+            OnMessageReceived(message);
+
+            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
+
+            CheckLoggingService();
+
+            _loggingService.WriteMessageToLog(message);
+        }
+
+        /// <summary>
+        ///     Writes exception to log.
+        /// </summary>
+        /// <param name="exception">Exception.</param>
+        /// <param name="sender">Sender.</param>
+        public virtual void WriteLogException(Exception exception, string sender)
+        {
+#if DEBUG
+            Console.WriteLine("Core exception: {0}", exception);
+#endif
+
+            OnMessageReceived(new Message(exception, false));
+
+            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
+
+            CheckLoggingService();
+
+            _loggingService.WriteExceptionToLog(exception, sender);
         }
 
         /// <summary>
@@ -246,14 +300,14 @@ namespace Fluid.Core
         /// </summary>
         private void InitializeServices()
         {
-            _serviceManager.MessageReceived += OnServiceMessageReceived;
+            ServiceManager.MessageReceived += OnServiceMessageReceived;
 
-            _serviceManager.Initialize();
+            ServiceManager.Initialize();
 
-            RegisterService(_serviceManager.GetService<ILoggingService>().First());
-            RegisterService(_serviceManager.GetService<IInputService>().First());
-            RegisterService(_serviceManager.GetService<IModuleService>().First());
-            RegisterService(_serviceManager.GetService<IApplicationService>().First());
+            RegisterService(ServiceManager.GetService<ILoggingService>().First());
+            RegisterService(ServiceManager.GetService<IInputService>().First());
+            RegisterService(ServiceManager.GetService<IModuleService>().First());
+            RegisterService(ServiceManager.GetService<IApplicationService>().First());
         }
 
         /// <summary>
@@ -261,7 +315,7 @@ namespace Fluid.Core
         /// </summary>
         private void StopServices()
         {
-            foreach (var service in _services)
+            foreach (var service in Services)
             {
                 service.Dispose();
             }
@@ -275,64 +329,6 @@ namespace Fluid.Core
         private void OnServiceMessageReceived(object sender, IMessage message)
         {
             WriteLogMessage(message);
-        }
-
-        /// <summary>
-        ///     Writes text to log.
-        /// </summary>
-        /// <param name="text">Text.</param>
-        public void WriteLog(string text)
-        {
-#if DEBUG
-            Console.WriteLine(text);
-#endif
-
-            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
-
-            OnMessageReceived(new Message(string.Empty, text, string.Empty, MessageType.Information));
-
-            CheckLoggingService();
-
-            _loggingService.WriteTextToLog(text);
-        }
-
-        /// <summary>
-        ///     Writes message to log.
-        /// </summary>
-        /// <param name="message">Message..</param>
-        public void WriteLogMessage(IMessage message)
-        {
-#if DEBUG
-            Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
-#endif
-
-            OnMessageReceived(message);
-
-            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
-
-            CheckLoggingService();
-
-            _loggingService.WriteMessageToLog(message);
-        }
-
-        /// <summary>
-        ///     Writes exception to log.
-        /// </summary>
-        /// <param name="exception">Exception.</param>
-        /// <param name="sender">Sender.</param>
-        public void WriteLogException(Exception exception, string sender)
-        {
-#if DEBUG
-            Console.WriteLine("Core exception: {0}", exception);
-#endif
-
-            OnMessageReceived(new Message(exception, false));
-
-            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
-
-            CheckLoggingService();
-
-            _loggingService.WriteExceptionToLog(exception, sender);
         }
 
         /// <summary>
