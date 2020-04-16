@@ -7,13 +7,13 @@ using Fluid.Core.IO.Interfaces;
 namespace Fluid.Core.IO
 {
     /// <summary>
-    /// Desktop.
+    ///     Desktop.
     /// </summary>
     public class Desktop : Directory
     {
         private readonly Directory _computer;
-        private readonly Directory _userDirectory;
         private readonly DirectoryInfo _directoryInfo;
+        private readonly Directory _userDirectory;
 
         /// <summary>
         ///     Creates new instance of desktop directory.
@@ -27,7 +27,7 @@ namespace Fluid.Core.IO
                 _directoryInfo = new DirectoryInfo(desktopPath);
 
                 FullName = _directoryInfo.FullName;
-                Name = "Desktop";      // TODO: Localization. 
+                Name = "Desktop"; // TODO: Localization. 
                 Parent = null;
 
                 _computer = new Computer(this);
@@ -44,7 +44,8 @@ namespace Fluid.Core.IO
         public override DirectoryType Type { get; internal set; } = DirectoryType.Desktop;
 
         /// <inheritdoc />
-        public override ObservableCollection<IFileSystemObject> Children { get; protected set; } = new ObservableCollection<IFileSystemObject>();
+        public override ObservableCollection<IFileSystemObject> Children { get; protected set; } =
+            new ObservableCollection<IFileSystemObject>();
 
         /// <inheritdoc />
         public override void LoadChildren()

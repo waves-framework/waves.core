@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Devices.Interfaces.Input.ADC
 {
     /// <summary>
-    /// Interface for ADC entry point.
+    ///     Interface for ADC entry point.
     /// </summary>
     public interface IAdcEntryPoint : IEntryPoint
     {

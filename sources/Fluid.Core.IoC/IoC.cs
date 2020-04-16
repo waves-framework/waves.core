@@ -5,7 +5,7 @@ using System.Linq;
 namespace Fluid.Core.IoC
 {
     /// <summary>
-    /// IoC.
+    ///     IoC.
     /// </summary>
     public static class IoC
     {
@@ -49,7 +49,7 @@ namespace Fluid.Core.IoC
         }
 
         /// <summary>
-        /// Creates instance for object.
+        ///     Creates instance for object.
         /// </summary>
         /// <typeparam name="T">Object type.</typeparam>
         /// <returns>Instance.</returns>

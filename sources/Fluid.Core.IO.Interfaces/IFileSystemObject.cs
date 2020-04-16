@@ -3,7 +3,7 @@
 namespace Fluid.Core.IO.Interfaces
 {
     /// <summary>
-    /// Interface for file system object.
+    ///     Interface for file system object.
     /// </summary>
     public interface IFileSystemObject : IObject
     {

@@ -6,7 +6,7 @@ using Fluid.Core.Devices.Interfaces.Input.ADC;
 namespace Fluid.Core.Devices.Input.ADC
 {
     /// <summary>
-    /// Abstract ADC entry point base class.
+    ///     Abstract ADC entry point base class.
     /// </summary>
     public abstract class AdcEntryPoint : EntryPoint, IAdcEntryPoint
     {

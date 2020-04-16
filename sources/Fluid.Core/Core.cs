@@ -13,19 +13,14 @@ using Fluid.Utils.Serialization;
 namespace Fluid.Core
 {
     /// <summary>
-    /// Core.
+    ///     Core.
     /// </summary>
     public class Core
     {
         private ILoggingService _loggingService;
 
         /// <summary>
-        /// Event for message receiving handling.
-        /// </summary>
-        public event EventHandler<IMessage> MessageReceived; 
-
-        /// <summary>
-        /// Gets whether Core is running.
+        ///     Gets whether Core is running.
         /// </summary>
         public bool IsRunning { get; private set; }
 
@@ -35,28 +30,33 @@ namespace Fluid.Core
         public IConfiguration Configuration { get; private set; }
 
         /// <summary>
-        /// Gets service manager.
+        ///     Gets service manager.
         /// </summary>
         public ServiceManager ServiceManager { get; } = new ServiceManager();
 
         /// <summary>
-        /// Gets collections of registered services.
+        ///     Gets collections of registered services.
         /// </summary>
-        public ICollection<IService> Services { get;  } = new List<IService>();
+        public ICollection<IService> Services { get; } = new List<IService>();
 
         /// <summary>
-        /// Gets service initialization information dictionary.
-        /// Dictionary includes info about base service by default.
+        ///     Gets service initialization information dictionary.
+        ///     Dictionary includes info about base service by default.
         /// </summary>
-        public Dictionary<string, bool> CoreInitializationInformationDictionary { get; } = new Dictionary<string, bool>()
+        public Dictionary<string, bool> CoreInitializationInformationDictionary { get; } = new Dictionary<string, bool>
         {
-            {"Configuration Loader Service", false },
-            {"Service Container", false },
-            {"Application Loader Service", false },
-            {"Keyboard and Mouse Input Service", false },
-            {"Logging Service", false },
-            {"Module Loader Service", false },
+            {"Configuration Loader Service", false},
+            {"Service Container", false},
+            {"Application Loader Service", false},
+            {"Keyboard and Mouse Input Service", false},
+            {"Logging Service", false},
+            {"Module Loader Service", false}
         };
+
+        /// <summary>
+        ///     Event for message receiving handling.
+        /// </summary>
+        public event EventHandler<IMessage> MessageReceived;
 
         /// <summary>
         ///     Starts core working.
@@ -71,11 +71,13 @@ namespace Fluid.Core
 
                 IsRunning = true;
 
-                WriteLogMessage(new Message("Core launching", "Core launching successfully.", "Core",MessageType.Information));
+                WriteLogMessage(new Message("Core launching", "Core launching successfully.", "Core",
+                    MessageType.Information));
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core launching", "Error starting kernel:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Core launching", "Error starting kernel:\r\n" + e, "Core",
+                    MessageType.Error));
             }
         }
 
@@ -91,12 +93,14 @@ namespace Fluid.Core
 
                 ServiceManager.MessageReceived -= OnServiceMessageReceived;
 
-                WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",MessageType.Information));
+                WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",
+                    MessageType.Information));
                 WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core stopping", "Error stopping kernel:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Core stopping", "Error stopping kernel:\r\n" + e, "Core",
+                    MessageType.Error));
             }
         }
 
@@ -108,7 +112,6 @@ namespace Fluid.Core
             try
             {
                 foreach (var service in Services)
-                {
                     try
                     {
                         service.SaveConfiguration(Configuration);
@@ -117,8 +120,6 @@ namespace Fluid.Core
                     {
                         throw new Exception("Error saving \"" + service.Name + "\" configuration.");
                     }
-                    
-                }
 
                 CheckConfigurationDirectory();
 
@@ -134,7 +135,8 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Configuration saving", "Error configuration saving:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Configuration saving", "Error configuration saving:\r\n" + e, "Core",
+                    MessageType.Error));
             }
         }
 
@@ -151,8 +153,9 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Getting service", "Error getting service:\r\n" + e, "Core", MessageType.Error));
-                
+                WriteLogMessage(new Message("Getting service", "Error getting service:\r\n" + e, "Core",
+                    MessageType.Error));
+
                 return default;
             }
         }
@@ -184,7 +187,8 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Registering service", "Error registering service:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Registering service", "Error registering service:\r\n" + e, "Core",
+                    MessageType.Error));
 
                 if (!(instance is IService service)) return;
 
@@ -235,7 +239,8 @@ namespace Fluid.Core
         /// </summary>
         /// <param name="exception">Exception.</param>
         /// <param name="sender">Sender.</param>
-        public virtual void WriteLogException(Exception exception, string sender)
+        /// <param name="isFatal">Sets whether exception is fatal.</param>
+        public virtual void WriteLogException(Exception exception, string sender, bool isFatal)
         {
 #if DEBUG
             Console.WriteLine("Core exception: {0}", exception);
@@ -247,7 +252,7 @@ namespace Fluid.Core
 
             CheckLoggingService();
 
-            _loggingService.WriteExceptionToLog(exception, sender);
+            _loggingService.WriteExceptionToLog(exception, sender, isFatal);
         }
 
         /// <summary>
@@ -272,12 +277,13 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Configuration initialization", "Error configuration initialization:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Configuration initialization",
+                    "Error configuration initialization:\r\n" + e, "Core", MessageType.Error));
             }
         }
 
         /// <summary>
-        /// Initializes container.
+        ///     Initializes container.
         /// </summary>
         private void InitializeContainer()
         {
@@ -289,7 +295,8 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Container initialization", "Error container initialization:\r\n" + e, "Core", MessageType.Error));
+                WriteLogMessage(new Message("Container initialization", "Error container initialization:\r\n" + e,
+                    "Core", MessageType.Error));
 
                 CoreInitializationInformationDictionary["Service Container"] = false;
             }
@@ -311,14 +318,11 @@ namespace Fluid.Core
         }
 
         /// <summary>
-        /// Stops services.
+        ///     Stops services.
         /// </summary>
         private void StopServices()
         {
-            foreach (var service in Services)
-            {
-                service.Dispose();
-            }
+            foreach (var service in Services) service.Dispose();
         }
 
         /// <summary>
@@ -332,7 +336,7 @@ namespace Fluid.Core
         }
 
         /// <summary>
-        /// Invokes message received event.
+        ///     Invokes message received event.
         /// </summary>
         /// <param name="e"></param>
         protected virtual void OnMessageReceived(IMessage e)

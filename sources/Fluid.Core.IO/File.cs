@@ -5,7 +5,7 @@ using Fluid.Core.IO.Interfaces;
 namespace Fluid.Core.IO
 {
     /// <summary>
-    /// File.
+    ///     File.
     /// </summary>
     public class File : FileSystemObject
     {

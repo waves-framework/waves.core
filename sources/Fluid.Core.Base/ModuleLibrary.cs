@@ -45,7 +45,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        /// Notifies when property changed.
+        ///     Notifies when property changed.
         /// </summary>
         /// <param name="propertyName">Property name.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
