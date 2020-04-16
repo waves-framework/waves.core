@@ -4,7 +4,7 @@ using Fluid.Core.Base.Interfaces;
 namespace Fluid.Core.Services.Interfaces
 {
     /// <summary>
-    /// Base interface for all services.
+    ///     Base interface for all services.
     /// </summary>
     public interface IService : IObject, IDisposable
     {
@@ -19,13 +19,13 @@ namespace Fluid.Core.Services.Interfaces
         void Initialize();
 
         /// <summary>
-        /// Loads configuration.
+        ///     Loads configuration.
         /// </summary>
         /// <param name="configuration">Configuration.</param>
         void LoadConfiguration(IConfiguration configuration);
 
         /// <summary>
-        /// Saves configuration.
+        ///     Saves configuration.
         /// </summary>
         /// <param name="configuration">Configuration.</param>
         void SaveConfiguration(IConfiguration configuration);

@@ -22,6 +22,11 @@ namespace Fluid.Core.Base
             Value = value;
         }
 
+        /// <summary>
+        ///     Gets or sets value.
+        /// </summary>
+        public T Value { get; private set; }
+
         /// <inheritdoc />
         public sealed override string Name { get; set; }
 
@@ -30,11 +35,6 @@ namespace Fluid.Core.Base
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
-
-        /// <summary>
-        /// Gets or sets value.
-        /// </summary>
-        public T Value { get; private set; }
 
         /// <inheritdoc />
         public object GetValue()
@@ -45,11 +45,11 @@ namespace Fluid.Core.Base
         /// <inheritdoc />
         public void SetValue(object value)
         {
-            Value = (T)value;
+            Value = (T) value;
         }
 
         /// <summary>
-        /// Clones property.
+        ///     Clones property.
         /// </summary>
         /// <returns>Property.</returns>
         public object Clone()

@@ -16,14 +16,13 @@ using Fluid.Core.Services.Interfaces;
 namespace Fluid.Core.Services.Modules
 {
     /// <summary>
-    /// Module service.
+    ///     Module service.
     /// </summary>
     [Export(typeof(IService))]
-    public class Service: Fluid.Core.Services.Service, IModuleService
+    public class Service : Services.Service, IModuleService
     {
-        private readonly string _currentDirectory = Environment.CurrentDirectory;
-
         private readonly List<IModule> _clonedModules = new List<IModule>();
+        private readonly string _currentDirectory = Environment.CurrentDirectory;
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("F21B05E5-6648-448E-9AC9-C7D06A79D346");
@@ -32,20 +31,20 @@ namespace Fluid.Core.Services.Modules
         public override string Name { get; set; } = "Module Loader Service";
 
         /// <inheritdoc />
-        public List<string> ModulesPaths { get; private set; } = new List<string>();
+        public List<string> ModulesPaths { get; } = new List<string>();
 
         /// <inheritdoc />
-        public List<string> NativeLibrariesPaths { get; private set; } = new List<string>();
+        public List<string> NativeLibrariesPaths { get; } = new List<string>();
 
         /// <inheritdoc />
         [ImportMany]
         public IEnumerable<IModuleLibrary> Libraries { get; private set; }
 
         /// <inheritdoc />
-        public List<IModule> Modules { get; private set; } = new List<IModule>();
+        public List<IModule> Modules { get; } = new List<IModule>();
 
         /// <inheritdoc />
-        public List<string> NativeLibrariesNames { get; private set; } = new List<string>();
+        public List<string> NativeLibrariesNames { get; } = new List<string>();
 
         /// <inheritdoc />
         public IModule GetModule(string id)
@@ -109,30 +108,29 @@ namespace Fluid.Core.Services.Modules
 
             UpdateLibraries();
 
-            OnMessageReceived(this, new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
+            OnMessageReceived(this,
+                new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
         }
 
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
-            ModulesPaths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ModuleService-ModulesPaths", new List<string>()));
-            NativeLibrariesPaths.AddRange(LoadConfigurationValue<List<string>>(configuration, "ModuleService-NativeLibrariesPaths", new List<string>()));
+            ModulesPaths.AddRange(LoadConfigurationValue(configuration, "ModuleService-ModulesPaths",
+                new List<string>()));
+            NativeLibrariesPaths.AddRange(LoadConfigurationValue(configuration, "ModuleService-NativeLibrariesPaths",
+                new List<string>()));
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
             if (ModulesPaths.Count > 0)
-            {
                 configuration.SetPropertyValue("ModuleService-ModulesPaths",
-                ModulesPaths.GetRange(1, ModulesPaths.Count - 1));
-            }
+                    ModulesPaths.GetRange(1, ModulesPaths.Count - 1));
 
             if (NativeLibrariesPaths.Count > 0)
-            {
                 configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths",
-                NativeLibrariesPaths.GetRange(1, NativeLibrariesPaths.Count - 1));
-            }
+                    NativeLibrariesPaths.GetRange(1, NativeLibrariesPaths.Count - 1));
         }
 
         /// <inheritdoc />
@@ -231,12 +229,12 @@ namespace Fluid.Core.Services.Modules
                     }
                     catch (Exception)
                     {
-                        OnMessageReceived(this, 
+                        OnMessageReceived(this,
                             new Message(
-                            "Native library loading error",
-                            "Library " + file.Name + " can't be loaded on current system.",
-                            Name,
-                            MessageType.Error));
+                                "Native library loading error",
+                                "Library " + file.Name + " can't be loaded on current system.",
+                                Name,
+                                MessageType.Error));
                     }
                 }
             }

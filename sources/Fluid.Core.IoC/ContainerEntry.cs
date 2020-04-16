@@ -4,17 +4,17 @@ using System.Collections.Generic;
 namespace Fluid.Core.IoC
 {
     /// <summary>
-    /// Container entry.
+    ///     Container entry.
     /// </summary>
     internal class ContainerEntry : List<Func<SimpleContainer, object>>
     {
         /// <summary>
-        /// Key.
+        ///     Key.
         /// </summary>
         public string Key { get; set; }
 
         /// <summary>
-        /// Type.
+        ///     Type.
         /// </summary>
         public Type Service { get; set; }
     }

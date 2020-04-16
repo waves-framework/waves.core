@@ -9,10 +9,10 @@ using Fluid.Core.Services.Interfaces;
 namespace Fluid.Core.Services.Input
 {
     /// <summary>
-    /// Input service.
+    ///     Input service.
     /// </summary>
     [Export(typeof(IService))]
-    public class Service: Fluid.Core.Services.Service, IInputService
+    public class Service : Services.Service, IInputService
     {
         /// <inheritdoc />
         public event EventHandler<KeyEventArgs> KeyPressed;
@@ -52,7 +52,8 @@ namespace Fluid.Core.Services.Input
         {
             if (IsInitialized) return;
 
-            OnMessageReceived(this, new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
+            OnMessageReceived(this,
+                new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
 
             IsInitialized = true;
         }

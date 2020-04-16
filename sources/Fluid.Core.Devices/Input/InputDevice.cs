@@ -3,7 +3,7 @@
 namespace Fluid.Core.Devices.Input
 {
     /// <summary>
-    /// Abstract input device base class.
+    ///     Abstract input device base class.
     /// </summary>
     public abstract class InputDevice : Device, IInputDevice
     {

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Fluid.Core.Native.Windows
 {
     /// <summary>
-    /// Kernel32.dll
+    ///     Kernel32.dll
     /// </summary>
     public static class Kernel32
     {

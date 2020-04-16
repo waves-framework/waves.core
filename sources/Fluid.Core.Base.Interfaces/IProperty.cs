@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Fluid.Core.Base.Interfaces
 {
@@ -19,12 +18,12 @@ namespace Fluid.Core.Base.Interfaces
         //object Value { get; set; }
 
         /// <summary>
-        /// Gets value of property.
+        ///     Gets value of property.
         /// </summary>
         object GetValue();
 
         /// <summary>
-        /// Sets value of property.
+        ///     Sets value of property.
         /// </summary>
         /// <param name="value">Value.</param>
         void SetValue(object value);

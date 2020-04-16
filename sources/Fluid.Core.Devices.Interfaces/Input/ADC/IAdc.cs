@@ -3,7 +3,7 @@
 namespace Fluid.Core.Devices.Interfaces.Input.ADC
 {
     /// <summary>
-    /// Interface for ADC device instances.
+    ///     Interface for ADC device instances.
     /// </summary>
     public interface IAdc : IInputDevice
     {

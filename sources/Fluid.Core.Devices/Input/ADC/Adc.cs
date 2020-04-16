@@ -4,7 +4,7 @@ using Fluid.Core.Devices.Interfaces.Input.ADC;
 namespace Fluid.Core.Devices.Input.ADC
 {
     /// <summary>
-    /// Abstract ADC device base class.
+    ///     Abstract ADC device base class.
     /// </summary>
     public abstract class Adc : InputDevice, IAdc
     {
@@ -15,9 +15,9 @@ namespace Fluid.Core.Devices.Input.ADC
         public virtual short BitsPerSample { get; set; }
 
         /// <inheritdoc />
-        public ICollection<double> AvailableSampleRates { get; private set; } = new List<double>();
+        public ICollection<double> AvailableSampleRates { get; } = new List<double>();
 
         /// <inheritdoc />
-        public ICollection<short> AvailableBitsPerSampleValues { get; private set; } = new List<short>();
+        public ICollection<short> AvailableBitsPerSampleValues { get; } = new List<short>();
     }
 }

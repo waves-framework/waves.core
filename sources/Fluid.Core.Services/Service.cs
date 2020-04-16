@@ -1,5 +1,4 @@
 ﻿using System;
-using Fluid.Core.Base;
 using Fluid.Core.Base.Interfaces;
 using Fluid.Core.Services.Interfaces;
 using Object = Fluid.Core.Base.Object;
@@ -7,7 +6,7 @@ using Object = Fluid.Core.Base.Object;
 namespace Fluid.Core.Services
 {
     /// <summary>
-    /// Service base class.
+    ///     Service base class.
     /// </summary>
     public abstract class Service : Object, IService
     {
@@ -33,7 +32,7 @@ namespace Fluid.Core.Services
         public abstract void Dispose();
 
         /// <summary>
-        /// Loads property value from configuration.
+        ///     Loads property value from configuration.
         /// </summary>
         /// <typeparam name="T">Property type.</typeparam>
         /// <param name="configuration">Configuration instance.</param>
@@ -48,11 +47,11 @@ namespace Fluid.Core.Services
                     throw new Exception("Configuration is null.\r\n");
 
                 if (configuration.Contains(key))
-                    return (T)configuration.GetPropertyValue(key);
+                    return (T) configuration.GetPropertyValue(key);
 
                 configuration.AddProperty(key, defaultValue, false);
 
-                return (T) defaultValue;
+                return defaultValue;
             }
             catch (Exception e)
             {

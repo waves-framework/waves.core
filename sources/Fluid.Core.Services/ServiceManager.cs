@@ -13,25 +13,25 @@ using Fluid.Core.Services.Interfaces;
 namespace Fluid.Core.Services
 {
     /// <summary>
-    /// Service manager.
+    ///     Service manager.
     /// </summary>
     public class ServiceManager
     {
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 
         /// <summary>
-        /// Event for message receiving handling.
-        /// </summary>
-        public event EventHandler<IMessage> MessageReceived; 
-
-        /// <summary>
-        /// Gets or sets collection of services.
+        ///     Gets or sets collection of services.
         /// </summary>
         [ImportMany]
         public IEnumerable<IService> Services { get; set; }
 
         /// <summary>
-        /// Initializes service manager.
+        ///     Event for message receiving handling.
+        /// </summary>
+        public event EventHandler<IMessage> MessageReceived;
+
+        /// <summary>
+        ///     Initializes service manager.
         /// </summary>
         public void Initialize()
         {
@@ -39,7 +39,7 @@ namespace Fluid.Core.Services
         }
 
         /// <summary>
-        /// Loads services.
+        ///     Loads services.
         /// </summary>
         /// <returns></returns>
         public ICollection<T> GetService<T>()
@@ -49,12 +49,8 @@ namespace Fluid.Core.Services
             try
             {
                 foreach (var service in Services)
-                {
                     if (service is T currentService)
                         collection.Add(currentService);
-                }
-
-
             }
             catch (Exception e)
             {
@@ -62,11 +58,10 @@ namespace Fluid.Core.Services
             }
 
             return collection;
-
         }
 
         /// <summary>
-        /// Loads services.
+        ///     Loads services.
         /// </summary>
         private void LoadServices()
         {
@@ -74,16 +69,17 @@ namespace Fluid.Core.Services
 
             var files = Directory.GetFiles(_currentDirectory, "*.dll", SearchOption.AllDirectories);
 
-            OnMessageReceived(new Message("Assembly loading", "Trying to load assemblies...", "Service manager", MessageType.Information));
+            OnMessageReceived(new Message("Assembly loading", "Trying to load assemblies...", "Service manager",
+                MessageType.Information));
 
             foreach (var file in files)
-            {
                 try
                 {
                     var hasItem = false;
                     var fileInfo = new FileInfo(file);
 
-                    OnMessageReceived(new Message("Assembly loading", "Trying to load assembly " + fileInfo.Name, "Service manager", MessageType.Information));
+                    OnMessageReceived(new Message("Assembly loading", "Trying to load assembly " + fileInfo.Name,
+                        "Service manager", MessageType.Information));
 
                     foreach (var assembly in assemblies)
                     {
@@ -92,20 +88,17 @@ namespace Fluid.Core.Services
                             hasItem = true;
                     }
 
-                    if (!hasItem)
-                    {
-                        assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
-                    }
+                    if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
                 }
                 catch (Exception e)
                 {
                     OnMessageReceived(new Message(e, false));
                 }
-            }
 
             try
             {
-                OnMessageReceived(new Message("Assembly loading", "Trying to load suitable assemblies.", "Service manager", MessageType.Information));
+                OnMessageReceived(new Message("Assembly loading", "Trying to load suitable assemblies.",
+                    "Service manager", MessageType.Information));
 
                 var configuration = new ContainerConfiguration()
                     .WithAssemblies(assemblies);
@@ -114,11 +107,12 @@ namespace Fluid.Core.Services
                 Services = container.GetExports<IService>();
 
                 foreach (var service in Services)
-                {
-                    OnMessageReceived(new Message("Assembly loading", "Service assembly \""+ service.Name + "\" loaded.", "Service manager", MessageType.Information));
-                }
-                
-                OnMessageReceived(new Message("Assembly loading", "Suitable assemblies loaded.", "Service manager", MessageType.Information));
+                    OnMessageReceived(new Message("Assembly loading",
+                        "Service assembly \"" + service.Name + "\" loaded.", "Service manager",
+                        MessageType.Information));
+
+                OnMessageReceived(new Message("Assembly loading", "Suitable assemblies loaded.", "Service manager",
+                    MessageType.Information));
             }
             catch (Exception e)
             {
@@ -127,7 +121,7 @@ namespace Fluid.Core.Services
         }
 
         /// <summary>
-        /// Notifies when message received.
+        ///     Notifies when message received.
         /// </summary>
         /// <param name="e">Message.</param>
         private void OnMessageReceived(IMessage e)

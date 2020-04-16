@@ -7,7 +7,7 @@ using Fluid.Core.IO.Interfaces;
 namespace Fluid.Core.IO
 {
     /// <summary>
-    /// Computer directory.
+    ///     Computer directory.
     /// </summary>
     public class Computer : Directory
     {
@@ -34,7 +34,8 @@ namespace Fluid.Core.IO
         public override DirectoryType Type { get; internal set; } = DirectoryType.Computer;
 
         /// <inheritdoc />
-        public override ObservableCollection<IFileSystemObject> Children { get; protected set; } = new ObservableCollection<IFileSystemObject>();
+        public override ObservableCollection<IFileSystemObject> Children { get; protected set; } =
+            new ObservableCollection<IFileSystemObject>();
 
         /// <inheritdoc />
         public override void LoadChildren()
