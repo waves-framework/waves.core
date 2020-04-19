@@ -10,8 +10,4 @@
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Base.Interfaces\Fluid.Core.Base.Interfaces.csproj" />
-  </ItemGroup>
-
 </Project>

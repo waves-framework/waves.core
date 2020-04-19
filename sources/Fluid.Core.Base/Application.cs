@@ -59,7 +59,7 @@ namespace Fluid.Core.Base
         /// </summary>
         protected virtual void OnActionsUpdated()
         {
-            ActionsUpdated?.Invoke(this, EventArgs.Empty);
+            ActionsUpdated?.Invoke(this, System.EventArgs.Empty);
         }
     }
 }

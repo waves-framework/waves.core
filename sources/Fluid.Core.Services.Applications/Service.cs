@@ -16,7 +16,7 @@ namespace Fluid.Core.Services.Applications
     ///     Application service.
     /// </summary>
     [Export(typeof(IService))]
-    public class Service : Services.Service, IApplicationService
+    public class Service : Base.Service, IApplicationService
     {
         /// <inheritdoc />
         public List<string> Paths { get; set; } = new List<string>();
