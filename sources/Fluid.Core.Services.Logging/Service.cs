@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Composition;
 using Fluid.Core.Base;
 using Fluid.Core.Base.Enums;
@@ -17,6 +18,7 @@ namespace Fluid.Core.Services.Logging
     public class Service : Services.Service, ILoggingService
     {
         private readonly string _currentDirectory = Environment.CurrentDirectory;
+
         private Logger _logger;
 
         /// <inheritdoc />
@@ -29,7 +31,7 @@ namespace Fluid.Core.Services.Logging
         public int LastMessagesCount { get; private set; } = 250;
 
         /// <inheritdoc />
-        public ICollection<IMessage> LastMessages { get; } = new List<IMessage>();
+        public ICollection<IMessage> LastMessages { get; } = new ObservableCollection<IMessage>();
 
         /// <inheritdoc />
         public override void Initialize()
