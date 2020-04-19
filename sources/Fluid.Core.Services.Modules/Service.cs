@@ -19,7 +19,7 @@ namespace Fluid.Core.Services.Modules
     ///     Module service.
     /// </summary>
     [Export(typeof(IService))]
-    public class Service : Services.Service, IModuleService
+    public class Service : Base.Service, IModuleService
     {
         private readonly List<IModule> _clonedModules = new List<IModule>();
         private readonly string _currentDirectory = Environment.CurrentDirectory;

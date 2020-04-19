@@ -32,7 +32,7 @@ namespace Fluid.Core
         /// <summary>
         ///     Gets service manager.
         /// </summary>
-        public ServiceManager ServiceManager { get; } = new ServiceManager();
+        public Manager ServiceManager { get; } = new Manager();
 
         /// <summary>
         ///     Gets collections of registered services.
@@ -116,7 +116,7 @@ namespace Fluid.Core
                     {
                         service.SaveConfiguration(Configuration);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         throw new Exception("Error saving \"" + service.Name + "\" configuration.");
                     }
