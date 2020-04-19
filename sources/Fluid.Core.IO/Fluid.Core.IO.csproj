@@ -12,8 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
-    <ProjectReference Include="..\Fluid.Core.IO.Enums\Fluid.Core.IO.Enums.csproj" />
-    <ProjectReference Include="..\Fluid.Core.IO.Interfaces\Fluid.Core.IO.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

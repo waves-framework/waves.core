@@ -15,7 +15,7 @@ namespace Fluid.Core.Services.Logging
     ///     Logging service.
     /// </summary>
     [Export(typeof(IService))]
-    public class Service : Services.Service, ILoggingService
+    public class Service : Base.Service, ILoggingService
     {
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 

@@ -3,11 +3,6 @@
   <Import Project="../../props/Fluid.Core.Services.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Services.Interfaces\Fluid.Core.Services.Interfaces.csproj" />
-    <ProjectReference Include="..\Fluid.Core.Services\Fluid.Core.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Fody" Version="6.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

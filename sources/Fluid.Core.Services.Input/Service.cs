@@ -12,7 +12,7 @@ namespace Fluid.Core.Services.Input
     ///     Input service.
     /// </summary>
     [Export(typeof(IService))]
-    public class Service : Services.Service, IInputService
+    public class Service : Base.Service, IInputService
     {
         /// <inheritdoc />
         public event EventHandler<KeyEventArgs> KeyPressed;

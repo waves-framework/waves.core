@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fluid.Core.Base\Fluid.Core.Base.csproj" />
-    <ProjectReference Include="..\Fluid.Core.Devices.Interfaces\Fluid.Core.Devices.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

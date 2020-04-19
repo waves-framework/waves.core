@@ -7,7 +7,6 @@
   <Import Project="../../props/Fluid.Core.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Fluid.Core.Services\Fluid.Core.Services.csproj" />
     <ProjectReference Include="..\Fluid.Core\Fluid.Core.csproj" />
   </ItemGroup>
 
