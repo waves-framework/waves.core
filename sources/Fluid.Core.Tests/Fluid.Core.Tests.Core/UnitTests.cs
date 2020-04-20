@@ -38,6 +38,24 @@ namespace Fluid.Core.Tests.Core
         }
 
         /// <summary>
+        ///     Tests whether application loader service is initialized successfully.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsApplicationLoaderInitialized_True()
+        {
+            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Application Loader Service"]);
+        }
+
+        /// <summary>
+        ///     Tests whether input service is initialized successfully.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsInputServiceInitialized_True()
+        {
+            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Keyboard and Mouse Input Service"]);
+        }
+
+        /// <summary>
         ///     Tests whether logging is initialized successfully.
         /// </summary>
         [Test]
@@ -45,6 +63,16 @@ namespace Fluid.Core.Tests.Core
         {
             Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Logging Service"]);
         }
+
+        /// <summary>
+        ///     Tests whether module service is initialized successfully.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsModuleLoaderServiceInitialized_True()
+        {
+            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Module Loader Service"]);
+        }
+
 
         /// <summary>
         ///     Tests whether core is initialized successfully.

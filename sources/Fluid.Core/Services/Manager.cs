@@ -45,6 +45,14 @@ namespace Fluid.Core.Services
         {
             var collection = new List<T>();
 
+            if (Services == null)
+            {
+                OnMessageReceived(new Message("Service Manager", "Services not loaded.", "Service manager",
+                    MessageType.Fatal));
+
+                return null;
+            }
+
             try
             {
                 foreach (var service in Services)
@@ -104,9 +112,6 @@ namespace Fluid.Core.Services
 
                 using var container = configuration.CreateContainer();
                 Services = container.GetExports<IService>();
-
-                if (Services == null)
-                    Services = new List<IService>();
 
                 foreach (var service in Services)
                     OnMessageReceived(new Message("Assembly loading",
