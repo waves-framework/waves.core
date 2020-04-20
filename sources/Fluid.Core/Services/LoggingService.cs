@@ -51,13 +51,34 @@ namespace Fluid.Core.Services
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
-            LastMessagesCount = LoadConfigurationValue(configuration, "LoggingService-LastMessagesCount", 250);
+            try
+            {
+                LastMessagesCount = LoadConfigurationValue(configuration, "LoggingService-LastMessagesCount", 250);
+
+                OnMessageReceived(this, new Message("Configuration loading", "Configuration loads successfully.", Name,
+                    MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
-            configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
+            try
+            {
+                configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
+
+                OnMessageReceived(this, new Message("Configuration saving", "Configuration saves successfully.", Name,
+                    MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
+            
         }
 
         /// <inheritdoc />
@@ -156,10 +177,17 @@ namespace Fluid.Core.Services
         /// <param name="message">Message.</param>
         private void AddMessageToCollection(IMessage message)
         {
-            LastMessages.Add(message);
+            try
+            {
+                LastMessages.Add(message);
 
-            if (LastMessages.Count > LastMessagesCount)
-                (LastMessages as List<IMessage>)?.RemoveAt(0);
+                if (LastMessages.Count > LastMessagesCount)
+                    (LastMessages as List<IMessage>)?.RemoveAt(0);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
     }
 }

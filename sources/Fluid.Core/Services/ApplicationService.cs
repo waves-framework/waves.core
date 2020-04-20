@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Composition.Hosting;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 using Fluid.Core.Base;
@@ -64,6 +65,9 @@ namespace Fluid.Core.Services
             try
             {
                 Paths.AddRange(LoadConfigurationValue(configuration, "ApplicationService-Paths", new List<string>()));
+
+                OnMessageReceived(this, new Message("Configuration loading", "Configuration loads successfully.", Name,
+                    MessageType.Success));
             }
             catch (Exception e)
             {
@@ -77,7 +81,12 @@ namespace Fluid.Core.Services
             try
             {
                 if (Paths.Count > 1)
+                {
                     configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
+
+                    OnMessageReceived(this, new Message("Configuration saving", "Configuration saves successfully.", Name,
+                        MessageType.Success));
+                }
             }
             catch (Exception e)
             {
@@ -115,6 +124,9 @@ namespace Fluid.Core.Services
             try
             {
                 if (!Paths.Contains(path)) Paths?.Add(path);
+
+                OnMessageReceived(this, new Message("Adding applications path", "Applications path added successfully.", Name,
+                    MessageType.Success));
             }
             catch (Exception e)
             {
@@ -128,6 +140,9 @@ namespace Fluid.Core.Services
             try
             {
                 if (Paths.Contains(path)) Paths?.Remove(path);
+
+                OnMessageReceived(this, new Message("Removing applications path", "Applications path removed successfully.", Name,
+                    MessageType.Success));
             }
             catch (Exception e)
             {
@@ -153,6 +168,9 @@ namespace Fluid.Core.Services
         /// </summary>
         protected virtual void OnApplicationsActionsUpdated()
         {
+            OnMessageReceived(this, new Message("Applications collection", "Applications collections updated.", Name,
+                MessageType.Information));
+
             ApplicationsActionsUpdated?.Invoke(this, EventArgs.Empty);
         }
 
@@ -205,6 +223,16 @@ namespace Fluid.Core.Services
                 SubscribeApplicationEvents();
 
                 OnApplicationsUpdated();
+
+                if (Applications != null)
+                {
+                    OnMessageReceived(this, new Message("Loading applications", "Applications loads successfully (" + Applications.Count() + " applications).", Name,
+                        MessageType.Success));
+                }
+                else
+                {
+                    OnMessageReceived(this, new Message("Loading applications", "Applications were not loaded.", Name, MessageType.Warning));
+                }
             }
             catch (Exception e)
             {

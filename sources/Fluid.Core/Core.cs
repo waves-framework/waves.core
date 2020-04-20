@@ -9,6 +9,7 @@ using Fluid.Core.IoC;
 using Fluid.Core.Services;
 using Fluid.Core.Services.Interfaces;
 using Fluid.Utils.Serialization;
+using NLog.LayoutRenderers;
 
 namespace Fluid.Core
 {
@@ -17,6 +18,8 @@ namespace Fluid.Core
     /// </summary>
     public class Core
     {
+        private List<IMessage> _pendingMessages = new List<IMessage>();
+
         private ILoggingService _loggingService;
 
         /// <summary>
@@ -72,7 +75,7 @@ namespace Fluid.Core
                 IsRunning = true;
 
                 WriteLogMessage(new Message("Core launching", "Core launching successfully.", "Core",
-                    MessageType.Information));
+                    MessageType.Success));
             }
             catch (Exception e)
             {
@@ -94,7 +97,8 @@ namespace Fluid.Core
                 ServiceManager.MessageReceived -= OnServiceMessageReceived;
 
                 WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",
-                    MessageType.Information));
+                    MessageType.Success));
+
                 WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
@@ -227,7 +231,12 @@ namespace Fluid.Core
 
             OnMessageReceived(message);
 
-            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
+            if (!CoreInitializationInformationDictionary["Logging Service"])
+            {
+                _pendingMessages.Add(message);
+
+                return;
+            }
 
             CheckLoggingService();
 
@@ -246,9 +255,16 @@ namespace Fluid.Core
             Console.WriteLine("Core exception: {0}", exception);
 #endif
 
-            OnMessageReceived(new Message(exception, false));
+            var message = new Message(exception, false);
 
-            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
+            OnMessageReceived(message);
+
+            if (!CoreInitializationInformationDictionary["Logging Service"])
+            {
+                _pendingMessages.Add(message);
+
+                return;
+            }
 
             CheckLoggingService();
 
@@ -347,7 +363,16 @@ namespace Fluid.Core
         private void CheckLoggingService()
         {
             if (_loggingService == null)
+            {
                 _loggingService = GetService<ILoggingService>();
+
+                foreach (var message in _pendingMessages)
+                {
+                    _loggingService.WriteMessageToLog(message);
+                }
+
+                _pendingMessages.Clear();
+            }
         }
 
         /// <summary>
