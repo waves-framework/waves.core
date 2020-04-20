@@ -12,12 +12,12 @@ namespace Fluid.Core.Services.Interfaces
         /// <summary>
         ///     Gets modules directory paths.
         /// </summary>
-        List<string> ModulesPaths { get; }
+        ICollection<string> ModulesPaths { get; }
 
         /// <summary>
         ///     Gets native libraries paths.
         /// </summary>
-        List<string> NativeLibrariesPaths { get; }
+        ICollection<string> NativeLibrariesPaths { get; }
 
         /// <summary>
         ///     Gets all of loaded libraries.
@@ -27,12 +27,12 @@ namespace Fluid.Core.Services.Interfaces
         /// <summary>
         ///     Gets all of loaded modules.
         /// </summary>
-        List<IModule> Modules { get; }
+        ICollection<IModule> Modules { get; }
 
         /// <summary>
         ///     List of loaded native libraries names.
         /// </summary>
-        List<string> NativeLibrariesNames { get; }
+        ICollection<string> NativeLibrariesNames { get; }
 
         /// <summary>
         ///     Gets module by ID.
