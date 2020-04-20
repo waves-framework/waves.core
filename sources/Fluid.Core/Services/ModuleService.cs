@@ -216,13 +216,16 @@ namespace Fluid.Core.Services
                     {
                         var fileName = file.FullName;
 
-                        var result = Kernel32.LoadLibrary(fileName);
-
-                        if (result == IntPtr.Zero)
+                        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                         {
-                            var lastError = Marshal.GetLastWin32Error();
-                            var error = new Win32Exception(lastError);
-                            throw error;
+                            var result = Kernel32.LoadLibrary(fileName);
+
+                            if (result == IntPtr.Zero)
+                            {
+                                var lastError = Marshal.GetLastWin32Error();
+                                var error = new Win32Exception(lastError);
+                                throw error;
+                            }
                         }
 
                         NativeLibrariesNames.Add(file.FullName);
