@@ -29,6 +29,23 @@ namespace Fluid.Core.Base
         /// <summary>
         ///     Creates new instance of Message.
         /// </summary>
+        /// <param name="title">Title.</param>
+        /// <param name="text">Text.</param>
+        /// <param name="sender">Sender.</param>
+        /// <param name="type">Message type.</param>
+        public Message(string title, string text, IObject sender, MessageType type)
+        {
+            Title = title;
+            Text = text;
+            Type = type;
+            Sender = sender.Name;
+            DateTime = DateTime.Now;
+            Exception = null;
+        }
+
+        /// <summary>
+        ///     Creates new instance of Message.
+        /// </summary>
         /// <param name="exception">Exception.</param>
         /// <param name="isFatal">Is it a fatal error message?</param>
         public Message(Exception exception, bool isFatal)
