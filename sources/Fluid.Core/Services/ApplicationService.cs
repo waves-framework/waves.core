@@ -231,7 +231,7 @@ namespace Fluid.Core.Services
                     if (!applications.Any())
                     {
                         OnMessageReceived(this, new Message("Loading applications", "Applications not found.", Name,
-                            MessageType.Information));
+                            MessageType.Warning));
                     }
                     else
                     {
