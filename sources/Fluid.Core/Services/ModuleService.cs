@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Composition;
 using System.Composition.Hosting;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
@@ -31,61 +33,101 @@ namespace Fluid.Core.Services
         public override string Name { get; set; } = "Module Loader Service";
 
         /// <inheritdoc />
-        public List<string> ModulesPaths { get; } = new List<string>();
+        public ICollection<string> ModulesPaths { get; } = new ObservableCollection<string>();
 
         /// <inheritdoc />
-        public List<string> NativeLibrariesPaths { get; } = new List<string>();
+        public ICollection<string> NativeLibrariesPaths { get; } = new ObservableCollection<string>();
 
         /// <inheritdoc />
         [ImportMany]
         public IEnumerable<IModuleLibrary> Libraries { get; private set; }
 
         /// <inheritdoc />
-        public List<IModule> Modules { get; } = new List<IModule>();
+        public ICollection<IModule> Modules { get; } = new ObservableCollection<IModule>();
 
         /// <inheritdoc />
-        public List<string> NativeLibrariesNames { get; } = new List<string>();
+        public ICollection<string> NativeLibrariesNames { get; } = new ObservableCollection<string>();
 
         /// <inheritdoc />
         public IModule GetModule(string id)
         {
-            foreach (var module in Modules)
-                if (module.Id.ToString().ToUpper().Equals(id.ToUpper()))
+            try
+            {
+                foreach (var module in Modules)
                 {
-                    var clone = (IModule) module.Clone();
+                    if (module.Id.ToString().ToUpper().Equals(id.ToUpper()))
+                    {
+                        var clone = (IModule)module.Clone();
 
-                    clone.MessageReceived += OnMessageReceived;
+                        clone.MessageReceived += OnMessageReceived;
 
-                    _clonedModules.Add(clone);
+                        _clonedModules.Add(clone);
 
-                    return clone;
+                        return clone;
+                    }
                 }
 
-            return null;
+                return null;
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+
+                return null;
+            }
         }
 
         /// <inheritdoc />
         public void AddModulePath(string path)
         {
-            if (!ModulesPaths.Contains(path)) ModulesPaths.Add(path);
+            try
+            {
+                if (!ModulesPaths.Contains(path)) ModulesPaths.Add(path);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public void AddNativeLibraryPath(string path)
         {
-            if (!NativeLibrariesPaths.Contains(path)) NativeLibrariesPaths.Add(path);
+            try
+            {
+                if (!NativeLibrariesPaths.Contains(path)) NativeLibrariesPaths.Add(path);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public void RemoveModulePath(string path)
         {
-            if (ModulesPaths.Contains(path)) ModulesPaths.Remove(path);
+            try
+            {
+                if (ModulesPaths.Contains(path)) ModulesPaths.Remove(path);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public void RemoveNativeLibraryPath(string path)
         {
-            if (NativeLibrariesPaths.Contains(path)) NativeLibrariesPaths.Remove(path);
+            try
+            {
+                if (NativeLibrariesPaths.Contains(path))
+                    NativeLibrariesPaths.Remove(path);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
@@ -104,43 +146,111 @@ namespace Fluid.Core.Services
         {
             if (IsInitialized) return;
 
-            IsInitialized = true;
+            try
+            {
+                UpdateLibraries();
 
-            UpdateLibraries();
+                IsInitialized = true;
 
-            OnMessageReceived(this,
-                new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
+                OnMessageReceived(this,
+                    new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
-            ModulesPaths.AddRange(LoadConfigurationValue(configuration, "ModuleService-ModulesPaths",
-                new List<string>()));
-            NativeLibrariesPaths.AddRange(LoadConfigurationValue(configuration, "ModuleService-NativeLibrariesPaths",
-                new List<string>()));
+            try
+            {
+                ModulesPaths.Clear();
+                NativeLibrariesPaths.Clear();
+
+                var modulesPaths = LoadConfigurationValue(configuration, "ModuleService-ModulesPaths", new List<string>());
+                var nativeLibrariesPaths = LoadConfigurationValue(configuration, "ModuleService-NativeLibrariesPaths", new List<string>());
+
+                foreach (var path in modulesPaths)
+                    ModulesPaths.Add(path);
+
+                foreach (var path in nativeLibrariesPaths)
+                    NativeLibrariesPaths.Add(path);
+
+                OnMessageReceived(this, new Message("Configuration loading", "Configuration loads successfully.", Name,
+                    MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
-            if (ModulesPaths.Count > 1)
-                configuration.SetPropertyValue("ModuleService-ModulesPaths",
-                    ModulesPaths.GetRange(1, ModulesPaths.Count - 1));
+            try
+            {
+                var modulesPaths = new string[ModulesPaths.Count - 1];
+                var nativeLibrariesPaths = new string[NativeLibrariesPaths.Count - 1];
 
-            if (NativeLibrariesPaths.Count > 1)
-                configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths",
-                    NativeLibrariesPaths.GetRange(1, NativeLibrariesPaths.Count - 1));
+                ModulesPaths.CopyTo(modulesPaths, 1);
+                NativeLibrariesPaths.CopyTo(nativeLibrariesPaths, 1);
+
+                configuration.SetPropertyValue("ModuleService-ModulesPaths", modulesPaths);
+                configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths", nativeLibrariesPaths);
+
+                OnMessageReceived(this, new Message("Configuration savings", "Configuration saves successfully.", Name,
+                    MessageType.Success));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <inheritdoc />
         public override void Dispose()
         {
-            foreach (var module in Modules)
-                module.Dispose();
+            try
+            {
+                foreach (var module in Modules)
+                {
+                    try
+                    {
+                        module.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Error disposing module (" + module.Name + ")", e);
+                    }
+                }
 
-            foreach (var module in _clonedModules)
-                module.Dispose();
+                foreach (var module in _clonedModules)
+                {
+                    try
+                    {
+                        module.Dispose();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Error disposing module (" + module.Name + ")", e);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
+        }
+
+        /// <summary>
+        ///     Notifies when modules collection updated.
+        /// </summary>
+        protected virtual void OnModulesUpdated()
+        {
+            ModulesUpdated?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -150,45 +260,79 @@ namespace Fluid.Core.Services
         {
             var defaultDirectory = Path.Combine(_currentDirectory, "modules");
 
-            if (!Directory.Exists(defaultDirectory))
-                Directory.CreateDirectory(defaultDirectory);
-
-            var assemblies = new List<Assembly>();
-
-            foreach (var path in ModulesPaths)
+            try
             {
-                if (!Directory.Exists(path))
-                {
-                    OnMessageReceived(this,
-                        new Message(
-                            "Loading path error",
-                            "Path to application ( " + path + ") doesn't exists or was deleted.",
-                            Name,
-                            MessageType.Error));
-
-                    continue;
-                }
-
-                foreach (var file in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
-                {
-                    var hasItem = false;
-                    var fileInfo = new FileInfo(file);
-                    foreach (var assembly in assemblies)
-                    {
-                        var name = assembly.GetName().Name;
-
-                        if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
-                    }
-
-                    if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
-                }
+                if (!Directory.Exists(defaultDirectory))
+                    Directory.CreateDirectory(defaultDirectory);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
             }
 
-            var configuration = new ContainerConfiguration()
-                .WithAssemblies(assemblies);
+            try
+            {
+                var assemblies = new List<Assembly>();
 
-            using var container = configuration.CreateContainer();
-            Libraries = container.GetExports<IModuleLibrary>();
+                foreach (var path in ModulesPaths)
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        OnMessageReceived(this,
+                            new Message(
+                                "Loading path error",
+                                "Path to application ( " + path + ") doesn't exists or was deleted.",
+                                Name,
+                                MessageType.Error));
+
+                        continue;
+                    }
+
+                    foreach (var file in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
+                    {
+                        var hasItem = false;
+                        var fileInfo = new FileInfo(file);
+                        foreach (var assembly in assemblies)
+                        {
+                            var name = assembly.GetName().Name;
+
+                            if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
+                        }
+
+                        if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
+                    }
+                }
+
+                var configuration = new ContainerConfiguration()
+                    .WithAssemblies(assemblies);
+
+                using var container = configuration.CreateContainer();
+                Libraries = container.GetExports<IModuleLibrary>();
+
+                if (Libraries != null)
+                {
+                    var moduleLibraries = Libraries as IModuleLibrary[] ?? Libraries.ToArray();
+
+                    if (!moduleLibraries.Any())
+                    {
+                        OnMessageReceived(this, new Message("Loading module libraries", "Module libraries not found.", Name,
+                            MessageType.Success));
+                    }
+                    else
+                    {
+                        OnMessageReceived(this, new Message("Loading module libraries", "Module libraries loads successfully (" + moduleLibraries.Count() + " libraries).", Name,
+                            MessageType.Success));
+                    }
+                }
+                else
+                {
+                    OnMessageReceived(this, new Message("Loading module libraries", "Module libraries were not loaded.", Name, MessageType.Warning));
+                }
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <summary>
@@ -198,48 +342,62 @@ namespace Fluid.Core.Services
         {
             var defaultDirectory = Path.Combine(_currentDirectory, "native");
 
-            if (!Directory.Exists(defaultDirectory))
-                Directory.CreateDirectory(defaultDirectory);
-
-            NativeLibrariesNames.Clear();
-
-            foreach (var path in NativeLibrariesPaths)
+            try
             {
-                var info = new DirectoryInfo(path);
-                var files = info.GetFiles();
+                if (!Directory.Exists(defaultDirectory))
+                    Directory.CreateDirectory(defaultDirectory);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
 
-                foreach (var file in files)
+            try
+            {
+                NativeLibrariesNames.Clear();
+
+                foreach (var path in NativeLibrariesPaths)
                 {
-                    if (file.Extension != ".dll") continue;
+                    var info = new DirectoryInfo(path);
+                    var files = info.GetFiles();
 
-                    try
+                    foreach (var file in files)
                     {
-                        var fileName = file.FullName;
+                        if (file.Extension != ".dll") continue;
 
-                        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                        try
                         {
-                            var result = Kernel32.LoadLibrary(fileName);
+                            var fileName = file.FullName;
 
-                            if (result == IntPtr.Zero)
+                            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                             {
-                                var lastError = Marshal.GetLastWin32Error();
-                                var error = new Win32Exception(lastError);
-                                throw error;
-                            }
-                        }
+                                var result = Kernel32.LoadLibrary(fileName);
 
-                        NativeLibrariesNames.Add(file.FullName);
-                    }
-                    catch (Exception)
-                    {
-                        OnMessageReceived(this,
-                            new Message(
-                                "Native library loading error",
-                                "Library " + file.Name + " can't be loaded on current system.",
-                                Name,
-                                MessageType.Error));
+                                if (result == IntPtr.Zero)
+                                {
+                                    var lastError = Marshal.GetLastWin32Error();
+                                    var error = new Win32Exception(lastError);
+                                    throw error;
+                                }
+                            }
+
+                            NativeLibrariesNames.Add(file.FullName);
+                        }
+                        catch (Exception)
+                        {
+                            OnMessageReceived(this,
+                                new Message(
+                                    "Native library loading error",
+                                    "Library " + file.Name + " can't be loaded on current system.",
+                                    Name,
+                                    MessageType.Error));
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
             }
         }
 
@@ -251,31 +409,30 @@ namespace Fluid.Core.Services
             if (Libraries == null)
                 return;
 
-            Modules.Clear();
-
-            foreach (var library in Libraries)
+            try
             {
-                library.UpdateModulesCollection();
+                Modules.Clear();
 
-                foreach (var module in library.Modules)
+                foreach (var library in Libraries)
                 {
-                    Modules.Add(module);
+                    library.UpdateModulesCollection();
 
-                    module.MessageReceived += OnMessageReceived;
+                    foreach (var module in library.Modules)
+                    {
+                        Modules.Add(module);
 
-                    module.Initialize();
+                        module.MessageReceived += OnMessageReceived;
+
+                        module.Initialize();
+                    }
                 }
+
+                OnModulesUpdated();
             }
-
-            OnModulesUpdated();
-        }
-
-        /// <summary>
-        ///     Notifies when modules collection updated.
-        /// </summary>
-        protected virtual void OnModulesUpdated()
-        {
-            ModulesUpdated?.Invoke(this, EventArgs.Empty);
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
     }
 }
