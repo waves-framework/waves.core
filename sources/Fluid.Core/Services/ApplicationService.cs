@@ -226,8 +226,18 @@ namespace Fluid.Core.Services
 
                 if (Applications != null)
                 {
-                    OnMessageReceived(this, new Message("Loading applications", "Applications loads successfully (" + Applications.Count() + " applications).", Name,
-                        MessageType.Success));
+                    var applications = Applications as IApplication[] ?? Applications.ToArray();
+
+                    if (!applications.Any())
+                    {
+                        OnMessageReceived(this, new Message("Loading applications", "Applications not found.", Name,
+                            MessageType.Information));
+                    }
+                    else
+                    {
+                        OnMessageReceived(this, new Message("Loading applications", "Applications loads successfully (" + applications.Count() + " applications).", Name,
+                            MessageType.Success));
+                    }
                 }
                 else
                 {
