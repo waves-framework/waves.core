@@ -25,13 +25,15 @@ namespace Fluid.Core.Base
         /// <summary>
         ///     Gets or sets value.
         /// </summary>
-        public T Value { get; private set; }
+        public T Value { get; set; }
 
         /// <inheritdoc />
         public sealed override string Name { get; set; }
 
-        /// <inheritdoc />
-        public bool IsReadOnly { get; private set; }
+        /// <summary>
+        /// Gets or sets whether property is read only.
+        /// </summary>
+        public bool IsReadOnly { get; set; }
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
