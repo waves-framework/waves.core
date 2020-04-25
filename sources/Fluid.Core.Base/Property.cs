@@ -16,7 +16,7 @@ namespace Fluid.Core.Base
         /// <param name="value">Value.</param>
         /// <param name="isReadOnly">Is property read only.</param>
         /// <param name="canBeDeleted">Can a property be deleted.</param>
-        public Property(string name, T value, bool isReadOnly, bool canBeDeleted = true)
+        public Property(string name, T value, bool isReadOnly, bool canBeDeleted = false)
         {
             IsReadOnly = isReadOnly;
             Name = name;
