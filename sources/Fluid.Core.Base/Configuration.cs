@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Base
@@ -33,7 +34,7 @@ namespace Fluid.Core.Base
         public sealed override string Name { get; set; }
 
         /// <inheritdoc />
-        public ICollection<IProperty> Properties { get; private set; } = new List<IProperty>();
+        public ICollection<IProperty> Properties { get; private set; } = new ObservableCollection<IProperty>();
 
         /// <inheritdoc />
         public void AddProperty<T>(string name, T value, bool isReadOnly)
