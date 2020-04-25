@@ -15,11 +15,13 @@ namespace Fluid.Core.Base
         /// <param name="name">Name.</param>
         /// <param name="value">Value.</param>
         /// <param name="isReadOnly">Is property read only.</param>
-        public Property(string name, T value, bool isReadOnly)
+        /// <param name="canBeDeleted">Can a property be deleted.</param>
+        public Property(string name, T value, bool isReadOnly, bool canBeDeleted = true)
         {
             IsReadOnly = isReadOnly;
             Name = name;
             Value = value;
+            CanBeDeleted = canBeDeleted;
         }
 
         /// <summary>
@@ -32,6 +34,9 @@ namespace Fluid.Core.Base
 
         /// <inheritdoc />
         public bool IsReadOnly { get; private set; }
+
+        /// <inheritdoc />
+        public bool CanBeDeleted { get; private set; }
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
