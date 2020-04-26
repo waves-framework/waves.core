@@ -190,7 +190,7 @@ namespace Fluid.Core.Base
         public override bool Equals(object? obj)
         {
             var configuration = obj as Configuration;
-            if (configuration == null) return Equals(obj);
+            if (configuration == null) return false;
 
             var hash1 = this.GetHashCode();
             var hash2 = configuration.GetHashCode();
