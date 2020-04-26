@@ -12,6 +12,11 @@ namespace Fluid.Core.Base.Interfaces
         /// </summary>
         bool IsReadOnly { get; }
 
+        /// <summary>
+        ///     Gets whether property can be deleted.
+        /// </summary>
+        bool CanBeDeleted { get; }
+
         ///// <summary>
         /////     Gets or sets value of property.
         ///// </summary>

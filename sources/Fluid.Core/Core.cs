@@ -289,6 +289,8 @@ namespace Fluid.Core
                     ? Json.ReadFile<Configuration>(fileName)
                     : new Configuration();
 
+                Configuration.Initialize();
+
                 CoreInitializationInformationDictionary["Configuration Loader Service"] = true;
             }
             catch (Exception e)

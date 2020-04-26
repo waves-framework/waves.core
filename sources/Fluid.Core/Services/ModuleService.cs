@@ -316,7 +316,7 @@ namespace Fluid.Core.Services
                     if (!moduleLibraries.Any())
                     {
                         OnMessageReceived(this, new Message("Loading module libraries", "Module libraries not found.", Name,
-                            MessageType.Information));
+                            MessageType.Warning));
                     }
                     else
                     {
