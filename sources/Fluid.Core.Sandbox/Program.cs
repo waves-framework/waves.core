@@ -1,4 +1,6 @@
 ﻿using System;
+using Fluid.Core.Base;
+using Fluid.Core.Base.Interfaces;
 
 namespace Fluid.Core.Sandbox
 {
@@ -8,6 +10,13 @@ namespace Fluid.Core.Sandbox
         {
             var core = new Core();
             core.Start();
+
+            //var property1 = (IProperty) new Property<int>("name", 1, true, true);
+            //var property2 = (IProperty) property1.Clone();
+            //var equals = property1.Equals(property2);
+
+            var configuration = (IConfiguration)core.Configuration.Clone();
+            var equals = configuration.Equals(core.Configuration);
 
             Console.WriteLine("Write \"stop\" to stop core working:");
 

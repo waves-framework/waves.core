@@ -27,6 +27,15 @@ namespace Fluid.Core.Base
             Name = name;
         }
 
+        /// <summary>
+        ///     Creates new instance of configuration.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        private Configuration(Guid id)
+        {
+            Id = id;
+        }
+
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
@@ -105,12 +114,52 @@ namespace Fluid.Core.Base
         /// <inheritdoc />
         public object Clone()
         {
-            var configuration = new Configuration();
+            var configuration = new Configuration(Id);
 
             foreach (var property in Properties)
                 configuration.Properties.Add((IProperty) property.Clone());
 
             return configuration;
         }
+
+        /// <inheritdoc />
+        public override bool Equals(object? obj)
+        {
+            var configuration = obj as Configuration;
+            if (configuration == null) return Equals(obj);
+
+            var hash1 = this.GetHashCode();
+            var hash2 = configuration.GetHashCode();
+
+            return Equals(hash1, hash2);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Id.GetHashCode();
+
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+
+                foreach (var property in Properties)
+                    hashCode = hashCode * 31 + property.GetHashCode();
+
+                return hashCode;
+            }
+        }
+
+        /// <summary>
+        /// Compares two configurations.
+        /// </summary>
+        /// <param name="other">Other configuration.</param>
+        /// <returns>Whether two configurations are equals.</returns>
+        protected bool Equals(Configuration other)
+        {
+            return Id.Equals(other.Id) && Name == other.Name && Equals(Properties, other.Properties);
+        }
+
+
     }
 }
