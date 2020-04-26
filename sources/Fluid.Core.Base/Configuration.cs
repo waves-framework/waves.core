@@ -108,7 +108,7 @@ namespace Fluid.Core.Base
             var configuration = new Configuration();
 
             foreach (var property in Properties)
-                configuration.Properties.Add((Property<dynamic>) property.Clone());
+                configuration.Properties.Add((IProperty) property.Clone());
 
             return configuration;
         }
