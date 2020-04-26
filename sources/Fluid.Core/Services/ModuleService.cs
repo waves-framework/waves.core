@@ -192,14 +192,23 @@ namespace Fluid.Core.Services
         {
             try
             {
-                var modulesPaths = new string[ModulesPaths.Count - 1];
-                var nativeLibrariesPaths = new string[NativeLibrariesPaths.Count - 1];
+                if (ModulesPaths.Count > 0)
+                {
+                    var modulesPaths = new string[ModulesPaths.Count - 1];
 
-                ModulesPaths.CopyTo(modulesPaths, 1);
-                NativeLibrariesPaths.CopyTo(nativeLibrariesPaths, 1);
+                    ModulesPaths.CopyTo(modulesPaths, 1);
 
-                configuration.SetPropertyValue("ModuleService-ModulesPaths", modulesPaths);
-                configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths", nativeLibrariesPaths);
+                    configuration.SetPropertyValue("ModuleService-ModulesPaths", modulesPaths);
+                }
+
+                if (NativeLibrariesPaths.Count > 0)
+                {
+                    var nativeLibrariesPaths = new string[NativeLibrariesPaths.Count - 1];
+
+                    NativeLibrariesPaths.CopyTo(nativeLibrariesPaths, 1);
+
+                    configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths", nativeLibrariesPaths);
+                }
 
                 OnMessageReceived(this, new Message("Configuration savings", "Configuration saves successfully.", Name,
                     MessageType.Success));
