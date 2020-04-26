@@ -47,6 +47,6 @@ namespace Fluid.Core.Base
         public abstract object Clone();
 
         /// <inheritdoc />
-        public abstract void Dispose();
+        public abstract override void Dispose();
     }
 }

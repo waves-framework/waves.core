@@ -41,6 +41,12 @@ namespace Fluid.Core.IO
         /// <inheritdoc />
         public sealed override string Name { get; set; }
 
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            return;
+        }
+
         /// <summary>
         ///     File's extension.
         /// </summary>

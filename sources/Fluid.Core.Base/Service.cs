@@ -27,7 +27,7 @@ namespace Fluid.Core.Base
         public abstract void SaveConfiguration(IConfiguration configuration);
 
         /// <inheritdoc />
-        public abstract void Dispose();
+        public abstract override void Dispose();
 
         /// <summary>
         ///     Loads property value from configuration.
