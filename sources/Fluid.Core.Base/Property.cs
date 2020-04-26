@@ -43,19 +43,6 @@ namespace Fluid.Core.Base
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
-        /// <summary>
-        /// Creates new property.
-        /// </summary>
-        /// <param name="name">Name.</param>
-        /// <param name="value">Value.</param>
-        /// <param name="isReadOnly">Is property read only.</param>
-        /// <param name="canBeDeleted">Can a property be deleted.</param>
-        /// <returns>Property.</returns>
-        public static Property<T> Create(string name, T value, bool isReadOnly, bool canBeDeleted = false)
-        {
-            return new Property<T>(name, value, isReadOnly, canBeDeleted);
-        }
-
         /// <inheritdoc />
         public object GetValue()
         {
@@ -74,7 +61,7 @@ namespace Fluid.Core.Base
         /// <returns>Property.</returns>
         public object Clone()
         {
-            return new Property<T>(Name, Value, IsReadOnly);
+            return new Property<T>(Name, Value, IsReadOnly, CanBeDeleted);
         }
     }
 }
