@@ -51,7 +51,7 @@ namespace Fluid.Core.Base
         public event EventHandler<object> DataReceived;
 
         /// <inheritdoc />
-        public void Dispose()
+        public override void Dispose()
         {
             Parent = null;
             Value = null;

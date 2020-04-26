@@ -52,7 +52,7 @@ namespace Fluid.Core.Base
         public abstract void SaveConfiguration();
 
         /// <inheritdoc />
-        public abstract void Dispose();
+        public abstract override void Dispose();
 
         /// <summary>
         ///     Notifies when actions collection changed.

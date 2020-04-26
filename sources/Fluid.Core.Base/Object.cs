@@ -13,11 +13,13 @@ namespace Fluid.Core.Base
         public abstract Guid Id { get; }
 
         /// <inheritdoc />
-        [SuppressPropertyChangedWarnings]
         public abstract string Name { get; set; }
 
         /// <inheritdoc />
         public event EventHandler<IMessage> MessageReceived;
+
+        /// <inheritdoc />
+        public abstract void Dispose();
 
         /// <summary>
         ///     Notifies when message received.

@@ -10,6 +10,8 @@ namespace Fluid.Core.Base
     [Serializable]
     public class Property<T>: Object, IProperty
     {
+        private bool _isDisposed = false;
+
         /// <summary>
         ///     Creates new instance of property.
         /// </summary>
@@ -68,7 +70,14 @@ namespace Fluid.Core.Base
         /// <inheritdoc />
         public void SetValue(object value)
         {
-            Value = (T) value;
+            try
+            {
+                Value = (T)value;
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
         }
 
         /// <summary>
@@ -83,7 +92,7 @@ namespace Fluid.Core.Base
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {
-            return Equals((Property<T>)obj);
+            return obj is Property<T> property && Equals(property);
         }
 
         /// <inheritdoc />
@@ -102,8 +111,16 @@ namespace Fluid.Core.Base
             }
         }
 
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            if (_isDisposed) return;
+
+            _isDisposed = true;
+        }
+
         /// <summary>
-        /// Compares two properies.
+        /// Compares two properties.
         /// </summary>
         /// <param name="other">Other property.</param>
         /// <returns>Property.</returns>
@@ -111,7 +128,5 @@ namespace Fluid.Core.Base
         {
             return EqualityComparer<T>.Default.Equals(Value, other.Value) && Name == other.Name && IsReadOnly == other.IsReadOnly && CanBeDeleted == other.CanBeDeleted && Id.Equals(other.Id);
         }
-
-
     }
 }

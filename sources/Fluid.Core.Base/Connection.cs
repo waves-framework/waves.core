@@ -39,7 +39,7 @@ namespace Fluid.Core.Base
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        public override void Dispose()
         {
             Input = null;
             Output = null;
