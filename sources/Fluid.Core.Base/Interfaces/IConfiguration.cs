@@ -14,6 +14,11 @@ namespace Fluid.Core.Base.Interfaces
         ICollection<IProperty> Properties { get; }
 
         /// <summary>
+        /// Initializes configuration.
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
         ///     Adds new property.
         /// </summary>
         /// <typeparam name="T">Property type.</typeparam>

@@ -5,7 +5,7 @@ namespace Fluid.Core.Base.Interfaces
     /// <summary>
     ///     Interface of entry point's classes.
     /// </summary>
-    public interface IEntryPoint : IObject, IDisposable
+    public interface IEntryPoint : IObject
     {
         /// <summary>
         ///     Gets whether a point is a property.

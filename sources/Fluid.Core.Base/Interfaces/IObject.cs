@@ -5,7 +5,7 @@ namespace Fluid.Core.Base.Interfaces
     /// <summary>
     ///     Interface of base fluid's object.
     /// </summary>
-    public interface IObject : IObservableObject
+    public interface IObject : IObservableObject, IDisposable
     {
         /// <summary>
         ///     Gets object's ID.

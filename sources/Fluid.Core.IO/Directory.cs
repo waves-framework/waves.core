@@ -11,7 +11,7 @@ namespace Fluid.Core.IO
     /// </summary>
     public class Directory : FileSystemObject
     {
-        private readonly DirectoryInfo _directoryInfo;
+        private DirectoryInfo _directoryInfo;
 
         /// <summary>
         ///     Creates new instance of Directory.
@@ -74,6 +74,12 @@ namespace Fluid.Core.IO
 
         /// <inheritdoc />
         public sealed override string Name { get; set; }
+
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+            _directoryInfo = null;
+        }
 
         /// <summary>
         ///     Directory type.
