@@ -77,6 +77,12 @@ namespace Fluid.Core.Base
         }
 
         /// <inheritdoc />
+        public ICollection<IProperty> GetProperties()
+        {
+            return Properties;
+        }
+
+        /// <inheritdoc />
         public void AddProperty<T>(string name, T value, bool isReadOnly)
         {
             try
@@ -161,6 +167,17 @@ namespace Fluid.Core.Base
             {
                 OnMessageReceived(this, new Message(e, false));
             }
+        }
+
+        /// <inheritdoc />
+        public void RewriteConfiguration(IConfiguration configuration)
+        {
+            Properties.Clear();
+
+            Name = configuration.Name;
+
+            foreach (var property in configuration.GetProperties()) 
+                Properties.Add(property);
         }
 
         /// <inheritdoc />
