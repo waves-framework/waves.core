@@ -38,7 +38,7 @@ namespace Fluid.Core.Base.Interfaces
         /// <param name="value">Value.</param>
         /// <param name="isReadOnly">Whether is property read only.</param>
         /// <param name="canBeDeleted">Whether property can be deleted.</param>
-        void AddProperty<T>(string name, T value, bool isReadOnly, bool canBeDeleted);
+        void AddProperty<T>(string name, T value, bool isReadOnly, bool canBeDeleted = true);
 
         /// <summary>
         ///     Gets property value.
