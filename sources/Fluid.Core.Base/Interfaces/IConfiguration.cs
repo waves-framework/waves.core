@@ -8,15 +8,21 @@ namespace Fluid.Core.Base.Interfaces
     /// </summary>
     public interface IConfiguration : IObject, ICloneable
     {
-        /// <summary>
-        ///     Gets properties collection.
-        /// </summary>
-        ICollection<IProperty> Properties { get; }
+        ///// <summary>
+        /////     Gets properties collection.
+        ///// </summary>
+        //ICollection<IProperty> Properties { get; }
 
         /// <summary>
         /// Initializes configuration.
         /// </summary>
         void Initialize();
+
+        /// <summary>
+        /// Returns collection of properties.
+        /// </summary>
+        /// <returns></returns>
+        ICollection<IProperty> GetProperties();
 
         /// <summary>
         ///     Adds new property.
@@ -46,6 +52,12 @@ namespace Fluid.Core.Base.Interfaces
         /// </summary>
         /// <param name="name">Property name.</param>
         void RemoveProperty(string name);
+
+        /// <summary>
+        /// Rewrites configuration.
+        /// </summary>
+        /// <param name="configuration">New configuration.</param>
+        void RewriteConfiguration(IConfiguration configuration);
 
         /// <summary>
         ///     Gets whether the configuration contains a parameter.
