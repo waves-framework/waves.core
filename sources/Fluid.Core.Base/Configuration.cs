@@ -110,7 +110,7 @@ namespace Fluid.Core.Base
         }
 
         /// <inheritdoc />
-        public void AddProperty<T>(string name, T value, bool isReadOnly, bool canBeDeleted)
+        public void AddProperty<T>(string name, T value, bool isReadOnly, bool canBeDeleted = true)
         {
             try
             {
