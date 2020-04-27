@@ -57,8 +57,10 @@ namespace Fluid.Core.Base
             _isDisposed = true;
         }
 
-        /// <inheritdoc />
-        public ICollection<IProperty> Properties { get; private set; } = new ObservableCollection<IProperty>();
+        /// <summary>
+        /// Gets collection of properties.
+        /// </summary>
+        public ICollection<IProperty> Properties { get; private set; } = new List<IProperty>();
 
         /// <inheritdoc />
         public void Initialize()
@@ -83,7 +85,32 @@ namespace Fluid.Core.Base
         }
 
         /// <inheritdoc />
-        public void AddProperty<T>(string name, T value, bool isReadOnly)
+        public void AddProperty(IProperty property)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(property.Name))
+                    throw new Exception("When adding a property, invalid input was specified!");
+
+                if (!property.GetValue().GetType().IsSerializable)
+                    throw new Exception("The specified property does not support serialization " + "(" + property.GetValue().GetType() + ").");
+
+                foreach (var p in Properties)
+                    if (p.Name == property.Name)
+                        throw new Exception("A property with the same name already exists (" + property.Name + ").");
+
+                property.MessageReceived += OnPropertyMessageReceived;
+
+                Properties.Add(property);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message(e, false));
+            }
+        }
+
+        /// <inheritdoc />
+        public void AddProperty<T>(string name, T value, bool isReadOnly, bool canBeDeleted)
         {
             try
             {
@@ -91,13 +118,13 @@ namespace Fluid.Core.Base
                     throw new Exception("When adding a property, invalid input was specified!");
 
                 if (!typeof(T).IsSerializable)
-                    throw new Exception("The specified property does not support serialization " + "(" + name + ").");
+                    throw new Exception("The specified property does not support serialization " + "(" + typeof(T).ToString() + ").");
 
                 foreach (var p in Properties)
                     if (p.Name == name)
                         throw new Exception("A property with the same name already exists (" + name + ").");
 
-                var property = new Property<T>(name, value, isReadOnly);
+                var property = new Property<T>(name, value, isReadOnly, canBeDeleted);
 
                 property.MessageReceived += OnPropertyMessageReceived;
 

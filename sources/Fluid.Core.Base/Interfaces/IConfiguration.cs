@@ -25,13 +25,20 @@ namespace Fluid.Core.Base.Interfaces
         ICollection<IProperty> GetProperties();
 
         /// <summary>
+        /// Adds new property.
+        /// </summary>
+        /// <param name="property">Property.</param>
+        void AddProperty(IProperty property);
+
+        /// <summary>
         ///     Adds new property.
         /// </summary>
         /// <typeparam name="T">Property type.</typeparam>
         /// <param name="name">Property name.</param>
         /// <param name="value">Value.</param>
         /// <param name="isReadOnly">Whether is property read only.</param>
-        void AddProperty<T>(string name, T value, bool isReadOnly);
+        /// <param name="canBeDeleted">Whether property can be deleted.</param>
+        void AddProperty<T>(string name, T value, bool isReadOnly, bool canBeDeleted);
 
         /// <summary>
         ///     Gets property value.
