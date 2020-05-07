@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
+using System.Linq;
 using Fluid.Core.Base;
 using Fluid.Core.Base.Enums;
 using Fluid.Core.Base.Interfaces;
@@ -31,7 +32,7 @@ namespace Fluid.Core.Services
         public int LastMessagesCount { get; private set; } = 250;
 
         /// <inheritdoc />
-        public ICollection<IMessage> LastMessages { get; } = new ObservableCollection<IMessage>();
+        public ICollection<IMessageObject> LastMessages { get; } = new ObservableCollection<IMessageObject>();
 
         /// <inheritdoc />
         public override void Initialize()
@@ -207,10 +208,21 @@ namespace Fluid.Core.Services
         {
             try
             {
-                LastMessages.Add(message);
+                if (LastMessages.Count > 0)
+                {
+                    var lastObject = LastMessages.Last();
 
-                if (LastMessages.Count > LastMessagesCount)
-                    (LastMessages as List<IMessage>)?.RemoveAt(0);
+                    
+                }
+                else
+                {
+                    
+                }
+
+                //LastMessages.Add(message);
+
+                //if (LastMessages.Count > LastMessagesCount)
+                //    (LastMessages as List<IMessage>)?.RemoveAt(0);
             }
             catch (Exception e)
             {

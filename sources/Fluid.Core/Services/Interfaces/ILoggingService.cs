@@ -17,7 +17,7 @@ namespace Fluid.Core.Services.Interfaces
         /// <summary>
         ///     Gets collection of last log messages.
         /// </summary>
-        ICollection<IMessage> LastMessages { get; }
+        ICollection<IMessageObject> LastMessages { get; }
 
         /// <summary>
         ///     Writes text to log.
