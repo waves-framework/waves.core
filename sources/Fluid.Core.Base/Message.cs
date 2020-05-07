@@ -7,7 +7,7 @@ namespace Fluid.Core.Base
     /// <summary>
     ///     Base message structure.
     /// </summary>
-    public struct Message : IMessage
+    public class Message : IMessage
     {
         /// <summary>
         ///     Creates new instance of <see cref="Message"/>.
@@ -75,6 +75,9 @@ namespace Fluid.Core.Base
             DateTime = DateTime.Now;
             Exception = exception;
         }
+
+        /// <inheritdoc />
+        public Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
         public string Title { get; }
