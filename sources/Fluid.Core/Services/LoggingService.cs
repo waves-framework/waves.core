@@ -208,21 +208,37 @@ namespace Fluid.Core.Services
         {
             try
             {
-                if (LastMessages.Count > 0)
+                if (LastMessages.Count > 1)
                 {
                     var lastObject = LastMessages.Last();
 
-                    
+                    if (lastObject.Title == message.Title)
+                    {
+                        if (lastObject is IMessageGroup group)
+                        {
+                            group.Messages.Add(message);
+
+                            return;
+                        }
+
+                        if (lastObject is IMessage previousMessage)
+                        {
+                            var g = new MessageGroup(previousMessage.Title, previousMessage.DateTime);
+
+                            g.Messages.Add(previousMessage);
+                            g.Messages.Add(message);
+
+                            LastMessages.Remove(previousMessage);
+                            LastMessages.Add(message);
+
+                            return;
+                        }
+                    }
                 }
                 else
                 {
-                    
+                    LastMessages.Add(message);
                 }
-
-                //LastMessages.Add(message);
-
-                //if (LastMessages.Count > LastMessagesCount)
-                //    (LastMessages as List<IMessage>)?.RemoveAt(0);
             }
             catch (Exception e)
             {
