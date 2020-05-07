@@ -20,6 +20,6 @@ namespace Fluid.Core.Base
         public DateTime DateTime { get; } = DateTime.Now;
 
         /// <inheritdoc />
-        public MessageType Type { get; } = MessageType.Information
+        public MessageType Type { get; } = MessageType.Information;
     }
 }
