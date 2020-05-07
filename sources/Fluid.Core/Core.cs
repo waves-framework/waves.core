@@ -296,7 +296,7 @@ namespace Fluid.Core
             catch (Exception e)
             {
                 WriteLogMessage(new Message("Configuration initialization",
-                    "Error configuration initialization:\r\n" + e, "Core", MessageType.Error));
+                    "Error configuration initialization", "Core", e,true));
             }
         }
 
@@ -329,10 +329,49 @@ namespace Fluid.Core
 
             ServiceManager.Initialize();
 
-            RegisterService(ServiceManager.GetService<ILoggingService>().First());
-            RegisterService(ServiceManager.GetService<IInputService>().First());
-            RegisterService(ServiceManager.GetService<IModuleService>().First());
-            RegisterService(ServiceManager.GetService<IApplicationService>().First());
+            try
+            {
+                var service = ServiceManager.GetService<ILoggingService>().First();
+                RegisterService(service);
+            }
+            catch (Exception e)
+            {
+                WriteLogMessage(new Message("Registering logging service",
+                    "Error logging service.", "Core", e, true));
+            }
+
+            try
+            {
+                var service = ServiceManager.GetService<IInputService>().First();
+                RegisterService(service);
+            }
+            catch (Exception e)
+            {
+                WriteLogMessage(new Message("Registering input service",
+                    "Error registering input service.", "Core", e, true));
+            }
+
+            try
+            {
+                var service = ServiceManager.GetService<IModuleService>().First();
+                RegisterService(service);
+            }
+            catch (Exception e)
+            {
+                WriteLogMessage(new Message("Registering module service",
+                    "Error registering module service.", "Core", e, true));
+            }
+
+            try
+            {
+                var service = ServiceManager.GetService<IApplicationService>().First();
+                RegisterService(service);
+            }
+            catch (Exception e)
+            {
+                WriteLogMessage(new Message("Registering application service",
+                    "Error registering application service.", "Core", e, true));
+            }
         }
 
         /// <summary>

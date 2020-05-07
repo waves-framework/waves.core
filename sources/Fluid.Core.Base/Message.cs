@@ -10,7 +10,7 @@ namespace Fluid.Core.Base
     public struct Message : IMessage
     {
         /// <summary>
-        ///     Creates new instance of Message.
+        ///     Creates new instance of <see cref="Message"/>.
         /// </summary>
         /// <param name="title">Title.</param>
         /// <param name="text">Text.</param>
@@ -27,7 +27,7 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        ///     Creates new instance of Message.
+        ///     Creates new instance of <see cref="Message"/>.
         /// </summary>
         /// <param name="title">Title.</param>
         /// <param name="text">Text.</param>
@@ -44,10 +44,10 @@ namespace Fluid.Core.Base
         }
 
         /// <summary>
-        ///     Creates new instance of Message.
+        ///     Creates new instance of <see cref="Message"/>.
         /// </summary>
         /// <param name="exception">Exception.</param>
-        /// <param name="isFatal">Is it a fatal error message?</param>
+        /// <param name="isFatal">Whether error is fatal.</param>
         public Message(Exception exception, bool isFatal)
         {
             Title = "An exception was received";
@@ -58,6 +58,23 @@ namespace Fluid.Core.Base
             Exception = exception;
         }
 
+        /// <summary>
+        /// Creates new instance of <see cref="Message"/>.
+        /// </summary>
+        /// <param name="title">Title.</param>
+        /// <param name="text">Text.</param>
+        /// <param name="sender">Sender.</param>
+        /// <param name="exception">Exception.</param>
+        /// <param name="isFatal">Whether error is fatal.</param>
+        public Message(string title, string text, string sender, Exception exception, bool isFatal)
+        {
+            Title = title;
+            Text = text;
+            Type = isFatal ? MessageType.Fatal : MessageType.Error;
+            Sender = sender;
+            DateTime = DateTime.Now;
+            Exception = exception;
+        }
 
         /// <inheritdoc />
         public string Title { get; }

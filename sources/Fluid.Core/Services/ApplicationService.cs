@@ -20,6 +20,12 @@ namespace Fluid.Core.Services
     public class ApplicationService : Service, IApplicationService
     {
         /// <inheritdoc />
+        public event EventHandler ApplicationsUpdated;
+
+        /// <inheritdoc />
+        public event EventHandler ApplicationsActionsUpdated;
+
+        /// <inheritdoc />
         public List<string> Paths { get; set; } = new List<string>();
 
         /// <inheritdoc />
@@ -55,7 +61,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Service initialization", "Error service initialization.", Name, e, false));
             }
         }
 
@@ -71,7 +77,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Loading configuration", "Error loading configuration.", Name, e, false));
             }
         }
 
@@ -90,7 +96,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Saving configuration", "Error saving configuration.", Name, e, false));
             }
         }
 
@@ -108,15 +114,9 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Service disposing", "Error service disposing.", Name, e, false));
             }
         }
-
-        /// <inheritdoc />
-        public event EventHandler ApplicationsUpdated;
-
-        /// <inheritdoc />
-        public event EventHandler ApplicationsActionsUpdated;
 
         /// <inheritdoc />
         public void AddPath(string path)
@@ -130,7 +130,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Adding applications path", "Applications path has not been added.", Name, e, false));
             }
         }
 
@@ -146,7 +146,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Removing applications path", "Applications path has not been removed.", Name, e, false));
             }
         }
 
@@ -159,7 +159,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Updating applications collection", "Applications collection has not been updated.", Name, e, false));
             }
         }
 
