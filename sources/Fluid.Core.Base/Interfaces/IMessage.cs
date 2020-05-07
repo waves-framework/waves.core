@@ -22,10 +22,5 @@ namespace Fluid.Core.Base.Interfaces
         ///     Gets exception.
         /// </summary>
         Exception Exception { get; }
-
-        /// <summary>
-        ///     Gets type of this message.
-        /// </summary>
-        MessageType Type { get; }
     }
 }
