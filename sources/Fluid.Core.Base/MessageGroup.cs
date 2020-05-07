@@ -15,12 +15,14 @@ namespace Fluid.Core.Base
         /// Creates nes instance of <see cref="MessageGroup"/>
         /// </summary>
         /// <param name="title"></param>
+        /// <param name="sender">Sender.</param>
         /// <param name="dataTime"></param>
         /// <param name="type">Type.</param>
-        public MessageGroup(string title, DateTime dataTime, MessageType type)
+        public MessageGroup(string title, string sender, DateTime dataTime, MessageType type)
         {
             Title = title;
             DateTime = dataTime;
+            Sender = sender;
             Type = type;
         }
 
@@ -35,6 +37,9 @@ namespace Fluid.Core.Base
 
         /// <inheritdoc />
         public MessageType Type { get; }
+
+        /// <inheritdoc />
+        public string Sender { get; }
 
         /// <inheritdoc />
         public ICollection<IMessage> Messages { get; } = new ObservableCollection<IMessage>();
