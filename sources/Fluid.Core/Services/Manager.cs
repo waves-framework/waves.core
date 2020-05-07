@@ -77,7 +77,7 @@ namespace Fluid.Core.Services
             var assemblies = new List<Assembly>();
             Extensions.Assembly.GetAssemblies(assemblies, _currentDirectory);
 
-            OnMessageReceived(new Message("Assembly searching", assemblies + " assemblies were found.", "Service manager", MessageType.Information));
+            OnMessageReceived(new Message("Assembly searching", assemblies.Count + " assemblies were found.", "Service manager", MessageType.Information));
 
             if (assemblies.Count == 0) return;
 
