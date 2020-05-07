@@ -63,7 +63,7 @@ namespace Fluid.Core.Services
             {
                 LastMessagesCount = LoadConfigurationValue(configuration, "LoggingService-LastMessagesCount", 250);
 
-                OnMessageReceived(this, new Message("Configuration loading", "Configuration loads successfully.", Name,
+                OnMessageReceived(this, new Message("Loading configuration", "Configuration loads successfully.", Name,
                     MessageType.Success));
             }
             catch (Exception e)
@@ -79,7 +79,7 @@ namespace Fluid.Core.Services
             {
                 configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
 
-                OnMessageReceived(this, new Message("Configuration saving", "Configuration saves successfully.", Name,
+                OnMessageReceived(this, new Message("Saving configuration", "Configuration saves successfully.", Name,
                     MessageType.Success));
             }
             catch (Exception e)

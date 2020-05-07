@@ -68,7 +68,7 @@ namespace Fluid.Core
         {
             try
             {
-                WriteLogMessage(new Message("Core launching", "Core launching...", "Core",
+                WriteLogMessage(new Message("Core launch", "Core is launching...", "Core",
                     MessageType.Success));
 
                 InitializeConfiguration();
@@ -77,14 +77,14 @@ namespace Fluid.Core
 
                 IsRunning = true;
 
-                WriteLogMessage(new Message("Core launching", "Core launching successfully.", "Core",
+                WriteLogMessage(new Message("Core launch", "Core launching successfully.", "Core",
                     MessageType.Success));
 
                 AddMessageSeparator();
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core launching", "Error starting kernel.", "Core", e, true));
+                WriteLogMessage(new Message("Core launch", "Error starting kernel.", "Core", e, true));
             }
         }
 
@@ -100,14 +100,14 @@ namespace Fluid.Core
 
                 ServiceManager.MessageReceived -= OnServiceMessageReceived;
 
-                WriteLogMessage(new Message("Core stopping", "Core stopping successfully.", "Core",
+                WriteLogMessage(new Message("Core stop", "Core stopped successfully.", "Core",
                     MessageType.Success));
 
                 WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core stopping", "Error stopping kernel.", "Core", e, true));
+                WriteLogMessage(new Message("Core stop", "Error stopping kernel.", "Core", e, true));
             }
         }
 
@@ -142,7 +142,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Configuration saving", "Error configuration saving:\r\n" + e, "Core",
+                WriteLogMessage(new Message("Saving configuration", "Error configuration saving:\r\n" + e, "Core",
                     MessageType.Error));
             }
         }
