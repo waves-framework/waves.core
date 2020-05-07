@@ -53,7 +53,7 @@ namespace Fluid.Core.Services
             if (IsInitialized) return;
 
             OnMessageReceived(this,
-                new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
+                new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
 
             IsInitialized = true;
         }

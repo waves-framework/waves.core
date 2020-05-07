@@ -18,7 +18,7 @@ namespace Fluid.Core
     /// </summary>
     public class Core
     {
-        private List<IMessage> _pendingMessages = new List<IMessage>();
+        private readonly List<IMessage> _pendingMessages = new List<IMessage>();
 
         private ILoggingService _loggingService;
 
@@ -79,8 +79,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core launching", "Error starting kernel:\r\n" + e, "Core",
-                    MessageType.Error));
+                WriteLogMessage(new Message("Core launching", "Error starting kernel.", "Core", e, true));
             }
         }
 
@@ -103,8 +102,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core stopping", "Error stopping kernel:\r\n" + e, "Core",
-                    MessageType.Error));
+                WriteLogMessage(new Message("Core stopping", "Error stopping kernel.", "Core", e, true));
             }
         }
 
@@ -157,8 +155,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Getting service", "Error getting service:\r\n" + e, "Core",
-                    MessageType.Error));
+                WriteLogMessage(new Message("Getting service", "Error getting service.", "Core", e, true));
 
                 return default;
             }
@@ -191,8 +188,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Registering service", "Error registering service:\r\n" + e, "Core",
-                    MessageType.Error));
+                WriteLogMessage(new Message("Registering service", "Error registering service.", "Core", e, true));
 
                 if (!(instance is IService service)) return;
 
@@ -313,8 +309,7 @@ namespace Fluid.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Container initialization", "Error container initialization:\r\n" + e,
-                    "Core", MessageType.Error));
+                WriteLogMessage(new Message("Container initialization", "Error container initialization.", "Core", e, true));
 
                 CoreInitializationInformationDictionary["Service Container"] = false;
             }
