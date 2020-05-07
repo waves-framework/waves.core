@@ -16,10 +16,12 @@ namespace Fluid.Core.Base
         /// </summary>
         /// <param name="title"></param>
         /// <param name="dataTime"></param>
-        public MessageGroup(string title, DateTime dataTime)
+        /// <param name="type">Type.</param>
+        public MessageGroup(string title, DateTime dataTime, MessageType type)
         {
             Title = title;
             DateTime = dataTime;
+            Type = type;
         }
 
         /// <inheritdoc />
@@ -30,6 +32,9 @@ namespace Fluid.Core.Base
 
         /// <inheritdoc />
         public DateTime DateTime { get; }
+
+        /// <inheritdoc />
+        public MessageType Type { get; }
 
         /// <inheritdoc />
         public ICollection<IMessage> Messages { get; } = new ObservableCollection<IMessage>();

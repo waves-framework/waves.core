@@ -21,5 +21,10 @@ namespace Fluid.Core.Base.Interfaces
         ///     Gets datetime of the message object.
         /// </summary>
         DateTime DateTime { get; }
+
+        /// <summary>
+        ///     Gets type of this message.
+        /// </summary>
+        MessageType Type { get; }
     }
 }
