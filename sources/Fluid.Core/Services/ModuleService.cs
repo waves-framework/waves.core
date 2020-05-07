@@ -187,7 +187,7 @@ namespace Fluid.Core.Services
                 foreach (var path in nativeLibrariesPaths)
                     NativeLibrariesPaths.Add(path);
 
-                OnMessageReceived(this, new Message("Configuration loading", "Configuration loads successfully.", Name,
+                OnMessageReceived(this, new Message("Loading configuration", "Configuration loads successfully.", Name,
                     MessageType.Success));
             }
             catch (Exception e)
@@ -219,7 +219,7 @@ namespace Fluid.Core.Services
                     configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths", nativeLibrariesPaths);
                 }
 
-                OnMessageReceived(this, new Message("Configuration saving", "Configuration saves successfully.", Name,
+                OnMessageReceived(this, new Message("Saving configuration", "Configuration saves successfully.", Name,
                     MessageType.Success));
             }
             catch (Exception e)
