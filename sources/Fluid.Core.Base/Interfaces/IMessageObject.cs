@@ -19,12 +19,17 @@ namespace Fluid.Core.Base.Interfaces
         string Title { get; }
 
         /// <summary>
+        ///     Gets sender of this message object.
+        /// </summary>
+        string Sender { get; }
+
+        /// <summary>
         ///     Gets datetime of the message object.
         /// </summary>
         DateTime DateTime { get; }
 
         /// <summary>
-        ///     Gets type of this message.
+        ///     Gets type of this message object.
         /// </summary>
         MessageType Type { get; }
     }

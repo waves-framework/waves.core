@@ -213,7 +213,8 @@ namespace Fluid.Core.Services
                     var lastObject = LastMessages.Last();
 
                     if (lastObject.Title == message.Title &&
-                        lastObject.Type == message.Type)
+                        lastObject.Type == message.Type &&
+                        lastObject.Sender == message.Sender)
                     {
                         if (lastObject is IMessageGroup group)
                         {
@@ -224,7 +225,7 @@ namespace Fluid.Core.Services
 
                         if (lastObject is IMessage previousMessage)
                         {
-                            var g = new MessageGroup(previousMessage.Title, previousMessage.DateTime, previousMessage.Type);
+                            var g = new MessageGroup(previousMessage.Title, previousMessage.Sender, previousMessage.DateTime, previousMessage.Type);
 
                             g.Messages.Add(previousMessage);
                             g.Messages.Add(message);
