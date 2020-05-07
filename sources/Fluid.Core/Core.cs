@@ -68,6 +68,9 @@ namespace Fluid.Core
         {
             try
             {
+                WriteLogMessage(new Message("Core launching", "Core launching...", "Core",
+                    MessageType.Success));
+
                 InitializeConfiguration();
                 InitializeContainer();
                 InitializeServices();
@@ -76,6 +79,8 @@ namespace Fluid.Core
 
                 WriteLogMessage(new Message("Core launching", "Core launching successfully.", "Core",
                     MessageType.Success));
+
+                AddMessageSeparator();
             }
             catch (Exception e)
             {
@@ -265,6 +270,14 @@ namespace Fluid.Core
             CheckLoggingService();
 
             _loggingService.WriteExceptionToLog(exception, sender, isFatal);
+        }
+
+        /// <summary>
+        /// Adds message separator.
+        /// </summary>
+        public virtual void AddMessageSeparator()
+        {
+            _loggingService.LastMessages.Add(new MessageSeparator());
         }
 
         /// <summary>
