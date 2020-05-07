@@ -45,7 +45,7 @@ namespace Fluid.Core.Services.Extensions
                 }
                 catch (Exception)
                 {
-                    throw;
+                    continue;
                 }
             }
         }
