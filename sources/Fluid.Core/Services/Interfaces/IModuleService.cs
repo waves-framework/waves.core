@@ -20,11 +20,6 @@ namespace Fluid.Core.Services.Interfaces
         ICollection<string> NativeLibrariesPaths { get; }
 
         /// <summary>
-        ///     Gets all of loaded libraries.
-        /// </summary>
-        IEnumerable<IModuleLibrary> Libraries { get; }
-
-        /// <summary>
         ///     Gets all of loaded modules.
         /// </summary>
         ICollection<IModule> Modules { get; }

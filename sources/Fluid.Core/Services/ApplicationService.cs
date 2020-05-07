@@ -20,6 +20,12 @@ namespace Fluid.Core.Services
     public class ApplicationService : Service, IApplicationService
     {
         /// <inheritdoc />
+        public event EventHandler ApplicationsUpdated;
+
+        /// <inheritdoc />
+        public event EventHandler ApplicationsActionsUpdated;
+
+        /// <inheritdoc />
         public List<string> Paths { get; set; } = new List<string>();
 
         /// <inheritdoc />
@@ -49,13 +55,13 @@ namespace Fluid.Core.Services
                 OnMessageReceived(this,
                     new Message(
                         "Initialization",
-                        "Service was initialized.",
+                        "Service has been initialized.",
                         Name,
                         MessageType.Information));
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Service initialization", "Error service initialization.", Name, e, false));
             }
         }
 
@@ -71,7 +77,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Loading configuration", "Error loading configuration.", Name, e, false));
             }
         }
 
@@ -80,9 +86,9 @@ namespace Fluid.Core.Services
         {
             try
             {
-                if (Paths.Count > 1)
+                if (Paths.Count > 0)
                 {
-                    configuration.SetPropertyValue("ApplicationService-Paths", Paths.GetRange(1, Paths.Count - 1));
+                    configuration.SetPropertyValue("ApplicationService-Paths", Paths);
 
                     OnMessageReceived(this, new Message("Configuration saving", "Configuration saves successfully.", Name,
                         MessageType.Success));
@@ -90,7 +96,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Saving configuration", "Error saving configuration.", Name, e, false));
             }
         }
 
@@ -108,15 +114,9 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Service disposing", "Error service disposing.", Name, e, false));
             }
         }
-
-        /// <inheritdoc />
-        public event EventHandler ApplicationsUpdated;
-
-        /// <inheritdoc />
-        public event EventHandler ApplicationsActionsUpdated;
 
         /// <inheritdoc />
         public void AddPath(string path)
@@ -130,7 +130,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Adding applications path", "Applications path has not been added.", Name, e, false));
             }
         }
 
@@ -146,7 +146,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Removing applications path", "Applications path has not been removed.", Name, e, false));
             }
         }
 
@@ -159,7 +159,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Updating applications collection", "Applications collection has not been updated.", Name, e, false));
             }
         }
 
@@ -185,37 +185,11 @@ namespace Fluid.Core.Services
 
                 var assemblies = new List<Assembly>();
 
-                foreach (var path in Paths)
-                {
-                    if (!Directory.Exists(path))
-                    {
-                        OnMessageReceived(this,
-                            new Message(
-                                "Loading path error",
-                                "Path to application ( " + path + ") doesn't exists or was deleted.",
-                                Name,
-                                MessageType.Error));
+                foreach (var path in Paths) 
+                    Extensions.Assembly.GetAssemblies(assemblies, path);
 
-                        continue;
-                    }
-
-                    foreach (var file in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
-                    {
-                        var hasItem = false;
-                        var fileInfo = new FileInfo(file);
-                        foreach (var assembly in assemblies)
-                        {
-                            var name = assembly.GetName().Name;
-
-                            if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
-                        }
-
-                        if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
-                    }
-                }
-
-                var configuration = new ContainerConfiguration()
-                    .WithAssemblies(assemblies);
+                var configuration = new ContainerConfiguration().
+                    WithAssemblies(assemblies);
 
                 using var container = configuration.CreateContainer();
                 Applications = container.GetExports<IApplication>();
@@ -230,8 +204,7 @@ namespace Fluid.Core.Services
 
                     if (!applications.Any())
                     {
-                        OnMessageReceived(this, new Message("Loading applications", "Applications not found.", Name,
-                            MessageType.Warning));
+                        OnMessageReceived(this, new Message("Loading applications", "Applications not found.", Name, MessageType.Warning));
                     }
                     else
                     {
@@ -246,7 +219,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Loading applications", "Applications have not been loaded.", Name, e, false));
             }
         }
 
@@ -265,7 +238,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Subscribing events", "Error subscribing application events.", Name, e, false));
             }
         }
 
@@ -286,7 +259,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Unsubscribing events", "Error unsubscribing application events.", Name, e, false));
             }
         }
 
