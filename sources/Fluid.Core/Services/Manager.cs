@@ -48,7 +48,7 @@ namespace Fluid.Core.Services
             if (Services == null)
             {
                 OnMessageReceived(new Message("Service Manager", "Services not loaded.", "Service manager",
-                    MessageType.Fatal));
+                    MessageType.Warning));
 
                 return null;
             }
@@ -61,7 +61,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(new Message(e, false));
+                OnMessageReceived(new Message("Getting service", "Error getting service (" + typeof(T) + ").", "Service manager", e, false));
             }
 
             return collection;
@@ -72,43 +72,18 @@ namespace Fluid.Core.Services
         /// </summary>
         private void LoadServices()
         {
+            OnMessageReceived(new Message("Assembly searching", "Searching for assemblies...", "Service manager",MessageType.Information));
+
             var assemblies = new List<Assembly>();
+            Extensions.Assembly.GetAssemblies(assemblies, _currentDirectory);
 
-            var files = Directory.GetFiles(_currentDirectory, "*.dll", SearchOption.AllDirectories);
+            OnMessageReceived(new Message("Assembly searching", assemblies + " assemblies were found.", "Service manager", MessageType.Information));
 
-            OnMessageReceived(new Message("Assembly loading", "Trying to load assemblies...", "Service manager",
-                MessageType.Information));
-
-            foreach (var file in files)
-                try
-                {
-                    var hasItem = false;
-                    var fileInfo = new FileInfo(file);
-
-                    OnMessageReceived(new Message("Assembly loading", "Trying to load assembly " + fileInfo.Name,
-                        "Service manager", MessageType.Information));
-
-                    foreach (var assembly in assemblies)
-                    {
-                        var name = assembly.GetName().Name;
-                        if (name == fileInfo.Name.Replace(fileInfo.Extension, ""))
-                            hasItem = true;
-                    }
-
-                    if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
-                }
-                catch (Exception e)
-                {
-                    OnMessageReceived(new Message(e, false));
-                }
+            if (assemblies.Count == 0) return;
 
             try
             {
-                OnMessageReceived(new Message("Assembly loading", "Trying to load suitable assemblies.",
-                    "Service manager", MessageType.Information));
-
-                var configuration = new ContainerConfiguration()
-                    .WithAssemblies(assemblies);
+                var configuration = new ContainerConfiguration().WithAssemblies(assemblies);
 
                 using var container = configuration.CreateContainer();
                 Services = container.GetExports<IService>();
@@ -117,13 +92,10 @@ namespace Fluid.Core.Services
                     OnMessageReceived(new Message("Assembly loading",
                         "Service assembly \"" + service.Name + "\" loaded.", "Service manager",
                         MessageType.Information));
-
-                OnMessageReceived(new Message("Assembly loading", "Suitable assemblies loaded.", "Service manager",
-                    MessageType.Information));
             }
             catch (Exception e)
             {
-                OnMessageReceived(new Message(e, false));
+                OnMessageReceived(new Message("Assembly loading", "Error loading assemblies.", "Service manager", e, false));
             }
         }
 

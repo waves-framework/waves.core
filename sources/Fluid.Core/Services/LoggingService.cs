@@ -38,14 +38,21 @@ namespace Fluid.Core.Services
         {
             if (IsInitialized) return;
 
-            IsInitialized = true;
+            try
+            {
+                _logger = LogManager.GetCurrentClassLogger();
 
-            _logger = LogManager.GetCurrentClassLogger();
+                InternalLogger.LogToConsole = false;
 
-            InternalLogger.LogToConsole = false;
+                IsInitialized = true;
 
-            OnMessageReceived(this,
-                new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
+                OnMessageReceived(this,
+                    new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message("Service initialization", "Error service initialization.", Name, e, false));
+            }
         }
 
         /// <inheritdoc />
@@ -60,7 +67,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Loading configuration", "Error loading configuration.", Name, e, false));
             }
         }
 
@@ -76,7 +83,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Saving configuration", "Error saving configuration.", Name, e, false));
             }
             
         }
@@ -91,13 +98,20 @@ namespace Fluid.Core.Services
         {
             if (!IsInitialized) return;
 
-            var message = new Message(string.Empty, text, string.Empty, MessageType.Information);
+            try
+            {
+                var message = new Message(string.Empty, text, string.Empty, MessageType.Information);
 
-            AddMessageToCollection(message);
+                AddMessageToCollection(message);
 
-            _logger.Info("{0} {1}",
-                DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
-                text);
+                _logger.Info("{0} {1}",
+                    DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
+                    text);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message("Writing text to log", "Error writing text to log.", Name, e, false));
+            }
         }
 
         /// <inheritdoc />
@@ -105,48 +119,55 @@ namespace Fluid.Core.Services
         {
             if (!IsInitialized) return;
 
-            AddMessageToCollection(message);
-
-            switch (message.Type)
+            try
             {
-                case MessageType.Information:
-                    _logger.Info("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        "[INFORMATION]",
-                        message.Sender, message.Title, message.Text);
-                    break;
-                case MessageType.Warning:
-                    _logger.Warn("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        "[WARNING]",
-                        message.Sender, message.Title, message.Text);
-                    break;
-                case MessageType.Error:
-                    _logger.Error("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        "[ERROR]",
-                        message.Sender, message.Title, message.Text);
-                    break;
-                case MessageType.Success:
-                    _logger.Info("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        "[SUCCESS]",
-                        message.Sender, message.Title, message.Text);
-                    break;
-                case MessageType.Debug:
-                    _logger.Debug("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        "[DEBUG]",
-                        message.Sender, message.Title, message.Text);
-                    break;
-                case MessageType.Fatal:
-                    _logger.Fatal("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                        "[FATAL]",
-                        message.Sender, message.Title, message.Text);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                AddMessageToCollection(message);
+
+                switch (message.Type)
+                {
+                    case MessageType.Information:
+                        _logger.Info("{0} {1} {2}: {3} - {4}",
+                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                            "[INFORMATION]",
+                            message.Sender, message.Title, message.Text);
+                        break;
+                    case MessageType.Warning:
+                        _logger.Warn("{0} {1} {2}: {3} - {4}",
+                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                            "[WARNING]",
+                            message.Sender, message.Title, message.Text);
+                        break;
+                    case MessageType.Error:
+                        _logger.Error("{0} {1} {2}: {3} - {4}",
+                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                            "[ERROR]",
+                            message.Sender, message.Title, message.Text);
+                        break;
+                    case MessageType.Success:
+                        _logger.Info("{0} {1} {2}: {3} - {4}",
+                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                            "[SUCCESS]",
+                            message.Sender, message.Title, message.Text);
+                        break;
+                    case MessageType.Debug:
+                        _logger.Debug("{0} {1} {2}: {3} - {4}",
+                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                            "[DEBUG]",
+                            message.Sender, message.Title, message.Text);
+                        break;
+                    case MessageType.Fatal:
+                        _logger.Fatal("{0} {1} {2}: {3} - {4}",
+                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                            "[FATAL]",
+                            message.Sender, message.Title, message.Text);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message("Writing message to log", "Error writing message to log.", Name, e, false));
             }
         }
 
@@ -155,20 +176,27 @@ namespace Fluid.Core.Services
         {
             if (!IsInitialized) return;
 
-            var message = new Message(exception.Source, exception.Message, sender, MessageType.Error);
+            try
+            {
+                var message = new Message(exception.Source, exception.Message, sender, MessageType.Error);
 
-            AddMessageToCollection(message);
+                AddMessageToCollection(message);
 
-            if (isFatal)
-                _logger.Fatal("{0} {1} {2}: {3} - {4}",
-                    message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                    "[FATAL]",
-                    message.Sender, message.Title, message.Text);
-            else
-                _logger.Error("{0} {1} {2}: {3} - {4}",
-                    message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
-                    "[ERROR]",
-                    message.Sender, message.Title, message.Text);
+                if (isFatal)
+                    _logger.Fatal("{0} {1} {2}: {3} - {4}",
+                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                        "[FATAL]",
+                        message.Sender, message.Title, message.Text);
+                else
+                    _logger.Error("{0} {1} {2}: {3} - {4}",
+                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                        "[ERROR]",
+                        message.Sender, message.Title, message.Text);
+            }
+            catch (Exception e)
+            {
+                OnMessageReceived(this, new Message("Writing exception to log", "Error writing exception to log.", Name, e, false));
+            }
         }
 
         /// <summary>
@@ -186,7 +214,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Adding message", "Message has not been added to log collection.", Name, e, false));
             }
         }
     }

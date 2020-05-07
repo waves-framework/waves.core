@@ -26,6 +26,12 @@ namespace Fluid.Core.Services
         private readonly List<IModule> _clonedModules = new List<IModule>();
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 
+        /// <summary>
+        /// Gets collection of libraries.
+        /// </summary>
+        [ImportMany]
+        private IEnumerable<IModuleLibrary> Libraries { get; set; }
+
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("F21B05E5-6648-448E-9AC9-C7D06A79D346");
 
@@ -37,10 +43,6 @@ namespace Fluid.Core.Services
 
         /// <inheritdoc />
         public ICollection<string> NativeLibrariesPaths { get; } = new ObservableCollection<string>();
-
-        /// <inheritdoc />
-        [ImportMany]
-        public IEnumerable<IModuleLibrary> Libraries { get; private set; }
 
         /// <inheritdoc />
         public ICollection<IModule> Modules { get; } = new ObservableCollection<IModule>();
@@ -63,6 +65,13 @@ namespace Fluid.Core.Services
 
                         _clonedModules.Add(clone);
 
+                        OnMessageReceived(this,
+                            new Message(
+                                "Getting module",
+                                "Module " + module.Name + " has been cloned and registered.",
+                                Name,
+                                MessageType.Information));
+
                         return clone;
                     }
                 }
@@ -71,7 +80,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Getting module", "Error getting module.", Name, e, false));
 
                 return null;
             }
@@ -86,7 +95,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Adding modules path", "Modules path has not been added.", Name, e, false));
             }
         }
 
@@ -99,7 +108,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Adding native libraries path", "Native libraries path has not been added.", Name, e, false));
             }
         }
 
@@ -112,7 +121,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Removing modules path", "Modules path has not been removed.", Name, e, false));
             }
         }
 
@@ -126,7 +135,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Removing native libraries path", "Native libraries path has not been removed.", Name, e, false));
             }
         }
 
@@ -153,11 +162,11 @@ namespace Fluid.Core.Services
                 IsInitialized = true;
 
                 OnMessageReceived(this,
-                    new Message("Initialization", "Service was initialized.", Name, MessageType.Information));
+                    new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Service initialization", "Error service initialization.", Name, e, false));
             }
         }
 
@@ -183,7 +192,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Loading configuration", "Error loading configuration.", Name, e, false));
             }
         }
 
@@ -210,12 +219,12 @@ namespace Fluid.Core.Services
                     configuration.SetPropertyValue("ModuleService-NativeLibrariesPaths", nativeLibrariesPaths);
                 }
 
-                OnMessageReceived(this, new Message("Configuration savings", "Configuration saves successfully.", Name,
+                OnMessageReceived(this, new Message("Configuration saving", "Configuration saves successfully.", Name,
                     MessageType.Success));
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Saving configuration", "Error saving configuration.", Name, e, false));
             }
         }
 
@@ -250,7 +259,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Service disposing", "Error service disposing.", Name, e, false));
             }
         }
 
@@ -284,33 +293,7 @@ namespace Fluid.Core.Services
                 var assemblies = new List<Assembly>();
 
                 foreach (var path in ModulesPaths)
-                {
-                    if (!Directory.Exists(path))
-                    {
-                        OnMessageReceived(this,
-                            new Message(
-                                "Loading path error",
-                                "Path to application ( " + path + ") doesn't exists or was deleted.",
-                                Name,
-                                MessageType.Error));
-
-                        continue;
-                    }
-
-                    foreach (var file in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
-                    {
-                        var hasItem = false;
-                        var fileInfo = new FileInfo(file);
-                        foreach (var assembly in assemblies)
-                        {
-                            var name = assembly.GetName().Name;
-
-                            if (name == fileInfo.Name.Replace(fileInfo.Extension, "")) hasItem = true;
-                        }
-
-                        if (!hasItem) assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
-                    }
-                }
+                    Extensions.Assembly.GetAssemblies(assemblies, path);
 
                 var configuration = new ContainerConfiguration()
                     .WithAssemblies(assemblies);
@@ -340,7 +323,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Loading module libraries", "Module libraries have not been loaded.", Name, e, false));
             }
         }
 
@@ -406,7 +389,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Loading native libraries", "Native libraries have not been loaded.", Name, e, false));
             }
         }
 
@@ -440,7 +423,7 @@ namespace Fluid.Core.Services
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new Message("Updating modules", "Modules have not been loaded.", Name, e, false));
             }
         }
     }
