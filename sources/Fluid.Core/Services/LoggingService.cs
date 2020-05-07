@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
+using System.Linq;
 using Fluid.Core.Base;
 using Fluid.Core.Base.Enums;
 using Fluid.Core.Base.Interfaces;
@@ -31,7 +32,7 @@ namespace Fluid.Core.Services
         public int LastMessagesCount { get; private set; } = 250;
 
         /// <inheritdoc />
-        public ICollection<IMessage> LastMessages { get; } = new ObservableCollection<IMessage>();
+        public ICollection<IMessageObject> LastMessages { get; } = new ObservableCollection<IMessageObject>();
 
         /// <inheritdoc />
         public override void Initialize()
@@ -207,10 +208,37 @@ namespace Fluid.Core.Services
         {
             try
             {
-                LastMessages.Add(message);
+                if (LastMessages.Count > 1)
+                {
+                    var lastObject = LastMessages.Last();
 
-                if (LastMessages.Count > LastMessagesCount)
-                    (LastMessages as List<IMessage>)?.RemoveAt(0);
+                    if (lastObject.Title == message.Title)
+                    {
+                        if (lastObject is IMessageGroup group)
+                        {
+                            group.Messages.Add(message);
+
+                            return;
+                        }
+
+                        if (lastObject is IMessage previousMessage)
+                        {
+                            var g = new MessageGroup(previousMessage.Title, previousMessage.DateTime);
+
+                            g.Messages.Add(previousMessage);
+                            g.Messages.Add(message);
+
+                            LastMessages.Remove(previousMessage);
+                            LastMessages.Add(message);
+
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    LastMessages.Add(message);
+                }
             }
             catch (Exception e)
             {
