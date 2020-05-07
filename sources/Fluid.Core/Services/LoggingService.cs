@@ -230,10 +230,15 @@ namespace Fluid.Core.Services
                             g.Messages.Add(message);
 
                             LastMessages.Remove(previousMessage);
-                            LastMessages.Add(message);
+
+                            LastMessages.Add(g);
 
                             return;
                         }
+                    }
+                    else
+                    {
+                        LastMessages.Add(message);
                     }
                 }
                 else

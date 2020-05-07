@@ -1,4 +1,5 @@
 ﻿using System;
+using Fluid.Core.Base.Enums;
 
 namespace Fluid.Core.Base.Interfaces
 {
