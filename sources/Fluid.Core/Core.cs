@@ -68,6 +68,9 @@ namespace Fluid.Core
         {
             try
             {
+                WriteLogMessage(new Message("Core launching", "Core launching...", "Core",
+                    MessageType.Success));
+
                 InitializeConfiguration();
                 InitializeContainer();
                 InitializeServices();

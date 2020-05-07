@@ -14,11 +14,6 @@ namespace Fluid.Core.Base.Interfaces
         string Text { get; }
 
         /// <summary>
-        ///     Gets sender of this message.
-        /// </summary>
-        string Sender { get; }
-
-        /// <summary>
         ///     Gets exception.
         /// </summary>
         Exception Exception { get; }
