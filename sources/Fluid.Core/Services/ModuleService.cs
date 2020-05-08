@@ -24,7 +24,10 @@ namespace Fluid.Core.Services
     public class ModuleService : Service, IModuleService
     {
         private readonly List<IModule> _clonedModules = new List<IModule>();
+
         private readonly string _currentDirectory = Environment.CurrentDirectory;
+
+        private readonly string _defaultNativeDirectory = Path.Combine(Environment.CurrentDirectory, "native");
 
         /// <summary>
         /// Gets collection of libraries.
@@ -348,6 +351,7 @@ namespace Fluid.Core.Services
             {
                 NativeLibrariesNames.Clear();
 
+                NativeLibrariesPaths.Add(_defaultNativeDirectory);
                 foreach (var path in NativeLibrariesPaths)
                 {
                     var info = new DirectoryInfo(path);
@@ -371,6 +375,15 @@ namespace Fluid.Core.Services
                                     var error = new Win32Exception(lastError);
                                     throw error;
                                 }
+                                else
+                                {
+                                    OnMessageReceived(this,
+                                        new Message(
+                                            "Loading native library",
+                                            "Native library " + file.Name + " has been loaded.",
+                                            Name,
+                                            MessageType.Information));
+                                }
                             }
 
                             NativeLibrariesNames.Add(file.FullName);
@@ -386,6 +399,7 @@ namespace Fluid.Core.Services
                         }
                     }
                 }
+                NativeLibrariesPaths.Remove(_defaultNativeDirectory);
             }
             catch (Exception e)
             {
