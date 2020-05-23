@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Fluid.Core.Base.EventArgs</id>
+    <id>Ambertape.Core.Base.EventArgs</id>
     <version>{$NUGETVERSION}</version>
-    <authors>Fluid</authors>
-    <owners>Fluid</owners>
+    <authors>Ambertape</authors>
+    <owners>Ambertape</owners>
     <licenseUrl>https://ambertape.ru</licenseUrl>
     <projectUrl>https://ambertape.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Аргументы событий для Fluid.Core.</description>
+    <description>Аргументы событий для Ambertape.Core.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
-    <tags>fluid core base eventargs</tags>
+    <tags>Ambertape core base eventargs</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Fluid.Core.Base.Enums" version="[{$NUGETVERSION},2020.2)" />
-        <dependency id="Fluid.Core.Base.Interfaces" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Ambertape.Core.Base.Enums" version="[{$NUGETVERSION},2020.2)" />
+        <dependency id="Ambertape.Core.Base.Interfaces" version="[{$NUGETVERSION},2020.2)" />
       </group>
     </dependencies>
     <frameworkReferences>
@@ -27,11 +27,11 @@
   </metadata>
   <files>
   	<file src="..\..\files\logo.png" target="files\" />
-    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="lib\netcoreapp3.1"/>
-    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="lib\netcoreapp3.1"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="build\x86"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="build\x86"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.dll" target="build\x64"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Fluid.Core.Base.EventArgs.xml" target="build\x64"/>
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Ambertape.Core.Base.EventArgs.dll" target="lib\netcoreapp3.1"/>
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Ambertape.Core.Base.EventArgs.xml" target="lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Ambertape.Core.Base.EventArgs.dll" target="build\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Ambertape.Core.Base.EventArgs.xml" target="build\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Ambertape.Core.Base.EventArgs.dll" target="build\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Ambertape.Core.Base.EventArgs.xml" target="build\x64"/>
   </files>
 </package>
