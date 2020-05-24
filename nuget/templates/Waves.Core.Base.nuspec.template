@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Waves.Core.Base</id>
+    <version>{$NUGETVERSION}</version>
+    <authors>Waves</authors>
+    <owners>Waves</owners>
+    <licenseUrl>https://Waves.ru</licenseUrl>
+    <projectUrl>https://Waves.ru</projectUrl>
+    <icon>files\logo.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Библиотека основных абстрактных классов Waves.Core.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019-2020</copyright>
+    <tags>Waves core base</tags>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+      	<dependency id="Fody" version="6.1.1" />
+      	<dependency id="PropertyChanged.Fody" version="3.2.7" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.NETCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+  	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Base.dll" target="lib\netcoreapp3.1"/>
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Base.xml" target="lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Waves.Core.Base.dll" target="build\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Waves.Core.Base.xml" target="build\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Waves.Core.Base.dll" target="build\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Waves.Core.Base.xml" target="build\x64"/>
+  </files>  
+</package>
