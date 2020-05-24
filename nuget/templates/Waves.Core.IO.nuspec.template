@@ -9,7 +9,7 @@
     <projectUrl>https://Waves.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Библиотека классов Waves.Core.IO</description>
+    <description>Library of base IO abstractions./description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
     <tags>Waves core io</tags>
