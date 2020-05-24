@@ -9,7 +9,7 @@
     <projectUrl>https://Waves.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Библиотека для работы с IoC-контейнерами.</description>
+    <description>IoC library.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
     <tags>Waves core ioc</tags>

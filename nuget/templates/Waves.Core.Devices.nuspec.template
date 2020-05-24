@@ -9,7 +9,7 @@
     <projectUrl>https://Waves.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Библиотека абстрактных классов устройств Waves.Core</description>
+    <description>Library of base device abstactions./description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
     <tags>Waves core devices</tags>
