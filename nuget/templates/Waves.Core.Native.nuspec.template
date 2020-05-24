@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Waves.Core.Native.Windows</id>
+    <version>{$NUGETVERSION}</version>
+    <authors>Waves</authors>
+    <owners>Waves</owners>
+    <licenseUrl>https://Waves.ru</licenseUrl>
+    <projectUrl>https://Waves.ru</projectUrl>
+    <icon>files\logo.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Библиотека нативных функций Windows.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019-2020</copyright>
+    <tags>Waves core native windows api winapi</tags>
+      <dependencies>
+      <group targetFramework=".NETCoreApp3.1" />
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.NETCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+  	<file src="..\..\files\logo.png" target="files\" />
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Native.Windows.dll" target="lib\netcoreapp3.1"/>
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Native.Windows.xml" target="lib\netcoreapp3.1"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Waves.Core.Native.Windows.dll" target="build\x86"/>
+    <file src="..\..\bin\x86\release\netcoreapp3.1\Waves.Core.Native.Windows.xml" target="build\x86"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Waves.Core.Native.Windows.dll" target="build\x64"/>
+    <file src="..\..\bin\x64\release\netcoreapp3.1\Waves.Core.Native.Windows.xml" target="build\x64"/>
+  </files>    
+</package>
