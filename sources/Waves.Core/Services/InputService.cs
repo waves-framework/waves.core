@@ -1,5 +1,6 @@
 using System;
 using System.Composition;
+using PropertyChanged;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.EventArgs;
@@ -95,6 +96,7 @@ namespace Waves.Core.Services
         ///     Notifies when pointer state changed.
         /// </summary>
         /// <param name="e">Pointer event arguments.</param>
+        [SuppressPropertyChangedWarnings]
         protected virtual void OnPointerStateChanged(PointerEventArgs e)
         {
             PointerStateChanged?.Invoke(this, e);
