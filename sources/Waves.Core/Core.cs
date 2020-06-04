@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Waves.Core.Base;
@@ -187,7 +188,11 @@ namespace Waves.Core
                 if (service.IsInitialized)
                 {
                     Services.Add(service);
-                    CoreInitializationInformationDictionary[service.Name] = true;
+
+                    if (CoreInitializationInformationDictionary.ContainsKey(service.Name))
+                    {
+                        CoreInitializationInformationDictionary[service.Name] = true;
+                    }
                 }
             }
             catch (Exception e)
@@ -227,6 +232,11 @@ namespace Waves.Core
         {
 #if DEBUG
             Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
+
+            if (message.Exception != null)
+            {
+                Console.WriteLine(message.Exception.ToString());
+            }
 #endif
 
             OnMessageReceived(message);
@@ -337,48 +347,38 @@ namespace Waves.Core
 
             ServiceManager.Initialize();
 
-            try
+            var method = typeof(Core).GetMethod("RegisterService");
+            if (method == null) return;
+            
+            foreach (var service in ServiceManager.Services)
             {
-                var service = ServiceManager.GetService<ILoggingService>().First();
-                RegisterService(service);
-            }
-            catch (Exception e)
-            {
-                WriteLogMessage(new Message("Registering logging service",
-                    "Error logging service.", "Core", e, true));
-            }
+                try
+                {
+                    var type = service.GetType();
+                    var interfaces = type.GetInterfaces().ToList();
+                    
+                    interfaces.Remove(typeof(IObservableObject));
+                    interfaces.Remove(typeof(INotifyPropertyChanged));
+                    interfaces.Remove(typeof(IDisposable));
+                    interfaces.Remove(typeof(IObject));
+                    interfaces.Remove(typeof(IService));
 
-            try
-            {
-                var service = ServiceManager.GetService<IInputService>().First();
-                RegisterService(service);
-            }
-            catch (Exception e)
-            {
-                WriteLogMessage(new Message("Registering input service",
-                    "Error registering input service.", "Core", e, true));
-            }
+                    if (interfaces.Count > 1)
+                    {
+                        throw new Exception("A service cannot be registered (a service must be implemented from only one interface).");
+                    }
+                    
+                    var genericMethod = method.MakeGenericMethod(interfaces.First());
+                    genericMethod.Invoke(this, new object[] {service});
 
-            try
-            {
-                var service = ServiceManager.GetService<IModuleService>().First();
-                RegisterService(service);
-            }
-            catch (Exception e)
-            {
-                WriteLogMessage(new Message("Registering module service",
-                    "Error registering module service.", "Core", e, true));
-            }
-
-            try
-            {
-                var service = ServiceManager.GetService<IApplicationService>().First();
-                RegisterService(service);
-            }
-            catch (Exception e)
-            {
-                WriteLogMessage(new Message("Registering application service",
-                    "Error registering application service.", "Core", e, true));
+                    WriteLogMessage(new Message("Registering", "Service has been registered successfully.", service.Name,
+                        MessageType.Success));
+                }
+                catch (Exception e)
+                {
+                    WriteLogMessage(new Message("Registering",
+                        "Error registering service.", service.Name, e, true));
+                }
             }
         }
 
