@@ -184,16 +184,18 @@ namespace Waves.Core
                 service.Initialize();
 
                 service.LoadConfiguration(Configuration);
-
-                if (service.IsInitialized)
+                
+                if (CoreInitializationInformationDictionary.ContainsKey(service.Name))
                 {
-                    Services.Add(service);
-
-                    if (CoreInitializationInformationDictionary.ContainsKey(service.Name))
-                    {
-                        CoreInitializationInformationDictionary[service.Name] = true;
-                    }
+                    CoreInitializationInformationDictionary[service.Name] = service.IsInitialized;
                 }
+                else
+                {
+                    CoreInitializationInformationDictionary.Add(service.Name, service.IsInitialized);
+                }
+                
+                if (service.IsInitialized)
+                    Services.Add(service);
             }
             catch (Exception e)
             {
