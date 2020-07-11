@@ -3,11 +3,11 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.1.1">
+    <PackageReference Include="Fody" Version="6.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="PropertyChanged.Fody" Version="3.2.7" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" />
   </ItemGroup>
 
   <ItemGroup>
