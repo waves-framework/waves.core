@@ -3,14 +3,14 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.1.1">
+    <PackageReference Include="Fody" Version="6.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NLog" Version="4.7.0" />
+    <PackageReference Include="NLog" Version="4.7.2" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" />
-    <PackageReference Include="System.Composition" Version="1.4.0" />
-    <PackageReference Include="Waves.Utils.Serialization" Version="2020.1.61" />
+    <PackageReference Include="System.Composition" Version="1.4.1" />
+    <PackageReference Include="Waves.Utils.Serialization" Version="2020.2.1.70" />
   </ItemGroup>
 
   <ItemGroup>

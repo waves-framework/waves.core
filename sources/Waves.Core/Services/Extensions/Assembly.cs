@@ -20,6 +20,7 @@ namespace Waves.Core.Services.Extensions
             if (!Directory.Exists(path)) throw new DirectoryNotFoundException("Directory not found.");
 
             foreach (var file in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories))
+            {
                 try
                 {
                     var hasItem = false;
@@ -36,7 +37,9 @@ namespace Waves.Core.Services.Extensions
                 }
                 catch (Exception)
                 {
+                    // ignored
                 }
+            }
         }
     }
 }

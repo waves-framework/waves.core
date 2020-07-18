@@ -9,15 +9,15 @@
     <projectUrl>https://Waves.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Library of base IO abstractions./description>
+    <description>Library of base IO abstractions.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2019-2020</copyright>
     <tags>Waves core io</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2)" />
-        <dependency id="Fody" version="6.1.1" />
-        <dependency id="PropertyChanged.Fody" version="3.2.7" />
+        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2021.1.1)" />
+        <dependency id="Fody" version="6.2.0" />
+        <dependency id="PropertyChanged.Fody" version="3.2.8" />
       </group>
     </dependencies>
     <frameworkReferences>
