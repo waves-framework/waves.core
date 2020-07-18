@@ -27,7 +27,7 @@ namespace Waves.Core.IoC
         public static bool IsInitialized { get; private set; }
 
         /// <summary>
-        ///     Начальная загрузка
+        ///     Starts core.
         /// </summary>
         public static void Start()
         {
