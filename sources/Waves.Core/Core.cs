@@ -367,7 +367,8 @@ namespace Waves.Core
 
                     if (interfaces.Count > 1)
                     {
-                        throw new Exception("A service cannot be registered (a service must be implemented from only one interface).");
+                        WriteLogMessage(new Message("Registering", "A service " + service.Name + " cannot be registered (a service must be implemented only from one interface).", service.Name,
+                            MessageType.Error));
                     }
                     
                     var genericMethod = method.MakeGenericMethod(interfaces.First());
