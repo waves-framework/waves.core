@@ -15,10 +15,10 @@
     <tags>Waves core</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2021.1.1)" />
-        <dependency id="Waves.Core.IoC" version="[{$NUGETVERSION},2021.1.1)" />
-        <dependency id="Waves.Core.Native.Windows" version="[{$NUGETVERSION},2021.1.1)" />
-        <dependency id="Waves.Utils.Serialization" version="[2020.2.1,2021.1.1)" />
+        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.2.0)" />
+        <dependency id="Waves.Core.IoC" version="[{$NUGETVERSION},2020.2.2.0)" />
+        <dependency id="Waves.Core.Native.Windows" version="[{$NUGETVERSION},2020.2.2.0)" />
+        <dependency id="Waves.Utils.Serialization" version="[2020.2.1,2020.2.2.0)" />
         <dependency id="Fody" version="6.2.0" />
         <dependency id="PropertyChanged.Fody" version="3.2.8" />
         <dependency id="System.Composition" version="1.4.1" />
