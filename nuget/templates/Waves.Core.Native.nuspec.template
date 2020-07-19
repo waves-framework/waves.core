@@ -5,8 +5,8 @@
     <version>{$NUGETVERSION}</version>
     <authors>Waves</authors>
     <owners>Waves</owners>
-    <licenseUrl>https://Waves.ru</licenseUrl>
-    <projectUrl>https://Waves.ru</projectUrl>
+    <licenseUrl>https://ambertape.ru</licenseUrl>
+    <projectUrl>https://ambertape.ru</projectUrl>
     <icon>files\logo.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Library of native Windows functions.</description>
