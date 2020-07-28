@@ -226,7 +226,7 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             var configuration = obj as Configuration;
             if (configuration == null) return false;

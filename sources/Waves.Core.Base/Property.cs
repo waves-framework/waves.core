@@ -100,7 +100,7 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             return obj is Property<T> property && Equals(property);
         }
