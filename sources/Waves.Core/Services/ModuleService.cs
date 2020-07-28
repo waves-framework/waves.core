@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Native.Windows;
 using Waves.Core.Services.Interfaces;
 
 namespace Waves.Core.Services
