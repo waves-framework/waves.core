@@ -199,30 +199,32 @@ namespace Waves.Core.Services
 
                 var configuration = new ContainerConfiguration().WithAssemblies(assemblies);
 
-                using var container = configuration.CreateContainer();
-                Applications = container.GetExports<IApplication>();
-
-                SubscribeApplicationEvents();
-
-                OnApplicationsUpdated();
-
-                if (Applications != null)
+                using (var container = configuration.CreateContainer())
                 {
-                    var applications = Applications as IApplication[] ?? Applications.ToArray();
+                    Applications = container.GetExports<IApplication>();
 
-                    if (!applications.Any())
-                        OnMessageReceived(this,
-                            new Message("Loading applications", "Applications not found.", Name, MessageType.Warning));
+                    SubscribeApplicationEvents();
+
+                    OnApplicationsUpdated();
+
+                    if (Applications != null)
+                    {
+                        var applications = Applications as IApplication[] ?? Applications.ToArray();
+
+                        if (!applications.Any())
+                            OnMessageReceived(this,
+                                new Message("Loading applications", "Applications not found.", Name, MessageType.Warning));
+                        else
+                            OnMessageReceived(this, new Message("Loading applications",
+                                "Applications loads successfully (" + applications.Count() + " applications).", Name,
+                                MessageType.Success));
+                    }
                     else
-                        OnMessageReceived(this, new Message("Loading applications",
-                            "Applications loads successfully (" + applications.Count() + " applications).", Name,
-                            MessageType.Success));
-                }
-                else
-                {
-                    OnMessageReceived(this,
-                        new Message("Loading applications", "Applications were not loaded.", Name,
-                            MessageType.Warning));
+                    {
+                        OnMessageReceived(this,
+                            new Message("Loading applications", "Applications were not loaded.", Name,
+                                MessageType.Warning));
+                    }
                 }
             }
             catch (Exception e)

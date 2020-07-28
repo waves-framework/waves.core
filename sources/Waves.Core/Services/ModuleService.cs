@@ -305,27 +305,29 @@ namespace Waves.Core.Services
                 var configuration = new ContainerConfiguration()
                     .WithAssemblies(assemblies);
 
-                using var container = configuration.CreateContainer();
-                Libraries = container.GetExports<IModuleLibrary>();
-
-                if (Libraries != null)
+                using (var container = configuration.CreateContainer())
                 {
-                    var moduleLibraries = Libraries as IModuleLibrary[] ?? Libraries.ToArray();
+                    Libraries = container.GetExports<IModuleLibrary>();
 
-                    if (!moduleLibraries.Any())
-                        OnMessageReceived(this, new Message("Loading module libraries", "Module libraries not found.",
-                            Name,
-                            MessageType.Warning));
+                    if (Libraries != null)
+                    {
+                        var moduleLibraries = Libraries as IModuleLibrary[] ?? Libraries.ToArray();
+
+                        if (!moduleLibraries.Any())
+                            OnMessageReceived(this, new Message("Loading module libraries", "Module libraries not found.",
+                                Name,
+                                MessageType.Warning));
+                        else
+                            OnMessageReceived(this, new Message("Loading module libraries",
+                                "Module libraries loads successfully (" + moduleLibraries.Count() + " libraries).", Name,
+                                MessageType.Success));
+                    }
                     else
-                        OnMessageReceived(this, new Message("Loading module libraries",
-                            "Module libraries loads successfully (" + moduleLibraries.Count() + " libraries).", Name,
-                            MessageType.Success));
-                }
-                else
-                {
-                    OnMessageReceived(this,
-                        new Message("Loading module libraries", "Module libraries were not loaded.", Name,
-                            MessageType.Warning));
+                    {
+                        OnMessageReceived(this,
+                            new Message("Loading module libraries", "Module libraries were not loaded.", Name,
+                                MessageType.Warning));
+                    }
                 }
             }
             catch (Exception e)
@@ -372,7 +374,7 @@ namespace Waves.Core.Services
 
                             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                             {
-                                var result = Kernel32.LoadLibrary(fileName);
+                                var result = NativeLibrary.Load(fileName);
 
                                 if (result == IntPtr.Zero)
                                 {
