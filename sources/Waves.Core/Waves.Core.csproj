@@ -27,7 +27,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="Waves.Utils.Serialization">
-      <Version>2020.2.1.95</Version>
+      <Version>2020.2.1.97</Version>
     </PackageReference>
   </ItemGroup>
 

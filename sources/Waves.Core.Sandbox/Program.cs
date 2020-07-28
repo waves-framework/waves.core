@@ -15,16 +15,16 @@ namespace Waves.Core.Sandbox
             //var property2 = (IProperty) property1.Clone();
             //var equals = property1.Equals(property2);
 
-            var configuration = (IConfiguration) core.Configuration.Clone();
-            var equals = configuration.Equals(core.Configuration);
+            //var configuration = (IConfiguration) core.Configuration.Clone();
+            //var equals = configuration.Equals(core.Configuration);
             
-            var service = core.GetService<IInputService>();
+            //var service = core.GetService<IInputService>();
 
-            Console.WriteLine("Write \"stop\" to stop core working:");
+            //Console.WriteLine("Write \"stop\" to stop core working:");
 
-            var word = Console.ReadLine();
+            //var word = Console.ReadLine();
             
-            if (word != null && word.Equals("stop")) core.Stop();
+            //if (word != null && word.Equals("stop")) core.Stop();
         }
     }
 }
