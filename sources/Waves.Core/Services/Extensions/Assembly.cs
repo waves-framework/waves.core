@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Loader;
+
+#if NETCOREAPP3_1
+    using System.Runtime.Loader;
+#endif
+
 
 namespace Waves.Core.Services.Extensions
 {

@@ -86,13 +86,15 @@ namespace Waves.Core.Services
             {
                 var configuration = new ContainerConfiguration().WithAssemblies(assemblies);
 
-                using var container = configuration.CreateContainer();
-                Services = container.GetExports<IService>();
+                using (var container = configuration.CreateContainer())
+                {
+                    Services = container.GetExports<IService>();
 
-                foreach (var service in Services)
-                    OnMessageReceived(new Message("Assembly loading",
-                        "Service assembly \"" + service.Name + "\" loaded.", "Service manager",
-                        MessageType.Information));
+                    foreach (var service in Services)
+                        OnMessageReceived(new Message("Assembly loading",
+                            "Service assembly \"" + service.Name + "\" loaded.", "Service manager",
+                            MessageType.Information));
+                }
             }
             catch (Exception e)
             {
