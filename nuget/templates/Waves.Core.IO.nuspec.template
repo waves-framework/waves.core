@@ -8,7 +8,7 @@
     <license type="file">license.md</license>
     <projectUrl>https://github.com/ambertape/waves.utils</projectUrl>
     <icon>files\logo_small.png</icon>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Library of base IO abstractions.</description>
     <releaseNotes>
       The first release of package.
@@ -34,4 +34,5 @@
     <file src="..\..\files\logo_small.png" target="files\" />
     <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.IO.dll" target="lib\netcoreapp3.1"/>
     <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.IO.xml" target="lib\netcoreapp3.1"/>
+  </files>
 </package>
