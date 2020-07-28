@@ -5,13 +5,16 @@
     <version>{$NUGETVERSION}</version>
     <authors>Waves</authors>
     <owners>Waves</owners>
-    <licenseUrl>https://ambertape.ru</licenseUrl>
-    <projectUrl>https://ambertape.ru</projectUrl>
-    <icon>files\logo.png</icon>
+    <license type="file">license.md</license>
+    <projectUrl>https://github.com/ambertape/waves.utils</projectUrl>
+    <icon>files\logo_small.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Library of base core abstractions.</description>
-    <releaseNotes></releaseNotes>
-    <copyright>Copyright 2019-2020</copyright>
+    <releaseNotes>
+      The first release of package.
+      - Base core classes.
+    </releaseNotes>
+    <copyright>Copyright (c) 2020 Egor Khindikaynen</copyright>
     <tags>Waves core base</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
@@ -26,12 +29,9 @@
     </frameworkReferences>
   </metadata>
   <files>
-  	<file src="..\..\files\logo.png" target="files\" />
+  	<file src="..\..\license.md" target="" />
+    <file src="..\..\files\logo_small.png" target="files\" />
     <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Base.dll" target="lib\netcoreapp3.1"/>
     <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Base.xml" target="lib\netcoreapp3.1"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Waves.Core.Base.dll" target="build\x86"/>
-    <file src="..\..\bin\x86\release\netcoreapp3.1\Waves.Core.Base.xml" target="build\x86"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Waves.Core.Base.dll" target="build\x64"/>
-    <file src="..\..\bin\x64\release\netcoreapp3.1\Waves.Core.Base.xml" target="build\x64"/>
   </files>  
 </package>
