@@ -6,7 +6,7 @@
     <authors>Waves</authors>
     <owners>Waves</owners>
     <license type="file">license.md</license>
-    <projectUrl>https://github.com/ambertape/waves.utils</projectUrl>
+    <projectUrl>https://github.com/ambertape/waves.core</projectUrl>
     <icon>files\logo_small.png</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>IoC library.</description>
