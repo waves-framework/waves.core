@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PropertyChanged;
 using Waves.Core.Base;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Devices.Interfaces.Input.ADC;
@@ -20,7 +19,6 @@ namespace Waves.Core.Devices.Base.Input.ADC
         public virtual double DigitalGain { get; set; } = 1.0f;
 
         /// <inheritdoc />
-        [SuppressPropertyChangedWarnings]
         public abstract double DeviceGain { get; set; }
 
         /// <inheritdoc />

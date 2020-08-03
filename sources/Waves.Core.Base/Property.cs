@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -47,17 +48,21 @@ namespace Waves.Core.Base
         /// <summary>
         ///     Gets or sets value.
         /// </summary>
+        [Reactive]
         public T Value { get; set; }
 
         /// <inheritdoc />
+        [Reactive]
         public sealed override string Name { get; set; }
 
         /// <summary>
         ///     Gets or sets whether property is read only.
         /// </summary>
+        [Reactive]
         public bool IsReadOnly { get; set; }
 
         /// <inheritdoc />
+        [Reactive]
         public bool CanBeDeleted { get; private set; }
 
         /// <inheritdoc />

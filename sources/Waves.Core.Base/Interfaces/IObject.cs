@@ -1,4 +1,5 @@
 ﻿using System;
+using ReactiveUI;
 
 namespace Waves.Core.Base.Interfaces
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -10,6 +11,7 @@ namespace Waves.Core.Base
     public abstract class Application : Object, IApplication
     {
         /// <inheritdoc />
+        [Reactive]
         public bool IsInitialized { get; set; }
 
         /// <inheritdoc />
@@ -19,7 +21,8 @@ namespace Waves.Core.Base
         public abstract IColor IconForegroundColor { get; }
 
         /// <inheritdoc />
-        public IConfiguration Configuration { get; } = new Configuration();
+        [Reactive]
+        public IConfiguration Configuration { get; internal set; } = new Configuration();
 
         /// <inheritdoc />
         public abstract override Guid Id { get; }
@@ -40,7 +43,8 @@ namespace Waves.Core.Base
         public abstract Version Version { get; }
 
         /// <inheritdoc />
-        public ICollection<IApplicationAction> Actions { get; } = new List<IApplicationAction>();
+        [Reactive]
+        public ICollection<IApplicationAction> Actions { get; internal set; } = new List<IApplicationAction>();
 
         /// <inheritdoc />
         public event EventHandler ActionsUpdated;

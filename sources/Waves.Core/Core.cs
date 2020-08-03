@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using ReactiveUI;
+using Splat;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
@@ -221,9 +223,8 @@ namespace Waves.Core
 
             OnMessageReceived(new Message(string.Empty, text, string.Empty, MessageType.Information));
 
-            CheckLoggingService();
-
-            _loggingService.WriteTextToLog(text);
+            if (CheckLoggingService())
+                _loggingService.WriteTextToLog(text);
         }
 
         /// <summary>
@@ -232,8 +233,32 @@ namespace Waves.Core
         /// <param name="message">Message..</param>
         public virtual void WriteLogMessage(IMessage message)
         {
+            var status = string.Empty;
+
+            switch (message.Type)
+            {
+                case MessageType.Information:
+                    status = "INFO";
+                    break;
+                case MessageType.Warning:
+                    status = "WARN";
+                    break;
+                case MessageType.Error:
+                    status = "ERROR";
+                    break;
+                case MessageType.Fatal:
+                    status = "FATAL";
+                    break;
+                case MessageType.Success:
+                    status = "OK";
+                    break;
+                case MessageType.Debug:
+                    status = "DEBUG";
+                    break;
+            }
+
 #if DEBUG
-            Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
+            Console.WriteLine("[{0}] [{1}]\t{2}: {3}", message.DateTime, status, message.Sender, message.Title + " - " + message.Text);
 
             if (message.Exception != null)
             {
@@ -250,9 +275,8 @@ namespace Waves.Core
                 return;
             }
 
-            CheckLoggingService();
-
-            _loggingService.WriteMessageToLog(message);
+            if (CheckLoggingService())
+                _loggingService.WriteMessageToLog(message);
         }
 
         /// <summary>
@@ -278,9 +302,8 @@ namespace Waves.Core
                 return;
             }
 
-            CheckLoggingService();
-
-            _loggingService.WriteExceptionToLog(exception, sender, isFatal);
+            if(CheckLoggingService())
+                _loggingService.WriteExceptionToLog(exception, sender, isFatal);
         }
 
         /// <summary>
@@ -288,7 +311,8 @@ namespace Waves.Core
         /// </summary>
         public virtual void AddMessageSeparator()
         {
-            _loggingService.LastMessages.Add(new MessageSeparator());
+            if (CheckLoggingService())
+                _loggingService.LastMessages.Add(new MessageSeparator());
         }
 
         /// <summary>
@@ -363,7 +387,12 @@ namespace Waves.Core
                     interfaces.Remove(typeof(INotifyPropertyChanged));
                     interfaces.Remove(typeof(IDisposable));
                     interfaces.Remove(typeof(IObject));
+                    interfaces.Remove(typeof(IReactiveObject));
                     interfaces.Remove(typeof(IService));
+                    interfaces.Remove(typeof(INotifyPropertyChanging));
+                    interfaces.Remove(typeof(IEnableLogger));
+                    interfaces.Remove(typeof(IHandleObservableErrors));
+                    interfaces.Remove(typeof(IReactiveNotifyPropertyChanged<IReactiveObject>));
 
                     if (interfaces.Count > 1)
                     {
@@ -412,16 +441,19 @@ namespace Waves.Core
             MessageReceived?.Invoke(this, e);
         }
 
-        private void CheckLoggingService()
+        private bool CheckLoggingService()
         {
-            if (_loggingService == null)
-            {
-                _loggingService = GetService<ILoggingService>();
+            if (_loggingService != null) return true;
 
-                foreach (var message in _pendingMessages) _loggingService.WriteMessageToLog(message);
+            _loggingService = GetService<ILoggingService>();
 
-                _pendingMessages.Clear();
-            }
+            if (_loggingService == null) return false;
+
+            foreach (var message in _pendingMessages) _loggingService.WriteMessageToLog(message);
+
+            _pendingMessages.Clear();
+
+            return true;
         }
 
         /// <summary>

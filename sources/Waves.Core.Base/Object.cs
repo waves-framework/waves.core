@@ -1,5 +1,4 @@
 ﻿using System;
-using PropertyChanged;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -13,7 +12,6 @@ namespace Waves.Core.Base
         public abstract Guid Id { get; }
 
         /// <inheritdoc />
-        [SuppressPropertyChangedWarnings]
         public abstract string Name { get; set; }
 
         /// <inheritdoc />

@@ -1,4 +1,5 @@
 ﻿using System;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -15,6 +16,7 @@ namespace Waves.Core.Base
         public abstract override string Name { get; }
 
         /// <inheritdoc />
+        [Reactive]
         public bool IsInitialized { get; set; } = false;
 
         /// <inheritdoc />

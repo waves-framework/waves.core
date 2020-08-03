@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 
@@ -27,21 +28,26 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid Id { get; internal set; } = Guid.NewGuid();
 
         /// <inheritdoc />
-        public string Title { get; }
+        [Reactive]
+        public string Title { get; internal set; }
 
         /// <inheritdoc />
-        public DateTime DateTime { get; }
+        [Reactive]
+        public DateTime DateTime { get; internal set; }
 
         /// <inheritdoc />
-        public MessageType Type { get; }
+        [Reactive]
+        public MessageType Type { get; internal set; }
 
         /// <inheritdoc />
-        public string Sender { get; }
+        [Reactive]
+        public string Sender { get; internal set; }
 
         /// <inheritdoc />
+        [Reactive]
         public ICollection<IMessage> Messages { get; } = new ObservableCollection<IMessage>();
     }
 }

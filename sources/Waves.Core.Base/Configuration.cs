@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -40,12 +41,14 @@ namespace Waves.Core.Base
         /// <summary>
         ///     Gets collection of properties.
         /// </summary>
+        [Reactive]
         public ICollection<IProperty> Properties { get; private set; } = new List<IProperty>();
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
+        [Reactive]
         public sealed override string Name { get; set; }
 
         /// <inheritdoc />
