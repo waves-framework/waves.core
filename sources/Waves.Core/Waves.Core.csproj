@@ -10,12 +10,17 @@
   <ItemGroup>
     <ProjectReference Include="..\Waves.Core.Base\Waves.Core.Base.csproj" />
     <ProjectReference Include="..\Waves.Core.IoC\Waves.Core.IoC.csproj" />
+    <ProjectReference Include="..\Waves.Core.Services\Waves.Core.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="Waves.Utils.Serialization">
       <Version>2020.2.1.99</Version>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
 </Project>
