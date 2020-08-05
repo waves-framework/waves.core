@@ -3,24 +3,24 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
+    <Compile Remove="Services\Interfaces\**" />
+    <EmbeddedResource Remove="Services\Interfaces\**" />
+    <None Remove="Services\Interfaces\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ReactiveUI.Fody" Version="11.5.6" />
-    <PackageReference Include="System.Composition" Version="1.4.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Waves.Core.Base\Waves.Core.Base.csproj" />
     <ProjectReference Include="..\Waves.Core.IoC\Waves.Core.IoC.csproj" />
-    <ProjectReference Include="..\Waves.Core.Services\Waves.Core.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="Waves.Utils.Serialization">
       <Version>2020.2.1.99</Version>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
 </Project>

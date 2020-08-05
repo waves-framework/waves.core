@@ -4,6 +4,13 @@
 
   <ItemGroup>
     <PackageReference Include="ReactiveUI.Fody" Version="11.5.6" />
+    <PackageReference Include="System.Composition" Version="1.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Composition.TypedParts">
+      <HintPath>..\..\packages\system.composition.typedparts\1.4.1\lib\netstandard2.0\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

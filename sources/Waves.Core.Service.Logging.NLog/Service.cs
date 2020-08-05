@@ -8,7 +8,6 @@ using NLog.Common;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Services.Interfaces;
 
 namespace Waves.Core.Service.Logging.NLog
 {
@@ -22,11 +21,16 @@ namespace Waves.Core.Service.Logging.NLog
 
         private Logger _logger;
 
+        /// <summary>
+        ///     Gets instance of Core.
+        /// </summary>
+        public ICore Core { get; private set; }
+
         /// <inheritdoc />
         public override Guid Id => Guid.Parse("D17B3463-C126-4023-B22F-1A031636A343");
 
         /// <inheritdoc />
-        public override string Name { get; set; } = "Logging Service";
+        public override string Name { get; set; } = "Logging Service (NLog)";
 
         /// <inheritdoc />
         public int LastMessagesCount { get; private set; } = 250;
@@ -35,9 +39,11 @@ namespace Waves.Core.Service.Logging.NLog
         public ICollection<IMessageObject> LastMessages { get; } = new ObservableCollection<IMessageObject>();
 
         /// <inheritdoc />
-        public override void Initialize()
+        public override void Initialize(ICore core)
         {
             if (IsInitialized) return;
+
+            Core = core;
 
             try
             {

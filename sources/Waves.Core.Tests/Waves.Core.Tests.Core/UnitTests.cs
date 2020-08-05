@@ -27,7 +27,7 @@ namespace Waves.Core.Tests.Core
         [Test]
         public void CoreStart_IsConfigurationInitialized_True()
         {
-            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Configuration Loader Service"]);
+            Assert.AreEqual(true, _core.InitializedServices["Configuration Loader Service"]);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Waves.Core.Tests.Core
         [Test]
         public void CoreStart_IsContainerInitialized_True()
         {
-            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Service Container"]);
+            Assert.AreEqual(true, _core.InitializedServices["Service Container"]);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Waves.Core.Tests.Core
         [Test]
         public void CoreStart_IsApplicationLoaderInitialized_True()
         {
-            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Application Loader Service"]);
+            Assert.AreEqual(true, _core.InitializedServices["Application Loader Service"]);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Waves.Core.Tests.Core
         [Test]
         public void CoreStart_IsInputServiceInitialized_True()
         {
-            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Keyboard and Mouse Input Service"]);
+            Assert.AreEqual(true, _core.InitializedServices["Keyboard and Mouse Input Service"]);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Waves.Core.Tests.Core
         [Test]
         public void CoreStart_IsLoggingInitialized_True()
         {
-            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Logging Service"]);
+            Assert.AreEqual(true, _core.InitializedServices["Logging Service"]);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Waves.Core.Tests.Core
         [Test]
         public void CoreStart_IsModuleLoaderServiceInitialized_True()
         {
-            Assert.AreEqual(true, _core.CoreInitializationInformationDictionary["Module Loader Service"]);
+            Assert.AreEqual(true, _core.InitializedServices["Module Loader Service"]);
         }
 
 

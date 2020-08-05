@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Waves.Core.Base.Interfaces;
 
-namespace Waves.Core.Services.Interfaces
+namespace Waves.Core.Base.Interfaces
 {
     /// <summary>
     ///     Interface for logging services.

@@ -1,18 +1,17 @@
-using System;
+﻿using System;
 using System.Composition;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.EventArgs;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Services.Interfaces;
 
-namespace Waves.Core.Services
+namespace Waves.Core.Services.Input
 {
     /// <summary>
     ///     Input service.
     /// </summary>
     [Export(typeof(IService))]
-    public class InputService : Service, IInputService
+    public class Service : Base.Service, IInputService
     {
         /// <inheritdoc />
         public event EventHandler<KeyEventArgs> KeyPressed;
@@ -22,6 +21,11 @@ namespace Waves.Core.Services
 
         /// <inheritdoc />
         public event EventHandler<PointerEventArgs> PointerStateChanged;
+
+        /// <summary>
+        ///     Gets instance of Core.
+        /// </summary>
+        public ICore Core { get; private set; }
 
         /// <inheritdoc />
         public void SetKeyPressed(KeyEventArgs e)
@@ -48,9 +52,11 @@ namespace Waves.Core.Services
         public override string Name { get; set; } = "Keyboard and Mouse Input Service";
 
         /// <inheritdoc />
-        public override void Initialize()
+        public override void Initialize(ICore core)
         {
             if (IsInitialized) return;
+
+            Core = core;
 
             OnMessageReceived(this,
                 new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));

@@ -162,7 +162,6 @@ namespace Waves.Core.Base
             {
                 foreach (var property in Properties)
                 {
-                    if (property.IsReadOnly) continue;
                     if (property.Name != name) continue;
 
                     property.SetValue(value);

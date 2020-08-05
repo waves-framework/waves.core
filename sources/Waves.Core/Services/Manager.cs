@@ -5,6 +5,7 @@ using System.Composition.Hosting;
 using System.Reflection;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
+using Waves.Core.Base.Extensions;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Services
@@ -75,7 +76,8 @@ namespace Waves.Core.Services
                 MessageType.Information));
 
             var assemblies = new List<Assembly>();
-            Extensions.Assembly.GetAssemblies(assemblies, _currentDirectory);
+
+            assemblies.GetAssemblies(_currentDirectory);
 
             OnMessageReceived(new Message("Assembly searching", assemblies.Count + " assemblies were found.",
                 "Service manager", MessageType.Information));

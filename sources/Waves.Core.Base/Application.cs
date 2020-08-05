@@ -11,6 +11,9 @@ namespace Waves.Core.Base
     public abstract class Application : Object, IApplication
     {
         /// <inheritdoc />
+        public event ApplicationsActionsUpdatedEventHandler ActionsUpdated;
+
+        /// <inheritdoc />
         [Reactive]
         public bool IsInitialized { get; set; }
 
@@ -47,9 +50,6 @@ namespace Waves.Core.Base
         public ICollection<IApplicationAction> Actions { get; internal set; } = new List<IApplicationAction>();
 
         /// <inheritdoc />
-        public event EventHandler ActionsUpdated;
-
-        /// <inheritdoc />
         public abstract void Initialize();
 
         /// <inheritdoc />
@@ -59,11 +59,12 @@ namespace Waves.Core.Base
         public abstract override void Dispose();
 
         /// <summary>
-        ///     Notifies when actions collection changed.
+        /// Notifies when applications actions updated.
         /// </summary>
-        protected virtual void OnActionsUpdated()
+        /// <param name="args">Args.</param>
+        protected virtual void OnActionsUpdated(ApplicationActionsUpdatedEventArgs args)
         {
-            ActionsUpdated?.Invoke(this, System.EventArgs.Empty);
+            ActionsUpdated?.Invoke(this, args);
         }
     }
 }

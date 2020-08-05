@@ -20,7 +20,7 @@ namespace Waves.Core.Base
         public bool IsInitialized { get; set; } = false;
 
         /// <inheritdoc />
-        public abstract void Initialize();
+        public abstract void Initialize(ICore core);
 
         /// <inheritdoc />
         public abstract void LoadConfiguration(IConfiguration configuration);

@@ -15,7 +15,7 @@ namespace Waves.Core.Base.Interfaces
         /// <summary>
         ///     Initializes service.
         /// </summary>
-        void Initialize();
+        void Initialize(ICore core);
 
         /// <summary>
         ///     Loads configuration.
