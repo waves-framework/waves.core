@@ -23,7 +23,7 @@ namespace Waves.Core.Base
         /// <summary>
         ///     Notifies when message received.
         /// </summary>
-        /// <param name="sender">Sender.</param>
+        /// <param name="sender">Sender</param>
         /// <param name="e">Message.</param>
         protected virtual void OnMessageReceived(object sender, IMessage e)
         {

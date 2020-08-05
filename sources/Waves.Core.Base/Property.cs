@@ -83,7 +83,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
             }
         }
 

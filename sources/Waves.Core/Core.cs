@@ -221,7 +221,7 @@ namespace Waves.Core
 
 //            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
 
-//            OnMessageReceived(new Message(string.Empty, text, string.Empty, MessageType.Information));
+//            OnMessageReceived(this,new Message(string.Empty, text, string.Empty, MessageType.Information));
 
 //            if (CheckLoggingService())
 //                _loggingService.WriteTextToLog(text);
@@ -264,7 +264,7 @@ namespace Waves.Core
 //            if (message.Exception != null) Console.WriteLine(message.Exception.ToString());
 //#endif
 
-//            OnMessageReceived(message);
+//            OnMessageReceived(this,message);
 
 //            if (!CoreInitializationInformationDictionary["Logging Service"])
 //            {
@@ -291,7 +291,7 @@ namespace Waves.Core
 
 //            var message = new Message(exception, false);
 
-//            OnMessageReceived(message);
+//            OnMessageReceived(this,message);
 
 //            if (!CoreInitializationInformationDictionary["Logging Service"])
 //            {
@@ -435,7 +435,7 @@ namespace Waves.Core
 //        ///     Invokes message received event.
 //        /// </summary>
 //        /// <param name="e"></param>
-//        protected virtual void OnMessageReceived(IMessage e)
+//        protected virtual void OnMessageReceived(this,IMessage e)
 //        {
 //            MessageReceived?.Invoke(this, e);
 //        }
@@ -486,7 +486,7 @@ namespace Waves.Core
         /// <summary>
         ///     Gets service manager.
         /// </summary>
-        public Manager ServiceManager { get; } = new Manager();
+        public ServiceLoader ServiceManager { get; } = new ServiceLoader();
 
         /// <inheritdoc />
         public bool IsRunning { get; private set; }
@@ -720,10 +720,15 @@ namespace Waves.Core
             }
 
 #if DEBUG
-            Console.WriteLine("[{0}] [{1}]\t{2}: {3}", message.DateTime, status, message.Sender,
+            Console.WriteLine(
+                "[{0}] [{1}]\t{2}: {3}", 
+                message.DateTime, 
+                status, 
+                message.Sender,
                 message.Title + " - " + message.Text);
 
-            if (message.Exception != null) Console.WriteLine(message.Exception.ToString());
+            if (message.Exception != null) 
+                Console.WriteLine(message.Exception.ToString());
 #endif
 
             OnMessageReceived(message);
@@ -842,14 +847,17 @@ namespace Waves.Core
         /// </summary>
         private void InitializeServices()
         {
-            ServiceManager.MessageReceived += OnServiceMessageReceived;
+            ServiceManager.Initialize(this);
 
-            ServiceManager.Initialize();
+            if (ServiceManager.Objects == null)
+            {
+                throw new Exception("Error initializing services.");
+            }
 
             var method = typeof(Core).GetMethod("RegisterService");
             if (method == null) return;
 
-            foreach (var service in ServiceManager.Services)
+            foreach (var service in ServiceManager.Objects)
             {
                 try
                 {

@@ -249,7 +249,7 @@ namespace Waves.Core.Base
         /// <param name="e">Arguments.</param>
         private void OnObjectMessageReceived(object sender, IMessage e)
         {
-            OnMessageReceived(sender, e);
+            OnMessageReceived(this, e);
         }
     }
 }

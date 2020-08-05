@@ -70,7 +70,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
             }
         }
 
@@ -102,7 +102,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
             }
         }
 
@@ -130,7 +130,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
             }
         }
 
@@ -149,7 +149,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
 
                 return null;
             }
@@ -272,7 +272,7 @@ namespace Waves.Core.Base
         /// <param name="e">Arguments.</param>
         private void OnPropertyMessageReceived(object sender, IMessage e)
         {
-            OnMessageReceived(sender, e);
+            OnMessageReceived(this,e);
         }
     }
 }

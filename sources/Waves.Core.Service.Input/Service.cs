@@ -28,24 +28,6 @@ namespace Waves.Core.Services.Input
         public ICore Core { get; private set; }
 
         /// <inheritdoc />
-        public void SetKeyPressed(KeyEventArgs e)
-        {
-            OnKeyPressed(e);
-        }
-
-        /// <inheritdoc />
-        public void SetKeyReleased(KeyEventArgs e)
-        {
-            OnKeyReleased(e);
-        }
-
-        /// <inheritdoc />
-        public void SetPointer(PointerEventArgs e)
-        {
-            OnPointerStateChanged(e);
-        }
-
-        /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("3F339B93-AE63-4F93-9DCD-F71FA378744E");
 
         /// <inheritdoc />
@@ -77,6 +59,24 @@ namespace Waves.Core.Services.Input
         /// <inheritdoc />
         public override void Dispose()
         {
+        }
+
+        /// <inheritdoc />
+        public void SetKeyPressed(KeyEventArgs e)
+        {
+            OnKeyPressed(e);
+        }
+
+        /// <inheritdoc />
+        public void SetKeyReleased(KeyEventArgs e)
+        {
+            OnKeyReleased(e);
+        }
+
+        /// <inheritdoc />
+        public void SetPointer(PointerEventArgs e)
+        {
+            OnPointerStateChanged(e);
         }
 
         /// <summary>
