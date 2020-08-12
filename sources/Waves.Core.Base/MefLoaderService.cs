@@ -35,6 +35,11 @@ namespace Waves.Core.Base
         /// </summary>
         public ICore Core { get; private set; }
 
+        /// <summary>
+        /// Gets objects name.
+        /// </summary>
+        protected abstract string ObjectsName { get; }
+
         /// <inheritdoc />
         public override void Dispose()
         {
@@ -94,10 +99,14 @@ namespace Waves.Core.Base
                 {
                     configuration.SetPropertyValue(Name + "-Paths", Paths);
 
-                    OnMessageReceived(this, new Message("Saving configuration", "Configuration saves successfully.",
+                    OnMessageReceived(this, new Message("Saving configuration", "Configuration saved successfully.",
                         Name,
                         MessageType.Success));
                 }
+
+                OnMessageReceived(this, new Message("Saving configuration", "There is nothing to save.",
+                    Name,
+                    MessageType.Success));
             }
             catch (Exception e)
             {
@@ -171,16 +180,16 @@ namespace Waves.Core.Base
 
                         if (!objects.Any())
                             OnMessageReceived(this,
-                                new Message("Loading objects", "Objects not found.", Name, MessageType.Warning));
+                                new Message("Loading " + ObjectsName.ToLower(), ObjectsName + " not found.", Name, MessageType.Warning));
                         else
-                            OnMessageReceived(this, new Message("Loading objects",
-                                "Objects loads successfully (" + objects.Count() + " objects).", Name,
+                            OnMessageReceived(this, new Message("Loading " + ObjectsName.ToLower(),
+                                ObjectsName + " loads successfully (" + objects.Count() + " " + ObjectsName.ToLower() + ").", Name,
                                 MessageType.Success));
                     }
                     else
                     {
                         OnMessageReceived(this,
-                            new Message("Loading objects", "Objects were not loaded.", Name,
+                            new Message("Loading " + ObjectsName.ToLower(), ObjectsName + " were not loaded.", Name,
                                 MessageType.Warning));
                     }
                 }
@@ -188,7 +197,7 @@ namespace Waves.Core.Base
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Loading objects", "Objects have not been loaded.", Name, e, false));
+                    new Message("Loading " + ObjectsName.ToLower(), ObjectsName + " have not been loaded.", Name, e, false));
             }
         }
 
@@ -217,7 +226,7 @@ namespace Waves.Core.Base
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Subscribing events", "Error subscribing objects events.", Name, e, false));
+                    new Message("Subscribing events", "Error subscribing " + ObjectsName.ToLower() + " events.", Name, e, false));
             }
         }
 
@@ -238,7 +247,7 @@ namespace Waves.Core.Base
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Subscribing events", "Error subscribing objects events.", Name, e, false));
+                    new Message("Subscribing events", "Error subscribing " + ObjectsName.ToLower() + " events.", Name, e, false));
             }
         }
 

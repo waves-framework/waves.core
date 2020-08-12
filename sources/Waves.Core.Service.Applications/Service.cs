@@ -25,6 +25,9 @@ namespace Waves.Core.Service.Applications
         public ICollection<IApplicationAction> ApplicationActions { get; } = new List<IApplicationAction>();
 
         /// <inheritdoc />
+        protected override string ObjectsName => "Applications";
+
+        /// <inheritdoc />
         public override void Update()
         {
             UnsubscribeApplicationEvents();

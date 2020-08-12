@@ -22,6 +22,9 @@ namespace Waves.Core.Service.Modules
         public override string Name { get; set; } = "Module Loader Service";
 
         /// <inheritdoc />
+        protected override string ObjectsName => "Modules";
+
+        /// <inheritdoc />
         public override void Initialize(ICore core)
         {
             base.Initialize(core);

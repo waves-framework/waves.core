@@ -508,7 +508,7 @@ namespace Waves.Core
                 var watch = new Stopwatch();
                 watch.Start();
 
-                WriteLogMessage(new Message("Core launch", "Core is launching...", "Core",
+                WriteLogMessage(new Message("Core start", "Core is starting...", "Core",
                     MessageType.Success));
 
                 InitializeConfiguration();
@@ -517,27 +517,21 @@ namespace Waves.Core
 
                 IsRunning = true;
 
-                WriteLogMessage(new Message("Core launch", "Core launched successfully.", "Core",
+                WriteLogMessage(new Message("Core start", "Core started successfully.", "Core",
                     MessageType.Success));
 
                 watch.Stop();
 
-                WriteLogMessage(new Message("Core launch",
-                    "Time taken to launch: " + Math.Round(watch.Elapsed.TotalSeconds, 1) + " seconds.", "Core",
+                WriteLogMessage(new Message("Core start",
+                    "Time taken to start: " + Math.Round(watch.Elapsed.TotalSeconds, 1) + " seconds.", "Core",
                     MessageType.Success));
 
                 WriteLogSeparator();
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core launch", "Error starting kernel.", "Core", e, true));
+                WriteLogMessage(new Message("Core start", "Error starting core.", "Core", e, true));
             }
-        }
-
-        /// <inheritdoc />
-        public void StartAsync()
-        {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -545,12 +539,21 @@ namespace Waves.Core
         {
             try
             {
+                var watch = new Stopwatch();
+                watch.Start();
+
                 SaveConfiguration();
                 StopServices();
 
                 ServiceManager.MessageReceived -= OnServiceMessageReceived;
 
                 WriteLogMessage(new Message("Core stop", "Core stopped successfully.", "Core",
+                    MessageType.Success));
+
+                watch.Stop();
+
+                WriteLogMessage(new Message("Core stop",
+                    "Time taken to stop: " + Math.Round(watch.Elapsed.TotalSeconds, 1) + " seconds.", "Core",
                     MessageType.Success));
 
                 WriteLog("----------------------------------------------------");
@@ -562,17 +565,12 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public void StopAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public void SaveConfiguration()
         {
             try
             {
                 foreach (var service in Services)
+                {
                     try
                     {
                         service.SaveConfiguration(Configuration);
@@ -581,6 +579,7 @@ namespace Waves.Core
                     {
                         throw new Exception("Error saving \"" + service.Name + "\" configuration.");
                     }
+                }
 
                 CheckConfigurationDirectory();
 
@@ -602,12 +601,6 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public Task SaveConfigurationAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public T GetService<T>()
         {
             try
@@ -620,12 +613,6 @@ namespace Waves.Core
 
                 return default;
             }
-        }
-
-        /// <inheritdoc />
-        public Task<T> GetServiceAsync<T>()
-        {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -662,12 +649,6 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public Task RegisterServiceAsync<T>(T instance)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public virtual void WriteLog(string text)
         {
 #if DEBUG
@@ -684,12 +665,6 @@ namespace Waves.Core
             }
 
             _pendingMessages.Add(new Message(string.Empty, text, "Core", MessageType.Information));
-        }
-
-        /// <inheritdoc />
-        public Task WriteLogAsync(string text)
-        {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -744,12 +719,6 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public Task WriteLogMessageAsync(IMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public virtual void WriteLogException(Exception exception, string sender, bool isFatal)
         {
 #if DEBUG
@@ -771,12 +740,6 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public Task WriteLogExceptionAsync(Exception exception, string sender, bool isFatal)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public void WriteLogSeparator()
         {
 #if DEBUG
@@ -785,12 +748,6 @@ namespace Waves.Core
             if (!CheckLoggingService()) return;
 
             _loggingService.LastMessages.Add(new MessageSeparator());
-        }
-
-        /// <inheritdoc />
-        public Task WriteLogSeparatorAsync()
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

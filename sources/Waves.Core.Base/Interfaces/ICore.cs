@@ -43,30 +43,14 @@ namespace Waves.Core.Base.Interfaces
         public void Start();
 
         /// <summary>
-        ///     Starts core async.
-        /// </summary>
-        public void StartAsync();
-
-        /// <summary>
-        ///     Stops core working.```
+        ///     Stops core working.
         /// </summary>
         public void Stop();
-
-        /// <summary>
-        ///     Stops core async.
-        /// </summary>
-        public void StopAsync();
 
         /// <summary>
         ///     Saves configuration.
         /// </summary>
         public void SaveConfiguration();
-
-        /// <summary>
-        /// Saves configuration async.
-        /// </summary>
-        /// <returns></returns>
-        public Task SaveConfigurationAsync();
 
         /// <summary>
         ///     Gets service by type.
@@ -76,25 +60,11 @@ namespace Waves.Core.Base.Interfaces
         public T GetService<T>();
 
         /// <summary>
-        ///     Gets service async by type.
-        /// </summary>
-        /// <typeparam name="T">Type.</typeparam>
-        /// <returns>Service.</returns>
-        public Task<T> GetServiceAsync<T>();
-
-        /// <summary>
         ///     Registers service.
         /// </summary>
         /// <typeparam name="T">Type.</typeparam>
         /// <param name="instance">Instance.</param>
         public void RegisterService<T>(T instance);
-
-        /// <summary>
-        ///     Registers service async.
-        /// </summary>
-        /// <typeparam name="T">Type.</typeparam>
-        /// <param name="instance">Instance.</param>
-        public Task RegisterServiceAsync<T>(T instance);
 
         /// <summary>
         ///     Writes text to log.
@@ -103,23 +73,10 @@ namespace Waves.Core.Base.Interfaces
         public void WriteLog(string text);
 
         /// <summary>
-        /// Writes text async to log.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public Task WriteLogAsync(string text);
-
-        /// <summary>
         ///     Writes message to log.
         /// </summary>
         /// <param name="message">Message.</param>
         public void WriteLogMessage(IMessage message);
-
-        /// <summary>
-        ///     Writes message async to log.
-        /// </summary>
-        /// <param name="message">Message.</param>
-        public Task WriteLogMessageAsync(IMessage message);
 
         /// <summary>
         ///     Writes exception to log.
@@ -130,21 +87,8 @@ namespace Waves.Core.Base.Interfaces
         public void WriteLogException(Exception exception, string sender, bool isFatal);
 
         /// <summary>
-        ///     Writes exception to log.
-        /// </summary>
-        /// <param name="exception">Exception.</param>
-        /// <param name="sender">Sender.</param>
-        /// <param name="isFatal">Sets whether exception is fatal.</param>
-        public Task WriteLogExceptionAsync(Exception exception, string sender, bool isFatal);
-
-        /// <summary>
         ///     Adds log separator.
         /// </summary>
         public void WriteLogSeparator();
-
-        /// <summary>
-        ///     Adds log separator async.
-        /// </summary>
-        public Task WriteLogSeparatorAsync();
     }
 }

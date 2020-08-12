@@ -49,11 +49,17 @@ namespace Waves.Core.Services.Input
         /// <inheritdoc />
         public override void LoadConfiguration(IConfiguration configuration)
         {
+            OnMessageReceived(this, new Message("Loading configuration", "There is nothing to load.",
+                Name,
+                MessageType.Success));
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration(IConfiguration configuration)
         {
+            OnMessageReceived(this, new Message("Saving configuration", "There is nothing to save.",
+                Name,
+                MessageType.Success));
         }
 
         /// <inheritdoc />

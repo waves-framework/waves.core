@@ -8,11 +8,6 @@ namespace Waves.Core.Base.Interfaces
     /// </summary>
     public interface IConfiguration : IObject, ICloneable
     {
-        ///// <summary>
-        /////     Gets properties collection.
-        ///// </summary>
-        //ICollection<IProperty> Properties { get; }
-
         /// <summary>
         ///     Initializes configuration.
         /// </summary>

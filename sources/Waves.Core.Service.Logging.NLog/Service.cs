@@ -87,7 +87,7 @@ namespace Waves.Core.Service.Logging.NLog
             {
                 configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
 
-                OnMessageReceived(this, new Message("Saving configuration", "Configuration saves successfully.", Name,
+                OnMessageReceived(this, new Message("Saving configuration", "Configuration saved successfully.", Name,
                     MessageType.Success));
             }
             catch (Exception e)
