@@ -7,18 +7,17 @@ namespace Waves.Core.Sandbox
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
+        private static void Main(string[] args)
         {
             var core = new Core();
 
-            var task = core.StartAsync();
-            await task.ConfigureAwait(false);
+            core.Start();
 
-            //core.WriteLogMessage(new Message("Please, wait...", "Waiting for 3 seconds.", "App", MessageType.Information));
+            core.WriteLogMessage(new Message("Please, wait", "Waiting for 3 seconds...", "App", MessageType.Information));
 
-            //Thread.Sleep(3000);
+            Thread.Sleep(3000);
 
-            //core.Stop();
+            core.Stop();
         }
     }
 }

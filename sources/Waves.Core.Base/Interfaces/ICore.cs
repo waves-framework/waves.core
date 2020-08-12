@@ -64,7 +64,7 @@ namespace Waves.Core.Base.Interfaces
         /// </summary>
         /// <typeparam name="T">Type.</typeparam>
         /// <param name="instance">Instance.</param>
-        public void RegisterService<T>(T instance);
+        public void RegisterService<T>(T instance) where T : class;
 
         /// <summary>
         ///     Writes text to log.

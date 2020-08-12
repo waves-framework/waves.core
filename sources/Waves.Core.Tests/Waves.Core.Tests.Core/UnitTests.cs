@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Waves.Core.Base;
+using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Tests.Core
 {
@@ -9,6 +10,8 @@ namespace Waves.Core.Tests.Core
     /// </summary>
     public class UnitTests
     {
+        private bool _isPropertyChanged = false;
+
         private readonly Waves.Core.Core _core = new Waves.Core.Core();
 
         /// <summary>
@@ -28,15 +31,6 @@ namespace Waves.Core.Tests.Core
         public void CoreStart_IsConfigurationInitialized_True()
         {
             Assert.AreEqual(true, _core.InitializedServices["Configuration Loader Service"]);
-        }
-
-        /// <summary>
-        ///     Tests whether IoC container is initialized successfully.
-        /// </summary>
-        [Test]
-        public void CoreStart_IsContainerInitialized_True()
-        {
-            Assert.AreEqual(true, _core.InitializedServices["Service Container"]);
         }
 
         /// <summary>
@@ -63,7 +57,17 @@ namespace Waves.Core.Tests.Core
         [Test]
         public void CoreStart_IsLoggingInitialized_True()
         {
-            Assert.AreEqual(true, _core.InitializedServices["Logging Service"]);
+            foreach (var service in _core.InitializedServices)
+            {
+                if (service.Key.Contains("Logging Service"))
+                {
+                    Assert.AreEqual(true, service.Value);
+
+                    return;
+                }
+            }
+
+            Assert.Fail();
         }
 
         /// <summary>
@@ -75,7 +79,6 @@ namespace Waves.Core.Tests.Core
             Assert.AreEqual(true, _core.InitializedServices["Module Loader Service"]);
         }
 
-
         /// <summary>
         ///     Tests whether core is initialized successfully.
         /// </summary>
@@ -85,7 +88,23 @@ namespace Waves.Core.Tests.Core
             Assert.AreEqual(true, _core.IsRunning);
         }
 
-        private bool _isPropertyChanged = false;
+        /// <summary>
+        ///     Tests whether core is initialized successfully.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsLoggingServiceResolving_True()
+        {
+            var service = _core.GetService<ILoggingService>();
+
+            if (service != null)
+            {
+                Assert.True(true);
+
+                return;
+            }
+
+            Assert.Fail();
+        }
 
         /// <summary>
         ///     Tests notify property changed.

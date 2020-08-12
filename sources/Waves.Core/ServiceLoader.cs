@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Composition;
-using System.Composition.Hosting;
-using System.Reflection;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
-using Waves.Core.Base.Extensions;
 using Waves.Core.Base.Interfaces;
 
-namespace Waves.Core.Services
+namespace Waves.Core
 {
     /// <summary>
     /// Service loader.
