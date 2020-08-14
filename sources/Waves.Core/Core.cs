@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
@@ -10,6 +11,7 @@ using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 using Waves.Utils.Serialization;
+using Service = Waves.Core.Base.Service;
 
 namespace Waves.Core
 {
@@ -20,6 +22,8 @@ namespace Waves.Core
     {
         private readonly List<IMessage> _pendingMessages = new List<IMessage>();
 
+        private MethodInfo _registerServiceMethod;
+        
         private ContainerBuilder _builder;
 
         private IContainer _container;
@@ -175,7 +179,6 @@ namespace Waves.Core
                 service.MessageReceived += OnServiceMessageReceived;
 
                 service.Initialize(this);
-
                 service.LoadConfiguration(Configuration);
 
                 if (InitializedServices.ContainsKey(service.Name))
@@ -359,35 +362,16 @@ namespace Waves.Core
                 throw new Exception("Error initializing services.");
             }
 
-            var method = typeof(Core).GetMethod("RegisterService");
-            if (method == null) return;
+            _registerServiceMethod = typeof(Core).GetMethod("RegisterService");
+            if (_registerServiceMethod == null) return;
+            
+            
 
             foreach (var service in ServiceManager.Objects)
             {
                 try
                 {
-                    var type = service.GetType();
-                    var interfaces = type.GetInterfaces().ToList();
-
-                    Type result = null;
-
-                    foreach (var i in interfaces)
-                    {
-                        var innerInterfaces = i.GetInterfaces();
-
-                        if (!innerInterfaces.Contains(typeof(IService))) continue;
-                        result = i;
-                        break;
-                    }
-
-                    if (result == null) return;
-
-                    var genericMethod = method.MakeGenericMethod(result);
-                    genericMethod.Invoke(this, new object[] {service});
-
-                    WriteLogMessage(new Message("Registering", "Service has been registered successfully.",
-                        service.Name,
-                        MessageType.Success));
+                    InitializeService(service);
                 }
                 catch (Exception e)
                 {
@@ -395,6 +379,38 @@ namespace Waves.Core
                         "Error registering service.", service.Name, e, true));
                 }
             }
+        }
+
+        /// <summary>
+        /// Initializes service.
+        /// </summary>
+        /// <param name="service">Instance of service.</param>
+        private void InitializeService(IService service)
+        {
+            if (_registerServiceMethod == null) return;
+            
+            var type = service.GetType();
+            var interfaces = type.GetInterfaces().ToList();
+
+            Type result = null;
+
+            foreach (var i in interfaces)
+            {
+                var innerInterfaces = i.GetInterfaces();
+
+                if (!innerInterfaces.Contains(typeof(IService))) continue;
+                result = i;
+                break;
+            }
+
+            if (result == null) return;
+
+            var genericMethod = _registerServiceMethod.MakeGenericMethod(result);
+            genericMethod.Invoke(this, new object[] {service});
+
+            WriteLogMessage(new Message("Registering", "Service has been registered successfully.",
+                service.Name,
+                MessageType.Success));
         }
 
         /// <summary>

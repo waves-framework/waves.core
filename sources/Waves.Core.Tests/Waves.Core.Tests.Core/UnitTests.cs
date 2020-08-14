@@ -1,7 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Waves.Core.Base;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Tests.Core.TestData;
+using Waves.Core.Tests.Core.TestData.Interfaces;
 
 namespace Waves.Core.Tests.Core
 {
@@ -87,9 +90,27 @@ namespace Waves.Core.Tests.Core
         {
             Assert.AreEqual(true, _core.IsRunning);
         }
+        
+        /// <summary>
+        ///     Tests whether is applications service resolving.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsApplicationsServiceResolving_True()
+        {
+            var service = _core.GetService<IApplicationService>();
+
+            if (service != null)
+            {
+                Assert.True(true);
+
+                return;
+            }
+
+            Assert.Fail();
+        }
 
         /// <summary>
-        ///     Tests whether core is initialized successfully.
+        ///     Tests whether is logging service resolving.
         /// </summary>
         [Test]
         public void CoreStart_IsLoggingServiceResolving_True()
@@ -101,6 +122,105 @@ namespace Waves.Core.Tests.Core
                 Assert.True(true);
 
                 return;
+            }
+
+            Assert.Fail();
+        }
+        
+        /// <summary>
+        /// Tests whether is input service resolving.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsInputServiceResolving_True()
+        {
+            var service = _core.GetService<IInputService>();
+
+            if (service != null)
+            {
+                Assert.True(true);
+
+                return;
+            }
+
+            Assert.Fail();
+        }
+        
+        /// <summary>
+        /// Tests whether is module service resolving.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsModulesServiceResolving_True()
+        {
+            var service = _core.GetService<IModuleService>();
+
+            if (service != null)
+            {
+                Assert.True(true);
+
+                return;
+            }
+
+            Assert.Fail();
+        }
+
+        /// <summary>
+        /// Test whether test service is registering.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsTestServiceRegistering_True()
+        {
+            var service = new TestService();
+
+            try
+            {
+                _core.RegisterService<ITestService>(service);
+                
+                Assert.True(true);
+            }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
+        }
+        
+        /// <summary>
+        /// Test whether test service is resolving.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsTestServiceResolving_True()
+        {
+            var service = _core.GetService<ITestService>();
+
+            if (service != null)
+            {
+                Assert.True(true);
+
+                return;
+            }
+
+            Assert.Fail();
+        }
+        
+        /// <summary>
+        /// Test whether test service saves configuration.
+        /// </summary>
+        [Test]
+        public void CoreStart_IsTestServiceSavesConfiguration_True()
+        {
+            var service = _core.GetService<ITestService>();
+
+            if (service != null)
+            {
+                try
+                {
+                    service.SaveConfiguration(_core.Configuration);
+                
+                    Assert.True(true);
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail();
+                }
             }
 
             Assert.Fail();
