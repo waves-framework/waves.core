@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
+using Waves.Core.Base.Interfaces;
+using Waves.Core.Tests.Core.TestData;
+using Waves.Core.Tests.Core.TestData.Interfaces;
 
 namespace Waves.Core.Sandbox
 {
@@ -13,11 +16,15 @@ namespace Waves.Core.Sandbox
 
             core.Start();
 
-            core.WriteLogMessage(new Message("Please, wait", "Waiting for 3 seconds...", "App", MessageType.Information));
+            core.RegisterService<ITestService>(new TestService());
 
-            Thread.Sleep(3000);
+            var service = core.GetService<ITestService>();
 
-            core.Stop();
+            // core.WriteLogMessage(new Message("Please, wait", "Waiting for 3 seconds...", "App", MessageType.Information));
+            //
+            // Thread.Sleep(3000);
+            //
+            // core.Stop();
         }
     }
 }

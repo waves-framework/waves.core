@@ -26,61 +26,61 @@ namespace Waves.Core.Tests.Core
             if (!_core.IsRunning)
                 _core.Start();
         }
-
-        /// <summary>
-        ///     Tests whether configuration is initialized successfully.
-        /// </summary>
-        [Test]
-        public void CoreStart_IsConfigurationInitialized_True()
-        {
-            Assert.AreEqual(true, _core.InitializedServices["Configuration Loader Service"]);
-        }
-
-        /// <summary>
-        ///     Tests whether application loader service is initialized successfully.
-        /// </summary>
-        [Test]
-        public void CoreStart_IsApplicationLoaderInitialized_True()
-        {
-            Assert.AreEqual(true, _core.InitializedServices["Application Loader Service"]);
-        }
-
-        /// <summary>
-        ///     Tests whether input service is initialized successfully.
-        /// </summary>
-        [Test]
-        public void CoreStart_IsInputServiceInitialized_True()
-        {
-            Assert.AreEqual(true, _core.InitializedServices["Keyboard and Mouse Input Service"]);
-        }
-
-        /// <summary>
-        ///     Tests whether logging is initialized successfully.
-        /// </summary>
-        [Test]
-        public void CoreStart_IsLoggingInitialized_True()
-        {
-            foreach (var service in _core.InitializedServices)
-            {
-                if (service.Key.Contains("Logging Service"))
-                {
-                    Assert.AreEqual(true, service.Value);
-
-                    return;
-                }
-            }
-
-            Assert.Fail();
-        }
-
-        /// <summary>
-        ///     Tests whether module service is initialized successfully.
-        /// </summary>
-        [Test]
-        public void CoreStart_IsModuleLoaderServiceInitialized_True()
-        {
-            Assert.AreEqual(true, _core.InitializedServices["Module Loader Service"]);
-        }
+        //
+        //
+        // ///     Tests whether configuration is initialized successfully.
+        // /// </summary>
+        // [Test]
+        // public void CoreStart_IsConfigurationInitialized_True()
+        // {
+        //     Assert.AreEqual(true, _core.InitializedServices["Configuration Loader Service"]);
+        // }
+        //
+        // /// <summary>
+        // ///     Tests whether application loader service is initialized successfully.
+        // /// </summary>
+        // [Test]
+        // public void CoreStart_IsApplicationLoaderInitialized_True()
+        // {
+        //     Assert.AreEqual(true, _core.InitializedServices["Application Loader Service"]);
+        // }
+        //
+        // /// <summary>
+        // ///     Tests whether input service is initialized successfully.
+        // /// </summary>
+        // [Test]
+        // public void CoreStart_IsInputServiceInitialized_True()
+        // {
+        //     Assert.AreEqual(true, _core.InitializedServices["Keyboard and Mouse Input Service"]);
+        // }
+        //
+        // /// <summary>
+        // ///     Tests whether logging is initialized successfully.
+        // /// </summary>
+        // [Test]
+        // public void CoreStart_IsLoggingInitialized_True()
+        // {
+        //     foreach (var service in _core.InitializedServices)
+        //     {
+        //         if (service.Key.Contains("Logging Service"))
+        //         {
+        //             Assert.AreEqual(true, service.Value);
+        //
+        //             return;
+        //         }
+        //     }
+        //
+        //     Assert.Fail();
+        // }
+        //
+        // /// <summary>
+        // ///     Tests whether module service is initialized successfully.
+        // /// </summary>
+        // [Test]
+        // public void CoreStart_IsModuleLoaderServiceInitialized_True()
+        // {
+        //     Assert.AreEqual(true, _core.InitializedServices["Module Loader Service"]);
+        // }
 
         /// <summary>
         ///     Tests whether core is initialized successfully.
@@ -99,14 +99,7 @@ namespace Waves.Core.Tests.Core
         {
             var service = _core.GetService<IApplicationService>();
 
-            if (service != null)
-            {
-                Assert.True(true);
-
-                return;
-            }
-
-            Assert.Fail();
+            Assert.NotNull(service);
         }
 
         /// <summary>
@@ -117,14 +110,7 @@ namespace Waves.Core.Tests.Core
         {
             var service = _core.GetService<ILoggingService>();
 
-            if (service != null)
-            {
-                Assert.True(true);
-
-                return;
-            }
-
-            Assert.Fail();
+            Assert.NotNull(service);
         }
         
         /// <summary>
@@ -135,14 +121,7 @@ namespace Waves.Core.Tests.Core
         {
             var service = _core.GetService<IInputService>();
 
-            if (service != null)
-            {
-                Assert.True(true);
-
-                return;
-            }
-
-            Assert.Fail();
+            Assert.NotNull(service);
         }
         
         /// <summary>
@@ -153,14 +132,7 @@ namespace Waves.Core.Tests.Core
         {
             var service = _core.GetService<IModuleService>();
 
-            if (service != null)
-            {
-                Assert.True(true);
-
-                return;
-            }
-
-            Assert.Fail();
+            Assert.NotNull(service);
         }
 
         /// <summary>
@@ -171,16 +143,10 @@ namespace Waves.Core.Tests.Core
         {
             var service = new TestService();
 
-            try
+            Assert.DoesNotThrow(delegate
             {
                 _core.RegisterService<ITestService>(service);
-                
-                Assert.True(true);
-            }
-            catch (Exception e)
-            {
-                Assert.Fail();
-            }
+            });
         }
         
         /// <summary>
@@ -191,14 +157,7 @@ namespace Waves.Core.Tests.Core
         {
             var service = _core.GetService<ITestService>();
 
-            if (service != null)
-            {
-                Assert.True(true);
-
-                return;
-            }
-
-            Assert.Fail();
+            Assert.NotNull(service);
         }
         
         /// <summary>
@@ -211,16 +170,10 @@ namespace Waves.Core.Tests.Core
 
             if (service != null)
             {
-                try
+                Assert.DoesNotThrow(delegate
                 {
                     service.SaveConfiguration(_core.Configuration);
-                
-                    Assert.True(true);
-                }
-                catch (Exception e)
-                {
-                    Assert.Fail();
-                }
+                });
             }
 
             Assert.Fail();

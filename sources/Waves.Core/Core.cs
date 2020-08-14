@@ -4,14 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Autofac;
-using Autofac.Core;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 using Waves.Utils.Serialization;
-using Service = Waves.Core.Base.Service;
 
 namespace Waves.Core
 {
@@ -20,6 +17,8 @@ namespace Waves.Core
     /// </summary>
     public class Core : ICore
     {
+        private bool _isContainerBuilt;
+        
         private readonly List<IMessage> _pendingMessages = new List<IMessage>();
 
         private MethodInfo _registerServiceMethod;
@@ -174,7 +173,12 @@ namespace Waves.Core
             {
                 if (!(instance is IService service)) return;
 
-                _builder.RegisterInstance(instance).As<T>();
+                if (!_isContainerBuilt)
+                    _builder.RegisterInstance(instance).As<T>();
+                else
+                {
+                    // ???
+                }
 
                 service.MessageReceived += OnServiceMessageReceived;
 
@@ -338,6 +342,8 @@ namespace Waves.Core
             try
             {
                 _container = _builder.Build();
+
+                _isContainerBuilt = true;
             }
             catch (Exception e)
             {
@@ -365,8 +371,6 @@ namespace Waves.Core
             _registerServiceMethod = typeof(Core).GetMethod("RegisterService");
             if (_registerServiceMethod == null) return;
             
-            
-
             foreach (var service in ServiceManager.Objects)
             {
                 try
@@ -397,9 +401,16 @@ namespace Waves.Core
             foreach (var i in interfaces)
             {
                 var innerInterfaces = i.GetInterfaces();
-
-                if (!innerInterfaces.Contains(typeof(IService))) continue;
+                
+                if (!innerInterfaces.Contains(typeof(IService))) 
+                    continue;
+                
+                // TODO: refactor this temp fix.
+                if (i.IsGenericType) 
+                    continue;
+                
                 result = i;
+                
                 break;
             }
 
