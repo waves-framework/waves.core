@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Waves.Core.Service.Applications</id>
+    <id>Waves.Core.Service.Input</id>
     <version>{$NUGETVERSION}</version>
     <authors>Waves</authors>
     <owners>Waves</owners>
@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/ambertape/waves.core</projectUrl>
     <icon>files\logo_small.png</icon>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>Library for loading assemblies with type IApplication.</description>
+    <description>Library of base core abstractions.</description>
     <releaseNotes>
       The first release of package.
       - Service for loading libraries with type IApplication.

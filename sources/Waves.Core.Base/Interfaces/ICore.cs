@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Waves.Core.Base.Enums;
+using Waves.Core.Base.Interfaces.Services;
 
 namespace Waves.Core.Base.Interfaces
 {
@@ -53,18 +54,32 @@ namespace Waves.Core.Base.Interfaces
         public void SaveConfiguration();
 
         /// <summary>
-        ///     Gets service by type.
+        ///     Gets instance by type.
         /// </summary>
         /// <typeparam name="T">Type.</typeparam>
-        /// <returns>Service.</returns>
-        public T GetService<T>();
+        /// <returns>Instance.</returns>
+        public T GetInstance<T>() where T : class;
 
         /// <summary>
-        ///     Registers service.
+        ///     Gets instances by type.
+        /// </summary>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <returns>Instances.</returns>
+        public ICollection<T> GetInstances<T>() where T : class;
+
+        /// <summary>
+        ///     Registers instance.
         /// </summary>
         /// <typeparam name="T">Type.</typeparam>
         /// <param name="instance">Instance.</param>
-        public void RegisterService<T>(T instance) where T : class;
+        public void RegisterInstance<T>(T instance) where T : class;
+
+        /// <summary>
+        ///     Registers instances by type.
+        /// </summary>
+        /// <typeparam name="T">Type.</typeparam>
+        /// <param name="instances">Collections of instances.</param>
+        public void RegisterInstances<T>(ICollection<T> instances) where T : class;
 
         /// <summary>
         ///     Writes text to log.
@@ -76,7 +91,7 @@ namespace Waves.Core.Base.Interfaces
         ///     Writes message to log.
         /// </summary>
         /// <param name="message">Message.</param>
-        public void WriteLogMessage(IMessage message);
+        public void WriteLog(IMessage message);
 
         /// <summary>
         ///     Writes exception to log.
@@ -84,11 +99,6 @@ namespace Waves.Core.Base.Interfaces
         /// <param name="exception">Exception.</param>
         /// <param name="sender">Sender.</param>
         /// <param name="isFatal">Sets whether exception is fatal.</param>
-        public void WriteLogException(Exception exception, string sender, bool isFatal);
-
-        /// <summary>
-        ///     Adds log separator.
-        /// </summary>
-        public void WriteLogSeparator();
+        public void WriteLog(Exception exception, string sender, bool isFatal);
     }
 }

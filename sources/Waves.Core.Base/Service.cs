@@ -19,14 +19,19 @@ namespace Waves.Core.Base
         [Reactive]
         public bool IsInitialized { get; set; } = false;
 
+        /// <summary>
+        ///     Gets instance of Core.
+        /// </summary>
+        protected ICore Core { get; set; }
+
         /// <inheritdoc />
         public abstract void Initialize(ICore core);
 
         /// <inheritdoc />
-        public abstract void LoadConfiguration(IConfiguration configuration);
+        public abstract void LoadConfiguration();
 
         /// <inheritdoc />
-        public abstract void SaveConfiguration(IConfiguration configuration);
+        public abstract void SaveConfiguration();
 
         /// <inheritdoc />
         public abstract override void Dispose();

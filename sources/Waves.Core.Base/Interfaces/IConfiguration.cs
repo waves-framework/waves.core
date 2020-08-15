@@ -9,6 +9,11 @@ namespace Waves.Core.Base.Interfaces
     public interface IConfiguration : IObject, ICloneable
     {
         /// <summary>
+        /// Gets whether configuration is initialized.
+        /// </summary>
+        bool IsInitialized { get; }
+
+        /// <summary>
         ///     Initializes configuration.
         /// </summary>
         void Initialize();

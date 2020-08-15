@@ -16,15 +16,15 @@ namespace Waves.Core.Sandbox
 
             core.Start();
 
-            core.RegisterService<ITestService>(new TestService());
+            core.RegisterInstance<ITestService>(new TestService());
 
-            var service = core.GetService<ITestService>();
+            var service = core.GetInstance<ITestService>();
 
-            // core.WriteLogMessage(new Message("Please, wait", "Waiting for 3 seconds...", "App", MessageType.Information));
-            //
-            // Thread.Sleep(3000);
-            //
-            // core.Stop();
+            core.WriteLog(new Message("Please, wait", "Waiting for 3 seconds...", "App", MessageType.Information));
+
+            Thread.Sleep(3000);
+
+            core.Stop();
         }
     }
 }

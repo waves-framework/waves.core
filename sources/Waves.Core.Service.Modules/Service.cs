@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Waves.Core.Base;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
 namespace Waves.Core.Service.Modules
 {

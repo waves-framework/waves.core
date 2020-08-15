@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Waves.Core.Base.Interfaces
+namespace Waves.Core.Base.Interfaces.Services
 {
     /// <summary>
     ///     Interface for module service classes.

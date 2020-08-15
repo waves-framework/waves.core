@@ -45,6 +45,9 @@ namespace Waves.Core.Base
         public ICollection<IProperty> Properties { get; private set; } = new List<IProperty>();
 
         /// <inheritdoc />
+        public bool IsInitialized { get; private set; }
+
+        /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
@@ -66,11 +69,16 @@ namespace Waves.Core.Base
         {
             try
             {
-                foreach (var property in Properties) property.MessageReceived += OnPropertyMessageReceived;
+                foreach (var property in Properties) 
+                    property.MessageReceived += OnPropertyMessageReceived;
+
+                IsInitialized = true;
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,new Message(e, false));
+
+                IsInitialized = false;
             }
         }
 

@@ -31,11 +31,6 @@ namespace Waves.Core.Base
         public IEnumerable<T> Objects { get; private set; }
 
         /// <summary>
-        /// Gets instance of Core.
-        /// </summary>
-        public ICore Core { get; private set; }
-
-        /// <summary>
         /// Gets objects name.
         /// </summary>
         protected abstract string ObjectsName { get; }
@@ -74,11 +69,11 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public override void LoadConfiguration(IConfiguration configuration)
+        public override void LoadConfiguration()
         {
             try
             {
-                Paths.AddRange(LoadConfigurationValue(configuration,  Name + "-Paths", new List<string>()));
+                Paths.AddRange(LoadConfigurationValue(Core.Configuration,  Name + "-Paths", new List<string>()));
 
                 OnMessageReceived(this, new Message("Loading configuration", "Configuration loads successfully.", Name,
                     MessageType.Success));
@@ -91,13 +86,13 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public override void SaveConfiguration(IConfiguration configuration)
+        public override void SaveConfiguration()
         {
             try
             {
                 if (Paths.Count > 0)
                 {
-                    configuration.SetPropertyValue(Name + "-Paths", Paths);
+                    Core.Configuration.SetPropertyValue(Name + "-Paths", Paths);
 
                     OnMessageReceived(this, new Message("Saving configuration", "Configuration saved successfully.",
                         Name,

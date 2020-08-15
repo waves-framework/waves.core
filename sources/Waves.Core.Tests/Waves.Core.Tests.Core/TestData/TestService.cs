@@ -22,15 +22,24 @@ namespace Waves.Core.Tests.Core.TestData
         /// <inheritdoc />
         public override void Initialize(ICore core)
         {
+            if (IsInitialized) return;
+
+            Core = core;
+
+            OnMessageReceived(this,
+                new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
+
+            IsInitialized = true;
+
             _returnValue = 1;
         }
 
         /// <inheritdoc />
-        public override void LoadConfiguration(IConfiguration configuration)
+        public override void LoadConfiguration()
         {
             try
             {
-                _returnValue = LoadConfigurationValue(configuration, "TestService-ReturnValue", 1);
+                _returnValue = LoadConfigurationValue(Core.Configuration, "TestService-ReturnValue", 1);
 
                 OnMessageReceived(this, 
                     new Message(
@@ -51,11 +60,11 @@ namespace Waves.Core.Tests.Core.TestData
         }
 
         /// <inheritdoc />
-        public override void SaveConfiguration(IConfiguration configuration)
+        public override void SaveConfiguration()
         {
             try
             {
-                configuration.SetPropertyValue("TestService-ReturnValue", _returnValue);
+                Core.Configuration.SetPropertyValue("TestService-ReturnValue", _returnValue);
 
                 OnMessageReceived(this, 
                     new Message(

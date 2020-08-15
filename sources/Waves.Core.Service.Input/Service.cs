@@ -4,8 +4,9 @@ using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.EventArgs;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
-namespace Waves.Core.Services.Input
+namespace Waves.Core.Service.Input
 {
     /// <summary>
     ///     Input service.
@@ -21,11 +22,6 @@ namespace Waves.Core.Services.Input
 
         /// <inheritdoc />
         public event EventHandler<PointerEventArgs> PointerStateChanged;
-
-        /// <summary>
-        ///     Gets instance of Core.
-        /// </summary>
-        public ICore Core { get; private set; }
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("3F339B93-AE63-4F93-9DCD-F71FA378744E");
@@ -47,19 +43,19 @@ namespace Waves.Core.Services.Input
         }
 
         /// <inheritdoc />
-        public override void LoadConfiguration(IConfiguration configuration)
+        public override void LoadConfiguration()
         {
             OnMessageReceived(this, new Message("Loading configuration", "There is nothing to load.",
                 Name,
-                MessageType.Success));
+                MessageType.Information));
         }
 
         /// <inheritdoc />
-        public override void SaveConfiguration(IConfiguration configuration)
+        public override void SaveConfiguration()
         {
             OnMessageReceived(this, new Message("Saving configuration", "There is nothing to save.",
                 Name,
-                MessageType.Success));
+                MessageType.Information));
         }
 
         /// <inheritdoc />

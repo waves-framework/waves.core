@@ -1,7 +1,7 @@
 ﻿using System;
 using Waves.Core.Base.EventArgs;
 
-namespace Waves.Core.Base.Interfaces
+namespace Waves.Core.Base.Interfaces.Services
 {
     /// <summary>
     ///     Interface for input service classes.

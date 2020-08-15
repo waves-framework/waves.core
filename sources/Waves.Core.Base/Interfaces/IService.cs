@@ -20,13 +20,11 @@ namespace Waves.Core.Base.Interfaces
         /// <summary>
         ///     Loads configuration.
         /// </summary>
-        /// <param name="configuration">Configuration.</param>
-        void LoadConfiguration(IConfiguration configuration);
+        void LoadConfiguration();
 
         /// <summary>
         ///     Saves configuration.
         /// </summary>
-        /// <param name="configuration">Configuration.</param>
-        void SaveConfiguration(IConfiguration configuration);
+        void SaveConfiguration();
     }
 }
