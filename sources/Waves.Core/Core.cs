@@ -489,13 +489,13 @@ namespace Waves.Core
                 // if container service is null, than throw exception.
                 if (ContainerService == null)
                 {
-                    throw new NullReferenceException("Container service not found.");
+                    throw new NullReferenceException("Container service not initialized or initialized with errors.");
                 }
 
                 // if logging service is null, than throw exception.
                 if (LoggingService == null)
                 {
-                    throw new NullReferenceException("Logging service not found.");
+                    throw new NullReferenceException("Logging service not initialized or initialized with errors.");
                 }
 
                 // register other services

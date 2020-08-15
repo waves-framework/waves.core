@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Waves.Core.Base.Interfaces.Services
 {
@@ -8,29 +9,29 @@ namespace Waves.Core.Base.Interfaces.Services
     public interface INativeLibraryService : IService
     {
         /// <summary>
-        ///     Gets native libraries paths.
+        /// Get loading paths.
         /// </summary>
-        ICollection<string> Paths { get; }
+        List<string> Paths { get; }
 
         /// <summary>
-        ///     List of loaded native libraries names.
+        ///     Gets loading libraries names.
         /// </summary>
-        ICollection<string> Names { get; }
+        List<string> Names { get; }
 
         /// <summary>
-        ///     Adds directory path.
+        ///     Adds directory to loading from.
         /// </summary>
         /// <param name="path">Path.</param>
         void AddPath(string path);
 
         /// <summary>
-        ///     Removes directory path.
+        ///     Removes directory to loading from.
         /// </summary>
         /// <param name="path">Path.</param>
         void RemovePath(string path);
 
         /// <summary>
-        ///     Updates libraries collection.
+        /// Updates loaded libraries.
         /// </summary>
         void Update();
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 using AssemblyExtensions = Waves.Core.Base.Extensions.AssemblyExtensions;
 
 namespace Waves.Core.Base

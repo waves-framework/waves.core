@@ -1,4 +1,5 @@
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
 namespace Waves.Core.Tests.Core.TestData.Interfaces
 {

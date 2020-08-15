@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
 namespace Waves.Core
 {

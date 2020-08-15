@@ -1,6 +1,7 @@
 ﻿using System;
 using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
 namespace Waves.Core.Base
 {

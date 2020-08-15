@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Waves.Core.Base.Interfaces.Services;
 
 namespace Waves.Core.Base.Interfaces
 {
