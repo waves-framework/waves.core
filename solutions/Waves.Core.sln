@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waves.Core.Sandbox", "..\so
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2963F48A-F0F2-4C10-B087-B238B3EDFEAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waves.Core.Tests.Core", "..\sources\Waves.Core.Tests\Waves.Core.Tests.Core\Waves.Core.Tests.Core.csproj", "{DA0C9BE7-FE94-49CA-9691-15B601722504}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waves.Core.Tests", "..\sources\Waves.Core.Tests\Waves.Core.Tests\Waves.Core.Tests.csproj", "{DA0C9BE7-FE94-49CA-9691-15B601722504}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{57DA590A-C2E1-4430-9D08-BA6F04962059}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Service.Container.Autofac", "..\sources\Waves.Core.Service.Container.Autofac\Waves.Core.Service.Container.Autofac.csproj", "{A9041E9A-7D15-4BBB-83E4-4AE4011540A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Service.Native", "..\sources\Waves.Core.Service.Native\Waves.Core.Service.Native.csproj", "{EFB31DA2-16E0-46AF-AD63-25C00EE4C111}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Base.Tests", "..\sources\Waves.Core.Tests\Waves.Core.Base.Tests\Waves.Core.Base.Tests.csproj", "{81240AF6-8135-45A7-96E8-88E19FD4B122}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -199,6 +201,18 @@ Global
 		{EFB31DA2-16E0-46AF-AD63-25C00EE4C111}.Release|x64.Build.0 = Release|Any CPU
 		{EFB31DA2-16E0-46AF-AD63-25C00EE4C111}.Release|x86.ActiveCfg = Release|Any CPU
 		{EFB31DA2-16E0-46AF-AD63-25C00EE4C111}.Release|x86.Build.0 = Release|Any CPU
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Debug|x64.ActiveCfg = Debug|x64
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Debug|x64.Build.0 = Debug|x64
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Debug|x86.ActiveCfg = Debug|x86
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Debug|x86.Build.0 = Debug|x86
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Release|x64.ActiveCfg = Release|x64
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Release|x64.Build.0 = Release|x64
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Release|x86.ActiveCfg = Release|x86
+		{81240AF6-8135-45A7-96E8-88E19FD4B122}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +225,7 @@ Global
 		{3238BC71-2FEF-48E9-A593-94AB8ED99BDC} = {57DA590A-C2E1-4430-9D08-BA6F04962059}
 		{A9041E9A-7D15-4BBB-83E4-4AE4011540A8} = {57DA590A-C2E1-4430-9D08-BA6F04962059}
 		{EFB31DA2-16E0-46AF-AD63-25C00EE4C111} = {57DA590A-C2E1-4430-9D08-BA6F04962059}
+		{81240AF6-8135-45A7-96E8-88E19FD4B122} = {2963F48A-F0F2-4C10-B087-B238B3EDFEAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E8EE6A0-1037-49F2-8C63-D7650E3925B7}

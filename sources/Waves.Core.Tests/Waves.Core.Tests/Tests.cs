@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Base.Interfaces.Services;
-using Waves.Core.Tests.Core.TestData;
-using Waves.Core.Tests.Core.TestData.Interfaces;
+using Waves.Core.Tests.TestData;
+using Waves.Core.Tests.TestData.Interfaces;
 
-namespace Waves.Core.Tests.Core
+namespace Waves.Core.Tests
 {
     /// <summary>
     ///     Core test class.

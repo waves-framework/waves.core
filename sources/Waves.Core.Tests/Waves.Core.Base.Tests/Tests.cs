@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
-using Waves.Core.Base;
 
-namespace Waves.Core.Tests.Core
+namespace Waves.Core.Base.Tests
 {
     /// <summary>
     /// Waves.Core.Base classes tests.

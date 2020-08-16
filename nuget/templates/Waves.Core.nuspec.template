@@ -11,8 +11,9 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Waves Core library.</description>
     <releaseNotes>
-      - Integrated Autofac instead of Waves.IoC.
-      - Refactoring code.
+      - Services moved to separate assemblies provided by NuGet.
+      - Core now implemented from ICore with modified interface.
+      - Full refactoring of Core.
     </releaseNotes>
     <copyright>Copyright (c) 2020 Egor Khindikaynen</copyright>
     <tags>Waves core</tags>

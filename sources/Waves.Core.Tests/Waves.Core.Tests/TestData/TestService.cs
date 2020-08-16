@@ -2,9 +2,9 @@ using System;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Tests.Core.TestData.Interfaces;
+using Waves.Core.Tests.TestData.Interfaces;
 
-namespace Waves.Core.Tests.Core.TestData
+namespace Waves.Core.Tests.TestData
 {
     /// <summary>
     /// Test service.
