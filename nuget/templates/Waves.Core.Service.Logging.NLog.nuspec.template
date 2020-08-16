@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Waves.Core.Service.Logging.NLog</id>
+    <version>{$NUGETVERSION}</version>
+    <authors>Waves</authors>
+    <owners>Waves</owners>
+    <license type="file">license.md</license>
+    <projectUrl>https://github.com/ambertape/waves.core</projectUrl>
+    <icon>files\logo_small.png</icon>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Logging service provided by NLog.</description>
+    <releaseNotes>
+      The first release of package.
+      - Simple logging service provided by NLog.
+    </releaseNotes>
+    <copyright>Copyright (c) 2020 Egor Khindikaynen</copyright>
+    <tags>Waves core service logging nlog</tags>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+      	<dependency id="NLog" version="4.7.3" />
+        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.3.0)" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.NETCore.App" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+  	<file src="..\..\license.md" target="" />
+    <file src="..\..\files\logo_small.png" target="files\" />
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Service.Logging.NLog.dll" target="lib\netcoreapp3.1"/>
+    <file src="..\..\bin\AnyCPU\release\netcoreapp3.1\Waves.Core.Service.Logging.NLog.xml" target="lib\netcoreapp3.1"/>
+  </files>  
+</package>
