@@ -1,5 +1,4 @@
 ﻿using System;
-using PropertyChanged;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -13,7 +12,6 @@ namespace Waves.Core.Base
         public abstract Guid Id { get; }
 
         /// <inheritdoc />
-        [SuppressPropertyChangedWarnings]
         public abstract string Name { get; set; }
 
         /// <inheritdoc />
@@ -25,7 +23,7 @@ namespace Waves.Core.Base
         /// <summary>
         ///     Notifies when message received.
         /// </summary>
-        /// <param name="sender">Sender.</param>
+        /// <param name="sender">Sender</param>
         /// <param name="e">Message.</param>
         protected virtual void OnMessageReceived(object sender, IMessage e)
         {

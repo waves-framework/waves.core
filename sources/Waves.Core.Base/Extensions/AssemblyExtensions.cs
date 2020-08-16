@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Runtime.Loader;
 #if NETCOREAPP3_1
-    using System.Runtime.Loader;
+
 #endif
 
 
-namespace Waves.Core.Services.Extensions
+namespace Waves.Core.Base.Extensions
 {
     /// <summary>
     ///     Assembly loading extensions.
     /// </summary>
-    public static class Assembly
+    public static class AssemblyExtensions
     {
         /// <summary>
         ///     Gets assemblies from current directory.

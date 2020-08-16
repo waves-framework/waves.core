@@ -11,15 +11,14 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Library of base core abstractions.</description>
     <releaseNotes>
-      The first release of package.
-      - Base core classes.
+      - Added abstract MefLoaderService for loading MEF libraries. 
     </releaseNotes>
     <copyright>Copyright (c) 2020 Egor Khindikaynen</copyright>
     <tags>Waves core base</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-      	<dependency id="Fody" version="6.2.1" />
-      	<dependency id="PropertyChanged.Fody" version="3.2.8" />
+      	<dependency id="ReactiveUI.Fody" version="11.5.6" />
+      	<dependency id="System.Composition" version="1.4.1" />
       </group>
     </dependencies>
     <frameworkReferences>

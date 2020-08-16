@@ -7,13 +7,8 @@ namespace Waves.Core.Base.Interfaces
     /// <summary>
     ///     Interface of Waves's Module Library classes.
     /// </summary>
-    public interface IModuleLibrary : INotifyPropertyChanged
+    public interface IModuleLibrary : IObject
     {
-        /// <summary>
-        ///     Gets name of module library.
-        /// </summary>
-        string Name { get; }
-
         /// <summary>
         ///     Gets description of module library.
         /// </summary>
@@ -38,10 +33,5 @@ namespace Waves.Core.Base.Interfaces
         ///     Updates modules collection.
         /// </summary>
         void UpdateModulesCollection();
-
-        /// <summary>
-        ///     Event for message receiving handling.
-        /// </summary>
-        event EventHandler<IMessage> MessageReceived;
     }
 }

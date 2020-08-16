@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -40,12 +41,17 @@ namespace Waves.Core.Base
         /// <summary>
         ///     Gets collection of properties.
         /// </summary>
+        [Reactive]
         public ICollection<IProperty> Properties { get; private set; } = new List<IProperty>();
+
+        /// <inheritdoc />
+        public bool IsInitialized { get; private set; }
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
+        [Reactive]
         public sealed override string Name { get; set; }
 
         /// <inheritdoc />
@@ -63,11 +69,16 @@ namespace Waves.Core.Base
         {
             try
             {
-                foreach (var property in Properties) property.MessageReceived += OnPropertyMessageReceived;
+                foreach (var property in Properties) 
+                    property.MessageReceived += OnPropertyMessageReceived;
+
+                IsInitialized = true;
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
+
+                IsInitialized = false;
             }
         }
 
@@ -99,7 +110,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
             }
         }
 
@@ -127,7 +138,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
             }
         }
 
@@ -146,7 +157,7 @@ namespace Waves.Core.Base
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this,new Message(e, false));
 
                 return null;
             }
@@ -159,7 +170,6 @@ namespace Waves.Core.Base
             {
                 foreach (var property in Properties)
                 {
-                    if (property.IsReadOnly) continue;
                     if (property.Name != name) continue;
 
                     property.SetValue(value);
@@ -270,7 +280,7 @@ namespace Waves.Core.Base
         /// <param name="e">Arguments.</param>
         private void OnPropertyMessageReceived(object sender, IMessage e)
         {
-            OnMessageReceived(sender, e);
+            OnMessageReceived(this,e);
         }
     }
 }

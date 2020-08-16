@@ -1,6 +1,10 @@
-﻿using System;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Waves.Core.Base;
+using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Services.Interfaces;
+using Waves.Core.Tests.TestData;
+using Waves.Core.Tests.TestData.Interfaces;
 
 namespace Waves.Core.Sandbox
 {
@@ -9,22 +13,18 @@ namespace Waves.Core.Sandbox
         private static void Main(string[] args)
         {
             var core = new Core();
+
             core.Start();
 
-            //var property1 = (IProperty) new Property<int>("name", 1, true, true);
-            //var property2 = (IProperty) property1.Clone();
-            //var equals = property1.Equals(property2);
+            core.RegisterInstance<ITestService>(new TestService());
 
-            //var configuration = (IConfiguration) core.Configuration.Clone();
-            //var equals = configuration.Equals(core.Configuration);
-            
-            //var service = core.GetService<IInputService>();
+            var service = core.GetInstance<ITestService>();
 
-            //Console.WriteLine("Write \"stop\" to stop core working:");
+            core.WriteLog(new Message("Please, wait", "Waiting for 3 seconds...", "App", MessageType.Information));
 
-            //var word = Console.ReadLine();
-            
-            //if (word != null && word.Equals("stop")) core.Stop();
+            Thread.Sleep(3000);
+
+            core.Stop();
         }
     }
 }

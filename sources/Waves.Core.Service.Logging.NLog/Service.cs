@@ -1,22 +1,23 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Composition;
 using System.Linq;
 using NLog;
 using NLog.Common;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Services.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
-namespace Waves.Core.Services
+namespace Waves.Core.Service.Logging.NLog
 {
     /// <summary>
     ///     Logging service.
     /// </summary>
     [Export(typeof(IService))]
-    public class LoggingService : Service, ILoggingService
+    public class LoggingService : Base.Service, ILoggingService
     {
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 
@@ -26,18 +27,22 @@ namespace Waves.Core.Services
         public override Guid Id => Guid.Parse("D17B3463-C126-4023-B22F-1A031636A343");
 
         /// <inheritdoc />
-        public override string Name { get; set; } = "Logging Service";
+        public override string Name { get; set; } = "Logging Service (NLog)";
 
         /// <inheritdoc />
+        [Reactive]
         public int LastMessagesCount { get; private set; } = 250;
 
         /// <inheritdoc />
+        [Reactive]
         public ICollection<IMessageObject> LastMessages { get; } = new ObservableCollection<IMessageObject>();
 
         /// <inheritdoc />
-        public override void Initialize()
+        public override void Initialize(ICore core)
         {
             if (IsInitialized) return;
+
+            Core = core;
 
             try
             {
@@ -58,11 +63,11 @@ namespace Waves.Core.Services
         }
 
         /// <inheritdoc />
-        public override void LoadConfiguration(IConfiguration configuration)
+        public override void LoadConfiguration()
         {
             try
             {
-                LastMessagesCount = LoadConfigurationValue(configuration, "LoggingService-LastMessagesCount", 250);
+                LastMessagesCount = LoadConfigurationValue(Core.Configuration, "LoggingService-LastMessagesCount", 250);
 
                 OnMessageReceived(this, new Message("Loading configuration", "Configuration loads successfully.", Name,
                     MessageType.Success));
@@ -75,13 +80,13 @@ namespace Waves.Core.Services
         }
 
         /// <inheritdoc />
-        public override void SaveConfiguration(IConfiguration configuration)
+        public override void SaveConfiguration()
         {
             try
             {
-                configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
+                Core.Configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
 
-                OnMessageReceived(this, new Message("Saving configuration", "Configuration saves successfully.", Name,
+                OnMessageReceived(this, new Message("Saving configuration", "Configuration saved successfully.", Name,
                     MessageType.Success));
             }
             catch (Exception e)
