@@ -1,132 +1,156 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.IoC;
-using Waves.Core.Services;
-using Waves.Core.Services.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 using Waves.Utils.Serialization;
 
 namespace Waves.Core
 {
     /// <summary>
-    ///     Core.
+    /// Core.
     /// </summary>
-    public class Core
+    public class Core : ReactiveObject, ICore
     {
         private readonly List<IMessage> _pendingMessages = new List<IMessage>();
 
-        private ILoggingService _loggingService;
-
-        /// <summary>
-        ///     Gets whether Core is running.
-        /// </summary>
-        public bool IsRunning { get; private set; }
-
-        /// <summary>
-        ///     Gets configuration.
-        /// </summary>
-        public IConfiguration Configuration { get; private set; }
-
-        /// <summary>
-        ///     Gets service manager.
-        /// </summary>
-        public Manager ServiceManager { get; } = new Manager();
-
-        /// <summary>
-        ///     Gets collections of registered services.
-        /// </summary>
-        public ICollection<IService> Services { get; } = new List<IService>();
-
-        /// <summary>
-        ///     Gets service initialization information dictionary.
-        ///     Dictionary includes info about base service by default.
-        /// </summary>
-        public Dictionary<string, bool> CoreInitializationInformationDictionary { get; } = new Dictionary<string, bool>
-        {
-            {"Configuration Loader Service", false},
-            {"Service Container", false},
-            {"Application Loader Service", false},
-            {"Keyboard and Mouse Input Service", false},
-            {"Logging Service", false},
-            {"Module Loader Service", false}
-        };
-
-        /// <summary>
-        ///     Event for message receiving handling.
-        /// </summary>
+        /// <inheritdoc />
         public event EventHandler<IMessage> MessageReceived;
 
+        /// <inheritdoc />
+        [Reactive]
+        public bool IsRunning { get; protected set; }
+
         /// <summary>
-        ///     Starts core working.
+        ///     Gets service loader.
         /// </summary>
-        public virtual void Start()
+        public ServiceLoader ServiceLoader { get; } = new ServiceLoader();
+
+        /// <summary>
+        /// Gets instance of logging service.
+        /// </summary>
+        protected ILoggingService LoggingService { get; private set; }
+
+        /// <summary>
+        /// Gets instance of container service.
+        /// </summary>
+        protected IContainerService ContainerService { get; private set; }
+
+        /// <inheritdoc />
+        [Reactive]
+        public IConfiguration Configuration { get; protected set; }
+
+        /// <inheritdoc />
+        [Reactive]
+        public ICollection<IService> Services { get; protected set; } = new List<IService>();
+
+        /// <inheritdoc />
+        [Reactive]
+        public Dictionary<string, bool> InitializedServices { get; protected set; } = new Dictionary<string, bool>();
+
+        /// <inheritdoc />
+        public void Start()
         {
             try
             {
-                WriteLogMessage(new Message("Core launch", "Core is launching...", "Core",
+                var watch = new Stopwatch();
+                watch.Start();
+
+                WriteLog(new Message("Core start",
+                    "Core is starting...",
+                    "Core",
                     MessageType.Success));
 
                 InitializeConfiguration();
-                InitializeContainer();
                 InitializeServices();
+                RegisterServices();
+                BuildContainer();
 
                 IsRunning = true;
 
-                WriteLogMessage(new Message("Core launch", "Core launching successfully.", "Core",
+                WriteLog(new Message("Core start", 
+                    "Core started successfully.", 
+                    "Core",
                     MessageType.Success));
 
-                AddMessageSeparator();
+                watch.Stop();
+
+                WriteLog(new Message("Core start",
+                    "Time taken to start: " + Math.Round(watch.Elapsed.TotalSeconds, 1) + " seconds.", 
+                    "Core",
+                    MessageType.Information));
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core launch", "Error starting kernel.", "Core", e, true));
+                WriteLog(new Message(
+                    "Core start", 
+                    "Error starting core.", 
+                    "Core", 
+                    e, 
+                    true));
             }
         }
 
-        /// <summary>
-        ///     Stops core working.
-        /// </summary>
-        public virtual void Stop()
+        /// <inheritdoc />
+        public void Stop()
         {
             try
             {
+                var watch = new Stopwatch();
+                watch.Start();
+
                 SaveConfiguration();
-                StopServices();
 
-                ServiceManager.MessageReceived -= OnServiceMessageReceived;
+                foreach (var service in Services)
+                {
+                    service.Dispose();
+                }
 
-                WriteLogMessage(new Message("Core stop", "Core stopped successfully.", "Core",
+                WriteLog(new Message("Core stop", "Core stopped successfully.", "Core",
+                    MessageType.Success));
+
+                watch.Stop();
+
+                WriteLog(new Message("Core stop",
+                    "Time taken to stop: " + Math.Round(watch.Elapsed.TotalSeconds, 1) + " seconds.", "Core",
                     MessageType.Success));
 
                 WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Core stop", "Error stopping kernel.", "Core", e, true));
+                WriteLog(new Message(
+                    "Core stop", 
+                    "Error stopping kernel.", 
+                    "Core", 
+                    e, 
+                    true));
             }
         }
 
-        /// <summary>
-        ///     Saves configuration.
-        /// </summary>
+        /// <inheritdoc />
         public void SaveConfiguration()
         {
             try
             {
                 foreach (var service in Services)
+                {
                     try
                     {
-                        service.SaveConfiguration(Configuration);
+                        service.SaveConfiguration();
                     }
                     catch (Exception)
                     {
                         throw new Exception("Error saving \"" + service.Name + "\" configuration.");
                     }
+                }
 
                 CheckConfigurationDirectory();
 
@@ -142,126 +166,194 @@ namespace Waves.Core
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Saving configuration", "Error configuration saving:\r\n" + e, "Core",
+                WriteLog(new Message("Saving configuration", 
+                    "Error configuration saving:\r\n" + e, 
+                    "Core",
                     MessageType.Error));
             }
         }
 
-        /// <summary>
-        ///     Gets service by type.
-        /// </summary>
-        /// <typeparam name="T">Type.</typeparam>
-        /// <returns>Service.</returns>
-        public T GetService<T>()
+        /// <inheritdoc />
+        public T GetInstance<T>() where T : class
         {
             try
             {
-                return (T) ContainerCore.GetInstance(typeof(T), null);
+                if (ContainerService == null)
+                {
+                    throw new NullReferenceException("Container service was not registered.");
+                }
+
+                return ContainerService.GetInstance<T>();
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Getting service", "Error getting service.", "Core", e, true));
+                WriteLog(new Message("Getting instance",
+                    "Error getting instance:\r\n" + e,
+                    "Core",
+                    MessageType.Error));
 
-                return default;
+                return null;
             }
         }
 
-        /// <summary>
-        ///     Registers service.
-        /// </summary>
-        /// <typeparam name="T">Type.</typeparam>
-        /// <param name="instance">Instance.</param>
-        public void RegisterService<T>(T instance)
+        /// <inheritdoc />
+        public ICollection<T> GetInstances<T>() where T : class
         {
             try
             {
-                if (!(instance is IService service)) return;
-
-                ContainerCore.RegisterService(instance);
-
-                service.MessageReceived += OnServiceMessageReceived;
-
-                service.Initialize();
-
-                service.LoadConfiguration(Configuration);
-                
-                if (CoreInitializationInformationDictionary.ContainsKey(service.Name))
+                if (ContainerService == null)
                 {
-                    CoreInitializationInformationDictionary[service.Name] = service.IsInitialized;
+                    throw new NullReferenceException("Container service was not registered.");
                 }
-                else
+
+                return ContainerService.GetInstances<T>();
+            }
+            catch (Exception e)
+            {
+                WriteLog(new Message("Getting instances",
+                    "Error getting instances:\r\n" + e,
+                    "Core",
+                    MessageType.Error));
+
+                return null;
+            }
+        }
+
+        /// <inheritdoc />
+        public void RegisterInstance<T>(T instance) where T : class
+        {
+            try
+            {
+                if (ContainerService == null)
                 {
-                    CoreInitializationInformationDictionary.Add(service.Name, service.IsInitialized);
+                    throw new NullReferenceException("Container service was not registered.");
                 }
-                
-                if (service.IsInitialized)
+
+                if (instance.GetType().GetInterfaces().Contains(typeof(IService)))
+                {
+                    var service = (IService)instance;
+                    RegisterService(service);
                     Services.Add(service);
+
+                    return;
+                }
+
+                ContainerService.RegisterInstance<T>(instance);
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Registering service", "Error registering service.", "Core", e, true));
-
-                if (!(instance is IService service)) return;
-
-                CoreInitializationInformationDictionary[service.Name] = false;
+                WriteLog(new Message("Register instance",
+                    "Error registering instance:\r\n" + e,
+                    "Core",
+                    MessageType.Error));
             }
         }
 
-        /// <summary>
-        ///     Writes text to log.
-        /// </summary>
-        /// <param name="text">Text.</param>
+        /// <inheritdoc />
+        public void RegisterInstances<T>(ICollection<T> instances) where T : class
+        {
+            try
+            {
+                if (ContainerService == null)
+                {
+                    throw new NullReferenceException("Container service was not registered.");
+                }
+
+                foreach (var instance in instances)
+                {
+                    if (instance.GetType().GetInterfaces().Contains(typeof(IService)))
+                    {
+                        var service = (IService)instance;
+                        RegisterService(service);
+                        Services.Add(service);
+                    }
+                }
+
+                ContainerService.RegisterInstances<T>(instances);
+            }
+            catch (Exception e)
+            {
+                WriteLog(new Message("Register instances",
+                    "Error registering instances:\r\n" + e,
+                    "Core",
+                    MessageType.Error));
+            }
+        }
+
+        /// <inheritdoc />
         public virtual void WriteLog(string text)
         {
 #if DEBUG
             Console.WriteLine(text);
 #endif
 
-            if (!CoreInitializationInformationDictionary["Logging Service"]) return;
-
             OnMessageReceived(new Message(string.Empty, text, string.Empty, MessageType.Information));
 
             CheckLoggingService();
 
-            _loggingService.WriteTextToLog(text);
-        }
-
-        /// <summary>
-        ///     Writes message to log.
-        /// </summary>
-        /// <param name="message">Message..</param>
-        public virtual void WriteLogMessage(IMessage message)
-        {
-#if DEBUG
-            Console.WriteLine("{0} {1}: {2}", message.DateTime, message.Sender, message.Title + " - " + message.Text);
-
-            if (message.Exception != null)
+            if (CheckLoggingService())
             {
-                Console.WriteLine(message.Exception.ToString());
-            }
-#endif
-
-            OnMessageReceived(message);
-
-            if (!CoreInitializationInformationDictionary["Logging Service"])
-            {
-                _pendingMessages.Add(message);
+                LoggingService.WriteTextToLog(text);
 
                 return;
             }
 
-            CheckLoggingService();
-
-            _loggingService.WriteMessageToLog(message);
+            _pendingMessages.Add(new Message(string.Empty, text, "Core", MessageType.Information));
         }
 
-        /// <summary>
-        ///     Writes exception to log.
-        /// </summary>
-        /// <param name="exception">Exception.</param>
-        /// <param name="sender">Sender.</param>
-        /// <param name="isFatal">Sets whether exception is fatal.</param>
-        public virtual void WriteLogException(Exception exception, string sender, bool isFatal)
+        /// <inheritdoc />
+        public virtual void WriteLog(IMessage message)
+        {
+            var status = string.Empty;
+
+            switch (message.Type)
+            {
+                case MessageType.Information:
+                    status = "INFO";
+                    break;
+                case MessageType.Warning:
+                    status = "WARN";
+                    break;
+                case MessageType.Error:
+                    status = "ERROR";
+                    break;
+                case MessageType.Fatal:
+                    status = "FATAL";
+                    break;
+                case MessageType.Success:
+                    status = "OK";
+                    break;
+                case MessageType.Debug:
+                    status = "DEBUG";
+                    break;
+            }
+
+#if DEBUG
+            Console.WriteLine(
+                "[{0}] [{1}]\t{2}: {3}",
+                message.DateTime,
+                status,
+                message.Sender,
+                message.Title + " - " + message.Text);
+
+            if (message.Exception != null)
+                Console.WriteLine(message.Exception.ToString());
+#endif
+
+            OnMessageReceived(message);
+
+            if (CheckLoggingService())
+            {
+                LoggingService.WriteMessageToLog(message);
+
+                return;
+            }
+
+            _pendingMessages.Add(message);
+        }
+
+        /// <inheritdoc />
+        public virtual void WriteLog(Exception exception, string sender, bool isFatal)
         {
 #if DEBUG
             Console.WriteLine("Core exception: {0}", exception);
@@ -271,24 +363,23 @@ namespace Waves.Core
 
             OnMessageReceived(message);
 
-            if (!CoreInitializationInformationDictionary["Logging Service"])
+            if (CheckLoggingService())
             {
-                _pendingMessages.Add(message);
+                LoggingService.WriteExceptionToLog(exception, sender, isFatal);
 
                 return;
             }
 
-            CheckLoggingService();
-
-            _loggingService.WriteExceptionToLog(exception, sender, isFatal);
+            _pendingMessages.Add(message);
         }
 
         /// <summary>
-        ///     Adds message separator.
+        ///     Invokes message received event.
         /// </summary>
-        public virtual void AddMessageSeparator()
+        /// <param name="e">Message.</param>
+        protected virtual void OnMessageReceived(IMessage e)
         {
-            _loggingService.LastMessages.Add(new MessageSeparator());
+            MessageReceived?.Invoke(this, e);
         }
 
         /// <summary>
@@ -311,32 +402,17 @@ namespace Waves.Core
 
                 Configuration.Initialize();
 
-                CoreInitializationInformationDictionary["Configuration Loader Service"] = true;
+                Configuration.MessageReceived += OnMessageReceived;
+
+                WriteLog(new Message("Configuration initialization",
+                    "Core configuration initialized successfully.",
+                    "Core",
+                    MessageType.Success));
             }
             catch (Exception e)
             {
-                WriteLogMessage(new Message("Configuration initialization",
+                WriteLog(new Message("Configuration initialization",
                     "Error configuration initialization", "Core", e, true));
-            }
-        }
-
-        /// <summary>
-        ///     Initializes container.
-        /// </summary>
-        private void InitializeContainer()
-        {
-            try
-            {
-                ContainerCore.Start();
-
-                CoreInitializationInformationDictionary["Service Container"] = true;
-            }
-            catch (Exception e)
-            {
-                WriteLogMessage(new Message("Container initialization", "Error container initialization.", "Core", e,
-                    true));
-
-                CoreInitializationInformationDictionary["Service Container"] = false;
             }
         }
 
@@ -345,52 +421,158 @@ namespace Waves.Core
         /// </summary>
         private void InitializeServices()
         {
-            ServiceManager.MessageReceived += OnServiceMessageReceived;
-
-            ServiceManager.Initialize();
-
-            var method = typeof(Core).GetMethod("RegisterService");
-            if (method == null) return;
-            
-            foreach (var service in ServiceManager.Services)
+            try
             {
-                try
-                {
-                    var type = service.GetType();
-                    var interfaces = type.GetInterfaces().ToList();
-                    
-                    interfaces.Remove(typeof(IObservableObject));
-                    interfaces.Remove(typeof(INotifyPropertyChanged));
-                    interfaces.Remove(typeof(IDisposable));
-                    interfaces.Remove(typeof(IObject));
-                    interfaces.Remove(typeof(IService));
+                ServiceLoader.MessageReceived += OnMessageReceived;
+                ServiceLoader.Initialize(this);
 
-                    if (interfaces.Count > 1)
-                    {
-                        WriteLogMessage(new Message("Registering", "A service " + service.Name + " cannot be registered (a service must be implemented only from one interface).", service.Name,
-                            MessageType.Error));
-                    }
-                    
-                    var genericMethod = method.MakeGenericMethod(interfaces.First());
-                    genericMethod.Invoke(this, new object[] {service});
-
-                    WriteLogMessage(new Message("Registering", "Service has been registered successfully.", service.Name,
-                        MessageType.Success));
-                }
-                catch (Exception e)
+                if (ServiceLoader.Objects == null)
                 {
-                    WriteLogMessage(new Message("Registering",
-                        "Error registering service.", service.Name, e, true));
+                    throw new Exception("Error initializing services: services not initialized.");
                 }
+
+                foreach (var obj in ServiceLoader.Objects)
+                {
+                    Services.Add(obj);   
+                }
+
+                WriteLog(new Message(
+                    "Initializing services",
+                    "Services initialized successfully.",
+                    "Core",
+                    MessageType.Success));
+
+                WriteLog(new Message(
+                    "Initializing services",
+                    "Number of services were loaded: " + ServiceLoader.Objects.Count(),
+                    "Core",
+                    MessageType.Information));
+            }
+            catch (Exception e)
+            {
+                WriteLog(new Message(
+                    "Initializing services",
+                    "Error Initializing services:\r\n" + e,
+                    "Core",
+                    MessageType.Error));
             }
         }
 
         /// <summary>
-        ///     Stops services.
+        /// Register services.
         /// </summary>
-        private void StopServices()
+        private void RegisterServices()
         {
-            foreach (var service in Services) service.Dispose();
+            try
+            {
+                var collection = new List<IService>(Services);
+
+                // scan for logging and container service
+                foreach (var service in Services)
+                {
+                    if (service.GetType().GetInterfaces().Contains(typeof(IContainerService)))
+                    {
+                        ContainerService = (IContainerService)service;
+                        collection.Remove(service);
+                        RegisterService(service);
+                    }
+
+                    if (service.GetType().GetInterfaces().Contains(typeof(ILoggingService)))
+                    {
+                        LoggingService = (ILoggingService)service;
+                        collection.Remove(service);
+                        RegisterService(service);
+                        WritePendingMessages();
+                    }
+                }
+
+                // if container service is null, than throw exception.
+                if (ContainerService == null)
+                {
+                    throw new NullReferenceException("Container service not initialized or initialized with errors.");
+                }
+
+                // if logging service is null, than throw exception.
+                if (LoggingService == null)
+                {
+                    throw new NullReferenceException("Logging service not initialized or initialized with errors.");
+                }
+
+                // register other services
+                foreach (var service in collection)
+                {
+                    RegisterService(service);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Registers service.
+        /// </summary>
+        /// <param name="service">Service.</param>
+        private void RegisterService(IService service)
+        {
+            try
+            {
+                service.MessageReceived += OnObjectMessageReceived;
+                service.Initialize(this);
+                service.LoadConfiguration();
+
+                var type = service.GetType();
+                var interfaces = type.GetInterfaces().ToList();
+
+                Type result = null;
+
+                foreach (var i in interfaces)
+                {
+                    var innerInterfaces = i.GetInterfaces();
+
+                    if (!innerInterfaces.Contains(typeof(IService)))
+                        continue;
+
+                    // TODO: refactor this temp fix.
+                    if (i.IsGenericType)
+                        continue;
+
+                    result = i;
+
+                    break;
+                }
+
+                if (result == null) return;
+
+                var method = typeof(IContainerService).GetMethod("RegisterInstance");
+                var genericMethod = method?.MakeGenericMethod(result);
+                genericMethod?.Invoke(ContainerService, new object[] { service });
+
+                WriteLog(new Message(
+                    "Registering service",
+                    "Service has been registered successfully.",
+                    service.Name,
+                    MessageType.Success));
+
+                InitializedServices.Add(service.Name, service.IsInitialized);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        /// <summary>
+        ///     Invokes message received event.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
+        /// <param name="e">Message.</param>
+        private void OnMessageReceived(object sender, IMessage e)
+        {
+            MessageReceived?.Invoke(sender, e);
         }
 
         /// <summary>
@@ -398,30 +580,9 @@ namespace Waves.Core
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="message">Message.</param>
-        private void OnServiceMessageReceived(object sender, IMessage message)
+        private void OnObjectMessageReceived(object sender, IMessage message)
         {
-            WriteLogMessage(message);
-        }
-
-        /// <summary>
-        ///     Invokes message received event.
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnMessageReceived(IMessage e)
-        {
-            MessageReceived?.Invoke(this, e);
-        }
-
-        private void CheckLoggingService()
-        {
-            if (_loggingService == null)
-            {
-                _loggingService = GetService<ILoggingService>();
-
-                foreach (var message in _pendingMessages) _loggingService.WriteMessageToLog(message);
-
-                _pendingMessages.Clear();
-            }
+            WriteLog(message);
         }
 
         /// <summary>
@@ -435,6 +596,34 @@ namespace Waves.Core
 
             if (!Directory.Exists(directoryName))
                 Directory.CreateDirectory(directoryName);
+        }
+
+        /// <summary>
+        /// Builds container.
+        /// </summary>
+        private void BuildContainer()
+        {
+            ContainerService?.Build();;
+        }
+
+        /// <summary>
+        /// Check whether logging service is loaded.
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckLoggingService()
+        {
+            return LoggingService != null;
+        }
+
+        /// <summary>
+        /// Writes pending log messages to log.
+        /// </summary>
+        private void WritePendingMessages()
+        {
+            foreach (var message in _pendingMessages)
+                LoggingService.WriteMessageToLog(message);
+
+            _pendingMessages.Clear();
         }
     }
 }

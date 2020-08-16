@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <RootNamespace>Waves.Core.Tests</RootNamespace>
   </PropertyGroup>
 
   <Import Project="../../../props/Waves.Core.Tests.props" />

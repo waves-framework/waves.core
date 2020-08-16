@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Waves.Core.Base.Interfaces
+namespace Waves.Core.Base.Interfaces.Services
 {
     /// <summary>
     ///     Base interface for all services.
@@ -15,18 +15,16 @@ namespace Waves.Core.Base.Interfaces
         /// <summary>
         ///     Initializes service.
         /// </summary>
-        void Initialize();
+        void Initialize(ICore core);
 
         /// <summary>
         ///     Loads configuration.
         /// </summary>
-        /// <param name="configuration">Configuration.</param>
-        void LoadConfiguration(IConfiguration configuration);
+        void LoadConfiguration();
 
         /// <summary>
         ///     Saves configuration.
         /// </summary>
-        /// <param name="configuration">Configuration.</param>
-        void SaveConfiguration(IConfiguration configuration);
+        void SaveConfiguration();
     }
 }

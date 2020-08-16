@@ -1,4 +1,5 @@
 using System;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 
@@ -77,24 +78,30 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid Id { get; internal set; } = Guid.NewGuid();
 
         /// <inheritdoc />
-        public string Title { get; }
+        [Reactive]
+        public string Title { get; internal set; }
 
         /// <inheritdoc />
-        public DateTime DateTime { get; }
+        [Reactive]
+        public DateTime DateTime { get; internal set; }
 
         /// <inheritdoc />
-        public string Text { get; }
+        [Reactive]
+        public string Text { get; internal set; }
 
         /// <inheritdoc />
-        public string Sender { get; }
+        [Reactive]
+        public string Sender { get; internal set; }
 
         /// <inheritdoc />
-        public Exception Exception { get; }
+        [Reactive]
+        public Exception Exception { get; internal set; }
 
         /// <inheritdoc />
-        public MessageType Type { get; }
+        [Reactive]
+        public MessageType Type { get; internal set; }
     }
 }

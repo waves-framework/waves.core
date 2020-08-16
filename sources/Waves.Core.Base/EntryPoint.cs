@@ -1,4 +1,6 @@
 ﻿using System;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -22,12 +24,15 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public bool IsProperty { get; }
+        [Reactive]
+        public bool IsProperty { get; internal set; }
 
         /// <inheritdoc />
+        [Reactive]
         public override string Name { get; set; }
 
         /// <inheritdoc />
+        [Reactive]
         public object Value
         {
             get => _value;
@@ -35,7 +40,9 @@ namespace Waves.Core.Base
             {
                 if (Equals(value, _value)) return;
                 _value = value;
-                OnPropertyChanged();
+
+                this.RaiseAndSetIfChanged(ref _value, value);
+
                 OnDataReceived(_value);
             }
         }
@@ -44,6 +51,7 @@ namespace Waves.Core.Base
         public override Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
+        [Reactive]
         public IModule Parent { get; set; }
 
         /// <inheritdoc />

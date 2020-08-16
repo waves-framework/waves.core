@@ -1,5 +1,7 @@
 ﻿using System;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
 namespace Waves.Core.Base
 {
@@ -15,16 +17,22 @@ namespace Waves.Core.Base
         public abstract override string Name { get; }
 
         /// <inheritdoc />
+        [Reactive]
         public bool IsInitialized { get; set; } = false;
 
-        /// <inheritdoc />
-        public abstract void Initialize();
+        /// <summary>
+        ///     Gets instance of Core.
+        /// </summary>
+        protected ICore Core { get; set; }
 
         /// <inheritdoc />
-        public abstract void LoadConfiguration(IConfiguration configuration);
+        public abstract void Initialize(ICore core);
 
         /// <inheritdoc />
-        public abstract void SaveConfiguration(IConfiguration configuration);
+        public abstract void LoadConfiguration();
+
+        /// <inheritdoc />
+        public abstract void SaveConfiguration();
 
         /// <inheritdoc />
         public abstract override void Dispose();

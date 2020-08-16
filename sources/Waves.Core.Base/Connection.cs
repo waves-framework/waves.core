@@ -1,4 +1,5 @@
 ﻿using System;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base
@@ -23,12 +24,15 @@ namespace Waves.Core.Base
         public override Guid Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
+        [Reactive]
         public override string Name { get; set; }
 
         /// <inheritdoc />
+        [Reactive]
         public IEntryPoint Input { get; set; }
 
         /// <inheritdoc />
+        [Reactive]
         public IEntryPoint Output { get; set; }
 
         /// <inheritdoc />

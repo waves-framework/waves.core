@@ -1,19 +1,18 @@
-using System;
+﻿using System;
 using System.Composition;
-using PropertyChanged;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.EventArgs;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Services.Interfaces;
+using Waves.Core.Base.Interfaces.Services;
 
-namespace Waves.Core.Services
+namespace Waves.Core.Service.Input
 {
     /// <summary>
     ///     Input service.
     /// </summary>
     [Export(typeof(IService))]
-    public class InputService : Service, IInputService
+    public class Service : Base.Service, IInputService
     {
         /// <inheritdoc />
         public event EventHandler<KeyEventArgs> KeyPressed;
@@ -23,6 +22,46 @@ namespace Waves.Core.Services
 
         /// <inheritdoc />
         public event EventHandler<PointerEventArgs> PointerStateChanged;
+
+        /// <inheritdoc />
+        public override Guid Id { get; } = Guid.Parse("3F339B93-AE63-4F93-9DCD-F71FA378744E");
+
+        /// <inheritdoc />
+        public override string Name { get; set; } = "Keyboard and Mouse Input Service";
+
+        /// <inheritdoc />
+        public override void Initialize(ICore core)
+        {
+            if (IsInitialized) return;
+
+            Core = core;
+
+            OnMessageReceived(this,
+                new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
+
+            IsInitialized = true;
+        }
+
+        /// <inheritdoc />
+        public override void LoadConfiguration()
+        {
+            OnMessageReceived(this, new Message("Loading configuration", "There is nothing to load.",
+                Name,
+                MessageType.Information));
+        }
+
+        /// <inheritdoc />
+        public override void SaveConfiguration()
+        {
+            OnMessageReceived(this, new Message("Saving configuration", "There is nothing to save.",
+                Name,
+                MessageType.Information));
+        }
+
+        /// <inheritdoc />
+        public override void Dispose()
+        {
+        }
 
         /// <inheritdoc />
         public void SetKeyPressed(KeyEventArgs e)
@@ -40,38 +79,6 @@ namespace Waves.Core.Services
         public void SetPointer(PointerEventArgs e)
         {
             OnPointerStateChanged(e);
-        }
-
-        /// <inheritdoc />
-        public override Guid Id { get; } = Guid.Parse("3F339B93-AE63-4F93-9DCD-F71FA378744E");
-
-        /// <inheritdoc />
-        public override string Name { get; set; } = "Keyboard and Mouse Input Service";
-
-        /// <inheritdoc />
-        public override void Initialize()
-        {
-            if (IsInitialized) return;
-
-            OnMessageReceived(this,
-                new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
-
-            IsInitialized = true;
-        }
-
-        /// <inheritdoc />
-        public override void LoadConfiguration(IConfiguration configuration)
-        {
-        }
-
-        /// <inheritdoc />
-        public override void SaveConfiguration(IConfiguration configuration)
-        {
-        }
-
-        /// <inheritdoc />
-        public override void Dispose()
-        {
         }
 
         /// <summary>
@@ -96,7 +103,6 @@ namespace Waves.Core.Services
         ///     Notifies when pointer state changed.
         /// </summary>
         /// <param name="e">Pointer event arguments.</param>
-        [SuppressPropertyChangedWarnings]
         protected virtual void OnPointerStateChanged(PointerEventArgs e)
         {
             PointerStateChanged?.Invoke(this, e);

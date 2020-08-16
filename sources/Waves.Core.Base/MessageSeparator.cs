@@ -1,4 +1,5 @@
 ﻿using System;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 
@@ -8,18 +9,22 @@ namespace Waves.Core.Base
     public class MessageSeparator : IMessageObject
     {
         /// <inheritdoc />
-        public Guid Id { get; } = Guid.NewGuid();
+        public Guid Id { get; internal set; } = Guid.NewGuid();
 
         /// <inheritdoc />
-        public string Title { get; } = string.Empty;
+        [Reactive]
+        public string Title { get; internal set; } = string.Empty;
 
         /// <inheritdoc />
-        public string Sender { get; } = string.Empty;
+        [Reactive]
+        public string Sender { get; internal set; } = string.Empty;
 
         /// <inheritdoc />
-        public DateTime DateTime { get; } = DateTime.Now;
+        [Reactive]
+        public DateTime DateTime { get; internal set; } = DateTime.Now;
 
         /// <inheritdoc />
-        public MessageType Type { get; } = MessageType.Information;
+        [Reactive]
+        public MessageType Type { get; internal set; } = MessageType.Information;
     }
 }
