@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Waves.Core.Base;
 using Waves.Core.Base.Enums;
@@ -15,6 +16,8 @@ namespace Waves.Core.Sandbox
             var core = new Core();
 
             core.Start();
+
+            core.WriteLog(new Exception("Test exception message"), "Sender name", false);
 
             core.RegisterInstance<ITestService>(new TestService());
 
