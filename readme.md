@@ -84,7 +84,7 @@ With container you can easily register services and other objects. All of compil
 
 ```c#
 [Export(typeof(IService))]
-public class Service : Base.Service, IInputService
+public class Service : Base.Service, ITestService
 {
 	// put you service code hear.
 }
