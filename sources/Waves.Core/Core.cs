@@ -197,29 +197,6 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public ICollection<T> GetInstances<T>() where T : class
-        {
-            try
-            {
-                if (ContainerService == null)
-                {
-                    throw new NullReferenceException("Container service was not registered.");
-                }
-
-                return ContainerService.GetInstances<T>();
-            }
-            catch (Exception e)
-            {
-                WriteLog(new Message("Getting instances",
-                    "Error getting instances:\r\n" + e,
-                    "Core",
-                    MessageType.Error));
-
-                return null;
-            }
-        }
-
-        /// <inheritdoc />
         public void RegisterInstance<T>(T instance) where T : class
         {
             try
@@ -244,37 +221,6 @@ namespace Waves.Core
             {
                 WriteLog(new Message("Register instance",
                     "Error registering instance:\r\n" + e,
-                    "Core",
-                    MessageType.Error));
-            }
-        }
-
-        /// <inheritdoc />
-        public void RegisterInstances<T>(ICollection<T> instances) where T : class
-        {
-            try
-            {
-                if (ContainerService == null)
-                {
-                    throw new NullReferenceException("Container service was not registered.");
-                }
-
-                foreach (var instance in instances)
-                {
-                    if (instance.GetType().GetInterfaces().Contains(typeof(IService)))
-                    {
-                        var service = (IService)instance;
-                        RegisterService(service);
-                        Services.Add(service);
-                    }
-                }
-
-                ContainerService.RegisterInstances<T>(instances);
-            }
-            catch (Exception e)
-            {
-                WriteLog(new Message("Register instances",
-                    "Error registering instances:\r\n" + e,
                     "Core",
                     MessageType.Error));
             }

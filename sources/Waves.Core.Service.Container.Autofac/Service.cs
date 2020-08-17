@@ -101,12 +101,6 @@ namespace Waves.Core.Service.Container.Autofac
         }
 
         /// <inheritdoc />
-        public ICollection<T> GetInstances<T>() where T : class
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public void RegisterInstance<T>(T instance) where T : class
         {
             try
@@ -136,18 +130,6 @@ namespace Waves.Core.Service.Container.Autofac
                         Name,
                         e,
                         false));
-            }
-        }
-
-        /// <inheritdoc />
-        public void RegisterInstances<T>(ICollection<T> instances) where T : class
-        {
-            if (!IsBuilt)
-            {
-                foreach (var instance in instances)
-                {
-                    RegisterInstance(instance);
-                }
             }
         }
 
