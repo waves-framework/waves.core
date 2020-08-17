@@ -26,7 +26,7 @@ Install-Package Waves.Core
 
 
 
-## ⌨️ Usage basics
+### ⌨️ Usage basics
 
 After installing the package you just need to declare new instance of a core and start it.
 
@@ -47,9 +47,9 @@ core.Stop();
 
 
 
-## ⌨️ Logging
+### 📜 Logging
 
-In framework logging service implemented from **ILoggingService**, and use **NLog** as default. But you can use other logging library if you develop it. Read more about this in the documentation.
+In framework logging service implemented from **ILoggingService**, and use **NLog** as default. But you can use other logging library if you develop it.
 
 For inner messages Waves using objects implented from IMessage. They also used for logging. For example:
 
@@ -74,3 +74,38 @@ core.WriteLog(new Exception("Test exception message"),
               false);
 ```
 
+
+
+### 📦 Container
+
+Container service implemented from **IContainerService**, and use **Autofac** as default. Like other services, you can implented you own Container service.
+
+With container you can easily register services and other objects. All of compiled service registering automatically if they if marked with an attribute **[Export(typeof(IService))]**, for example:
+
+```c#
+[Export(typeof(IService))]
+public class Service : Base.Service, IInputService
+{
+	// put you service code hear.
+}
+```
+
+For convenience, the service can be inherited from the **Wave.Core.Service** abstract class.  
+
+If you want to register new service just on runtime just type:
+
+```c#
+core.RegisterInstance<ITestService>(new TestService());
+```
+
+To resolve service type:
+
+```c#
+var service = core.GetInstance<ITestService>();
+```
+
+
+
+### 📋 Licence
+
+Waves.Core is licenced under the [MIT licence](https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md).
