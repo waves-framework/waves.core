@@ -17,8 +17,6 @@ namespace Waves.Core.Sandbox
 
             core.Start();
 
-            core.WriteLog(new Exception("Test exception message"), "Sender name", false);
-
             core.RegisterInstance<ITestService>(new TestService());
 
             var service = core.GetInstance<ITestService>();
