@@ -108,4 +108,4 @@ var service = core.GetInstance<ITestService>();
 
 ### 📋 Licence
 
-Waves.Core is licenced under the [MIT licence](https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md).
+Waves.Core is licenced under the [MIT licence](https://github.com/ambertape/waves.core/blob/master/license.md).
