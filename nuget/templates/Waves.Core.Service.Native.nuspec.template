@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+s<?xml version="1.0"?>
 <package>
   <metadata>
     <id>Waves.Core.Service.Native</id>
@@ -18,7 +18,7 @@
     <tags>Waves core service native library</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.3.0)" />
+        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.4.0)" />
       </group>
     </dependencies>
     <frameworkReferences>
