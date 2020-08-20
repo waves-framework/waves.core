@@ -84,7 +84,7 @@ With container you can easily register services and other objects. All of compil
 
 ```c#
 [Export(typeof(IService))]
-public class Service : Base.Service, IInputService
+public class Service : Base.Service, ITestService
 {
 	// put you service code hear.
 }
@@ -108,4 +108,4 @@ var service = core.GetInstance<ITestService>();
 
 ### 📋 Licence
 
-Waves.Core is licenced under the [MIT licence](https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md).
+Waves.Core is licenced under the [MIT licence](https://github.com/ambertape/waves.core/blob/master/license.md).

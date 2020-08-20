@@ -19,7 +19,7 @@
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
       	<dependency id="NLog" version="4.7.3" />
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.3.0)" />
+        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.4.0)" />
       </group>
     </dependencies>
     <frameworkReferences>

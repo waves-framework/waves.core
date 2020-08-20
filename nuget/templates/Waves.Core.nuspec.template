@@ -19,12 +19,11 @@
     <tags>Waves core</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.3.0)" />
-        <dependency id="Waves.Core.Service.Container.Autofac" version="[{$NUGETVERSION},2020.2.3.0)" />
-        <dependency id="Waves.Core.Service.input" version="[{$NUGETVERSION},2020.2.3.0)" />
-        <dependency id="Waves.Core.Service.Logging.NLog" version="[{$NUGETVERSION},2020.2.3.0)" />
-        <dependency id="Waves.Utils.Serialization" version="[2020.2.1.99,2020.2.3.0)" />
-        <dependency id="Autofac" version="5.2.0" />
+        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.4.0)" />
+        <dependency id="Waves.Core.Service.Container.Autofac" version="[{$NUGETVERSION},2020.2.4.0)" />
+        <dependency id="Waves.Core.Service.input" version="[{$NUGETVERSION},2020.2.4.0)" />
+        <dependency id="Waves.Core.Service.Logging.NLog" version="[{$NUGETVERSION},2020.2.4.0)" />
+        <dependency id="Waves.Utils.Serialization" version="[2020.2.1.99,2020.2.4.0)" />
       </group>
     </dependencies>
     <frameworkReferences>
