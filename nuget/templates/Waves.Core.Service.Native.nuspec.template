@@ -18,7 +18,7 @@
     <tags>Waves core service native library</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.4.0)" />
+        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.5.0)" />
       </group>
     </dependencies>
     <frameworkReferences>

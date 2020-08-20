@@ -28,21 +28,6 @@ namespace Waves.Core
         [Reactive]
         public bool IsRunning { get; protected set; }
 
-        /// <summary>
-        ///     Gets service loader.
-        /// </summary>
-        public ServiceLoader ServiceLoader { get; } = new ServiceLoader();
-
-        /// <summary>
-        /// Gets instance of logging service.
-        /// </summary>
-        protected ILoggingService LoggingService { get; private set; }
-
-        /// <summary>
-        /// Gets instance of container service.
-        /// </summary>
-        protected IContainerService ContainerService { get; private set; }
-
         /// <inheritdoc />
         [Reactive]
         public IConfiguration Configuration { get; protected set; }
@@ -54,9 +39,24 @@ namespace Waves.Core
         /// <inheritdoc />
         [Reactive]
         public Dictionary<string, bool> InitializedServices { get; protected set; } = new Dictionary<string, bool>();
+        
+        /// <summary>
+        ///     Gets service loader.
+        /// </summary>
+        private ServiceLoader ServiceLoader { get; } = new ServiceLoader();
+
+        /// <summary>
+        /// Gets instance of logging service.
+        /// </summary>
+        private ILoggingService LoggingService { get; set; }
+
+        /// <summary>
+        /// Gets instance of container service.
+        /// </summary>
+        private IContainerService ContainerService { get; set; }
 
         /// <inheritdoc />
-        public void Start()
+        public virtual void Start()
         {
             try
             {
@@ -99,7 +99,7 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public void Stop()
+        public virtual void Stop()
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public void SaveConfiguration()
+        public virtual void SaveConfiguration()
         {
             try
             {
@@ -174,7 +174,7 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public T GetInstance<T>() where T : class
+        public virtual T GetInstance<T>() where T : class
         {
             try
             {
@@ -197,7 +197,7 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public void RegisterInstance<T>(T instance) where T : class
+        public virtual void RegisterInstance<T>(T instance) where T : class
         {
             try
             {
