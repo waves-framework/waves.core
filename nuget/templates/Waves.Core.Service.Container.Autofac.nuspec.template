@@ -19,7 +19,7 @@
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
       	<dependency id="Autofac" version="5.2.0" />
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.5.0)" />
+        <dependency id="Waves.Core.Base" version="{$NUGETVERSION}" />
       </group>
     </dependencies>
     <frameworkReferences>

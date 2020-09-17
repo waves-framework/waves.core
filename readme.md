@@ -1,6 +1,6 @@
 ## ![logo](files/logo_very_small.png)  Waves Core
 
-
+![logo](http://teamcity.ambertape.ru/app/rest/builds/buildType:(id:WAVES_Core_Release)/statusIcon) ![logo](https://img.shields.io/github/license/waves-framework/waves.core) ![logo](https://img.shields.io/nuget/v/Waves.Core)
 
 ### 📚 About Waves
 
