@@ -18,8 +18,8 @@
     <tags>Waves core service logging nlog</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-      	<dependency id="NLog" version="4.7.3" />
-        <dependency id="Waves.Core.Base" version="[{$NUGETVERSION},2020.2.5.0)" />
+      	<dependency id="NLog" version="4.7.4" />
+        <dependency id="Waves.Core.Base" version="{$NUGETVERSION}" />
       </group>
     </dependencies>
     <frameworkReferences>

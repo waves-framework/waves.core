@@ -3,7 +3,7 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="ReactiveUI.Fody" Version="11.5.6" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.5.35" />
     <PackageReference Include="System.Composition" Version="1.4.1" />
   </ItemGroup>
 
