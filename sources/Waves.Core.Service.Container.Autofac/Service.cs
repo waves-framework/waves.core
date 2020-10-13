@@ -16,11 +16,11 @@ namespace Waves.Core.Service.Container.Autofac
     [Export(typeof(IService))]
     public class Service : Base.Service, IContainerService
     {
+        private readonly Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
+        
         private ContainerBuilder _builder;
 
         private IContainer _container;
-
-        private Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
 
         /// <inheritdoc />
         public override Guid Id => Guid.Parse("06C226BC-E6FC-40A5-A419-540235CC63F0");

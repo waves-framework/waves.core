@@ -30,11 +30,11 @@ namespace Waves.Core.Service.Native
 
         /// <inheritdoc />
         [Reactive]
-        public List<string> Paths { get; private set; } = new List<string>();
+        public List<string> Paths { get; protected set; } = new List<string>();
 
         /// <inheritdoc />
         [Reactive]
-        public List<string> Names { get; private set; } = new List<string>();
+        public List<string> Names { get; protected set; } = new List<string>();
 
         /// <inheritdoc />
         public override void Initialize(ICore core)

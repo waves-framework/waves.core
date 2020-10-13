@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Composition;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Base.Interfaces.Services;
@@ -23,7 +25,8 @@ namespace Waves.Core.Service.Applications
         public override string Name { get; set; } = "Application Loader Service";
 
         /// <inheritdoc />
-        public ICollection<IApplicationAction> ApplicationActions { get; } = new List<IApplicationAction>();
+        [Reactive]
+        public ICollection<IApplicationAction> ApplicationActions { get; set; } = new ObservableCollection<IApplicationAction>();
 
         /// <inheritdoc />
         protected override string ObjectsName => "Applications";

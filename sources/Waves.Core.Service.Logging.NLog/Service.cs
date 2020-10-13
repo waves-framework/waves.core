@@ -35,7 +35,7 @@ namespace Waves.Core.Service.Logging.NLog
 
         /// <inheritdoc />
         [Reactive]
-        public ICollection<IMessageObject> LastMessages { get; } = new ObservableCollection<IMessageObject>();
+        public ICollection<IMessageObject> LastMessages { get; set; } = new ObservableCollection<IMessageObject>();
 
         /// <inheritdoc />
         public override void Initialize(ICore core)

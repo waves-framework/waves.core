@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Base.Interfaces.Services;
@@ -26,10 +27,12 @@ namespace Waves.Core.Base
         public abstract override string Name { get; set; }
 
         /// <inheritdoc />
-        public List<string> Paths { get; private set; } = new List<string>();
+        [Reactive]
+        public List<string> Paths { get; protected set; } = new List<string>();
 
         /// <inheritdoc />
-        public IEnumerable<T> Objects { get; private set; }
+        [Reactive]
+        public IEnumerable<T> Objects { get; protected set; }
 
         /// <summary>
         /// Gets objects name.
