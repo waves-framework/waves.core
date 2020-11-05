@@ -25,7 +25,7 @@ namespace Waves.Core.Base
         /// </summary>
         /// <param name="sender">Sender</param>
         /// <param name="e">Message.</param>
-        protected virtual void OnMessageReceived(object sender, IMessage e)
+        protected void OnMessageReceived(object sender, IMessage e)
         {
             MessageReceived?.Invoke(sender, e);
         }

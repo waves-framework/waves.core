@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using System.Composition.Hosting;
 using System.Linq;
 using System.Reflection;
@@ -28,10 +29,11 @@ namespace Waves.Core.Base
 
         /// <inheritdoc />
         [Reactive]
-        public List<string> Paths { get; protected set; } = new List<string>();
+        public List<string> Paths { get; protected set; }
 
         /// <inheritdoc />
         [Reactive]
+        [ImportMany]
         public IEnumerable<T> Objects { get; protected set; }
 
         /// <summary>
@@ -51,6 +53,9 @@ namespace Waves.Core.Base
             if (IsInitialized) return;
 
             Core = core;
+            
+            Paths = new List<string>();
+            Objects = new List<T>();
 
             try
             {
@@ -165,32 +170,30 @@ namespace Waves.Core.Base
 
                 var configuration = new ContainerConfiguration().WithAssemblies(assemblies);
 
-                using (var container = configuration.CreateContainer())
+                using var container = configuration.CreateContainer();
+                Objects = container.GetExports<T>();
+
+                SubscribeEvents();
+
+                OnObjectsUpdated();
+
+                if (Objects != null)
                 {
-                    Objects = container.GetExports<T>();
+                    var objects = Objects as T[] ?? Objects.ToArray();
 
-                    SubscribeEvents();
-
-                    OnObjectsUpdated();
-
-                    if (Objects != null)
-                    {
-                        var objects = Objects as T[] ?? Objects.ToArray();
-
-                        if (!objects.Any())
-                            OnMessageReceived(this,
-                                new Message("Loading " + ObjectsName.ToLower(), ObjectsName + " not found.", Name, MessageType.Warning));
-                        else
-                            OnMessageReceived(this, new Message("Loading " + ObjectsName.ToLower(),
-                                ObjectsName + " loads successfully (" + objects.Count() + " " + ObjectsName.ToLower() + ").", Name,
-                                MessageType.Success));
-                    }
-                    else
-                    {
+                    if (!objects.Any())
                         OnMessageReceived(this,
-                            new Message("Loading " + ObjectsName.ToLower(), ObjectsName + " were not loaded.", Name,
-                                MessageType.Warning));
-                    }
+                            new Message("Loading " + ObjectsName.ToLower(), ObjectsName + " not found.", Name, MessageType.Warning));
+                    else
+                        OnMessageReceived(this, new Message("Loading " + ObjectsName.ToLower(),
+                            ObjectsName + " loads successfully (" + objects.Count() + " " + ObjectsName.ToLower() + ").", Name,
+                            MessageType.Success));
+                }
+                else
+                {
+                    OnMessageReceived(this,
+                        new Message("Loading " + ObjectsName.ToLower(), ObjectsName + " were not loaded.", Name,
+                            MessageType.Warning));
                 }
             }
             catch (Exception e)

@@ -10,74 +10,69 @@ namespace Waves.Core.Base.Interfaces
     /// <summary>
     /// Interface for core.
     /// </summary>
-    public interface ICore
+    public interface ICore : IObject
     {
         /// <summary>
-        ///     Gets whether Core is running.
+        /// Gets status of core.
         /// </summary>
-        public bool IsRunning { get; }
+        CoreStatus Status { get; }
 
         /// <summary>
         ///     Gets configuration.
         /// </summary>
-        public IConfiguration Configuration { get; }
+        IConfiguration Configuration { get; }
 
         /// <summary>
         ///     Gets collections of registered services.
         /// </summary>
-        public ICollection<IService> Services { get; }
+        ICollection<IService> Services { get; }
 
         /// <summary>
         ///     Gets service initialization information dictionary.
         ///     Dictionary includes info about base service by default.
         /// </summary>
-        public Dictionary<string, bool> InitializedServices { get; }
-
-        /// <summary>
-        ///     Event for message receiving handling.
-        /// </summary>
-        public event EventHandler<IMessage> MessageReceived;
+        Dictionary<string, bool> InitializedServices { get; }
 
         /// <summary>
         ///     Starts core.
         /// </summary>
-        public void Start();
+        void Start();
 
         /// <summary>
         ///     Stops core working.
         /// </summary>
-        public void Stop();
+        void Stop();
 
         /// <summary>
         ///     Saves configuration.
         /// </summary>
-        public void SaveConfiguration();
+        void SaveConfiguration();
 
         /// <summary>
         ///     Gets instance by type.
         /// </summary>
         /// <typeparam name="T">Type.</typeparam>
         /// <returns>Instance.</returns>
-        public T GetInstance<T>() where T : class;
+        T GetInstance<T>() where T : class;
 
         /// <summary>
         ///     Registers instance.
         /// </summary>
         /// <typeparam name="T">Type.</typeparam>
         /// <param name="instance">Instance.</param>
-        public void RegisterInstance<T>(T instance) where T : class;
+        void RegisterInstance<T>(T instance) where T : class;
 
         /// <summary>
         ///     Writes text to log.
         /// </summary>
         /// <param name="text">Text.</param>
-        public void WriteLog(string text);
+        void WriteLog(string text);
 
         /// <summary>
         ///     Writes message to log.
         /// </summary>
         /// <param name="message">Message.</param>
-        public void WriteLog(IMessage message);
+        void WriteLog(IMessage message);
 
         /// <summary>
         ///     Writes exception to log.
@@ -85,6 +80,6 @@ namespace Waves.Core.Base.Interfaces
         /// <param name="exception">Exception.</param>
         /// <param name="sender">Sender.</param>
         /// <param name="isFatal">Sets whether exception is fatal.</param>
-        public void WriteLog(Exception exception, string sender, bool isFatal);
+        void WriteLog(Exception exception, string sender, bool isFatal);
     }
 }

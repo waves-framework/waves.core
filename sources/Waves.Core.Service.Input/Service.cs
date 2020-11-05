@@ -36,8 +36,13 @@ namespace Waves.Core.Service.Input
 
             Core = core;
 
-            OnMessageReceived(this,
-                new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
+            OnMessageReceived(
+                this,
+                new Message(
+                    "Initialization", 
+                    "Service has been initialized.", 
+                    Name, 
+                    MessageType.Information));
 
             IsInitialized = true;
         }
@@ -45,7 +50,10 @@ namespace Waves.Core.Service.Input
         /// <inheritdoc />
         public override void LoadConfiguration()
         {
-            OnMessageReceived(this, new Message("Loading configuration", "There is nothing to load.",
+            OnMessageReceived(this, 
+                new Message(
+                    "Loading configuration", 
+                    "There is nothing to load.",
                 Name,
                 MessageType.Information));
         }
@@ -53,7 +61,11 @@ namespace Waves.Core.Service.Input
         /// <inheritdoc />
         public override void SaveConfiguration()
         {
-            OnMessageReceived(this, new Message("Saving configuration", "There is nothing to save.",
+            OnMessageReceived(
+                this, 
+                new Message(
+                "Saving configuration", 
+                "There is nothing to save.",
                 Name,
                 MessageType.Information));
         }

@@ -3,13 +3,18 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\utils\sources\Waves.Utils.Serialization\Waves.Utils.Serialization.csproj" />
     <ProjectReference Include="..\Waves.Core.Base\Waves.Core.Base.csproj" />
+    <ProjectReference Include="..\Waves.Core.Service.Applications\Waves.Core.Service.Applications.csproj" />
+    <ProjectReference Include="..\Waves.Core.Service.Container.Autofac\Waves.Core.Service.Container.Autofac.csproj" />
+    <ProjectReference Include="..\Waves.Core.Service.Input\Waves.Core.Service.Input.csproj" />
+    <ProjectReference Include="..\Waves.Core.Service.Logging.NLog\Waves.Core.Service.Logging.NLog.csproj" />
+    <ProjectReference Include="..\Waves.Core.Service.Modules\Waves.Core.Service.Modules.csproj" />
+    <ProjectReference Include="..\Waves.Core.Service.Native\Waves.Core.Service.Native.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Waves.Utils.Serialization">
-      <Version>2020.2.2</Version>
-    </PackageReference>
+    <PackageReference Include="Pastel" Version="1.3.2" />
   </ItemGroup>
 
 </Project>

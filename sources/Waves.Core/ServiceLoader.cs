@@ -40,7 +40,8 @@ namespace Waves.Core
 
             if (Objects == null)
             {
-                OnMessageReceived(this,
+                OnMessageReceived(
+                    this,
                     new Message(
                         "Service Manager",
                         "Services not loaded.", 
@@ -58,8 +59,14 @@ namespace Waves.Core
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message("Getting service", "Error getting service (" + typeof(T) + ").",
-                    "Service manager", e, false));
+                OnMessageReceived(
+                    this, 
+                    new Message(
+                    "Getting service", 
+                    $"Error getting service ({typeof(T)}).",
+                    "Service manager", 
+                    e, 
+                    false));
             }
 
             return collection;

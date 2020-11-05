@@ -49,8 +49,10 @@ namespace Waves.Core.Service.Container.Autofac
         /// <inheritdoc />
         public override void LoadConfiguration()
         {
-            OnMessageReceived(this, 
-                new Message("Loading configuration", 
+            OnMessageReceived(
+                this, 
+                new Message(
+                    "Loading configuration", 
                     "There is nothing to load.",
                 Name,
                 MessageType.Information));
@@ -59,8 +61,10 @@ namespace Waves.Core.Service.Container.Autofac
         /// <inheritdoc />
         public override void SaveConfiguration()
         {
-            OnMessageReceived(this, 
-                new Message("Saving configuration", 
+            OnMessageReceived(
+                this, 
+                new Message(
+                    "Saving configuration", 
                     "There is nothing to save.",
                 Name,
                 MessageType.Information));
@@ -124,8 +128,10 @@ namespace Waves.Core.Service.Container.Autofac
             }
             catch (Exception e)
             {
-                OnMessageReceived(this,
-                    new Message("Registering instance",
+                OnMessageReceived(
+                    this,
+                    new Message(
+                        "Registering instance",
                         "Error occured while registering instance from container:\r\n" + e,
                         Name,
                         e,
