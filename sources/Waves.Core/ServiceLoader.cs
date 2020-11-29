@@ -10,7 +10,7 @@ namespace Waves.Core
     /// <summary>
     /// Service loader.
     /// </summary>
-    public class ServiceLoader : MefLoaderService<IService>, IServiceLoader
+    public class ServiceLoader : WavesMefLoaderService<IWavesService>, IWavesServiceLoader
     {
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 
@@ -42,11 +42,11 @@ namespace Waves.Core
             {
                 OnMessageReceived(
                     this,
-                    new Message(
+                    new WavesMessage(
                         "Service Manager",
                         "Services not loaded.", 
                         "Service manager",
-                        MessageType.Warning));
+                        WavesMessageType.Warning));
 
                 return null;
             }
@@ -61,7 +61,7 @@ namespace Waves.Core
             {
                 OnMessageReceived(
                     this, 
-                    new Message(
+                    new WavesMessage(
                     "Getting service", 
                     $"Error getting service ({typeof(T)}).",
                     "Service manager", 

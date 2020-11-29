@@ -12,19 +12,18 @@ using Waves.Core.Base.Interfaces;
 using Waves.Core.Base.Interfaces.Services;
 using Waves.Utils.Serialization;
 using Color = System.Drawing.Color;
-using Object = Waves.Core.Base.Object;
 
 namespace Waves.Core
 {
     /// <summary>
     ///     Core abstraction.
     /// </summary>
-    public abstract class CoreBase : Object, ICore
+    public abstract class CoreBase : WavesObject, IWavesCore
     {
-        private readonly Color _consoleDataTimeColor = Color.FromArgb(128, 128, 128);
-        private readonly Color _consoleSenderColor = Color.FromArgb(192, 192, 192);
+        private readonly Color _consoleDataTimeColor = System.Drawing.Color.FromArgb(128, 128, 128);
+        private readonly Color _consoleSenderColor = System.Drawing.Color.FromArgb(192, 192, 192);
         private readonly Stopwatch _loadingWatch = new Stopwatch();
-        private readonly List<IMessage> _pendingMessages = new List<IMessage>();
+        private readonly List<IWavesMessage> _pendingMessages = new List<IWavesMessage>();
 
         /// <summary>
         ///     Gets service loader.
@@ -42,15 +41,15 @@ namespace Waves.Core
         private IContainerService ContainerService { get; set; }
 
         /// <inheritdoc />
-        public CoreStatus Status { get; protected set; }
+        public WavesCoreStatus Status { get; protected set; }
 
         /// <inheritdoc />
         [Reactive]
-        public IConfiguration Configuration { get; protected set; }
+        public IWavesConfiguration Configuration { get; protected set; }
 
         /// <inheritdoc />
         [Reactive]
-        public ICollection<IService> Services { get; protected set; } = new List<IService>();
+        public ICollection<IWavesService> Services { get; protected set; } = new List<IWavesService>();
 
         /// <inheritdoc />
         [Reactive]
@@ -59,6 +58,10 @@ namespace Waves.Core
         /// <inheritdoc />
         public virtual void Start()
         {
+            if (Status == WavesCoreStatus.Running
+            || Status == WavesCoreStatus.Starting)
+                return;
+            
             try
             {
                 StartLoadingWatch();
@@ -67,20 +70,22 @@ namespace Waves.Core
                 RegisterServices();
                 BuildContainer();
 
-                Status = CoreStatus.Running;
+                Status = WavesCoreStatus.Running;
 
-                WriteLog(new Message("Starting",
+                WriteLog(new WavesMessage("Starting",
                     $"{Name} started successfully.",
                     Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
 
                 StopLoadingWatch();
+                
+                WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
             {
                 StopLoadingWatch();
                 
-                WriteLog(new Message(
+                WriteLog(new WavesMessage(
                     "Starting",
                     $"Error occured while starting {Name}.",
                     Name,
@@ -92,19 +97,26 @@ namespace Waves.Core
         /// <inheritdoc />
         public virtual void Stop()
         {
+            if (Status == WavesCoreStatus.Stopped ||
+                Status == WavesCoreStatus.Stopping)
+                return;
+            
             try
             {
                 StartLoadingWatch();
 
                 SaveConfiguration();
 
-                foreach (var service in Services) service.Dispose();
+                foreach (var service in Services) 
+                    service.Dispose();
 
-                WriteLog(new Message(
+                WriteLog(new WavesMessage(
                     "Stopping",
                     $"{Name} stopped successfully.", 
                     Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
+
+                Status = WavesCoreStatus.Stopped;
                 
                 StopLoadingWatch();
 
@@ -114,7 +126,7 @@ namespace Waves.Core
             {
                 StopLoadingWatch();
                 
-                WriteLog(new Message(
+                WriteLog(new WavesMessage(
                     "Core stop",
                     $"Error occured while stopping {Name}.",
                     Name,
@@ -154,10 +166,10 @@ namespace Waves.Core
             }
             catch (Exception e)
             {
-                WriteLog(new Message("Saving configuration",
+                WriteLog(new WavesMessage("Saving configuration",
                     "Error configuration saving:\r\n" + e,
                     Name,
-                    MessageType.Error));
+                    WavesMessageType.Error));
             }
         }
 
@@ -172,10 +184,10 @@ namespace Waves.Core
             }
             catch (Exception e)
             {
-                WriteLog(new Message("Getting instance",
+                WriteLog(new WavesMessage("Getting instance",
                     "Error getting instance:\r\n" + e,
                     Name,
-                    MessageType.Error));
+                    WavesMessageType.Error));
 
                 return null;
             }
@@ -191,9 +203,9 @@ namespace Waves.Core
                     throw new NullReferenceException("Container service was not registered.");
                 }
 
-                if (instance.GetType().GetInterfaces().Contains(typeof(IService)))
+                if (instance.GetType().GetInterfaces().Contains(typeof(IWavesService)))
                 {
-                    var service = (IService) instance;
+                    var service = (IWavesService) instance;
                     RegisterService(service);
                     Services.Add(service);
 
@@ -204,10 +216,10 @@ namespace Waves.Core
             }
             catch (Exception e)
             {
-                WriteLog(new Message("Register instance",
+                WriteLog(new WavesMessage("Register instance",
                     "Error registering instance:\r\n" + e,
                     Name,
-                    MessageType.Error));
+                    WavesMessageType.Error));
             }
         }
 
@@ -218,11 +230,11 @@ namespace Waves.Core
             Console.WriteLine(text);
 #endif
 
-            var message = new Message(
+            var message = new WavesMessage(
                 string.Empty,
                 text,
                 Name,
-                MessageType.Information);
+                WavesMessageType.Information);
 
             OnMessageReceived(this, message);
 
@@ -239,36 +251,36 @@ namespace Waves.Core
         }
 
         /// <inheritdoc />
-        public virtual void WriteLog(IMessage message)
+        public virtual void WriteLog(IWavesMessage message)
         {
             var status = string.Empty;
             var statusColor = new Color();
 
             switch (message.Type)
             {
-                case MessageType.Information:
+                case WavesMessageType.Information:
                     status = "INFO";
-                    statusColor = Color.LightGray;
+                    statusColor = System.Drawing.Color.LightGray;
                     break;
-                case MessageType.Warning:
+                case WavesMessageType.Warning:
                     status = "WARN";
-                    statusColor = Color.LightGoldenrodYellow;
+                    statusColor = System.Drawing.Color.LightGoldenrodYellow;
                     break;
-                case MessageType.Error:
+                case WavesMessageType.Error:
                     status = "ERROR";
-                    statusColor = Color.OrangeRed;
+                    statusColor = System.Drawing.Color.OrangeRed;
                     break;
-                case MessageType.Fatal:
+                case WavesMessageType.Fatal:
                     status = "FATAL";
-                    statusColor = Color.DarkRed;
+                    statusColor = System.Drawing.Color.DarkRed;
                     break;
-                case MessageType.Success:
+                case WavesMessageType.Success:
                     status = "SUCCESS";
-                    statusColor = Color.SeaGreen;
+                    statusColor = System.Drawing.Color.SeaGreen;
                     break;
-                case MessageType.Debug:
+                case WavesMessageType.Debug:
                     status = "DEBUG";
-                    statusColor = Color.SandyBrown;
+                    statusColor = System.Drawing.Color.SandyBrown;
                     break;
             }
 
@@ -307,15 +319,15 @@ namespace Waves.Core
             if (isFatal)
             {
                 status = "FATAL";
-                statusColor = Color.DarkRed;
+                statusColor = System.Drawing.Color.DarkRed;
             }
             else
             {
                 status = "ERROR";
-                statusColor = Color.OrangeRed;
+                statusColor = System.Drawing.Color.OrangeRed;
             }
 
-            var message = new Message(exception, false);
+            var message = new WavesMessage(exception, false);
 
 #if DEBUG
             Console.WriteLine(
@@ -366,24 +378,24 @@ namespace Waves.Core
                     "core.config");
 
                 Configuration = File.Exists(fileName)
-                    ? Json.ReadFile<Configuration>(fileName)
-                    : new Configuration();
+                    ? Json.ReadFile<WavesConfiguration>(fileName)
+                    : new WavesConfiguration(){Name = "Configuration"};
 
                 Configuration.Initialize();
 
                 Configuration.MessageReceived += OnMessageReceived;
 
                 WriteLog(
-                    new Message(
+                    new WavesMessage(
                     "Configuration initialization",
                     $"{Name} configuration initialized successfully.",
                     Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 WriteLog(
-                    new Message(
+                    new WavesMessage(
                     "Configuration initialization",
                     "Error occured while configuration initialization.", 
                     Name, 
@@ -408,27 +420,27 @@ namespace Waves.Core
                 foreach (var obj in ServiceLoader.Objects) Services.Add(obj);
 
                 WriteLog(
-                    new Message(
+                    new WavesMessage(
                     "Initializing services",
                     "Services initialized successfully.",
                     "Core",
-                    MessageType.Success));
+                    WavesMessageType.Success));
 
                 WriteLog(
-                    new Message(
+                    new WavesMessage(
                     "Initializing services",
                     "Number of services were loaded: " + ServiceLoader.Objects.Count(),
                     Name,
-                    MessageType.Information));
+                    WavesMessageType.Information));
             }
             catch (Exception e)
             {
                 WriteLog(
-                    new Message(
+                    new WavesMessage(
                     "Initializing services",
                     "Error occured while initializing services:\r\n" + e,
                     Name,
-                    MessageType.Error));
+                    WavesMessageType.Error));
             }
         }
 
@@ -439,7 +451,7 @@ namespace Waves.Core
         {
             try
             {
-                var collection = new List<IService>(Services);
+                var collection = new List<IWavesService>(Services);
 
                 // scan for logging and container service
                 foreach (var service in Services)
@@ -474,7 +486,7 @@ namespace Waves.Core
             catch (Exception e)
             {
                 WriteLog(
-                    new Message(
+                    new WavesMessage(
                         "Initializing services",
                         $"Error occured while registering services.",
                         Name,
@@ -487,7 +499,7 @@ namespace Waves.Core
         ///     Registers service.
         /// </summary>
         /// <param name="service">Service.</param>
-        private void RegisterService(IService service)
+        private void RegisterService(IWavesService service)
         {
             try
             {
@@ -504,7 +516,7 @@ namespace Waves.Core
                 {
                     var innerInterfaces = i.GetInterfaces();
 
-                    if (!innerInterfaces.Contains(typeof(IService)))
+                    if (!innerInterfaces.Contains(typeof(IWavesService)))
                         continue;
 
                     // TODO: refactor this temp fix.
@@ -522,18 +534,18 @@ namespace Waves.Core
                 var genericMethod = method?.MakeGenericMethod(result);
                 genericMethod?.Invoke(ContainerService, new object[] {service});
 
-                WriteLog(new Message(
+                WriteLog(new WavesMessage(
                     "Registering service",
                     $"Service {service.Name} ({service.Id}) has been registered successfully.",
                     service.Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
 
                 InitializedServices.Add(service.Name, service.IsInitialized);
             }
             catch (Exception e)
             {
                 WriteLog(
-                    new Message(
+                    new WavesMessage(
                         "Initializing services",
                         $"Error occured while register service {service.Name}({service.Id}):\r\n{e}",
                         Name,
@@ -547,7 +559,7 @@ namespace Waves.Core
         /// </summary>
         /// <param name="sender">Sender.</param>
         /// <param name="message">Message.</param>
-        private void OnObjectMessageReceived(object sender, IMessage message)
+        private void OnObjectMessageReceived(object sender, IWavesMessage message)
         {
             WriteLog(message);
         }
@@ -598,32 +610,30 @@ namespace Waves.Core
         /// </summary>
         private void StartLoadingWatch()
         {
-            if (Status == CoreStatus.Starting ||
-                Status == CoreStatus.Stopping)
+            if (Status == WavesCoreStatus.Starting ||
+                Status == WavesCoreStatus.Stopping)
             {
                 return;
             }
             
             _loadingWatch.Start();
             
-            if (Status == CoreStatus.NotRunning ||
-                Status == CoreStatus.Stopped ||
-                Status == CoreStatus.Failed)
+            if (Status == WavesCoreStatus.NotRunning ||
+                Status == WavesCoreStatus.Stopped ||
+                Status == WavesCoreStatus.Failed)
             {
-                WriteLog(new Message("Starting",
+                WriteLog(new WavesMessage("Starting",
                     $"{Name} is starting...",
                     Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
             }
 
-            if (Status == CoreStatus.Running)
+            if (Status == WavesCoreStatus.Running)
             {
-                _loadingWatch.Start();
-
-                WriteLog(new Message("Stopping",
+                WriteLog(new WavesMessage("Stopping",
                     $"{Name} is stopping...",
                     Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
             }
         }
 
@@ -632,38 +642,36 @@ namespace Waves.Core
         /// </summary>
         private void StopLoadingWatch()
         {
-            if (Status == CoreStatus.Starting ||
-                Status == CoreStatus.Stopping)
+            if (Status == WavesCoreStatus.Starting ||
+                Status == WavesCoreStatus.Stopping)
             {
                 return;
             }
             
             _loadingWatch.Stop();
             
-            if (Status == CoreStatus.Stopped)
+            if (Status == WavesCoreStatus.Stopped)
             {
-                WriteLog(new Message($"{Name} stopped",
+                WriteLog(new WavesMessage($"{Name} stopped",
                     $"Time taken to stop: {Math.Round(_loadingWatch.Elapsed.TotalSeconds, 1)} seconds.",
                     Name,
-                    MessageType.Information));
+                    WavesMessageType.Information));
             }
             
-            if (Status == CoreStatus.Failed)
+            if (Status == WavesCoreStatus.Failed)
             {
-                WriteLog(new Message($"{Name} failed to run / stop",
+                WriteLog(new WavesMessage($"{Name} failed to run / stop",
                     $"Time elapsed: {Math.Round(_loadingWatch.Elapsed.TotalSeconds, 1)} seconds.",
                     Name,
-                    MessageType.Information));
+                    WavesMessageType.Information));
             }
 
-            if (Status == CoreStatus.Running)
+            if (Status == WavesCoreStatus.Running)
             {
-                _loadingWatch.Start();
-
-                WriteLog(new Message($"{Name} started",
+                WriteLog(new WavesMessage($"{Name} started",
                     $"Time taken to start: {Math.Round(_loadingWatch.Elapsed.TotalSeconds, 1)} seconds.",
                     Name,
-                    MessageType.Information));
+                    WavesMessageType.Information));
             }
         }
     }

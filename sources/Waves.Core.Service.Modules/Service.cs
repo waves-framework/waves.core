@@ -11,8 +11,8 @@ namespace Waves.Core.Service.Modules
     /// <summary>
     /// Module service.
     /// </summary>
-    [Export(typeof(IService))]
-    public class Service : MefLoaderService<IModule>, IModuleService
+    [Export(typeof(IWavesService))]
+    public class Service : WavesMefLoaderService<IWavesModule>, IModuleService
     {
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 
@@ -26,7 +26,7 @@ namespace Waves.Core.Service.Modules
         protected override string ObjectsName => "Modules";
 
         /// <inheritdoc />
-        public override void Initialize(ICore core)
+        public override void Initialize(IWavesCore core)
         {
             base.Initialize(core);
 
@@ -37,13 +37,13 @@ namespace Waves.Core.Service.Modules
         }
 
         /// <inheritdoc />
-        public IModule GetModule(Guid id)
+        public IWavesModule GetModule(Guid id)
         {
             return Objects.FirstOrDefault(obj => obj.Id.Equals(id));
         }
 
         /// <inheritdoc />
-        public IModule GetModule(string id)
+        public IWavesModule GetModule(string id)
         {
             return GetModule(Guid.Parse(id));
         }

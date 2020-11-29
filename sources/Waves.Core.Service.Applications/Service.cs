@@ -12,8 +12,8 @@ namespace Waves.Core.Service.Applications
     /// <summary>
     ///     Application service.
     /// </summary>
-    [Export(typeof(IService))]
-    public class Service : MefLoaderService<IApplication>, IApplicationService
+    [Export(typeof(IWavesService))]
+    public class Service : WavesMefLoaderService<IWavesApplication>, IApplicationService
     {
         /// <inheritdoc />
         public event ApplicationsActionsUpdatedEventHandler ApplicationsActionsUpdated;
@@ -26,7 +26,7 @@ namespace Waves.Core.Service.Applications
 
         /// <inheritdoc />
         [Reactive]
-        public ICollection<IApplicationAction> ApplicationActions { get; set; } = new ObservableCollection<IApplicationAction>();
+        public ICollection<IWavesApplicationAction> ApplicationActions { get; set; } = new ObservableCollection<IWavesApplicationAction>();
 
         /// <inheritdoc />
         protected override string ObjectsName => "Applications";
