@@ -6,7 +6,7 @@ namespace Waves.Core.Devices.Interfaces.Input.ADC
     /// <summary>
     ///     Interface for ADC entry point.
     /// </summary>
-    public interface IAdcEntryPoint : IEntryPoint
+    public interface IAdcEntryPoint : IWavesEntryPoint
     {
         /// <summary>
         ///     Gets digital gain.

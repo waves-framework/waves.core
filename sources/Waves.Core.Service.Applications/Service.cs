@@ -26,7 +26,8 @@ namespace Waves.Core.Service.Applications
 
         /// <inheritdoc />
         [Reactive]
-        public ICollection<IWavesApplicationAction> ApplicationActions { get; set; } = new ObservableCollection<IWavesApplicationAction>();
+        public ICollection<IWavesApplicationAction> ApplicationActions { get; set; } 
+            = new ObservableCollection<IWavesApplicationAction>();
 
         /// <inheritdoc />
         protected override string ObjectsName => "Applications";
@@ -48,7 +49,8 @@ namespace Waves.Core.Service.Applications
         {
             if (Objects == null) return;
 
-            foreach (var obj in Objects) obj.ActionsUpdated += OnApplicationActionsUpdated;
+            foreach (var obj in Objects) 
+                obj.ActionsUpdated += OnApplicationActionsUpdated;
         }
 
         /// <summary>
@@ -58,7 +60,8 @@ namespace Waves.Core.Service.Applications
         {
             if (Objects == null) return;
 
-            foreach (var obj in Objects) obj.ActionsUpdated -= OnApplicationActionsUpdated;
+            foreach (var obj in Objects) 
+                obj.ActionsUpdated -= OnApplicationActionsUpdated;
         }
 
         /// <summary>
@@ -78,10 +81,12 @@ namespace Waves.Core.Service.Applications
         private void OnApplicationActionsUpdated(object sender, ApplicationActionsUpdatedEventArgs args)
         {
             // remove old actions
-            foreach (var action in args.RemovedActions) ApplicationActions.Remove(action);
+            foreach (var action in args.RemovedActions) 
+                ApplicationActions.Remove(action);
 
             // add new actions
-            foreach (var action in args.AddedActions) ApplicationActions.Add(action);
+            foreach (var action in args.AddedActions) 
+                ApplicationActions.Add(action);
 
             OnApplicationsActionsUpdated(args);
         }

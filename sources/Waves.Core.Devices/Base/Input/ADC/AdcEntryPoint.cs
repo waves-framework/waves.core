@@ -8,10 +8,10 @@ namespace Waves.Core.Devices.Base.Input.ADC
     /// <summary>
     ///     Abstract ADC entry point base class.
     /// </summary>
-    public abstract class AdcEntryPoint : EntryPoint, IAdcEntryPoint
+    public abstract class AdcEntryPoint : WavesEntryPoint, IAdcEntryPoint
     {
         /// <inheritdoc />
-        protected AdcEntryPoint(IModule parent, bool isProperty) : base(parent, isProperty)
+        protected AdcEntryPoint(IWavesModule parent, bool isProperty) : base(parent, isProperty)
         {
         }
 

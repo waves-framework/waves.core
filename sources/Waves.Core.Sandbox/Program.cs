@@ -11,11 +11,7 @@ namespace Waves.Core.Sandbox
             var core = new Core();
 
             core.Start();
-
-            // core.RegisterInstance<ITestService>(new TestService());
-            //
-            // var service = core.GetInstance<ITestService>();
-
+            
             core.WriteLog(new WavesMessage("Please, wait", "Waiting for 3 seconds...", "App", WavesMessageType.Information));
 
             Thread.Sleep(3000);

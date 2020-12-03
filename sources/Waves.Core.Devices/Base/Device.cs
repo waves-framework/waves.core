@@ -7,7 +7,7 @@ namespace Waves.Core.Devices.Base
     /// <summary>
     ///     Abstract device base class.
     /// </summary>
-    public abstract class Device : Module, IDevice
+    public abstract class Device : WavesModule, IDevice
     {
         /// <inheritdoc />
         public bool IsOpen { get; set; }

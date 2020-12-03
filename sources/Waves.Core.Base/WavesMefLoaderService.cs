@@ -169,7 +169,6 @@ namespace Waves.Core.Base
                     AssemblyExtensions.GetAssemblies(assemblies, path);
 
                 var configuration = new ContainerConfiguration().WithAssemblies(assemblies);
-
                 using var container = configuration.CreateContainer();
                 Objects = container.GetExports<T>();
 

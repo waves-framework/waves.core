@@ -4,13 +4,11 @@
 
   <ItemGroup>
     <PackageReference Include="ReactiveUI.Fody" Version="12.1.5" />
-    <PackageReference Include="System.Composition" Version="5.0.0-rc.2.20475.5" />
+    <PackageReference Include="System.Composition" Version="5.0.0" />
+    <PackageReference Include="Waves.Utils.Serialization" Version="2021.1.1-preview1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\..\..\waves\packages\newtonsoft.json\12.0.3\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Composition.TypedParts">
       <HintPath>..\..\packages\system.composition.typedparts\1.4.1\lib\netstandard2.0\System.Composition.TypedParts.dll</HintPath>
     </Reference>

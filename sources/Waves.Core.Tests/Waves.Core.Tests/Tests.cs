@@ -14,7 +14,7 @@ namespace Waves.Core.Tests
     /// </summary>
     public class CoreTests
     {
-        private ICore _core;
+        private IWavesCore _core;
 
         /// <summary>
         ///     Runs core if it is not running.
@@ -32,7 +32,7 @@ namespace Waves.Core.Tests
         [Test]
         public void CoreStart_IsRunning_True()
         {
-            Assert.AreEqual(true, _core.IsRunning);
+            Assert.AreEqual(WavesCoreStatus.Running, _core.Status);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace Waves.Core.Tests
         {
             Assert.DoesNotThrow(delegate
             {
-                _core.WriteLog(new Message("Test", "Test", "Unit test", MessageType.Information));
+                _core.WriteLog(new WavesMessage("Test", "Test", "Unit test", WavesMessageType.Information));
             });
         }
 

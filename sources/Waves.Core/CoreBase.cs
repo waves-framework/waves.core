@@ -20,7 +20,7 @@ namespace Waves.Core
     /// </summary>
     public abstract class CoreBase : WavesObject, IWavesCore
     {
-        private readonly Color _consoleDataTimeColor = System.Drawing.Color.FromArgb(128, 128, 128);
+        private readonly Color _consoleDateTimeColor = System.Drawing.Color.FromArgb(128, 128, 128);
         private readonly Color _consoleSenderColor = System.Drawing.Color.FromArgb(192, 192, 192);
         private readonly Stopwatch _loadingWatch = new Stopwatch();
         private readonly List<IWavesMessage> _pendingMessages = new List<IWavesMessage>();
@@ -49,11 +49,11 @@ namespace Waves.Core
 
         /// <inheritdoc />
         [Reactive]
-        public ICollection<IWavesService> Services { get; protected set; } = new List<IWavesService>();
+        public ICollection<IWavesService> Services { get; } = new List<IWavesService>();
 
         /// <inheritdoc />
         [Reactive]
-        public Dictionary<string, bool> InitializedServices { get; protected set; } = new Dictionary<string, bool>();
+        public Dictionary<string, bool> InitializedServices { get; } = new Dictionary<string, bool>();
 
         /// <inheritdoc />
         public virtual void Start()
@@ -78,8 +78,6 @@ namespace Waves.Core
                     WavesMessageType.Success));
 
                 StopLoadingWatch();
-                
-                WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
             {
@@ -119,8 +117,6 @@ namespace Waves.Core
                 Status = WavesCoreStatus.Stopped;
                 
                 StopLoadingWatch();
-
-                WriteLog("----------------------------------------------------");
             }
             catch (Exception e)
             {
@@ -289,7 +285,7 @@ namespace Waves.Core
                 "[{0}] [{1}]\t{2}: {3}",
                 message.DateTime
                     .ToString(CultureInfo.CurrentCulture)
-                    .Pastel(_consoleDataTimeColor),
+                    .Pastel(_consoleDateTimeColor),
                 status.Pastel(statusColor),
                 message.Sender.Pastel(_consoleSenderColor),
                 message.Title + " - " + message.Text);
@@ -334,7 +330,7 @@ namespace Waves.Core
                 "[{0}] [{1}]\t{2}: {3}",
                 message.DateTime
                     .ToString(CultureInfo.CurrentCulture)
-                    .Pastel(_consoleDataTimeColor),
+                    .Pastel(_consoleDateTimeColor),
                 status.Pastel(statusColor),
                 message.Sender.Pastel(_consoleSenderColor),
                 message.Title + " - " + message.Text);
@@ -417,7 +413,8 @@ namespace Waves.Core
                 if (ServiceLoader.Objects == null)
                     throw new Exception("Error initializing services: services not initialized.");
 
-                foreach (var obj in ServiceLoader.Objects) Services.Add(obj);
+                foreach (var obj in ServiceLoader.Objects) 
+                    Services.Add(obj);
 
                 WriteLog(
                     new WavesMessage(

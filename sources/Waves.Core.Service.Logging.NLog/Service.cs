@@ -17,10 +17,8 @@ namespace Waves.Core.Service.Logging.NLog
     ///     Logging service.
     /// </summary>
     [Export(typeof(IWavesService))]
-    public class LoggingService : Base.WavesService, ILoggingService
+    public class LoggingService : WavesService, ILoggingService
     {
-        private readonly string _currentDirectory = Environment.CurrentDirectory;
-
         private Logger _logger;
 
         /// <inheritdoc />

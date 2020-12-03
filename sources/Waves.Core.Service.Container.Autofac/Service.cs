@@ -14,7 +14,7 @@ namespace Waves.Core.Service.Container.Autofac
     /// Autofac container service.
     /// </summary>
     [Export(typeof(IWavesService))]
-    public class Service : Base.WavesService, IContainerService
+    public class Service : WavesService, IContainerService
     {
         private readonly Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
         
@@ -77,11 +77,9 @@ namespace Waves.Core.Service.Container.Autofac
         /// <inheritdoc />
         public void Build()
         {
-            if (_builder != null)
-            {
-                _container = _builder.Build();
-                IsBuilt = true;
-            }
+            if (_builder == null) return;
+            _container = _builder.Build();
+            IsBuilt = true;
         }
 
         /// <inheritdoc />

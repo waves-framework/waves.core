@@ -12,7 +12,7 @@ namespace Waves.Core.Service.Input
     ///     Input service.
     /// </summary>
     [Export(typeof(IWavesService))]
-    public class Service : Base.WavesService, IInputService
+    public class Service : WavesService, IInputService
     {
         /// <inheritdoc />
         public event EventHandler<WavesKeyEventArgs> KeyPressed;
