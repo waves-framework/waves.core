@@ -478,7 +478,8 @@ namespace Waves.Core
                     throw new NullReferenceException("Logging service not initialized or initialized with errors.");
 
                 // register other services
-                foreach (var service in collection) RegisterService(service);
+                foreach (var service in collection) 
+                    RegisterService(service);
             }
             catch (Exception e)
             {
@@ -646,6 +647,7 @@ namespace Waves.Core
             }
             
             _loadingWatch.Stop();
+            _loadingWatch.Reset();
             
             if (Status == WavesCoreStatus.Stopped)
             {
