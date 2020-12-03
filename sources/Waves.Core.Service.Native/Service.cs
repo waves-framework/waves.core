@@ -15,8 +15,8 @@ namespace Waves.Core.Service.Native
     /// <summary>
     /// Service for loading native libraries.
     /// </summary>
-    [Export(typeof(IService))]
-    public class Service : Base.Service, INativeLibraryService
+    [Export(typeof(IWavesService))]
+    public class Service : WavesService, INativeLibraryService
     {
         private readonly string _currentDirectory = Environment.CurrentDirectory;
 
@@ -30,14 +30,14 @@ namespace Waves.Core.Service.Native
 
         /// <inheritdoc />
         [Reactive]
-        public List<string> Paths { get; private set; } = new List<string>();
+        public List<string> Paths { get; } = new List<string>();
 
         /// <inheritdoc />
         [Reactive]
-        public List<string> Names { get; private set; } = new List<string>();
+        public List<string> Names { get; } = new List<string>();
 
         /// <inheritdoc />
-        public override void Initialize(ICore core)
+        public override void Initialize(IWavesCore core)
         {
             if (IsInitialized) return;
 
@@ -50,16 +50,21 @@ namespace Waves.Core.Service.Native
                 IsInitialized = true;
 
                 OnMessageReceived(this,
-                    new Message(
+                    new WavesMessage(
                         "Initialization",
                         "Service has been initialized.",
                         Name,
-                        MessageType.Success));
+                        WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Service initialization", "Error service initialization.", Name, e, false));
+                    new WavesMessage(
+                        "Service initialization", 
+                        "Error service initialization.", 
+                        Name, 
+                        e, 
+                        false));
             }
         }
 
@@ -70,13 +75,22 @@ namespace Waves.Core.Service.Native
             {
                 Paths.AddRange(LoadConfigurationValue(Core.Configuration, Name + "-Paths", new List<string>()));
 
-                OnMessageReceived(this, new Message("Loading configuration", "Configuration loads successfully.", Name,
-                    MessageType.Success));
+                OnMessageReceived(this, 
+                    new WavesMessage(
+                    "Loading configuration", 
+                    "Configuration loaded successfully.", 
+                    Name,
+                    WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Loading configuration", "Error loading configuration.", Name, e, false));
+                    new WavesMessage(
+                        "Loading configuration", 
+                        "Error loading configuration.", 
+                        Name, 
+                        e, 
+                        false));
             }
         }
 
@@ -89,19 +103,19 @@ namespace Waves.Core.Service.Native
                 {
                     Core.Configuration.SetPropertyValue(Name + "-Paths", Paths);
 
-                    OnMessageReceived(this, new Message("Saving configuration", "Configuration saved successfully.",
+                    OnMessageReceived(this, new WavesMessage("Saving configuration", "Configuration saved successfully.",
                         Name,
-                        MessageType.Success));
+                        WavesMessageType.Success));
                 }
 
-                OnMessageReceived(this, new Message("Saving configuration", "There is nothing to save.",
+                OnMessageReceived(this, new WavesMessage("Saving configuration", "There is nothing to save.",
                     Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Saving configuration", "Error saving configuration.", Name, e, false));
+                    new WavesMessage("Saving configuration", "Error saving configuration.", Name, e, false));
             }
         }
 
@@ -112,14 +126,14 @@ namespace Waves.Core.Service.Native
             {
                 if (!Paths.Contains(path)) Paths?.Add(path);
 
-                OnMessageReceived(this, new Message("Adding path", "Path added successfully.",
+                OnMessageReceived(this, new WavesMessage("Adding path", "Path added successfully.",
                     Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Adding path", "Path has not been added.", Name, e, false));
+                    new WavesMessage("Adding path", "Path has not been added.", Name, e, false));
             }
         }
 
@@ -130,14 +144,14 @@ namespace Waves.Core.Service.Native
             {
                 if (Paths.Contains(path)) Paths?.Remove(path);
 
-                OnMessageReceived(this, new Message("Removing path",
+                OnMessageReceived(this, new WavesMessage("Removing path",
                     "Path removed successfully.", Name,
-                    MessageType.Success));
+                    WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Removing path", "Path has not been removed.", Name, e,
+                    new WavesMessage("Removing path", "Path has not been removed.", Name, e,
                         false));
             }
         }
@@ -155,7 +169,7 @@ namespace Waves.Core.Service.Native
             }
             catch (Exception e)
             {
-                OnMessageReceived(this, new Message(e, false));
+                OnMessageReceived(this, new WavesMessage(e, false));
             }
 
             try
@@ -171,41 +185,40 @@ namespace Waves.Core.Service.Native
 
                     foreach (var file in files)
                     {
-                        if (file.Extension != ".dll") continue;
+                        if (file.Extension != ".dll" &&
+                            file.Extension != ".dylib") 
+                            continue;
 
                         try
                         {
                             var fileName = file.FullName;
+                            
+                            var result = NativeLibrary.Load(fileName);
 
-                            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                            if (result == IntPtr.Zero)
                             {
-                                var result = NativeLibrary.Load(fileName);
-
-                                if (result == IntPtr.Zero)
-                                {
-                                    var lastError = Marshal.GetLastWin32Error();
-                                    var error = new Win32Exception(lastError);
-                                    throw error;
-                                }
-
-                                OnMessageReceived(this,
-                                    new Message(
-                                        "Loading native library",
-                                        "Native library " + file.Name + " has been loaded.",
-                                        Name,
-                                        MessageType.Information));
+                                var lastError = Marshal.GetLastWin32Error();
+                                var error = new Win32Exception(lastError);
+                                throw error;
                             }
+
+                            OnMessageReceived(this,
+                                new WavesMessage(
+                                    "Loading native library",
+                                    "Native library " + file.Name + " has been loaded.",
+                                    Name,
+                                    WavesMessageType.Information));
 
                             Names.Add(file.FullName);
                         }
                         catch (Exception)
                         {
                             OnMessageReceived(this,
-                                new Message(
+                                new WavesMessage(
                                     "Native library loading error",
                                     "Library " + file.Name + " can't be loaded on current system.",
                                     Name,
-                                    MessageType.Error));
+                                    WavesMessageType.Error));
                         }
                     }
                 }
@@ -215,7 +228,7 @@ namespace Waves.Core.Service.Native
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Loading native libraries", "Native libraries have not been loaded.", Name, e, false));
+                    new WavesMessage("Loading native libraries", "Native libraries have not been loaded.", Name, e, false));
             }
         }
         

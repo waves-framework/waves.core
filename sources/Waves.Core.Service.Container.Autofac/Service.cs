@@ -13,14 +13,14 @@ namespace Waves.Core.Service.Container.Autofac
     /// <summary>
     /// Autofac container service.
     /// </summary>
-    [Export(typeof(IService))]
-    public class Service : Base.Service, IContainerService
+    [Export(typeof(IWavesService))]
+    public class Service : WavesService, IContainerService
     {
+        private readonly Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
+        
         private ContainerBuilder _builder;
 
         private IContainer _container;
-
-        private Dictionary<Type, object> _registeredInstances = new Dictionary<Type, object>();
 
         /// <inheritdoc />
         public override Guid Id => Guid.Parse("06C226BC-E6FC-40A5-A419-540235CC63F0");
@@ -29,7 +29,7 @@ namespace Waves.Core.Service.Container.Autofac
         public override string Name { get; set; } = "Container service (Autofac)";
 
         /// <inheritdoc />
-        public override void Initialize(ICore core)
+        public override void Initialize(IWavesCore core)
         {
             if (IsInitialized) return;
 
@@ -38,10 +38,10 @@ namespace Waves.Core.Service.Container.Autofac
             _builder = new ContainerBuilder();
 
             OnMessageReceived(this,
-                new Message("Initialization", 
+                new WavesMessage("Initialization", 
                     "Service has been initialized.", 
                     Name, 
-                    MessageType.Information));
+                    WavesMessageType.Information));
 
             IsInitialized = true;
         }
@@ -49,21 +49,25 @@ namespace Waves.Core.Service.Container.Autofac
         /// <inheritdoc />
         public override void LoadConfiguration()
         {
-            OnMessageReceived(this, 
-                new Message("Loading configuration", 
+            OnMessageReceived(
+                this, 
+                new WavesMessage(
+                    "Loading configuration", 
                     "There is nothing to load.",
                 Name,
-                MessageType.Information));
+                WavesMessageType.Information));
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration()
         {
-            OnMessageReceived(this, 
-                new Message("Saving configuration", 
+            OnMessageReceived(
+                this, 
+                new WavesMessage(
+                    "Saving configuration", 
                     "There is nothing to save.",
                 Name,
-                MessageType.Information));
+                WavesMessageType.Information));
         }
 
         /// <inheritdoc />
@@ -73,11 +77,9 @@ namespace Waves.Core.Service.Container.Autofac
         /// <inheritdoc />
         public void Build()
         {
-            if (_builder != null)
-            {
-                _container = _builder.Build();
-                IsBuilt = true;
-            }
+            if (_builder == null) return;
+            _container = _builder.Build();
+            IsBuilt = true;
         }
 
         /// <inheritdoc />
@@ -90,7 +92,7 @@ namespace Waves.Core.Service.Container.Autofac
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Getting instance",
+                    new WavesMessage("Getting instance",
                         "Error occured while getting instance from container:\r\n" + e,
                         Name,
                         e,
@@ -124,8 +126,10 @@ namespace Waves.Core.Service.Container.Autofac
             }
             catch (Exception e)
             {
-                OnMessageReceived(this,
-                    new Message("Registering instance",
+                OnMessageReceived(
+                    this,
+                    new WavesMessage(
+                        "Registering instance",
                         "Error occured while registering instance from container:\r\n" + e,
                         Name,
                         e,

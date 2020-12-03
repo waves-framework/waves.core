@@ -6,7 +6,7 @@ namespace Waves.Core.IO
     /// <summary>
     ///     Abstract base file system object class.
     /// </summary>
-    public abstract class FileSystemObject : Object, IFileSystemObject
+    public abstract class FileSystemObject : WavesObject, IFileSystemObject
     {
         /// <summary>
         ///     Creates new instance of file system object.

@@ -7,7 +7,6 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Waves.Core.Tests\Waves.Core.Tests\Waves.Core.Tests.csproj" />
     <ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
   </ItemGroup>
 

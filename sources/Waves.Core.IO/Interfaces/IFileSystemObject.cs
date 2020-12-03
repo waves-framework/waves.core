@@ -5,7 +5,7 @@ namespace Waves.Core.IO.Interfaces
     /// <summary>
     ///     Interface for file system object.
     /// </summary>
-    public interface IFileSystemObject : IObject
+    public interface IFileSystemObject : IWavesObject
     {
         /// <summary>
         ///     Gets whether object is hidden.

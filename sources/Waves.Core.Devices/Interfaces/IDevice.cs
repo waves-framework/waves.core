@@ -6,7 +6,7 @@ namespace Waves.Core.Devices.Interfaces
     /// <summary>
     ///     Interface for devices instances.
     /// </summary>
-    public interface IDevice : IModule
+    public interface IDevice : IWavesModule
     {
         /// <summary>
         ///     Gets whether device is opened.

@@ -9,7 +9,7 @@ namespace Waves.Core.Tests.TestData
     /// <summary>
     /// Test service.
     /// </summary>
-    public class TestService : Service, ITestService
+    public class TestService : WavesService, ITestService
     {
         private int _returnValue = 0;
         
@@ -20,14 +20,14 @@ namespace Waves.Core.Tests.TestData
         public override string Name { get; set; } = "Test service";
 
         /// <inheritdoc />
-        public override void Initialize(ICore core)
+        public override void Initialize(IWavesCore core)
         {
             if (IsInitialized) return;
 
             Core = core;
 
             OnMessageReceived(this,
-                new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
+                new WavesMessage("Initialization", "Service has been initialized.", Name, WavesMessageType.Information));
 
             IsInitialized = true;
 
@@ -42,16 +42,16 @@ namespace Waves.Core.Tests.TestData
                 _returnValue = LoadConfigurationValue(Core.Configuration, "TestService-ReturnValue", 1);
 
                 OnMessageReceived(this, 
-                    new Message(
+                    new WavesMessage(
                         "Loading configuration", 
                         "Configuration loads successfully.", 
                         Name,
-                    MessageType.Success));
+                        WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Loading configuration", 
+                    new WavesMessage("Loading configuration", 
                         "Error loading configuration.", 
                         Name, 
                         e, 
@@ -67,16 +67,16 @@ namespace Waves.Core.Tests.TestData
                 Core.Configuration.SetPropertyValue("TestService-ReturnValue", _returnValue);
 
                 OnMessageReceived(this, 
-                    new Message(
+                    new WavesMessage(
                         "Saving configuration", 
                         "Configuration saved successfully.", 
                         Name,
-                    MessageType.Success));
+                        WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Saving configuration", 
+                    new WavesMessage("Saving configuration", 
                         "Error saving configuration.", 
                         Name, 
                         e, 

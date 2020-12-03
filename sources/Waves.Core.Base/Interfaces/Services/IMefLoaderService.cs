@@ -6,7 +6,7 @@ namespace Waves.Core.Base.Interfaces.Services
     /// <summary>
     /// Loader service using MEF.
     /// </summary>
-    public interface IMefLoaderService<T>: IService where T: IObject
+    public interface IMefLoaderService<T>: IWavesService where T: IWavesObject
     {
         /// <summary>
         ///     Event for objects collection updated.
