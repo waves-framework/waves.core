@@ -16,11 +16,9 @@ namespace Waves.Core.Service.Logging.NLog
     /// <summary>
     ///     Logging service.
     /// </summary>
-    [Export(typeof(IService))]
-    public class LoggingService : Base.Service, ILoggingService
+    [Export(typeof(IWavesService))]
+    public class LoggingService : WavesService, ILoggingService
     {
-        private readonly string _currentDirectory = Environment.CurrentDirectory;
-
         private Logger _logger;
 
         /// <inheritdoc />
@@ -35,10 +33,11 @@ namespace Waves.Core.Service.Logging.NLog
 
         /// <inheritdoc />
         [Reactive]
-        public ICollection<IMessageObject> LastMessages { get; } = new ObservableCollection<IMessageObject>();
+        public ICollection<IWavesMessageObject> LastMessages { get; set; } 
+            = new ObservableCollection<IWavesMessageObject>();
 
         /// <inheritdoc />
-        public override void Initialize(ICore core)
+        public override void Initialize(IWavesCore core)
         {
             if (IsInitialized) return;
 
@@ -52,13 +51,23 @@ namespace Waves.Core.Service.Logging.NLog
 
                 IsInitialized = true;
 
-                OnMessageReceived(this,
-                    new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
+                OnMessageReceived(
+                    this,
+                    new WavesMessage(
+                        "Initialization", 
+                        "Service has been initialized.", 
+                        Name, 
+                        WavesMessageType.Information));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Service initialization", "Error service initialization.", Name, e, false));
+                    new WavesMessage(
+                        "Service initialization", 
+                        "Error service initialization.", 
+                        Name, 
+                        e, 
+                        false));
             }
         }
 
@@ -67,15 +76,29 @@ namespace Waves.Core.Service.Logging.NLog
         {
             try
             {
-                LastMessagesCount = LoadConfigurationValue(Core.Configuration, "LoggingService-LastMessagesCount", 250);
+                LastMessagesCount = LoadConfigurationValue(
+                    Core.Configuration, 
+                    "LoggingService-LastMessagesCount", 
+                    250);
 
-                OnMessageReceived(this, new Message("Loading configuration", "Configuration loads successfully.", Name,
-                    MessageType.Success));
+                OnMessageReceived(
+                    this, 
+                    new WavesMessage(
+                        "Loading configuration",
+                        "Configuration loaded successfully.", 
+                        Name,
+                    WavesMessageType.Success));
             }
             catch (Exception e)
             {
-                OnMessageReceived(this,
-                    new Message("Loading configuration", "Error loading configuration.", Name, e, false));
+                OnMessageReceived(
+                    this,
+                    new WavesMessage(
+                        "Loading configuration", 
+                        "Error loading configuration.", 
+                        Name,
+                        e, 
+                        false));
             }
         }
 
@@ -84,15 +107,27 @@ namespace Waves.Core.Service.Logging.NLog
         {
             try
             {
-                Core.Configuration.SetPropertyValue("LoggingService-LastMessagesCount", LastMessagesCount);
+                Core.Configuration.SetPropertyValue(
+                    "LoggingService-LastMessagesCount", 
+                    LastMessagesCount);
 
-                OnMessageReceived(this, new Message("Saving configuration", "Configuration saved successfully.", Name,
-                    MessageType.Success));
+                OnMessageReceived(
+                    this, 
+                    new WavesMessage(
+                        "Saving configuration",
+                        "Configuration saved successfully.", 
+                        Name,
+                    WavesMessageType.Success));
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Saving configuration", "Error saving configuration.", Name, e, false));
+                    new WavesMessage(
+                        "Saving configuration", 
+                        "Error saving configuration.", 
+                        Name, 
+                        e, 
+                        false));
             }
         }
 
@@ -108,23 +143,29 @@ namespace Waves.Core.Service.Logging.NLog
 
             try
             {
-                var message = new Message(string.Empty, text, string.Empty, MessageType.Information);
+                var message = new WavesMessage(string.Empty, text, string.Empty, WavesMessageType.Information);
 
                 AddMessageToCollection(message);
 
                 _logger.Info("{0} {1}",
-                    DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString(),
+                    $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}",
                     text);
             }
             catch (Exception e)
             {
-                OnMessageReceived(this,
-                    new Message("Writing text to log", "Error writing text to log.", Name, e, false));
+                OnMessageReceived(
+                    this,
+                    new WavesMessage(
+                        "Writing text to log", 
+                        "Error writing text to log.", 
+                        Name, 
+                        e, 
+                        false));
             }
         }
 
         /// <inheritdoc />
-        public void WriteMessageToLog(IMessage message)
+        public void WriteMessageToLog(IWavesMessage message)
         {
             if (!IsInitialized) return;
 
@@ -134,41 +175,58 @@ namespace Waves.Core.Service.Logging.NLog
 
                 switch (message.Type)
                 {
-                    case MessageType.Information:
-                        _logger.Info("{0} {1} {2}: {3} - {4}",
-                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                    case WavesMessageType.Information:
+                        _logger.Info(
+                            "{0} {1} {2}: {3} - {4}",
+                            $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                             "[INFORMATION]",
-                            message.Sender, message.Title, message.Text);
+                            message.Sender,
+                            message.Title, 
+                            message.Text);
                         break;
-                    case MessageType.Warning:
-                        _logger.Warn("{0} {1} {2}: {3} - {4}",
-                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                    case WavesMessageType.Warning:
+                        _logger.Warn(
+                            "{0} {1} {2}: {3} - {4}",
+                            $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                             "[WARNING]",
-                            message.Sender, message.Title, message.Text);
+                            message.Sender, 
+                            message.Title, 
+                            message.Text);
                         break;
-                    case MessageType.Error:
-                        _logger.Error("{0} {1} {2}: {3} - {4}",
-                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                    case WavesMessageType.Error:
+                        _logger.Error(
+                            "{0} {1} {2}: {3} - {4}",
+                            $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                             "[ERROR]",
-                            message.Sender, message.Title, message.Text);
+                            message.Sender, 
+                            message.Title, 
+                            message.Text);
                         break;
-                    case MessageType.Success:
-                        _logger.Info("{0} {1} {2}: {3} - {4}",
-                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                    case WavesMessageType.Success:
+                        _logger.Info(
+                            "{0} {1} {2}: {3} - {4}",
+                            $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                             "[SUCCESS]",
-                            message.Sender, message.Title, message.Text);
+                            message.Sender, 
+                            message.Title, 
+                            message.Text);
                         break;
-                    case MessageType.Debug:
-                        _logger.Debug("{0} {1} {2}: {3} - {4}",
-                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                    case WavesMessageType.Debug:
+                        _logger.Debug(
+                            "{0} {1} {2}: {3} - {4}",
+                            $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                             "[DEBUG]",
-                            message.Sender, message.Title, message.Text);
+                            message.Sender, 
+                            message.Title,
+                            message.Text);
                         break;
-                    case MessageType.Fatal:
+                    case WavesMessageType.Fatal:
                         _logger.Fatal("{0} {1} {2}: {3} - {4}",
-                            message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                            $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                             "[FATAL]",
-                            message.Sender, message.Title, message.Text);
+                            message.Sender,
+                            message.Title, 
+                            message.Text);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -176,8 +234,14 @@ namespace Waves.Core.Service.Logging.NLog
             }
             catch (Exception e)
             {
-                OnMessageReceived(this,
-                    new Message("Writing message to log", "Error writing message to log.", Name, e, false));
+                OnMessageReceived(
+                    this,
+                    new WavesMessage(
+                        "Writing message to log", 
+                        "Error writing message to log.", 
+                        Name, 
+                        e, 
+                        false));
             }
         }
 
@@ -188,25 +252,29 @@ namespace Waves.Core.Service.Logging.NLog
 
             try
             {
-                var message = new Message(exception.Source, exception.Message, sender, MessageType.Error);
+                var message = new WavesMessage(exception.Source, exception.Message, sender, WavesMessageType.Error);
 
                 AddMessageToCollection(message);
 
                 if (isFatal)
                     _logger.Fatal("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                        $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                         "[FATAL]",
-                        message.Sender, message.Title, message.Text);
+                        message.Sender, 
+                        message.Title, 
+                        message.Text);
                 else
                     _logger.Error("{0} {1} {2}: {3} - {4}",
-                        message.DateTime.ToShortDateString() + " " + message.DateTime.ToShortTimeString(),
+                        $"{message.DateTime.ToShortDateString()} {message.DateTime.ToShortTimeString()}",
                         "[ERROR]",
-                        message.Sender, message.Title, message.Text);
+                        message.Sender, 
+                        message.Title, 
+                        message.Text);
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Writing exception to log", "Error writing exception to log.", Name, e, false));
+                    new WavesMessage("Writing exception to log", "Error writing exception to log.", Name, e, false));
             }
         }
 
@@ -214,7 +282,7 @@ namespace Waves.Core.Service.Logging.NLog
         ///     Adds message to collection.
         /// </summary>
         /// <param name="message">Message.</param>
-        private void AddMessageToCollection(IMessage message)
+        private void AddMessageToCollection(IWavesMessage message)
         {
             try
             {
@@ -226,16 +294,16 @@ namespace Waves.Core.Service.Logging.NLog
                         lastObject.Type == message.Type &&
                         lastObject.Sender == message.Sender)
                     {
-                        if (lastObject is IMessageGroup group)
+                        if (lastObject is IWavesMessageGroup group)
                         {
                             group.Messages.Add(message);
 
                             return;
                         }
 
-                        if (lastObject is IMessage previousMessage)
+                        if (lastObject is IWavesMessage previousMessage)
                         {
-                            var g = new MessageGroup(previousMessage.Title, previousMessage.Sender,
+                            var g = new WavesMessageGroup(previousMessage.Title, previousMessage.Sender,
                                 previousMessage.DateTime, previousMessage.Type);
 
                             g.Messages.Add(previousMessage);
@@ -248,18 +316,28 @@ namespace Waves.Core.Service.Logging.NLog
                     }
                     else
                     {
-                        LastMessages.Add(message);
+                        var g = new WavesMessageGroup(message.Title, message.Sender,
+                            message.DateTime, message.Type);
+                        
+                        g.Messages.Add(message);
+                        
+                        LastMessages.Add(g);
                     }
                 }
                 else
                 {
-                    LastMessages.Add(message);
+                    var g = new WavesMessageGroup(message.Title, message.Sender,
+                        message.DateTime, message.Type);
+                    
+                    g.Messages.Add(message);
+                        
+                    LastMessages.Add(g);
                 }
             }
             catch (Exception e)
             {
                 OnMessageReceived(this,
-                    new Message("Adding message", "Message has not been added to log collection.", Name, e, false));
+                    new WavesMessage("Adding message", "Message has not been added to log collection.", Name, e, false));
             }
         }
     }

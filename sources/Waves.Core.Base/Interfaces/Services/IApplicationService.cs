@@ -5,12 +5,12 @@ namespace Waves.Core.Base.Interfaces.Services
     /// <summary>
     ///     Interface for Application service classes.
     /// </summary>
-    public interface IApplicationService : IMefLoaderService<IApplication>
+    public interface IApplicationService : IMefLoaderService<IWavesApplication>
     {
         /// <summary>
         ///     Gets all of application actions.
         /// </summary>
-        ICollection<IApplicationAction> ApplicationActions { get; }
+        ICollection<IWavesApplicationAction> ApplicationActions { get; }
 
         /// <summary>
         ///     Event for applications actions updated.

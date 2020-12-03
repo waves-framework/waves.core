@@ -6,7 +6,7 @@ namespace Waves.Core.Base.Interfaces.Services
     /// <summary>
     ///     Interface for logging services.
     /// </summary>
-    public interface ILoggingService : IService
+    public interface ILoggingService : IWavesService
     {
         /// <summary>
         ///     Gets number of last messages.
@@ -16,7 +16,7 @@ namespace Waves.Core.Base.Interfaces.Services
         /// <summary>
         ///     Gets collection of last log messages.
         /// </summary>
-        ICollection<IMessageObject> LastMessages { get; }
+        ICollection<IWavesMessageObject> LastMessages { get; }
 
         /// <summary>
         ///     Writes text to log.
@@ -28,7 +28,7 @@ namespace Waves.Core.Base.Interfaces.Services
         ///     Writes message to log.
         /// </summary>
         /// <param name="message">Message.</param>
-        void WriteMessageToLog(IMessage message);
+        void WriteMessageToLog(IWavesMessage message);
 
         /// <summary>
         ///     Writes exception to log.

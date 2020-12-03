@@ -11,8 +11,8 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Library for input messages.</description>
     <releaseNotes>
-      The first release of package.
-      - Simple service for input messages.
+      - Refactoring;
+      - Advanced logging.
     </releaseNotes>
     <copyright>Copyright (c) 2020 Egor Khindikaynen</copyright>
     <tags>Waves core service input</tags>

@@ -5,7 +5,7 @@ namespace Waves.Core.Base.Interfaces.Services
     /// <summary>
     /// Interface for container
     /// </summary>
-    public interface IContainerService : IService
+    public interface IContainerService : IWavesService
     {
         /// <summary>
         /// Gets whether container is built.

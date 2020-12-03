@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Composition;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Base.Interfaces.Services;
@@ -10,8 +12,8 @@ namespace Waves.Core.Service.Applications
     /// <summary>
     ///     Application service.
     /// </summary>
-    [Export(typeof(IService))]
-    public class Service : MefLoaderService<IApplication>, IApplicationService
+    [Export(typeof(IWavesService))]
+    public class Service : WavesMefLoaderService<IWavesApplication>, IApplicationService
     {
         /// <inheritdoc />
         public event ApplicationsActionsUpdatedEventHandler ApplicationsActionsUpdated;
@@ -23,7 +25,9 @@ namespace Waves.Core.Service.Applications
         public override string Name { get; set; } = "Application Loader Service";
 
         /// <inheritdoc />
-        public ICollection<IApplicationAction> ApplicationActions { get; } = new List<IApplicationAction>();
+        [Reactive]
+        public ICollection<IWavesApplicationAction> ApplicationActions { get; set; } 
+            = new ObservableCollection<IWavesApplicationAction>();
 
         /// <inheritdoc />
         protected override string ObjectsName => "Applications";
@@ -45,7 +49,8 @@ namespace Waves.Core.Service.Applications
         {
             if (Objects == null) return;
 
-            foreach (var obj in Objects) obj.ActionsUpdated += OnApplicationActionsUpdated;
+            foreach (var obj in Objects) 
+                obj.ActionsUpdated += OnApplicationActionsUpdated;
         }
 
         /// <summary>
@@ -55,7 +60,8 @@ namespace Waves.Core.Service.Applications
         {
             if (Objects == null) return;
 
-            foreach (var obj in Objects) obj.ActionsUpdated -= OnApplicationActionsUpdated;
+            foreach (var obj in Objects) 
+                obj.ActionsUpdated -= OnApplicationActionsUpdated;
         }
 
         /// <summary>
@@ -75,10 +81,12 @@ namespace Waves.Core.Service.Applications
         private void OnApplicationActionsUpdated(object sender, ApplicationActionsUpdatedEventArgs args)
         {
             // remove old actions
-            foreach (var action in args.RemovedActions) ApplicationActions.Remove(action);
+            foreach (var action in args.RemovedActions) 
+                ApplicationActions.Remove(action);
 
             // add new actions
-            foreach (var action in args.AddedActions) ApplicationActions.Add(action);
+            foreach (var action in args.AddedActions) 
+                ApplicationActions.Add(action);
 
             OnApplicationsActionsUpdated(args);
         }

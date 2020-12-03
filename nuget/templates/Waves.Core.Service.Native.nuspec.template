@@ -11,8 +11,8 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Native library loader.</description>
     <releaseNotes>
-      The first release of package.
-      - Simple native library loader.
+      - Refactoring;
+      - Advanced logging.
     </releaseNotes>
     <copyright>Copyright (c) 2020 Egor Khindikaynen</copyright>
     <tags>Waves core service native library</tags>

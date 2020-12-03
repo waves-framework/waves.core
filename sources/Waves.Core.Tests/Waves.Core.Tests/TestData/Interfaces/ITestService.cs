@@ -5,7 +5,7 @@ namespace Waves.Core.Tests.TestData.Interfaces
     /// <summary>
     /// Interface for test service.
     /// </summary>
-    public interface ITestService : IService
+    public interface ITestService : IWavesService
     {
         /// <summary>
         /// Test method.

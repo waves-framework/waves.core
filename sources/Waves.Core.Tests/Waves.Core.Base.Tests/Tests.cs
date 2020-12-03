@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
+using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base.Tests
 {
@@ -16,7 +17,7 @@ namespace Waves.Core.Base.Tests
         [Test]
         public void CoreBase_IsNotifyPropertyChangedWorking_True()
         {
-            var property = new Property<int>("Test", 0, false, false);
+            var property = new WavesProperty<int>("Test", 0, false, false);
 
             property.PropertyChanged += OnPropertyChanged;
 
@@ -30,7 +31,7 @@ namespace Waves.Core.Base.Tests
         /// </summary>
         /// <param name="property">Property.</param>
         /// <returns>Result.</returns>
-        private async Task<bool> CheckPropertyChangedAsync(Property<int> property)
+        private async Task<bool> CheckPropertyChangedAsync(IWavesProperty property)
         {
             property.SetValue(1);
 

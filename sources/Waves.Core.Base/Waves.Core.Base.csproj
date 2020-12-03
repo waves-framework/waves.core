@@ -3,8 +3,9 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="ReactiveUI.Fody" Version="11.5.35" />
-    <PackageReference Include="System.Composition" Version="1.4.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="12.1.5" />
+    <PackageReference Include="System.Composition" Version="5.0.0" />
+    <PackageReference Include="Waves.Utils.Serialization" Version="2021.1.1-preview1" />
   </ItemGroup>
 
   <ItemGroup>

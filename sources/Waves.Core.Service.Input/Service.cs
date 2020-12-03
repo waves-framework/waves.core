@@ -11,17 +11,17 @@ namespace Waves.Core.Service.Input
     /// <summary>
     ///     Input service.
     /// </summary>
-    [Export(typeof(IService))]
-    public class Service : Base.Service, IInputService
+    [Export(typeof(IWavesService))]
+    public class Service : WavesService, IInputService
     {
         /// <inheritdoc />
-        public event EventHandler<KeyEventArgs> KeyPressed;
+        public event EventHandler<WavesKeyEventArgs> KeyPressed;
 
         /// <inheritdoc />
-        public event EventHandler<KeyEventArgs> KeyReleased;
+        public event EventHandler<WavesKeyEventArgs> KeyReleased;
 
         /// <inheritdoc />
-        public event EventHandler<PointerEventArgs> PointerStateChanged;
+        public event EventHandler<WavesPointerEventArgs> PointerStateChanged;
 
         /// <inheritdoc />
         public override Guid Id { get; } = Guid.Parse("3F339B93-AE63-4F93-9DCD-F71FA378744E");
@@ -30,14 +30,19 @@ namespace Waves.Core.Service.Input
         public override string Name { get; set; } = "Keyboard and Mouse Input Service";
 
         /// <inheritdoc />
-        public override void Initialize(ICore core)
+        public override void Initialize(IWavesCore core)
         {
             if (IsInitialized) return;
 
             Core = core;
 
-            OnMessageReceived(this,
-                new Message("Initialization", "Service has been initialized.", Name, MessageType.Information));
+            OnMessageReceived(
+                this,
+                new WavesMessage(
+                    "Initialization", 
+                    "Service has been initialized.", 
+                    Name, 
+                    WavesMessageType.Information));
 
             IsInitialized = true;
         }
@@ -45,17 +50,24 @@ namespace Waves.Core.Service.Input
         /// <inheritdoc />
         public override void LoadConfiguration()
         {
-            OnMessageReceived(this, new Message("Loading configuration", "There is nothing to load.",
+            OnMessageReceived(this, 
+                new WavesMessage(
+                    "Loading configuration", 
+                    "There is nothing to load.",
                 Name,
-                MessageType.Information));
+                WavesMessageType.Information));
         }
 
         /// <inheritdoc />
         public override void SaveConfiguration()
         {
-            OnMessageReceived(this, new Message("Saving configuration", "There is nothing to save.",
+            OnMessageReceived(
+                this, 
+                new WavesMessage(
+                "Saving configuration", 
+                "There is nothing to save.",
                 Name,
-                MessageType.Information));
+                WavesMessageType.Information));
         }
 
         /// <inheritdoc />
@@ -64,19 +76,19 @@ namespace Waves.Core.Service.Input
         }
 
         /// <inheritdoc />
-        public void SetKeyPressed(KeyEventArgs e)
+        public void SetKeyPressed(WavesKeyEventArgs e)
         {
             OnKeyPressed(e);
         }
 
         /// <inheritdoc />
-        public void SetKeyReleased(KeyEventArgs e)
+        public void SetKeyReleased(WavesKeyEventArgs e)
         {
             OnKeyReleased(e);
         }
 
         /// <inheritdoc />
-        public void SetPointer(PointerEventArgs e)
+        public void SetPointer(WavesPointerEventArgs e)
         {
             OnPointerStateChanged(e);
         }
@@ -85,7 +97,7 @@ namespace Waves.Core.Service.Input
         ///     Notifies when key pressed.
         /// </summary>
         /// <param name="e">Key event arguments.</param>
-        protected virtual void OnKeyPressed(KeyEventArgs e)
+        protected virtual void OnKeyPressed(WavesKeyEventArgs e)
         {
             KeyPressed?.Invoke(this, e);
         }
@@ -94,7 +106,7 @@ namespace Waves.Core.Service.Input
         ///     Notifies when key released.
         /// </summary>
         /// <param name="e">Key event arguments.</param>
-        protected virtual void OnKeyReleased(KeyEventArgs e)
+        protected virtual void OnKeyReleased(WavesKeyEventArgs e)
         {
             KeyReleased?.Invoke(this, e);
         }
@@ -103,7 +115,7 @@ namespace Waves.Core.Service.Input
         ///     Notifies when pointer state changed.
         /// </summary>
         /// <param name="e">Pointer event arguments.</param>
-        protected virtual void OnPointerStateChanged(PointerEventArgs e)
+        protected virtual void OnPointerStateChanged(WavesPointerEventArgs e)
         {
             PointerStateChanged?.Invoke(this, e);
         }

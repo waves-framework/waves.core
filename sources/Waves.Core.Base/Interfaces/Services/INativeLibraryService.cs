@@ -6,7 +6,7 @@ namespace Waves.Core.Base.Interfaces.Services
     /// <summary>
     /// Interface for native library loader service.
     /// </summary>
-    public interface INativeLibraryService : IService
+    public interface INativeLibraryService : IWavesService
     {
         /// <summary>
         /// Get loading paths.
