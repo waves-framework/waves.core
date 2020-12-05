@@ -16,7 +16,7 @@ namespace Waves.Core.Base.Interfaces
         /// <summary>
         /// Gets unique color of object.
         /// </summary>
-        WavesColor Color { get; }
+        WavesColor Color { get; set; }
 
         /// <summary>
         ///     Gets object's name.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Composition;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base;
@@ -161,6 +162,7 @@ namespace Waves.Core.Service.Native
         public void Update()
         {
             var defaultDirectory = Path.Combine(_currentDirectory, "native");
+            var runtimesDirectory = Path.Combine(_currentDirectory, "runtimes");
 
             try
             {
@@ -176,22 +178,30 @@ namespace Waves.Core.Service.Native
             {
                 Names.Clear();
 
-                Paths.Add(_defaultNativeDirectory);
+                Paths.Add(defaultDirectory);
+                Paths.Add(runtimesDirectory);
 
                 foreach (var path in Paths)
                 {
-                    var info = new DirectoryInfo(path);
-                    var files = info.GetFiles();
+                    // var files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
+                    //     .Where(x => !x.EndsWith(".dll"));
+
+                    var files = new List<string>();
+                    
+                    files.AddRange(SearchFiles(path, ".dll"));
+                    files.AddRange(SearchFiles(path, ".so"));
+                    files.AddRange(SearchFiles(path, ".dylib"));
 
                     foreach (var file in files)
                     {
-                        if (file.Extension != ".dll" &&
-                            file.Extension != ".dylib") 
+                        if (!File.Exists(file))
                             continue;
-
+                        
+                        var info = new FileInfo(file);
+                        
                         try
                         {
-                            var fileName = file.FullName;
+                            var fileName = info.FullName;
                             
                             var result = NativeLibrary.Load(fileName);
 
@@ -205,25 +215,26 @@ namespace Waves.Core.Service.Native
                             OnMessageReceived(this,
                                 new WavesMessage(
                                     "Loading native library",
-                                    "Native library " + file.Name + " has been loaded.",
+                                    "Native library " + info.Name + " has been loaded.",
                                     Name,
                                     WavesMessageType.Information));
 
-                            Names.Add(file.FullName);
+                            Names.Add(info.FullName);
                         }
                         catch (Exception)
                         {
                             OnMessageReceived(this,
                                 new WavesMessage(
                                     "Native library loading error",
-                                    "Library " + file.Name + " can't be loaded on current system.",
+                                    "Library " + info.FullName + " can't be loaded on current system.",
                                     Name,
                                     WavesMessageType.Error));
                         }
                     }
                 }
 
-                Paths.Remove(_defaultNativeDirectory);
+                Paths.Remove(defaultDirectory);
+                Paths.Remove(runtimesDirectory);
             }
             catch (Exception e)
             {
@@ -235,6 +246,18 @@ namespace Waves.Core.Service.Native
         /// <inheritdoc />
         public override void Dispose()
         {
+        }
+
+        /// <summary>
+        /// Searches files in current path within all directories by current exntesion.
+        /// </summary>
+        /// <param name="path">Path.</param>
+        /// <param name="extension">File extension.</param>
+        /// <returns>Returns files collection.</returns>
+        private IEnumerable<string> SearchFiles(string path, string extension)
+        {
+            return Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
+                .Where(x => !x.EndsWith(extension));;
         }
     }
 }

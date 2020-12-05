@@ -12,7 +12,7 @@ namespace Waves.Core.Base
         public abstract Guid Id { get; }
         
         /// <inheritdoc />
-        public WavesColor Color { get; } = WavesColor.Random();
+        public WavesColor Color { get; set; } = WavesColor.Random();
 
         /// <inheritdoc />
         public abstract string Name { get; set; }
