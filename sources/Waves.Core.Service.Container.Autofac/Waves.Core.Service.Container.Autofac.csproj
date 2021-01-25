@@ -3,7 +3,7 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.0.0" />
+    <PackageReference Include="Autofac" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>

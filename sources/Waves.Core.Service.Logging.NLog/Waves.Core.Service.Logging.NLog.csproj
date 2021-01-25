@@ -3,7 +3,7 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.5" />
+    <PackageReference Include="NLog" Version="4.7.7" />
   </ItemGroup>
 
   <ItemGroup>
