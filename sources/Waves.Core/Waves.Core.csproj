@@ -3,6 +3,7 @@
   <Import Project="../../props/Waves.Core.props" />
 
   <ItemGroup>
+    <ProjectReference Include="..\..\submodules\utils\sources\Waves.Utils.Serialization\Waves.Utils.Serialization.csproj" />
     <ProjectReference Include="..\Waves.Core.Base\Waves.Core.Base.csproj" />
   </ItemGroup>
 
