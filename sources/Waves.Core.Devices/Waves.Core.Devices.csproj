@@ -1,9 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <Import Project="../../props/Waves.Core.props" />
-
-  <ItemGroup>
-    <ProjectReference Include="..\Waves.Core.Base\Waves.Core.Base.csproj" />
-  </ItemGroup>
-
-</Project>
