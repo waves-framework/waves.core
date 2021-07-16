@@ -1,22 +1,28 @@
-﻿using System.Threading;
-using Waves.Core.Base;
-using Waves.Core.Base.Enums;
+﻿using System;
+using System.Net.Mime;
+using Waves.Core.Sandbox.Samples;
+using Waves.Core.Sandbox.Samples.Interfaces;
 
 namespace Waves.Core.Sandbox
 {
-    internal class Program
+    /// <summary>
+    ///     Program.
+    /// </summary>
+    public static class Program
     {
-        private static void Main(string[] args)
+        /// <summary>
+        /// Get current sample class.
+        /// </summary>
+        public static ISample Sample { get; } = new CoreLaunchSample();
+
+        /// <summary>
+        ///     Main.
+        /// </summary>
+        /// <param name="args">Arguments.</param>
+        public static void Main(string[] args)
         {
-            var core = new Core();
-
-            core.Start();
-            
-            core.WriteLog(new WavesMessage("Please, wait", "Waiting for 3 seconds...", "App", WavesMessageType.Information));
-
-            Thread.Sleep(3000);
-
-            core.Stop();
+            Sample.Execute();
+            Console.ReadLine();
         }
     }
 }

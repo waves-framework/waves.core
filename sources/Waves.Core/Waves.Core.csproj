@@ -1,15 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../props/Waves.Core.props" />
+  <Import Project="../../build/props/common.props" />
 
   <ItemGroup>
-    <ProjectReference Include="..\..\submodules\utils\sources\Waves.Utils.Serialization\Waves.Utils.Serialization.csproj" />
-    <ProjectReference Include="..\Waves.Core.Base\Waves.Core.Base.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="Autofac" Version="6.2.0" />
+    <PackageReference Include="ReactiveUI" Version="14.1.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="14.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pastel" Version="2.1.0" />
-    <PackageReference Include="Waves.Utils.Serialization" Version="2021.1.1-preview1" />
+    <Folder Include="Plugins\Services\EventArgs\" />
+    <Folder Include="Presentation\Extensions\" />
   </ItemGroup>
 
 </Project>
