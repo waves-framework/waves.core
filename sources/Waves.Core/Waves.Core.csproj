@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Plugins\Services\EventArgs\" />
-    <Folder Include="Presentation\Extensions\" />
   </ItemGroup>
 
 </Project>
