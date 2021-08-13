@@ -390,7 +390,7 @@ namespace Waves.Core.Plugins.Services
                 }
                 catch (Exception e)
                 {
-                    await _core.WriteLogAsync(e, this, false);
+                    await _core.WriteLogAsync(e, this);
                 }
             }
 

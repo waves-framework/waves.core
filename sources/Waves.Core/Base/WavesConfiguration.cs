@@ -100,7 +100,7 @@ namespace Waves.Core.Base
             var type = value.GetType();
             var method = GetType().GetMethods().Where(x => x.Name.Equals("AddProperty")).FirstOrDefault(x => x.IsGenericMethod);
             var genericMethod = method?.MakeGenericMethod(type);
-            genericMethod?.Invoke(this, new object[] { name, value });
+            genericMethod?.Invoke(this, new[] { name, value });
         }
 
         /// <inheritdoc />
