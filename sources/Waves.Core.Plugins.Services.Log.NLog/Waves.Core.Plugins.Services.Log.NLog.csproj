@@ -2,6 +2,17 @@
 
   <Import Project="../../build/props/common.props" />
 
+  <PropertyGroup>
+    <Title>Waves.Core.Plugins.Services.Log.NLog</Title>
+    <Authors>Egor Khindikaynen</Authors>
+    <Description>NLog plugin for Waves framework.</Description>
+    <Copyright>Copyright (c) 2020-2021 Egor Khindikaynen</Copyright>
+    <PackageProjectUrl>https://github.com/waves-framework/waves.core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/waves-framework/waves.core</RepositoryUrl>
+    <PackageTags>waves core log nlog plugin service framework</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.7.10" />
   </ItemGroup>
@@ -17,12 +28,9 @@
   </ItemGroup>
 
   <PropertyGroup>
-
     <PackageIcon>logo_c_128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageLicenseFile>license.md</PackageLicenseFile>
-
   </PropertyGroup>
 
 </Project>

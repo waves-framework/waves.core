@@ -28,12 +28,9 @@
   </ItemGroup>
 
   <PropertyGroup>
-    
     <PackageIcon>logo_c_128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageLicenseFile>license.md</PackageLicenseFile>
-    
   </PropertyGroup>
 
 </Project>
