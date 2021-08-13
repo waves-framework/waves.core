@@ -165,8 +165,7 @@ namespace Waves.Core.Plugins.Services
                             await _core.WriteLogAsync(new WavesTextMessage(
                                 $"Native library {info.Name} has been loaded.",
                                 "Loading native library",
-                                this,
-                                WavesMessageType.Information));
+                                this));
 
                             Names.Add(info.FullName);
                         }

@@ -18,12 +18,20 @@ namespace Waves.Core.Base
         IWavesConfiguration
     {
         /// <summary>
+        /// Creates new instance of <see cref="WavesConfiguration"/>.
+        /// </summary>
+        public WavesConfiguration()
+        {
+            Properties = new List<IWavesProperty>();
+        }
+        
+        /// <summary>
         ///     Gets collection of properties.
         /// </summary>
         [Reactive]
         [WavesProperty]
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
-        public ICollection<IWavesProperty> Properties { get; protected set; } = new List<IWavesProperty>();
+        public ICollection<IWavesProperty> Properties { get; private set; }
 
         /// <inheritdoc />
         public ICollection<IWavesProperty> GetProperties()
@@ -100,7 +108,7 @@ namespace Waves.Core.Base
             var type = value.GetType();
             var method = GetType().GetMethods().Where(x => x.Name.Equals("AddProperty")).FirstOrDefault(x => x.IsGenericMethod);
             var genericMethod = method?.MakeGenericMethod(type);
-            genericMethod?.Invoke(this, new object[] { name, value });
+            genericMethod?.Invoke(this, new[] { name, value });
         }
 
         /// <inheritdoc />

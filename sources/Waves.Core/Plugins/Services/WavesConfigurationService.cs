@@ -85,8 +85,7 @@ namespace Waves.Core.Plugins.Services
                 await _core.WriteLogAsync(new WavesTextMessage(
                     $"Configuration file ({id}) loaded.",
                     "Configuration",
-                    this,
-                    WavesMessageType.Information));
+                    this));
             }
         }
 
@@ -123,8 +122,7 @@ namespace Waves.Core.Plugins.Services
                 await _core.WriteLogAsync(new WavesTextMessage(
                     $"Configuration for configurable object {configurable.GetPluginTypeName()} saved.",
                     "Configuration",
-                    this,
-                    WavesMessageType.Information));
+                    this));
             }
         }
 
