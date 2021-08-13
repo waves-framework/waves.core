@@ -18,12 +18,20 @@ namespace Waves.Core.Base
         IWavesConfiguration
     {
         /// <summary>
+        /// Creates new instance of <see cref="WavesConfiguration"/>.
+        /// </summary>
+        public WavesConfiguration()
+        {
+            Properties = new List<IWavesProperty>();
+        }
+        
+        /// <summary>
         ///     Gets collection of properties.
         /// </summary>
         [Reactive]
         [WavesProperty]
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
-        public ICollection<IWavesProperty> Properties { get; protected set; } = new List<IWavesProperty>();
+        public ICollection<IWavesProperty> Properties { get; private set; }
 
         /// <inheritdoc />
         public ICollection<IWavesProperty> GetProperties()
