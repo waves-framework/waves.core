@@ -224,8 +224,7 @@ namespace Waves.Core
             var message = new WavesTextMessage(
                 text,
                 string.Empty,
-                this,
-                WavesMessageType.Information);
+                this);
 
             if (!LoggingServices.Any())
             {
@@ -373,7 +372,7 @@ namespace Waves.Core
                     throw new NullReferenceException("Unknown error occured while container service initialization.");
                 }
 
-                var constructor = containerType.GetConstructor(new Type[] { typeof(IWavesCore), typeof(IWavesTypeLoaderService) });
+                var constructor = containerType.GetConstructor(new[] { typeof(IWavesCore), typeof(IWavesTypeLoaderService) });
                 if (constructor == null)
                 {
                     throw new NullReferenceException("Unknown error occured while container service initialization.");
