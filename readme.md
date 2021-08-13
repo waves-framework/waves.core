@@ -8,7 +8,7 @@
 
 ### 📒 About Waves.Core
 
-**Waves.Core** is base kernel of Waves framework. It contains interfaces, base primitives, abstractions, services and utilities of framework. Base services include container service based on Autofac, logging service based on NLog, service for input messages and service for loading native assemblies. 
+**Waves.Core** is base kernel of Waves framework. It contains interfaces, base primitives, abstractions, services and utilities of framework. Base services include container service based on Autofac, logging service based on NLog and service for loading native assemblies. 
 
 ### 🚀 Getting started
 
