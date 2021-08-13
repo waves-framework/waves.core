@@ -122,8 +122,7 @@ namespace Waves.Core.Plugins.Services
                 await _core.WriteLogAsync(new WavesTextMessage(
                     $"Configuration for configurable object {configurable.GetPluginTypeName()} saved.",
                     "Configuration",
-                    this,
-                    WavesMessageType.Information));
+                    this));
             }
         }
 
