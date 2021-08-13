@@ -18,7 +18,7 @@ namespace Waves.Core.Base
         IWavesConfiguration
     {
         /// <summary>
-        /// Creates new instance of <see cref="WavesConfiguration"./>
+        /// Creates new instance of <see cref="WavesConfiguration"/>.
         /// </summary>
         public WavesConfiguration()
         {
@@ -31,7 +31,7 @@ namespace Waves.Core.Base
         [Reactive]
         [WavesProperty]
         [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
-        public ICollection<IWavesProperty> Properties { get; }
+        public ICollection<IWavesProperty> Properties { get; private set; }
 
         /// <inheritdoc />
         public ICollection<IWavesProperty> GetProperties()
