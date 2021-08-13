@@ -85,8 +85,7 @@ namespace Waves.Core.Plugins.Services
                 await _core.WriteLogAsync(new WavesTextMessage(
                     $"Configuration file ({id}) loaded.",
                     "Configuration",
-                    this,
-                    WavesMessageType.Information));
+                    this));
             }
         }
 
