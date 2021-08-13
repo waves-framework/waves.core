@@ -107,10 +107,11 @@ namespace Waves.Core
         /// <inheritdoc />
         public async Task StopAsync()
         {
-            if (Status == CoreStatus.Stopping ||
-                Status == CoreStatus.Failed ||
-                Status == CoreStatus.NotRunning ||
-                Status == CoreStatus.Stopped)
+            if (Status
+                is CoreStatus.Stopping
+                or CoreStatus.Failed
+                or CoreStatus.NotRunning
+                or CoreStatus.Stopped)
             {
                 return;
             }
