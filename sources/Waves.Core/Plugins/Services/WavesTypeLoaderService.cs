@@ -12,7 +12,7 @@ namespace Waves.Core.Plugins.Services
     /// Service for load types from assemblies.
     /// </summary>
     /// <typeparam name="T">Type.</typeparam>
-    internal class WavesTypeLoaderService<T> : WavesService, IWavesTypeLoaderService
+    public class WavesTypeLoaderService<T> : WavesService, IWavesTypeLoaderService
     {
         private readonly IWavesCore _core;
 
