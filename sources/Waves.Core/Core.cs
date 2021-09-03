@@ -7,6 +7,8 @@ using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Extensions;
+using Waves.Core.Plugins;
+using Waves.Core.Plugins.Interfaces;
 using Waves.Core.Plugins.Services;
 using Waves.Core.Plugins.Services.Interfaces;
 
@@ -19,10 +21,17 @@ namespace Waves.Core
         WavesObject,
         IWavesCore
     {
-        private readonly object _pendingMessagesLocker = new object();
-        private readonly List<IWavesMessageObject> _pendingMessages = new List<IWavesMessageObject>();
+        private readonly IWavesPendingLogStorage _pendingLogStorage;
 
         private DateTime _tmpDateTime = DateTime.Now;
+
+        /// <summary>
+        /// Creates new instance of <see cref="Core"/>.
+        /// </summary>
+        public Core()
+        {
+            _pendingLogStorage = new WavesPendingLogStorage();
+        }
 
         /// <inheritdoc />
         public event EventHandler<IWavesMessageObject> MessageReceived;
@@ -43,7 +52,7 @@ namespace Waves.Core
         /// <summary>
         ///     Gets service loader.
         /// </summary>
-        protected WavesTypeLoaderService<WavesPluginAttribute> PluginTypeLoaderService { get; set; }
+        internal WavesTypeLoaderService<WavesPluginAttribute> PluginTypeLoaderService { get; set; }
 
         /// <summary>
         ///     Gets instance of logging service.
@@ -228,10 +237,7 @@ namespace Waves.Core
 
             if (!LoggingServices.Any())
             {
-                lock (_pendingMessagesLocker)
-                {
-                    _pendingMessages.Add(message);
-                }
+                await _pendingLogStorage.Push(message);
             }
             else
             {
@@ -249,10 +255,7 @@ namespace Waves.Core
         {
             if (!LoggingServices.Any())
             {
-                lock (_pendingMessagesLocker)
-                {
-                    _pendingMessages.Add(message);
-                }
+                await _pendingLogStorage.Push(message);
             }
             else
             {
@@ -397,19 +400,12 @@ namespace Waves.Core
         /// <summary>
         ///     Writes pending log messages to log.
         /// </summary>
-        private Task WritePendingMessagesAsync()
+        private async Task WritePendingMessagesAsync()
         {
-            lock (_pendingMessagesLocker)
+            foreach (var message in await _pendingLogStorage.GetAll())
             {
-                foreach (var message in _pendingMessages)
-                {
-                    WriteLogAsync(message).FireAndForget();
-                }
-
-                _pendingMessages.Clear();
+                await WriteLogAsync(message);
             }
-
-            return Task.CompletedTask;
         }
 
 #pragma warning disable SA1124 // Do not use regions
