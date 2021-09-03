@@ -52,7 +52,7 @@ namespace Waves.Core
         /// <summary>
         ///     Gets service loader.
         /// </summary>
-        protected WavesTypeLoaderService<WavesPluginAttribute> PluginTypeLoaderService { get; set; }
+        internal WavesTypeLoaderService<WavesPluginAttribute> PluginTypeLoaderService { get; set; }
 
         /// <summary>
         ///     Gets instance of logging service.

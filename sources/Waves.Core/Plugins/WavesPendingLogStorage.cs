@@ -13,7 +13,7 @@ namespace Waves.Core.Plugins
     /// <summary>
     /// Pending log message storage.
     /// </summary>
-    public class WavesPendingLogStorage : WavesPlugin, IWavesPendingLogStorage
+    internal class WavesPendingLogStorage : WavesPlugin, IWavesPendingLogStorage
     {
         private bool _isRecordingAvailable = true;
         
