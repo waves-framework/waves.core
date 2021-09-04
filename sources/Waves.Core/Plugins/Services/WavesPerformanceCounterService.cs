@@ -7,7 +7,7 @@
     [WavesService(
         "2a4de00a-2509-44ff-a835-182ee74076e2",
         typeof(IWavesPerformanceCounterService))]
-    internal class WavesPerformanceCounterService : WavesConfigurableService, IWavesPerformanceCounterService
+    public class WavesPerformanceCounterService : WavesConfigurableService, IWavesPerformanceCounterService
     {
         private PerformanceCounter _cpuCounter;
         private PerformanceCounter _availableRamCounter;

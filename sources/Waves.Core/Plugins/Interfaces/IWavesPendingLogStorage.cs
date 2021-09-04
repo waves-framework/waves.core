@@ -8,7 +8,7 @@ namespace Waves.Core.Plugins.Interfaces
     /// <summary>
     /// Interface for storage of pending log message.
     /// </summary>
-    internal interface IWavesPendingLogStorage
+    public interface IWavesPendingLogStorage
     {
         /// <summary>
         /// Gets collection of pending messages.
