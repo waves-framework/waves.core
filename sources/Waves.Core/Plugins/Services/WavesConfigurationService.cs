@@ -19,7 +19,7 @@ namespace Waves.Core.Plugins.Services
     [WavesService(
         "9B5B2A80-DD6A-4D6E-ABCB-5C0C6AD40E09",
         typeof(IWavesConfigurationService))]
-    internal class WavesConfigurationService : WavesService, IWavesConfigurationService
+    public class WavesConfigurationService : WavesService, IWavesConfigurationService
     {
         private readonly IWavesContainerService _containerService;
         private readonly IWavesTypeLoaderService _typeLoaderService;

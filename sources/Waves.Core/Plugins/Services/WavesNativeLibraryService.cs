@@ -21,7 +21,7 @@ namespace Waves.Core.Plugins.Services
     [WavesService(
         "93364C78-F884-4F47-8B0A-D60976E02DA8",
         typeof(IWavesNativeLibraryService))]
-    internal class WavesNativeLibraryService :
+    public class WavesNativeLibraryService :
         WavesConfigurableService,
         IWavesNativeLibraryService
     {
