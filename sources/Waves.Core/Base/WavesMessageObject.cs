@@ -7,7 +7,9 @@ namespace Waves.Core.Base
     /// <summary>
     /// Message object abstraction.
     /// </summary>
-    public abstract class WavesMessageObject : WavesObject, IWavesMessageObject
+    public abstract class WavesMessageObject :
+        WavesObject,
+        IWavesMessageObject
     {
         /// <inheritdoc />
         public Guid Id { get; protected set; } = Guid.NewGuid();

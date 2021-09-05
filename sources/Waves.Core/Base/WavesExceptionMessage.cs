@@ -7,7 +7,8 @@ namespace Waves.Core.Base
     /// <summary>
     ///     Specific message object with exception.
     /// </summary>
-    public class WavesExceptionMessage : WavesTextMessage,
+    public class WavesExceptionMessage : 
+        WavesTextMessage,
         IWavesExceptionMessage
     {
         /// <summary>

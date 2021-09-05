@@ -6,7 +6,9 @@ namespace Waves.Core.Base
     /// <summary>
     /// Abstraction for configurable service.
     /// </summary>
-    public abstract class WavesConfigurableService : WavesConfigurablePlugin, IWavesConfigurableService
+    public abstract class WavesConfigurableService :
+        WavesConfigurablePlugin,
+        IWavesConfigurableService
     {
         /// <summary>
         /// Creates new instance of <see cref="WavesConfigurableObject"/>.

@@ -10,7 +10,8 @@ namespace Waves.Core.Base
     /// <summary>
     /// Configurable plugin abstraction.
     /// </summary>
-    public abstract class WavesConfigurablePlugin : WavesConfigurableObject,
+    public abstract class WavesConfigurablePlugin : 
+        WavesConfigurableObject,
         IWavesPlugin
     {
         /// <summary>

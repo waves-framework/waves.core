@@ -25,7 +25,7 @@ namespace Waves.Core.Plugins.Services
         private readonly IWavesCore _core;
         private readonly IWavesTypeLoaderService _typeLoaderService;
 
-        private ICollection<WavesContainterRegistration> _registrations;
+        private ICollection<WavesContainerRegistration> _registrations;
 
         /// <summary>
         /// Creates new instance of <see cref="WavesContainerService"/>.
@@ -63,7 +63,7 @@ namespace Waves.Core.Plugins.Services
 
             try
             {
-                _registrations = new List<WavesContainterRegistration>();
+                _registrations = new List<WavesContainerRegistration>();
 
                 ContainerBuilder = new ContainerBuilder();
 
@@ -192,7 +192,7 @@ namespace Waves.Core.Plugins.Services
         {
             ContainerBuilder.RegisterInstance(instance).As<T>();
 
-            _registrations.Add(new WavesContainterRegistration(instance));
+            _registrations.Add(new WavesContainerRegistration(instance));
 
             await _core.WriteLogAsync(
                 "Plugins",
@@ -207,7 +207,7 @@ namespace Waves.Core.Plugins.Services
         {
             ContainerBuilder.RegisterInstance(instance).As<T>().SingleInstance();
 
-            _registrations.Add(new WavesContainterRegistration(instance, true));
+            _registrations.Add(new WavesContainerRegistration(instance, true));
 
             await _core.WriteLogAsync(
                 "Plugins",
@@ -222,7 +222,7 @@ namespace Waves.Core.Plugins.Services
         {
             ContainerBuilder.RegisterType(type).Keyed<T>(key);
 
-            _registrations.Add(new WavesContainterRegistration(type, false, key));
+            _registrations.Add(new WavesContainerRegistration(type, false, key));
 
             await _core.WriteLogAsync(
                 "Plugins",
@@ -237,7 +237,7 @@ namespace Waves.Core.Plugins.Services
         {
             ContainerBuilder.RegisterType(type).Keyed<T>(key).SingleInstance();
 
-            _registrations.Add(new WavesContainterRegistration(type, true, key));
+            _registrations.Add(new WavesContainerRegistration(type, true, key));
 
             await _core.WriteLogAsync(
                 "Plugins",
@@ -318,12 +318,12 @@ namespace Waves.Core.Plugins.Services
                             if (isSingleInstance)
                             {
                                 ContainerBuilder.RegisterType(type).As(pluginType).SingleInstance();
-                                _registrations.Add(new WavesContainterRegistration(pluginType, true));
+                                _registrations.Add(new WavesContainerRegistration(pluginType, true));
                             }
                             else
                             {
                                 ContainerBuilder.RegisterType(type).As(pluginType);
-                                _registrations.Add(new WavesContainterRegistration(pluginType));
+                                _registrations.Add(new WavesContainerRegistration(pluginType));
                             }
                         }
                         else
@@ -331,12 +331,12 @@ namespace Waves.Core.Plugins.Services
                             if (isSingleInstance)
                             {
                                 ContainerBuilder.RegisterType(type).As(pluginType).Keyed(pluginKey, pluginType).SingleInstance();
-                                _registrations.Add(new WavesContainterRegistration(pluginType, true, pluginKey));
+                                _registrations.Add(new WavesContainerRegistration(pluginType, true, pluginKey));
                             }
                             else
                             {
                                 ContainerBuilder.RegisterType(type).As(pluginType).Keyed(pluginKey, pluginType);
-                                _registrations.Add(new WavesContainterRegistration(pluginType, false, pluginKey));
+                                _registrations.Add(new WavesContainerRegistration(pluginType, false, pluginKey));
                             }
                         }
 
@@ -405,7 +405,7 @@ namespace Waves.Core.Plugins.Services
         /// Initializes registration.
         /// </summary>
         /// <param name="registration">Registration.</param>
-        private async Task InitializeRegistrationAsync(WavesContainterRegistration registration)
+        private async Task InitializeRegistrationAsync(WavesContainerRegistration registration)
         {
             if (registration.IsSingleInstance)
             {
