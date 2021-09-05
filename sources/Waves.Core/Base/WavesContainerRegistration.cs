@@ -5,15 +5,15 @@ namespace Waves.Core.Base
     /// <summary>
     /// Registration model.
     /// </summary>
-    public class WavesContainterRegistration : WavesObject
+    public class WavesContainerRegistration : WavesObject
     {
         /// <summary>
-        /// Creates new instance of <see cref="WavesContainterRegistration"/>.
+        /// Creates new instance of <see cref="WavesContainerRegistration"/>.
         /// </summary>
         /// <param name="obj">Registered object.</param>
         /// <param name="isSingleInstance">Whether registered is single instance.</param>
         /// <param name="key">Object key.</param>
-        public WavesContainterRegistration(
+        public WavesContainerRegistration(
             object obj,
             bool isSingleInstance = false,
             object key = null)

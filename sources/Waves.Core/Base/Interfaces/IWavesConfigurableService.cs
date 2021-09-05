@@ -3,7 +3,9 @@
     /// <summary>
     /// Interface for configurable services.
     /// </summary>
-    public interface IWavesConfigurableService : IWavesService, IWavesConfigurablePlugin
+    public interface IWavesConfigurableService :
+        IWavesService,
+        IWavesConfigurablePlugin
     {
     }
 }

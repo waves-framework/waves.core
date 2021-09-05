@@ -8,7 +8,9 @@ namespace Waves.Core.Base
     /// <summary>
     ///     Base message structure.
     /// </summary>
-    public class WavesTextMessage : WavesMessageObject, IWavesTextMessage
+    public class WavesTextMessage :
+        WavesMessageObject,
+        IWavesTextMessage
     {
         /// <summary>
         ///     Creates new instance of <see cref="WavesTextMessage" />.

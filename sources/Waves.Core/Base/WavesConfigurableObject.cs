@@ -9,7 +9,9 @@ namespace Waves.Core.Base
     /// <summary>
     /// Configurable object abstraction.
     /// </summary>
-    public abstract class WavesConfigurableObject : WavesObject, IWavesConfigurableObject
+    public abstract class WavesConfigurableObject :
+        WavesObject,
+        IWavesConfigurableObject
     {
         /// <summary>
         /// Creates new instance os <see cref="WavesConfigurableObject"/>.

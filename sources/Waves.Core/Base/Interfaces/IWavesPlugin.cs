@@ -6,7 +6,9 @@ namespace Waves.Core.Base.Interfaces
     /// <summary>
     ///     Interface for plugin.
     /// </summary>
-    public interface IWavesPlugin : IWavesObject, IDisposable
+    public interface IWavesPlugin : 
+        IWavesObject,
+        IDisposable
     {
         /// <summary>
         ///     Is plugin initialized.

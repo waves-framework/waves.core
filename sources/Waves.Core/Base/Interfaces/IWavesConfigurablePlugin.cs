@@ -3,7 +3,9 @@
     /// <summary>
     /// Interface for configurable plugins.
     /// </summary>
-    public interface IWavesConfigurablePlugin : IWavesPlugin, IWavesConfigurableObject
+    public interface IWavesConfigurablePlugin :
+        IWavesPlugin,
+        IWavesConfigurableObject
     {
     }
 }

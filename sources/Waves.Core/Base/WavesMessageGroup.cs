@@ -10,7 +10,9 @@ namespace Waves.Core.Base
     /// <summary>
     ///     Message group.
     /// </summary>
-    public class WavesMessageGroup : WavesMessageObject, IWavesMessageGroup
+    public class WavesMessageGroup : 
+        WavesMessageObject,
+        IWavesMessageGroup
     {
         /// <summary>
         ///     Creates nes instance of <see cref="WavesMessageGroup" />.
