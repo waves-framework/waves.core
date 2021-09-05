@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Interfaces;
@@ -6,10 +6,10 @@ using Waves.Core.Base.Interfaces;
 namespace Waves.Core.Base
 {
     /// <summary>
-    ///     Abstract base for plugins.
+    /// Waves observable plugin.
     /// </summary>
-    public abstract class WavesPlugin : 
-        WavesObject,
+    public class WavesObservablePlugin :
+        WavesObservableObject,
         IWavesPlugin
     {
         /// <inheritdoc />

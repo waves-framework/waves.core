@@ -6,7 +6,7 @@ namespace Waves.Core.Base
     /// <summary>
     ///     Objects base class.
     /// </summary>
-    public abstract class WavesObject : ReactiveObject,
+    public abstract class WavesObject :
         IWavesObject
     {
     }
