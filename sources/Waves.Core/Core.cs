@@ -6,7 +6,6 @@ using Waves.Core.Base;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Extensions;
 using Waves.Core.Plugins;
 using Waves.Core.Plugins.Interfaces;
 using Waves.Core.Plugins.Services;
@@ -15,7 +14,7 @@ using Waves.Core.Plugins.Services.Interfaces;
 namespace Waves.Core
 {
     /// <summary>
-    ///     Core abstraction.
+    ///     Core.
     /// </summary>
     public class Core :
         WavesObject,
