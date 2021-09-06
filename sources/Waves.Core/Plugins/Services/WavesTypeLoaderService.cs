@@ -16,7 +16,8 @@ namespace Waves.Core.Plugins.Services
     {
         private readonly IWavesCore _core;
 
-        private readonly string _basePluginsDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        private readonly string _basePluginsDirectory = System.IO.Path.GetDirectoryName(
+            System.Reflection.Assembly.GetExecutingAssembly().Location);
 
         /// <summary>
         /// Creates new instance of <see cref="WavesTypeLoaderService{T}"/>.

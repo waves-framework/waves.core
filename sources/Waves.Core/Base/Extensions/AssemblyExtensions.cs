@@ -20,7 +20,7 @@ namespace Waves.Core.Base.Extensions
         /// <param name="assemblies">Assemblies list.</param>
         /// <param name="path">Path to directory.</param>
         /// <param name="searchOption">Search option.</param>
-        public static void GetAssemblies(
+        public static ICollection<Assembly> GetAssemblies(
             this ICollection<Assembly> assemblies,
             string path,
             SearchOption searchOption = SearchOption.TopDirectoryOnly)
@@ -74,6 +74,8 @@ namespace Waves.Core.Base.Extensions
             {
                 throw new AggregateException(exceptions);
             }
+
+            return assemblies;
         }
 
         /// <summary>
@@ -82,12 +84,11 @@ namespace Waves.Core.Base.Extensions
         /// <param name="assemblies">Assemblies list.</param>
         /// <param name="path">Path to directory.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public static Task GetAssembliesAsync(
+        public static Task<ICollection<Assembly>> GetAssembliesAsync(
             this ICollection<Assembly> assemblies,
             string path)
         {
-            GetAssemblies(assemblies, path);
-            return Task.CompletedTask;
+            return Task.FromResult(GetAssemblies(assemblies, path));
         }
     }
 }
