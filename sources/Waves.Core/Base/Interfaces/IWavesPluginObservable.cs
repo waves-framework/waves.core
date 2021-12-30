@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 namespace Waves.Core.Base.Interfaces
 {
     /// <summary>
-    ///     Interface for plugin.
+    ///     Interface for observable plugin.
     /// </summary>
-    public interface IWavesPlugin : 
-        IWavesObject
+    public interface IWavesPluginObservable : 
+        IWavesObjectObservable
     {
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Extensions
 {
@@ -33,33 +32,6 @@ namespace Waves.Core.Extensions
             {
                 onError?.Invoke(ex);
             }
-        }
-
-        /// <summary>
-        /// Log exceptions for task.
-        /// </summary>
-        /// <param name="task">Task.</param>
-        /// <param name="core">Core.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public static Task LogExceptions(this Task task, IWavesCore core)
-        {
-            task.ContinueWith(
-                async t =>
-                {
-                    if (t.Exception == null)
-                    {
-                        return;
-                    }
-
-                    var aggException = t.Exception.Flatten();
-                    foreach (var exception in aggException.InnerExceptions)
-                    {
-                        await core.WriteLogAsync(exception, core);
-                    }
-                },
-                TaskContinuationOptions.OnlyOnFaulted);
-
-            return Task.CompletedTask;
         }
     }
 }
