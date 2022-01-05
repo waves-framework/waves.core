@@ -1,10 +1,9 @@
-﻿namespace Waves.Core.Base.Interfaces
+﻿namespace Waves.Core.Base.Interfaces;
+
+/// <summary>
+///     Interface for observable plugin.
+/// </summary>
+public interface IWavesPluginObservable :
+    IWavesObjectObservable
 {
-    /// <summary>
-    ///     Interface for observable plugin.
-    /// </summary>
-    public interface IWavesPluginObservable :
-        IWavesObjectObservable
-    {
-    }
 }
