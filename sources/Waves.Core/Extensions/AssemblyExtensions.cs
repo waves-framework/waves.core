@@ -20,6 +20,7 @@ namespace Waves.Core.Extensions
         /// <param name="assemblies">Assemblies list.</param>
         /// <param name="path">Path to directory.</param>
         /// <param name="searchOption">Search option.</param>
+        /// <returns>Collection of assemblies.</returns>
         public static ICollection<Assembly> GetAssemblies(
             this ICollection<Assembly> assemblies,
             string path,

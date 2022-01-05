@@ -9,14 +9,14 @@ public enum WavesLifetimeType
     /// Transient.
     /// </summary>
     Transient,
-    
+
     /// <summary>
     /// Scoped.
     /// </summary>
     Scoped,
-    
+
     /// <summary>
     /// Singleton.
     /// </summary>
-    Singleton
+    Singleton,
 }

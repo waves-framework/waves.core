@@ -3,7 +3,6 @@ namespace Waves.Core;
 /// <summary>
 /// Waves builder.
 /// </summary>
-public class WavesBuilder
+public static class WavesBuilder
 {
-    
 }

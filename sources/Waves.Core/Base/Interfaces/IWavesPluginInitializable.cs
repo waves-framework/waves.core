@@ -1,13 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using AspNetCore.AsyncInitialization;
+﻿using AspNetCore.AsyncInitialization;
 
 namespace Waves.Core.Base.Interfaces
 {
     /// <summary>
     ///     Interface for initializable plugin.
     /// </summary>
-    public interface IWavesPluginInitializable : 
+    public interface IWavesPluginInitializable :
         IWavesObject, IAsyncInitializer
     {
     }
