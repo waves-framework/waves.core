@@ -56,8 +56,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="17.1.9" />
-    <PackageReference Include="ReactiveUI.Fody" Version="17.1.9" />
+    <PackageReference Include="ReactiveUI" Version="17.1.17" />
+    <PackageReference Include="ReactiveUI.Fody" Version="17.1.17" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
