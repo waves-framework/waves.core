@@ -14,6 +14,6 @@ public class Startup : WavesStartup
     protected override void ConfigureAdditionalServices(IServiceCollection services)
     {
         // TODO: add your services here.
-        services.AddTransient<ISampleService, SampleService>();
+        // services.AddTransient<ISampleService, SampleService>();
     }
 }

@@ -7,12 +7,15 @@ using Waves.Core;
 using Waves.Core.Sandbox;
 using Waves.Core.Sandbox.Services.Interfaces;
 
-var host = WavesBuilder.CreateDefaultBuilder(args).Build();
-var services = WavesBuilder.GetDefaultServices<Startup>();
-var provider = services.BuildServiceProvider();
+var host = WavesBuilder.CreateDefaultBuilder(args)
+    .UseStartup<Startup>()
+    .Build();
 
-var service = provider.GetService<ISampleService>();
+var logger = host.Services.GetService<ILogger<Program>>();
+logger?.LogInformation("Program started");
+
+var service = host.Services.GetService<ISampleService>();
 service?.SampleMethod();
+logger?.LogInformation("All done!");
 
-var logger = provider.GetService<ILogger<Program>>();
-logger?.LogWarning("All done");
+Console.ReadLine();

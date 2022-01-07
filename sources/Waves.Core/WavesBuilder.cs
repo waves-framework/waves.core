@@ -26,6 +26,19 @@ public static class WavesBuilder
     public static IHostBuilder CreateDefaultBuilder(string[] args) => Host.CreateDefaultBuilder(args);
 
     /// <summary>
+    /// Uses current startup for host builder.
+    /// </summary>
+    /// <param name="builder">Builder.</param>
+    /// <typeparam name="TWavesStartup">Type of startup class.</typeparam>
+    /// <returns>Returns host builder.</returns>
+    public static IHostBuilder UseStartup<TWavesStartup>(this IHostBuilder builder)
+        where TWavesStartup : IWavesStartup, new()
+    {
+        var startup = GenericExtensions.InvokeConstructor<TWavesStartup>();
+        return builder.ConfigureServices((_, collection) => startup.ConfigureServices(collection));
+    }
+
+    /// <summary>
     /// Builds service provider.
     /// </summary>
     /// <typeparam name="TWavesStartup">Type of startup class.</typeparam>

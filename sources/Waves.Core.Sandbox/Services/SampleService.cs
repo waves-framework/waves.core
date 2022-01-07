@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Waves.Core.Base.Attributes;
 using Waves.Core.Sandbox.Services.Interfaces;
 using ILogger = Splat.ILogger;
 
@@ -7,6 +8,7 @@ namespace Waves.Core.Sandbox.Services;
 /// <summary>
 /// Sample service.
 /// </summary>
+[WavesPlugin(typeof(ISampleService))]
 public class SampleService : ISampleService
 {
     private readonly ILogger<SampleService> _logger;
