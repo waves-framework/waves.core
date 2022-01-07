@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Extensions;
 
@@ -20,11 +21,9 @@ public static class WavesBuilder
     /// <summary>
     /// Creates default builder.
     /// </summary>
-    /// <returns>Configuration builder.</returns>
-    public static IConfigurationBuilder CreateDefaultBuilder() =>
-        new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(DefaultSettingsFileName, optional: false, reloadOnChange: true);
+    /// <param name="args">Arguments</param>
+    /// <returns>Host builder.</returns>
+    public static IHostBuilder CreateDefaultBuilder(string[] args) => Host.CreateDefaultBuilder(args);
 
     /// <summary>
     /// Builds service provider.

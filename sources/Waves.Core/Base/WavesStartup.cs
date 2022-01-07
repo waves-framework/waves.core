@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Splat;
 using Waves.Core.Base.Interfaces;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Waves.Core.Base;
 
@@ -12,6 +14,8 @@ public abstract class WavesStartup : IWavesStartup
     /// <inheritdoc />
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddLogging(config => config.ClearProviders().AddConsole().SetMinimumLevel(LogLevel.Debug));
+
         // TODO: load plugins.
         ConfigureAdditionalServices(services);
     }
