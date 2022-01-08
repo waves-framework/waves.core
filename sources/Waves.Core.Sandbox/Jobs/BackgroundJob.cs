@@ -25,7 +25,7 @@ public class BackgroundJob : WavesJob
     /// <inheritdoc />
     public override Task Execute(IJobExecutionContext context)
     {
-        _logger.LogInformation("Task executed");
+        _logger.LogInformation("*** Task executed");
         return Task.CompletedTask;
     }
 }

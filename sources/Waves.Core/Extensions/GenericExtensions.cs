@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Waves.Core.Extensions;
 
@@ -35,5 +36,26 @@ public static class GenericExtensions
         var method = typeof(T).GetMethod(methodName);
         var genericMethod = method?.MakeGenericMethod(genericType);
         genericMethod?.Invoke(obj, parameters);
+    }
+
+    /// <summary>
+    /// Invokes generic method in current class type.
+    /// </summary>
+    /// <param name="classType">Class type.</param>
+    /// <param name="methodName">Method name.</param>
+    /// <param name="genericType">Generic type.</param>
+    /// <param name="parameters">Parameters of method.</param>
+    public static void InvokeStaticGenericMethod(
+        Type classType,
+        string methodName,
+        Type genericType,
+        object[] parameters)
+    {
+        var methods = classType.GetMethods();
+        var method = methods.SingleOrDefault(x => x.Name.Equals(methodName)
+                                                  && x.IsGenericMethod
+                                                  && x.GetParameters().Length.Equals(parameters.Length));
+        var genericMethod = method?.MakeGenericMethod(genericType);
+        genericMethod?.Invoke(null, parameters);
     }
 }

@@ -31,8 +31,8 @@ namespace Waves.Core.Extensions
                 ConfigureJobInterval(trigger, jobConfiguration);
             }
 
-            quartzServices.InvokeGenericMethod("ScheduleJob", jobType, new object[] { SetupTrigger });
-            services.InvokeGenericMethod("AddTransient", jobType, Array.Empty<object>());
+            GenericExtensions.InvokeStaticGenericMethod(typeof(ServiceCollectionExtensions), "ScheduleJob", jobType, new object[] { quartzServices, SetupTrigger, null });
+            services.AddTransient(jobType);
         }
 
         /// <summary>

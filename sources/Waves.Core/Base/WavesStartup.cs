@@ -75,7 +75,7 @@ public abstract class WavesStartup : IWavesStartup
 
             foreach (var job in jobs)
             {
-                q.InitializeJob(job, jobConfigurations.SingleOrDefault(x => x.Name.Equals(nameof(job))), services);
+                q.InitializeJob(job, jobConfigurations.SingleOrDefault(x => x.Name.Equals(job.GetFriendlyName())), services);
             }
         });
 

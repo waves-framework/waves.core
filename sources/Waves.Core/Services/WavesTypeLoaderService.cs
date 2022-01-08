@@ -53,7 +53,7 @@ namespace Waves.Core.Services
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // TODO:
                 }
