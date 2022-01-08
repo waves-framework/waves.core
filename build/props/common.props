@@ -8,6 +8,10 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <LangVersion>latest</LangVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIcon>logo_c_128.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseFile>license.md</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -46,12 +50,15 @@
   <ItemGroup>
     <None Include="..\..\files\images\logo_c_128.png">
       <Pack>True</Pack>
+      <PackagePath/>
     </None>
     <None Include="..\..\readme.md">
       <Pack>True</Pack>
+      <PackagePath/>
     </None>
     <None Include="..\..\license.md">
       <Pack>True</Pack>
+      <PackagePath/>
     </None>
   </ItemGroup>
 
