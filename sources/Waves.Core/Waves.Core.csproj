@@ -11,6 +11,10 @@
         <RepositoryUrl>https://github.com/waves-framework/waves.core</RepositoryUrl>
         <PackageTags>waves core framework</PackageTags>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageIcon>logo_c_128.png</PackageIcon>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageLicenseFile>license.md</PackageLicenseFile>
     </PropertyGroup>
     
     <ItemGroup>
