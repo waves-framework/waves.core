@@ -21,7 +21,7 @@ public static class WavesBuilder
     /// <summary>
     /// Creates default builder.
     /// </summary>
-    /// <param name="args">Arguments</param>
+    /// <param name="args">Arguments.</param>
     /// <returns>Host builder.</returns>
     public static IHostBuilder CreateDefaultBuilder(string[] args) => Host.CreateDefaultBuilder(args);
 

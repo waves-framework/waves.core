@@ -2,6 +2,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Waves.Core;
 using Waves.Core.Sandbox;
@@ -18,4 +19,4 @@ var service = host.Services.GetService<ISampleService>();
 service?.SampleMethod();
 logger?.LogInformation("All done!");
 
-Console.ReadLine();
+host.Run();

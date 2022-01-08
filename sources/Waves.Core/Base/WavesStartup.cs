@@ -1,12 +1,11 @@
 using System;
+using System.Linq;
+using AspNetCore.AsyncInitialization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Splat;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Services;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Waves.Core.Base;
 
@@ -41,7 +40,7 @@ public abstract class WavesStartup : IWavesStartup
     /// Registers plugins with type loader service.
     /// </summary>
     /// <param name="services">Service collection.</param>
-    private async void RegisterPlugins(IServiceCollection services)
+    private static async void RegisterPlugins(IServiceCollection services)
     {
         var typeLoader = new WavesTypeLoaderService<WavesPluginAttribute>();
         await typeLoader.UpdateTypesAsync();
@@ -50,6 +49,12 @@ public abstract class WavesStartup : IWavesStartup
         foreach (var type in types)
         {
             var attribute = type.Value;
+
+            if (type.Key.GetInterfaces().Contains(typeof(IAsyncInitializer)))
+            {
+                services.AddAsyncInitializer(type.Key);
+                continue;
+            }
 
             switch (attribute.Lifetime)
             {
