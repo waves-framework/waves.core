@@ -22,6 +22,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{AE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Sandbox", "..\sources\Waves.Core.Sandbox\Waves.Core.Sandbox.csproj", "{2A1F3B72-E79E-45DE-BD97-342EE375D77F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B5D5734D-33CB-4941-9501-DC3B942D9C98}"
+	ProjectSection(SolutionItems) = preProject
+		..\license.md = ..\license.md
+		..\notice.md = ..\notice.md
+		..\readme.md = ..\readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
