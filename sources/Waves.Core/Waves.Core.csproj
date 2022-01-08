@@ -1,36 +1,31 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Title>Waves.Core</Title>
-    <Authors>Egor Khindikaynen</Authors>
-    <Description>Waves.Core is base kernel of Waves framework. It contains interfaces, base primitives, abstractions and services. Base services include container service based on Autofac, logging service based on NLog and service for loading native assemblies.</Description>
-    <Copyright>Copyright (c) 2020-2021 Egor Khindikaynen</Copyright>
-    <PackageProjectUrl>https://github.com/waves-framework/waves.core</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/waves-framework/waves.core</RepositoryUrl>
-    <PackageTags>waves core framework</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-  </PropertyGroup>
-
-  <Import Project="../../build/props/common.props" />
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.1" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
-    <PackageReference Include="Autofac" Version="6.2.0" />
-    <PackageReference Include="ReactiveUI" Version="16.2.1" />
-    <PackageReference Include="ReactiveUI.Fody" Version="16.2.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Plugins\Services\EventArgs\" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageIcon>logo_c_128.png</PackageIcon>
-    <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageLicenseFile>license.md</PackageLicenseFile>
-  </PropertyGroup>
+    <Import Project="../../build/props/common.props" />
+    
+    <PropertyGroup>
+        <Title>Waves.Core</Title>
+        <Authors>Egor Khindikaynen</Authors>
+        <Description>Waves.Core is base kernel of Waves framework. It contains interfaces, base primitives, abstractions and services. Base services include container service based on Autofac, logging service based on NLog and service for loading native assemblies.</Description>
+        <Copyright>Copyright (c) 2020-2022 Egor Khindikaynen</Copyright>
+        <PackageProjectUrl>https://github.com/waves-framework/waves.core</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/waves-framework/waves.core</RepositoryUrl>
+        <PackageTags>waves core framework</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="AspNetCore.AsyncInitialization" Version="1.1.2" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+        <PackageReference Include="Quartz" Version="3.3.3" />
+        <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.3.3" />
+        <PackageReference Include="Quartz.Extensions.Hosting" Version="3.3.3" />
+    </ItemGroup>
 
 </Project>

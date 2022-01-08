@@ -4,3 +4,4 @@
 *\.vs
 packages/
 *.user
+*\.DS_Store
