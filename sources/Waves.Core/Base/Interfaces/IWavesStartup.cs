@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Waves.Core.Base.Interfaces;
 
@@ -8,8 +10,14 @@ namespace Waves.Core.Base.Interfaces;
 public interface IWavesStartup
 {
     /// <summary>
+    /// Gets configuration.
+    /// </summary>
+    IConfiguration Configuration { get; }
+
+    /// <summary>
     /// Configure services.
     /// </summary>
+    /// <param name="context">Host builder context.</param>
     /// <param name="services">Service collection.</param>
-    void ConfigureServices(IServiceCollection services);
+    void ConfigureServices(HostBuilderContext context, IServiceCollection services);
 }

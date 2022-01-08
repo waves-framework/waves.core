@@ -1,10 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AspNetCore.AsyncInitialization;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.VisualBasic;
+using Quartz;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
 using Waves.Core.Base.Interfaces;
+using Waves.Core.Extensions;
 using Waves.Core.Services;
 
 namespace Waves.Core.Base;
@@ -14,9 +20,20 @@ namespace Waves.Core.Base;
 /// </summary>
 public abstract class WavesStartup : IWavesStartup
 {
+    /// <summary>
+    /// Gets jobs config key.
+    /// </summary>
+    private const string JobsParameterKey = "Jobs";
+
     /// <inheritdoc />
-    public void ConfigureServices(IServiceCollection services)
+    public IConfiguration Configuration { get; private set; }
+
+    /// <inheritdoc />
+    public void ConfigureServices(HostBuilderContext context, IServiceCollection services)
     {
+        // set configuration.
+        Configuration = context.Configuration;
+
         // register plugins.
         RegisterPlugins(services);
 
@@ -40,17 +57,41 @@ public abstract class WavesStartup : IWavesStartup
     /// Registers plugins with type loader service.
     /// </summary>
     /// <param name="services">Service collection.</param>
-    private static async void RegisterPlugins(IServiceCollection services)
+    private async void RegisterPlugins(IServiceCollection services)
     {
         var typeLoader = new WavesTypeLoaderService<WavesPluginAttribute>();
         await typeLoader.UpdateTypesAsync();
         var types = typeLoader.Types;
 
+        services.AddQuartz(q =>
+        {
+            var jobConfigurations = Configuration.GetSection(JobsParameterKey).Get<List<WavesJobConfiguration>>();
+
+            q.UseMicrosoftDependencyInjectionJobFactory();
+            q.UseSimpleTypeLoader();
+            q.UseInMemoryStore();
+
+            var jobs = types.Where(x => x.Key.GetInterfaces().Contains(typeof(IWavesJob))).Select(x => x.Key);
+
+            foreach (var job in jobs)
+            {
+                q.InitializeJob(job, jobConfigurations.SingleOrDefault(x => x.Name.Equals(nameof(job))), services);
+            }
+        });
+
+        services.AddQuartzHostedService(
+            q => q.WaitForJobsToComplete = true);
+
         foreach (var type in types)
         {
             var attribute = type.Value;
 
-            if (type.Key.GetInterfaces().Contains(typeof(IAsyncInitializer)))
+            if (type.Key.GetInterfaces().Contains(typeof(IWavesJob)))
+            {
+                continue;
+            }
+
+            if (type.Key.GetInterfaces().Contains(typeof(IWavesPluginInitializable)))
             {
                 services.AddAsyncInitializer(type.Key);
                 continue;

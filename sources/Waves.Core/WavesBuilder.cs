@@ -23,7 +23,15 @@ public static class WavesBuilder
     /// </summary>
     /// <param name="args">Arguments.</param>
     /// <returns>Host builder.</returns>
-    public static IHostBuilder CreateDefaultBuilder(string[] args) => Host.CreateDefaultBuilder(args);
+    public static IHostBuilder CreateDefaultBuilder(string[] args) => Host
+        .CreateDefaultBuilder(args)
+        .ConfigureHostConfiguration(configHost =>
+    {
+        configHost.SetBasePath(Directory.GetCurrentDirectory());
+        configHost.AddJsonFile(DefaultSettingsFileName, optional: true);
+        configHost.AddEnvironmentVariables(prefix: "PREFIX_");
+        configHost.AddCommandLine(args);
+    });
 
     /// <summary>
     /// Uses current startup for host builder.
@@ -35,20 +43,9 @@ public static class WavesBuilder
         where TWavesStartup : IWavesStartup, new()
     {
         var startup = GenericExtensions.InvokeConstructor<TWavesStartup>();
-        return builder.ConfigureServices((_, collection) => startup.ConfigureServices(collection));
-    }
-
-    /// <summary>
-    /// Builds service provider.
-    /// </summary>
-    /// <typeparam name="TWavesStartup">Type of startup class.</typeparam>
-    /// <returns>Returns service provider.</returns>
-    public static IServiceCollection GetDefaultServices<TWavesStartup>()
-        where TWavesStartup : IWavesStartup, new()
-    {
-        var startup = GenericExtensions.InvokeConstructor<TWavesStartup>();
-        var serviceCollection = new ServiceCollection();
-        startup.ConfigureServices(serviceCollection);
-        return serviceCollection;
+        return builder.ConfigureServices((context, collection) =>
+        {
+            startup.ConfigureServices(context, collection);
+        });
     }
 }
