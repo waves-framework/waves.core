@@ -13,11 +13,14 @@ public class WavesObjectAttribute : Attribute
     /// Creates new instance of <see cref="WavesObjectAttribute"/>.
     /// </summary>
     /// <param name="name">Object name.</param>
+    /// <param name="isConfigurable">Whether object is configurable.</param>
     public WavesObjectAttribute(
-        [CallerMemberName] string name = default)
+        [CallerMemberName] string name = default,
+        bool isConfigurable = false)
     {
         Id = Guid.NewGuid();
         Name = name;
+        IsConfigurable = isConfigurable;
     }
 
     /// <summary>
@@ -25,12 +28,15 @@ public class WavesObjectAttribute : Attribute
     /// </summary>
     /// <param name="id">Id.</param>
     /// <param name="name">Object name.</param>
+    /// <param name="isConfigurable">Whether object is configurable.</param>
     public WavesObjectAttribute(
         Guid id,
-        [CallerMemberName] string name = default)
+        [CallerMemberName] string name = default,
+        bool isConfigurable = false)
     {
         Id = id;
         Name = name;
+        IsConfigurable = isConfigurable;
     }
 
     /// <summary>
@@ -38,12 +44,15 @@ public class WavesObjectAttribute : Attribute
     /// </summary>
     /// <param name="name">Name.</param>
     /// <param name="id">Id.</param>
+    /// <param name="isConfigurable">Whether object is configurable.</param>
     public WavesObjectAttribute(
         string id,
-        [CallerMemberName] string name = default)
+        [CallerMemberName] string name = default,
+        bool isConfigurable = false)
     {
         Id = Guid.Parse(id);
         Name = name;
+        IsConfigurable = isConfigurable;
     }
 
     /// <summary>
@@ -55,4 +64,9 @@ public class WavesObjectAttribute : Attribute
     /// Gets name.
     /// </summary>
     public string Name { get; }
+
+    /// <summary>
+    /// Gets whether object configurable or not.
+    /// </summary>
+    public bool IsConfigurable { get; }
 }

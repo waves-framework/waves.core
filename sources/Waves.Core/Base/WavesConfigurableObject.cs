@@ -13,14 +13,7 @@
 //         WavesObject,
 //         IWavesConfigurableObject
 //     {
-//         /// <summary>
-//         /// Creates new instance os <see cref="WavesConfigurableObject"/>.
-//         /// </summary>
-//         /// <param name="configurationService">Instance of configuration service.</param>
-//         protected WavesConfigurableObject(IWavesConfigurationService configurationService)
-//         {
-//             ConfigurationService = configurationService;
-//         }
+//
 //
 //         /// <summary>
 //         /// Gets configuration service.

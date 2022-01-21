@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Waves.Core.Base;
 using Waves.Core.Extensions;
 using Waves.Core.Tests.Objects;
@@ -13,6 +14,23 @@ namespace Waves.Core.Tests;
 public class ConfigurationTests
 {
     private readonly string _defaultConfigPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory ?? throw new InvalidOperationException(), "config");
+
+    /// <summary>
+    /// Creates new instance of <see cref="ConfigurationTests"/>.
+    /// </summary>
+    public ConfigurationTests()
+    {
+        if (!Directory.Exists(_defaultConfigPath))
+        {
+            return;
+        }
+
+        var files = Directory.GetFiles(_defaultConfigPath);
+        foreach (var file in files)
+        {
+            File.Delete(file);
+        }
+    }
 
     /// <summary>
     /// Gets properties test data.

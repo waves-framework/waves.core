@@ -1,12 +1,11 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Waves.Core.Base.Interfaces;
 
 /// <summary>
-/// Interface for initializable object.
+///     Interface for plugin.
 /// </summary>
-public interface IWavesInitializableObject :
-    IWavesObject
+public interface IWavesPlugin : IWavesObject
 {
     /// <summary>
     /// Gets whether plugin is initializes.

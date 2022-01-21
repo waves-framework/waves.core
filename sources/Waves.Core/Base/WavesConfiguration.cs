@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using ReactiveUI.Fody.Helpers;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Interfaces;
 
@@ -17,20 +17,26 @@ namespace Waves.Core.Base
         WavesObject,
         IWavesConfiguration
     {
-        private readonly ConcurrentDictionary<string, IWavesProperty> _properties;
-
         /// <summary>
         /// Creates new instance of <see cref="WavesConfiguration"/>.
         /// </summary>
         public WavesConfiguration()
         {
-            _properties = new ConcurrentDictionary<string, IWavesProperty>();
+            Properties = new List<IWavesProperty>();
         }
+
+        /// <summary>
+        ///     Gets collection of properties.
+        /// </summary>
+        [Reactive]
+        [WavesProperty]
+        [JsonProperty(ItemTypeNameHandling = TypeNameHandling.All)]
+        public ICollection<IWavesProperty> Properties { get; }
 
         /// <inheritdoc />
         public ICollection<IWavesProperty> GetProperties()
         {
-            return _properties.Select(property => property.Value).ToList();
+            return Properties;
         }
 
         /// <inheritdoc />
@@ -48,19 +54,15 @@ namespace Waves.Core.Base
                     $"The specified property does not support serialization ({property.GetValue().GetType()}).");
             }
 
-            foreach (var p in _properties)
+            foreach (var p in Properties)
             {
-                if (p.Key == property.Name)
+                if (p.Name == property.Name)
                 {
                     throw new Exception($"A property with the same name already exists ({property.Name}).");
                 }
             }
 
-            var added = _properties.TryAdd(property.Name, property);
-            if (!added)
-            {
-                throw new Exception($"Can't add property to the configuration ({property.Name}).");
-            }
+            Properties.Add(property);
         }
 
         /// <inheritdoc />
@@ -78,20 +80,19 @@ namespace Waves.Core.Base
                 throw new Exception($"The specified property does not support serialization ({typeof(T)}).");
             }
 
-            if (_properties.Any(p => p.Key == name))
+            foreach (var p in Properties)
             {
-                throw new Exception($"A property with the same name already exists ({name}).");
+                if (p.Name == name)
+                {
+                    throw new Exception($"A property with the same name already exists ({name}).");
+                }
             }
 
             var property = new WavesProperty<T>(
                 name,
                 value);
 
-            var added = _properties.TryAdd(property.Name, property);
-            if (!added)
-            {
-                throw new Exception($"Can't add property to the configuration ({property.Name}).");
-            }
+            Properties.Add(property);
         }
 
         /// <inheritdoc />
@@ -114,14 +115,14 @@ namespace Waves.Core.Base
         public object GetPropertyValue(
             string name)
         {
-            foreach (var property in _properties)
+            foreach (var property in Properties)
             {
-                if (property.Key != name)
+                if (property.Name != name)
                 {
                     continue;
                 }
 
-                return property.Value.GetValue();
+                return property.GetValue();
             }
 
             throw new Exception($"Property with the same name not found ({name})!");
@@ -132,17 +133,14 @@ namespace Waves.Core.Base
             string name,
             object value)
         {
-            foreach (var property in _properties)
+            foreach (var property in Properties)
             {
-                if (property.Key != name)
+                if (property.Name != name)
                 {
                     continue;
                 }
 
-                var newProperty = (IWavesProperty)property.Value.Clone();
-
-                _properties.TryUpdate(property.Key, newProperty, property.Value);
-
+                property.SetValue(value);
                 return;
             }
 
@@ -153,19 +151,14 @@ namespace Waves.Core.Base
         public void RemoveProperty(
             string name)
         {
-            foreach (var property in _properties)
+            foreach (var property in Properties)
             {
-                if (property.Key != name)
+                if (property.Name != name)
                 {
                     continue;
                 }
 
-                var removed = _properties.TryRemove(property.Key, out var removedProperty);
-                if (!removed)
-                {
-                    throw new Exception($"Can't remove property from the configuration ({property.Key}).");
-                }
-
+                Properties.Remove(property);
                 return;
             }
 
@@ -176,15 +169,11 @@ namespace Waves.Core.Base
         public void RewriteConfiguration(
             IWavesConfiguration configuration)
         {
-            _properties.Clear();
+            Properties.Clear();
 
             foreach (var property in configuration.GetProperties())
             {
-                var added = _properties.TryAdd(property.Name, property);
-                if (!added)
-                {
-                    throw new Exception($"Can't add property to the configuration ({property.Name}).");
-                }
+                Properties.Add(property);
             }
         }
 
@@ -192,13 +181,21 @@ namespace Waves.Core.Base
         public bool Contains(
             string name)
         {
-            return _properties.Any(property => property.Key.Equals(name));
+            foreach (var property in Properties)
+            {
+                if (property.Name.Equals(name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
         public int GetPropertiesCount()
         {
-            return _properties.Count;
+            return Properties.Count;
         }
 
         /// <inheritdoc />
@@ -206,9 +203,9 @@ namespace Waves.Core.Base
         {
             var configuration = new WavesConfiguration();
 
-            foreach (var property in _properties)
+            foreach (var property in Properties)
             {
-                configuration.AddProperty((IWavesProperty)property.Value.Clone());
+                configuration.Properties.Add((IWavesProperty)property.Clone());
             }
 
             return configuration;
@@ -218,7 +215,7 @@ namespace Waves.Core.Base
         public override bool Equals(
             object obj)
         {
-            if (obj is not WavesConfiguration configuration)
+            if (!(obj is WavesConfiguration configuration))
             {
                 return false;
             }
@@ -234,7 +231,11 @@ namespace Waves.Core.Base
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return _properties != null ? _properties.GetHashCode() : 0;
+            unchecked
+            {
+                var hashCode = Properties.Aggregate(1, (current, property) => (current * 397) ^ property.GetHashCode());
+                return hashCode;
+            }
         }
 
         /// <summary>
@@ -246,8 +247,8 @@ namespace Waves.Core.Base
             WavesConfiguration other)
         {
             return Equals(
-                _properties,
-                other._properties);
+                Properties,
+                other.Properties);
         }
     }
 }
