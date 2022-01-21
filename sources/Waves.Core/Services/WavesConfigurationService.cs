@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Services.Interfaces;
 
@@ -10,6 +11,18 @@ namespace Waves.Core.Services
     /// </summary>
     public class WavesConfigurationService : IWavesConfigurationService
     {
+        private readonly ILogger<WavesConfigurationService> _logger;
+
+        /// <summary>
+        /// Creates new instance of <see cref="WavesConfigurationService"/>.
+        /// </summary>
+        /// <param name="logger">Logger.</param>
+        public WavesConfigurationService(
+            ILogger<WavesConfigurationService> logger)
+        {
+            _logger = logger;
+        }
+
         /// <inheritdoc />
         public Task LoadConfigurationsAsync()
         {
