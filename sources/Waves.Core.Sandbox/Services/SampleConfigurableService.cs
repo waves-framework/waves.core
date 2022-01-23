@@ -12,6 +12,8 @@ namespace Waves.Core.Sandbox.Services;
 [WavesPlugin(typeof(SampleConfigurableService))]
 public class SampleConfigurableService : WavesConfigurablePlugin
 {
+    private int _testValue;
+
     /// <summary>
     /// Creates new instance of <see cref="SampleConfigurableService"/>.
     /// </summary>
@@ -20,5 +22,15 @@ public class SampleConfigurableService : WavesConfigurablePlugin
         IConfiguration configuration)
         : base(configuration)
     {
+    }
+
+    /// <summary>
+    /// Gets or sets test value.
+    /// </summary>
+    [WavesProperty]
+    public int TestValue
+    {
+        get => _testValue;
+        set => _testValue = value;
     }
 }

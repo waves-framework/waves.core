@@ -8,7 +8,7 @@ var core = new WavesCore();
 await core.StartAsync();
 await core.BuildContainer();
 
-var service = await core.GetInstanceAsync<SampleService>();
-await service.Run();
+var service = await core.GetInstanceAsync<SampleConfigurableService>();
+var value = service.TestValue;
 
 Console.ReadLine();

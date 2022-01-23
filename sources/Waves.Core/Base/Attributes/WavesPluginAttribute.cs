@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Waves.Core.Base.Enums;
+using Waves.Core.Extensions;
 
 namespace Waves.Core.Base.Attributes;
 
@@ -22,6 +23,7 @@ public class WavesPluginAttribute : WavesObjectAttribute
         : base(name)
     {
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 
@@ -41,6 +43,7 @@ public class WavesPluginAttribute : WavesObjectAttribute
     {
         Key = key;
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 
@@ -62,6 +65,7 @@ public class WavesPluginAttribute : WavesObjectAttribute
     {
         Key = key;
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 
@@ -83,6 +87,7 @@ public class WavesPluginAttribute : WavesObjectAttribute
     {
         Key = key;
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 

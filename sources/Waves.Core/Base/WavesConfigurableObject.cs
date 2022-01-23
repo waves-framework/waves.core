@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -15,8 +16,7 @@ public abstract class WavesConfigurableObject :
     WavesInitializableObject,
     IWavesConfigurableObject
 {
-    private readonly string _pluginName;
-    private readonly IEnumerable<KeyValuePair<string, string>> _configurations;
+    private readonly Dictionary<string, string> _configurations;
 
     /// <summary>
     /// Creates new instances of <see cref="WavesConfigurableObject"/>.
@@ -31,11 +31,25 @@ public abstract class WavesConfigurableObject :
             return;
         }
 
-        _pluginName = wavesObjectAttribute.Name;
-        var configurations = configuration.GetSection(_pluginName);
+        var pluginName = wavesObjectAttribute.Name;
+        _configurations = new Dictionary<string, string>();
+        var configurations = configuration.GetSection(pluginName);
         if (configurations != null)
         {
-            _configurations = configuration.AsEnumerable();
+            var e = configuration.AsEnumerable();
+            var startKey = $"{pluginName}:";
+            foreach (var config in e)
+            {
+                if (!config.Key.StartsWith(startKey))
+                {
+                    continue;
+                }
+
+                var key = config.Key.Replace(startKey, string.Empty);
+                var value = config.Value;
+
+                _configurations.Add(key, value);
+            }
         }
     }
 
@@ -65,10 +79,13 @@ public abstract class WavesConfigurableObject :
 
                 var value = GetConfigurationValue(property.Name);
 
-                if (!string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
-                    property.SetValue(this, value);
+                    continue;
                 }
+
+                var result = Convert.ChangeType(value, property.PropertyType);
+                property.SetValue(this, result);
             }
         }
 
@@ -80,11 +97,6 @@ public abstract class WavesConfigurableObject :
     /// </summary>
     private string GetConfigurationValue(string name)
     {
-        return (from configuration
-            in _configurations
-            let startKey = $"{_pluginName}:"
-            where configuration.Key.Equals($"{startKey}{name}")
-            select configuration.Value)
-            .FirstOrDefault();
+        return _configurations[name];
     }
 }

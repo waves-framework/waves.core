@@ -14,7 +14,7 @@ public class WavesObjectAttribute : Attribute
     /// </summary>
     /// <param name="name">Object name.</param>
     public WavesObjectAttribute(
-        [CallerMemberName] string name = default)
+        string name = default)
     {
         Id = Guid.NewGuid();
         Name = name;
@@ -27,7 +27,7 @@ public class WavesObjectAttribute : Attribute
     /// <param name="name">Object name.</param>
     public WavesObjectAttribute(
         Guid id,
-        [CallerMemberName] string name = default)
+        string name = default)
     {
         Id = id;
         Name = name;
@@ -40,7 +40,7 @@ public class WavesObjectAttribute : Attribute
     /// <param name="id">Id.</param>
     public WavesObjectAttribute(
         string id,
-        [CallerMemberName] string name = default)
+        string name = default)
     {
         Id = Guid.Parse(id);
         Name = name;
@@ -54,5 +54,5 @@ public class WavesObjectAttribute : Attribute
     /// <summary>
     /// Gets name.
     /// </summary>
-    public string Name { get; }
+    public string Name { get; internal set; }
 }
