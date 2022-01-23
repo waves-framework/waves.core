@@ -51,15 +51,6 @@ namespace Waves.Core.Base.Interfaces
             string name);
 
         /// <summary>
-        ///     Sets property value.
-        /// </summary>
-        /// <param name="name">Property name.</param>
-        /// <param name="value">Value.</param>
-        void SetPropertyValue(
-            string name,
-            object value);
-
-        /// <summary>
         ///     Removes property by name.
         /// </summary>
         /// <param name="name">Property name.</param>

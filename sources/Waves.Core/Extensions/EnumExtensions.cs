@@ -6,7 +6,7 @@ namespace Waves.Core.Extensions;
 /// <summary>
 /// Enum extensions.
 /// </summary>
-public static class EnumExtensions
+internal static class EnumExtensions
 {
     /// <summary>
     /// Gets description for current enum value.
@@ -14,7 +14,7 @@ public static class EnumExtensions
     /// <typeparam name="T">Enum type.</typeparam>
     /// <param name="value">Enumeration value.</param>
     /// <returns>Enum value description.</returns>
-    public static string ToDescription<T>(this T value)
+    internal static string ToDescription<T>(this T value)
         where T : struct
     {
         var type = value.GetType();

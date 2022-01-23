@@ -1,74 +1,90 @@
-﻿// using System.Threading.Tasks;
-// using ReactiveUI.Fody.Helpers;
-// using Waves.Core.Base.Attributes;
-// using Waves.Core.Base.Interfaces;
-// using Waves.Core.Plugins.Services.Interfaces;
-//
-// namespace Waves.Core.Base
-// {
-//     /// <summary>
-//     /// Configurable object abstraction.
-//     /// </summary>
-//     public abstract class WavesConfigurableObject :
-//         WavesObject,
-//         IWavesConfigurableObject
-//     {
-//
-//
-//         /// <summary>
-//         /// Gets configuration service.
-//         /// </summary>
-//         protected IWavesConfigurationService ConfigurationService { get; private set; }
-//
-//         /// <inheritdoc />
-//         public async Task LoadConfigurationAsync()
-//         {
-//             var configuration = await ConfigurationService.GetConfigurationAsync(this);
-//
-//             if (configuration == null)
-//             {
-//                 return;
-//             }
-//
-//             var pluginType = GetType();
-//             var properties = pluginType.GetProperties();
-//             foreach (var property in properties)
-//             {
-//                 var attributes = property.GetCustomAttributes(true);
-//                 foreach (var attribute in attributes)
-//                 {
-//                     if (attribute is WavesPropertyAttribute)
-//                     {
-//                         property.SetValue(this, Configuration.GetPropertyValue(property.Name));
-//                     }
-//                 }
-//             }
-//         }
-//
-//         /// <inheritdoc />
-//         public virtual Task SaveConfigurationAsync()
-//         {
-//             var configuration = new WavesConfiguration();
-//
-//             var pluginType = GetType();
-//             var properties = pluginType.GetProperties();
-//             foreach (var property in properties)
-//             {
-//                 var attributes = property.GetCustomAttributes(true);
-//                 foreach (var attribute in attributes)
-//                 {
-//                     if (!(attribute is WavesPropertyAttribute))
-//                     {
-//                         continue;
-//                     }
-//
-//                     var name = property.Name;
-//                     var value = property.GetValue(this);
-//                     configuration.AddProperty(name, value);
-//                 }
-//             }
-//
-//             return Task.CompletedTask;
-//         }
-//     }
-// }
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Waves.Core.Base.Attributes;
+using Waves.Core.Base.Interfaces;
+
+namespace Waves.Core.Base;
+
+/// <summary>
+/// Abstraction for configurable object.
+/// </summary>
+public abstract class WavesConfigurableObject :
+    WavesInitializableObject,
+    IWavesConfigurableObject
+{
+    private readonly string _pluginName;
+    private readonly IEnumerable<KeyValuePair<string, string>> _configurations;
+
+    /// <summary>
+    /// Creates new instances of <see cref="WavesConfigurableObject"/>.
+    /// </summary>
+    /// <param name="configuration">Configuration.</param>
+    protected WavesConfigurableObject(IConfiguration configuration)
+    {
+        // initialize configuration
+        var attribute = GetType().GetCustomAttributes(true).SingleOrDefault(x => x is WavesObjectAttribute);
+        if (attribute is not WavesObjectAttribute wavesObjectAttribute)
+        {
+            return;
+        }
+
+        _pluginName = wavesObjectAttribute.Name;
+        var configurations = configuration.GetSection(_pluginName);
+        if (configurations != null)
+        {
+            _configurations = configuration.AsEnumerable();
+        }
+    }
+
+    /// <inheritdoc />
+    protected override Task RunInitializationAsync()
+    {
+        return LoadConfigurationAsync();
+    }
+
+    /// <summary>
+    /// Loads configuration.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    protected virtual Task LoadConfigurationAsync()
+    {
+        var pluginType = GetType();
+        var properties = pluginType.GetProperties();
+        foreach (var property in properties)
+        {
+            var attributes = property.GetCustomAttributes(true);
+            foreach (var attribute in attributes)
+            {
+                if (attribute is not WavesPropertyAttribute)
+                {
+                    continue;
+                }
+
+                var value = GetConfigurationValue(property.Name);
+
+                if (!string.IsNullOrEmpty(value))
+                {
+                    property.SetValue(this, value);
+                }
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Gets configuration value.
+    /// </summary>
+    private string GetConfigurationValue(string name)
+    {
+        return (from configuration
+            in _configurations
+            let startKey = $"{_pluginName}:"
+            where configuration.Key.Equals($"{startKey}{name}")
+            select configuration.Value)
+            .FirstOrDefault();
+    }
+}

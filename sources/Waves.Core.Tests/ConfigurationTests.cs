@@ -95,21 +95,6 @@ public class ConfigurationTests
     }
 
     /// <summary>
-    /// Tests that "SetPropertyValue" method does not throws exceptions.
-    /// </summary>
-    /// <param name="name">Name.</param>
-    /// <param name="value">Value.</param>
-    /// <param name="newValue">New value.</param>
-    [Theory]
-    [MemberData(nameof(PropertiesTestData))]
-    public void SetPropertyValue_DoesNotThrowsExceptions(string name, object value, object newValue)
-    {
-        var configuration = new WavesConfiguration();
-        configuration.AddProperty(name, value);
-        configuration.SetPropertyValue(name, newValue);
-    }
-
-    /// <summary>
     /// Tests that "GetPropertyValue" method returns expected value.
     /// </summary>
     /// <param name="name">Name.</param>
@@ -141,59 +126,5 @@ public class ConfigurationTests
         configuration.AddProperty(name, value);
         var actualValue = configuration.Contains(name);
         Assert.True(actualValue);
-    }
-
-    /// <summary>
-    /// Tests that "SaveConfiguration" method does not throws exceptions.
-    /// </summary>
-    /// <param name="name">Name.</param>
-    /// <param name="value">Value.</param>
-    /// <param name="newValue">New value.</param>
-    [Theory]
-    [MemberData(nameof(PropertiesTestData))]
-#pragma warning disable xUnit1026
-    public void SaveConfiguration_DoesNotThrowsExceptions(string name, object value, object newValue)
-    {
-        var id = Guid.NewGuid();
-        var configuration = new WavesConfiguration();
-        configuration.AddProperty(name, value);
-        configuration.SaveConfiguration(_defaultConfigPath, $"{id}.json");
-    }
-
-    /// <summary>
-    /// Tests that "LoadConfiguration" method does not throws exceptions.
-    /// </summary>
-    /// <param name="name">Name.</param>
-    /// <param name="value">Value.</param>
-    /// <param name="newValue">New value.</param>
-    [Theory]
-    [MemberData(nameof(PropertiesTestData))]
-#pragma warning disable xUnit1026
-    public void LoadConfiguration_DoesNotThrowsExceptions(string name, object value, object newValue)
-    {
-        var id = Guid.NewGuid();
-        var configuration = new WavesConfiguration();
-        configuration.AddProperty(name, value);
-        configuration.SaveConfiguration(_defaultConfigPath, $"{id}.json");
-        var loadedConfiguration = ConfigurationExtensions.LoadConfiguration(_defaultConfigPath, $"{id}.json");
-    }
-
-    /// <summary>
-    /// Tests "LoadConfiguration": loaded configuration must be equals saved.
-    /// </summary>
-    /// <param name="name">Name.</param>
-    /// <param name="value">Value.</param>
-    /// <param name="newValue">New value.</param>
-    [Theory]
-    [MemberData(nameof(PropertiesTestData))]
-#pragma warning disable xUnit1026
-    public void LoadConfiguration_LoadedEqualsSaved(string name, object value, object newValue)
-    {
-        var id = Guid.NewGuid();
-        var savedConfiguration = new WavesConfiguration();
-        savedConfiguration.AddProperty(name, value);
-        savedConfiguration.SaveConfiguration(_defaultConfigPath, $"{id}.json");
-        var loadedConfiguration = ConfigurationExtensions.LoadConfiguration(_defaultConfigPath, $"{id}.json");
-        Assert.Equal(savedConfiguration, loadedConfiguration);
     }
 }

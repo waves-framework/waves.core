@@ -2,8 +2,13 @@
 
 using Waves.Core;
 using Waves.Core.Base;
+using Waves.Core.Sandbox.Services;
 
 var core = new WavesCore();
 await core.StartAsync();
+await core.BuildContainer();
+
+var service = await core.GetInstanceAsync<SampleService>();
+await service.Run();
 
 Console.ReadLine();

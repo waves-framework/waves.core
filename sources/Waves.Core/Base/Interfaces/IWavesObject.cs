@@ -1,21 +1,11 @@
 ﻿using System.Threading.Tasks;
+using ReactiveUI;
 
 namespace Waves.Core.Base.Interfaces;
 
 /// <summary>
-///     Wrapper interface over reactive object.
+///     Wrapper interface for inner objects.
 /// </summary>
 public interface IWavesObject
 {
-    /// <summary>
-    /// Async loads configuration.
-    /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    Task LoadConfigurationAsync();
-
-    /// <summary>
-    /// Async saves configuration.
-    /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    Task SaveConfigurationAsync();
 }

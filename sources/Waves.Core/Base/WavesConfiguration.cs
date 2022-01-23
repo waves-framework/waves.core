@@ -129,25 +129,6 @@ namespace Waves.Core.Base
         }
 
         /// <inheritdoc />
-        public void SetPropertyValue(
-            string name,
-            object value)
-        {
-            foreach (var property in Properties)
-            {
-                if (property.Name != name)
-                {
-                    continue;
-                }
-
-                property.SetValue(value);
-                return;
-            }
-
-            throw new Exception($"Property with the same name not found ({name})!");
-        }
-
-        /// <inheritdoc />
         public void RemoveProperty(
             string name)
         {

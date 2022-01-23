@@ -44,37 +44,12 @@ namespace Waves.Core.Base
         }
 
         /// <summary>
-        ///     Creates new instance of property.
-        /// </summary>
-        /// <param name="id">Id.</param>
-        /// <param name="name">Name.</param>
-        /// <param name="value">Value.</param>
-        [JsonConstructor]
-        private WavesProperty(
-            Guid id,
-            string name,
-            T value)
-        {
-            Id = id;
-            Name = name;
-            _value = value;
-        }
-
-        /// <summary>
         ///     Gets value.
         /// </summary>
-        [Reactive]
-        [JsonProperty]
         public T Value => _value;
 
         /// <inheritdoc />
-        [Reactive]
-        [JsonProperty]
         public string Name { get; }
-
-        /// <inheritdoc />
-        [JsonProperty]
-        public Guid Id { get; } = Guid.NewGuid();
 
         /// <summary>
         /// Creates new instance of <see cref="WavesProperty{T}"/>.
@@ -95,13 +70,6 @@ namespace Waves.Core.Base
             return Value;
         }
 
-        /// <inheritdoc />
-        public void SetValue(
-            object value)
-        {
-            _value = (T)value;
-        }
-
         /// <summary>
         ///     Clones property.
         /// </summary>
@@ -109,7 +77,6 @@ namespace Waves.Core.Base
         public object Clone()
         {
             return new WavesProperty<T>(
-                Id,
                 Name,
                 Value);
         }
@@ -127,7 +94,6 @@ namespace Waves.Core.Base
             unchecked
             {
                 var hashCode = EqualityComparer<T>.Default.GetHashCode(Value);
-                hashCode = (hashCode * 397) ^ Id.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
                 return hashCode;
             }
@@ -144,8 +110,7 @@ namespace Waves.Core.Base
             return EqualityComparer<T>.Default.Equals(
                        Value,
                        other.Value) &&
-                   Name == other.Name &&
-                   Id.Equals(other.Id);
+                   Name == other.Name;
         }
     }
 }
