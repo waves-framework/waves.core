@@ -40,9 +40,13 @@ public class WavesCore
         _serviceProvider = _serviceCollection.BuildServiceProvider();
         _logger = _serviceProvider.GetService<ILogger<WavesCore>>();
 
+        _logger.LogInformation("Core is starting...");
+
         InitializeContainer();
         InitializePlugins();
         BuildContainer();
+
+        _logger.LogInformation("Core started");
 
         return Task.CompletedTask;
     }
@@ -96,9 +100,17 @@ public class WavesCore
     /// <summary>
     /// Initializes plugins.
     /// </summary>
-    private void InitializePlugins()
+    private async void InitializePlugins()
     {
         var typeLoader = _serviceProvider.GetService<IWavesTypeLoaderService<IWavesPlugin>>();
+        if (typeLoader != null)
+        {
+            await typeLoader.UpdateTypesAsync();
+        }
+        else
+        {
+            throw new NullReferenceException("Type loader not loaded.");
+        }
     }
 
     /// <summary>

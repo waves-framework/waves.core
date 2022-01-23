@@ -19,11 +19,13 @@ public static class AssemblyExtensions
     /// </summary>
     /// <param name="assemblies">Assemblies list.</param>
     /// <param name="path">Path to directory.</param>
+    /// <param name="exceptions">Returned exceptions.</param>
     /// <param name="searchOption">Search option.</param>
     /// <returns>Collection of assemblies.</returns>
     public static ICollection<Assembly> GetAssemblies(
         this ICollection<Assembly> assemblies,
         string path,
+        out ICollection<Exception> exceptions,
         SearchOption searchOption = SearchOption.TopDirectoryOnly)
     {
         if (!Directory.Exists(path))
@@ -31,7 +33,7 @@ public static class AssemblyExtensions
             throw new DirectoryNotFoundException("Directory not found.");
         }
 
-        var exceptions = new List<Exception>();
+        exceptions = new List<Exception>();
 
         foreach (var file in Directory.GetFiles(
                      path,
@@ -71,11 +73,6 @@ public static class AssemblyExtensions
             }
         }
 
-        if (exceptions.Count > 0)
-        {
-            throw new AggregateException(exceptions);
-        }
-
         return assemblies;
     }
 
@@ -84,11 +81,13 @@ public static class AssemblyExtensions
     /// </summary>
     /// <param name="assemblies">Assemblies list.</param>
     /// <param name="path">Path to directory.</param>
+    /// <param name="exceptions">Returned exceptions.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public static Task<ICollection<Assembly>> GetAssembliesAsync(
         this ICollection<Assembly> assemblies,
-        string path)
+        string path,
+        out ICollection<Exception> exceptions)
     {
-        return Task.FromResult(GetAssemblies(assemblies, path));
+        return Task.FromResult(GetAssemblies(assemblies, path, out exceptions));
     }
 }
