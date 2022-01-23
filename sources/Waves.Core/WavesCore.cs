@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
-using Waves.Core.Base.Interfaces;
 using Waves.Core.Extensions;
 using Waves.Core.Services;
 using Waves.Core.Services.Interfaces;
@@ -123,7 +122,7 @@ public class WavesCore
     }
 
     /// <summary>
-    /// Registers instance.
+    /// Registers type.
     /// </summary>
     /// <param name="type">Type.</param>
     /// <param name="registerType">Registration type.</param>
@@ -132,17 +131,61 @@ public class WavesCore
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public Task RegisterType(Type type, Type registerType, WavesLifetimeType lifetime, object key = null)
     {
-        switch (lifetime)
+        try
         {
-            case WavesLifetimeType.Transient:
-                _containerBuilder.RegisterTransient(type, registerType, key);
-                break;
-            case WavesLifetimeType.Scoped:
-                break;
-            case WavesLifetimeType.Singleton:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            switch (lifetime)
+            {
+                case WavesLifetimeType.Transient:
+                    _containerBuilder.RegisterTransientType(type, registerType, key);
+                    break;
+                case WavesLifetimeType.Scoped:
+                    _containerBuilder.RegisterScopedType(type, registerType, key);
+                    break;
+                case WavesLifetimeType.Singleton:
+                    _containerBuilder.RegisterSingletonType(type, registerType, key);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Error occured while register type {type.GetFriendlyName()}");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Registers instance.
+    /// </summary>
+    /// <param name="obj">Current object.</param>
+    /// <param name="registerType">Registration type.</param>
+    /// <param name="lifetime">Lifetime type.</param>
+    /// <param name="key">Register key, may be null.</param>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public Task RegisterInstance(object obj, Type registerType, WavesLifetimeType lifetime, object key = null)
+    {
+        try
+        {
+            switch (lifetime)
+            {
+                case WavesLifetimeType.Transient:
+                    _containerBuilder.RegisterTransientInstance(obj, registerType, key);
+                    break;
+                case WavesLifetimeType.Scoped:
+                    _containerBuilder.RegisterScopedInstance(obj, registerType, key);
+                    break;
+                case WavesLifetimeType.Singleton:
+                    _containerBuilder.RegisterSingletonInstance(obj, registerType, key);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Error occured while register instance {obj.GetType().GetFriendlyName()}");
         }
 
         return Task.CompletedTask;
