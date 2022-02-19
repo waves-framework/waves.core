@@ -5,6 +5,6 @@ namespace Waves.Core.Base.Interfaces;
 /// </summary>
 public interface IWavesConfigurablePlugin :
     IWavesPlugin,
-    IWavesInitializableObject
+    IWavesConfigurableObject
 {
 }

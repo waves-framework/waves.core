@@ -20,6 +20,8 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
       <PackageReference Include="NLog" Version="4.7.13" />
       <PackageReference Include="NLog.Extensions.Logging" Version="1.7.4" />
+      <PackageReference Update="ReactiveUI" Version="17.1.50" />
+      <PackageReference Update="ReactiveUI.Fody" Version="17.1.50" />
     </ItemGroup>
 
 </Project>

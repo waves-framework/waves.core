@@ -1,5 +1,6 @@
 using System;
 using Autofac;
+using Autofac.Core;
 
 namespace Waves.Core.Extensions;
 
@@ -19,11 +20,11 @@ internal static class ContainerBuilderExtensions
     {
         if (key == null)
         {
-            builder.RegisterType(currentType).As(registerType);
+            builder.RegisterType(currentType).As(registerType).OnActivated(OnActivated);
         }
         else
         {
-            builder.RegisterType(currentType).As(registerType).Keyed(key, registerType);
+            builder.RegisterType(currentType).As(registerType).Keyed(key, registerType).OnActivated(OnActivated);
         }
     }
 
@@ -38,11 +39,11 @@ internal static class ContainerBuilderExtensions
     {
         if (key == null)
         {
-            builder.RegisterInstance(obj).As(registerType);
+            builder.RegisterInstance(obj).As(registerType).OnActivated(OnActivated);
         }
         else
         {
-            builder.RegisterInstance(obj).As(registerType).Keyed(key, registerType);
+            builder.RegisterInstance(obj).As(registerType).Keyed(key, registerType).OnActivated(OnActivated);
         }
     }
 
@@ -57,11 +58,11 @@ internal static class ContainerBuilderExtensions
     {
         if (key == null)
         {
-            builder.RegisterType(currentType).As(registerType).InstancePerLifetimeScope();
+            builder.RegisterType(currentType).As(registerType).InstancePerLifetimeScope().OnActivated(OnActivated);
         }
         else
         {
-            builder.RegisterType(currentType).As(registerType).Keyed(key, registerType).InstancePerLifetimeScope();
+            builder.RegisterType(currentType).As(registerType).Keyed(key, registerType).InstancePerLifetimeScope().OnActivated(OnActivated);
         }
     }
 
@@ -76,11 +77,11 @@ internal static class ContainerBuilderExtensions
     {
         if (key == null)
         {
-            builder.RegisterInstance(obj).As(registerType).InstancePerLifetimeScope();
+            builder.RegisterInstance(obj).As(registerType).InstancePerLifetimeScope().OnActivated(OnActivated);
         }
         else
         {
-            builder.RegisterInstance(obj).As(registerType).Keyed(key, registerType).InstancePerLifetimeScope();
+            builder.RegisterInstance(obj).As(registerType).Keyed(key, registerType).InstancePerLifetimeScope().OnActivated(OnActivated);
         }
     }
 
@@ -95,11 +96,11 @@ internal static class ContainerBuilderExtensions
     {
         if (key == null)
         {
-            builder.RegisterType(currentType).As(registerType).SingleInstance();
+            builder.RegisterType(currentType).As(registerType).SingleInstance().OnActivated(OnActivated);
         }
         else
         {
-            builder.RegisterType(currentType).As(registerType).Keyed(key, registerType).SingleInstance();
+            builder.RegisterType(currentType).As(registerType).Keyed(key, registerType).SingleInstance().OnActivated(OnActivated);
         }
     }
 
@@ -114,11 +115,21 @@ internal static class ContainerBuilderExtensions
     {
         if (key == null)
         {
-            builder.RegisterInstance(obj).As(registerType).SingleInstance();
+            builder.RegisterInstance(obj).As(registerType).SingleInstance().OnActivated(OnActivated);
         }
         else
         {
-            builder.RegisterInstance(obj).As(registerType).Keyed(key, registerType).SingleInstance();
+            builder.RegisterInstance(obj).As(registerType).Keyed(key, registerType).SingleInstance().OnActivated(OnActivated);
         }
+    }
+
+    /// <summary>
+    /// Callback when activated.
+    /// </summary>
+    /// <param name="obj">Object.</param>
+    private static void OnActivated(IActivatedEventArgs<object> obj)
+    {
+        var instance = obj.Instance;
+        instance.CheckInitializable();
     }
 }

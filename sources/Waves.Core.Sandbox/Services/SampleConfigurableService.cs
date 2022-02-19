@@ -18,9 +18,11 @@ public class SampleConfigurableService : WavesConfigurablePlugin
     /// Creates new instance of <see cref="SampleConfigurableService"/>.
     /// </summary>
     /// <param name="configuration">Configuration.</param>
+    /// <param name="logger">Logger.</param>
     public SampleConfigurableService(
-        IConfiguration configuration)
-        : base(configuration)
+        IConfiguration configuration,
+        ILogger<SampleConfigurableService> logger)
+        : base(configuration, logger)
     {
     }
 

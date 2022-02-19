@@ -60,6 +60,7 @@ namespace Waves.Core.Services
             {
                 try
                 {
+                    var count = 0;
                     foreach (var type in assembly.GetExportedTypes())
                     {
                         var attributes = type.GetCustomAttributes();
@@ -71,7 +72,13 @@ namespace Waves.Core.Services
                             }
 
                             Types.Add(type, typeAttribute);
+                            count++;
                         }
+                    }
+
+                    if (count > 0)
+                    {
+                        _logger.LogDebug($"Assembly {assembly.FullName} loaded with {count} types");
                     }
                 }
                 catch (Exception e)

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base;
@@ -14,8 +15,11 @@ public abstract class WavesConfigurablePlugin :
     /// Creates new instance of <see cref="WavesConfigurablePlugin"/>.
     /// </summary>
     /// <param name="configuration">Configuration.</param>
-    protected WavesConfigurablePlugin(IConfiguration configuration)
-        : base(configuration)
+    /// <param name="logger">Logger.</param>
+    protected WavesConfigurablePlugin(
+        IConfiguration configuration,
+        ILogger<WavesConfigurablePlugin> logger)
+        : base(configuration, logger)
     {
     }
 }

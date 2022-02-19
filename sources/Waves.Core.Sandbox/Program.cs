@@ -6,7 +6,7 @@ using Waves.Core.Sandbox.Services;
 
 var core = new WavesCore();
 await core.StartAsync();
-await core.BuildContainer();
+await core.BuildContainerAsync();
 
 var service = await core.GetInstanceAsync<SampleConfigurableService>();
 var value = service.TestValue;

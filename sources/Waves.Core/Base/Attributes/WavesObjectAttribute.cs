@@ -54,5 +54,5 @@ public class WavesObjectAttribute : Attribute
     /// <summary>
     /// Gets name.
     /// </summary>
-    public string Name { get; internal set; }
+    public string Name { get; protected set; }
 }

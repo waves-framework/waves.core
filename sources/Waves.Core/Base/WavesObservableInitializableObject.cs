@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Waves.Core.Base.Interfaces;
@@ -6,17 +6,17 @@ using Waves.Core.Base.Interfaces;
 namespace Waves.Core.Base;
 
 /// <summary>
-/// Waves initialization object abstraction.
+/// Abstraction for observable initializable object.
 /// </summary>
-public abstract class WavesInitializableObject :
-    WavesObject,
-    IWavesInitializableObject
+public abstract class WavesObservableInitializableObject :
+    WavesObservableObject,
+    IWavesObservableInitializableObject
 {
     /// <summary>
-    /// Creates new instance of <see cref="WavesInitializableObject"/>.
+    /// Creates new instance of <see cref="WavesObservableInitializableObject"/>.
     /// </summary>
     /// <param name="logger">Logger.</param>
-    protected WavesInitializableObject(ILogger<WavesInitializableObject> logger)
+    protected WavesObservableInitializableObject(ILogger<WavesObservableInitializableObject> logger)
     {
         Logger = logger;
     }
@@ -27,7 +27,7 @@ public abstract class WavesInitializableObject :
     /// <summary>
     /// Gets logger.
     /// </summary>
-    protected ILogger<WavesInitializableObject> Logger { get; }
+    protected ILogger<WavesObservableInitializableObject> Logger { get; }
 
     /// <inheritdoc />
     public virtual async Task InitializeAsync()

@@ -1,33 +1,30 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Interfaces;
 using Waves.Core.Extensions;
 
 namespace Waves.Core.Base;
 
 /// <summary>
-/// Abstraction for configurable object.
+/// Abstraction for observable / configurable objects.
 /// </summary>
-public abstract class WavesConfigurableObject :
-    WavesInitializableObject,
-    IWavesConfigurableObject
+public abstract class WavesObservableConfigurableObject :
+    WavesObservableInitializableObject,
+    IWavesObservableConfigurableObject
 {
     private readonly Dictionary<string, string> _configurations;
 
     /// <summary>
-    /// Creates new instances of <see cref="WavesConfigurableObject"/>.
+    /// Creates new instance of <see cref="WavesObservableConfigurableObject"/>.
     /// </summary>
     /// <param name="configuration">Configuration.</param>
     /// <param name="logger">Logger.</param>
-    protected WavesConfigurableObject(
+    protected WavesObservableConfigurableObject(
         IConfiguration configuration,
-        ILogger<WavesInitializableObject> logger)
+        ILogger<WavesObservableConfigurableObject> logger)
         : base(logger)
     {
         _configurations = ConfigurableExtensions.InitializeConfiguration(this, configuration);
@@ -46,6 +43,7 @@ public abstract class WavesConfigurableObject :
             await LoadConfigurationAsync();
             await RunInitializationAsync();
             IsInitialized = true;
+            Logger.LogDebug($"Object {this} initialized");
         }
         catch (Exception e)
         {
@@ -55,11 +53,25 @@ public abstract class WavesConfigurableObject :
     }
 
     /// <summary>
+    /// Does initialization work.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    protected override Task RunInitializationAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
     /// Loads configuration.
     /// </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     protected virtual Task LoadConfigurationAsync()
     {
-        return this.Configure(_configurations);
+        foreach (var pair in _configurations)
+        {
+            Logger.LogDebug($"Configuration of {this}: {pair.Key} - {pair.Value}");
+        }
+
+        return this.Configure(_configurations, Logger);
     }
 }

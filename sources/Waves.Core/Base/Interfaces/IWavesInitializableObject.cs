@@ -5,7 +5,8 @@ namespace Waves.Core.Base.Interfaces;
 /// <summary>
 /// Interface for initializable object.
 /// </summary>
-public interface IWavesInitializableObject
+public interface IWavesInitializableObject :
+    IWavesObject
 {
     /// <summary>
     /// Gets whether plugin is initializes.

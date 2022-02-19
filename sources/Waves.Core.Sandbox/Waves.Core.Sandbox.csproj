@@ -19,4 +19,9 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Update="ReactiveUI" Version="17.1.50" />
+      <PackageReference Update="ReactiveUI.Fody" Version="17.1.50" />
+    </ItemGroup>
+
 </Project>
