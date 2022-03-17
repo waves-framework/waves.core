@@ -1,13 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../build/props/common.props" />
+    <Import Project="../../build/props/common.props" />
+    
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-  </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="nlog.config" CopyToOutputDirectory="Always" />
+        <None Update="appsettings.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="ReactiveUI" Version="17.1.50" />
+      <PackageReference Update="ReactiveUI.Fody" Version="17.1.50" />
+    </ItemGroup>
 
 </Project>

@@ -1,28 +1,18 @@
-﻿using System;
-using System.Net.Mime;
-using Waves.Core.Sandbox.Samples;
-using Waves.Core.Sandbox.Samples.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using Waves.Core;
+using Waves.Core.Sandbox.Services;
 
-namespace Waves.Core.Sandbox
-{
-    /// <summary>
-    ///     Program.
-    /// </summary>
-    public static class Program
-    {
-        /// <summary>
-        /// Get current sample class.
-        /// </summary>
-        public static ISample Sample { get; } = new CoreLaunchSample();
+var core = new WavesCore();
+await core.StartAsync();
+await core.BuildContainerAsync();
 
-        /// <summary>
-        ///     Main.
-        /// </summary>
-        /// <param name="args">Arguments.</param>
-        public static void Main(string[] args)
-        {
-            Sample.Execute();
-            Console.ReadLine();
-        }
-    }
-}
+var logger = await core.GetInstanceAsync<ILogger<Program>>();
+logger.LogInformation($"Program started");
+
+var service = await core.GetInstanceAsync<SampleConfigurableService>();
+var value = service.TestValue;
+
+logger.LogInformation($"Test value: {value}");
+logger.LogInformation($"Press ENTER to exit...");
+
+Console.ReadLine();

@@ -6,7 +6,8 @@ namespace Waves.Core.Base.Interfaces
     /// <summary>
     ///     Interface of configuration classes.
     /// </summary>
-    public interface IWavesConfiguration : IWavesObject,
+    public interface IWavesConfiguration :
+        IWavesObject,
         ICloneable
     {
         /// <summary>
@@ -48,15 +49,6 @@ namespace Waves.Core.Base.Interfaces
         /// <returns>Value.</returns>
         object GetPropertyValue(
             string name);
-
-        /// <summary>
-        ///     Sets property value.
-        /// </summary>
-        /// <param name="name">Property name.</param>
-        /// <param name="value">Value.</param>
-        void SetPropertyValue(
-            string name,
-            object value);
 
         /// <summary>
         ///     Removes property by name.

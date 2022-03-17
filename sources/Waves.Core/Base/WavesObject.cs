@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System.Threading.Tasks;
+using ReactiveUI;
 using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Base

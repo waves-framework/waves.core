@@ -8,7 +8,7 @@
 
 ### 📒 About Waves.Core
 
-**Waves.Core** is base kernel of Waves framework. It contains interfaces, base primitives, abstractions, services and utilities of framework. Base services include container service based on Autofac, logging service based on NLog and service for loading native assemblies. 
+**Waves.Core** is base kernel of Waves framework. It contains interfaces, base primitives, abstractions, services and utilities of framework. 
 
 ### 🚀 Getting started
 
@@ -22,19 +22,22 @@ Install-Package Waves.Core
 
 ### ⌨️ Usage basics
 
-After installing the package you just need to declare new instance of a core and start it.
+After installing the package you just need to declare new instance of host and declare own startup (inherited from `WavesStartup`) class:
 
 ```c#
-var core = new Core();
-await core.StartAsync();
-await core.BuildContainerAsync();
+var host = WavesBuilder.CreateDefaultBuilder(args)
+    .UseStartup<Startup>()
+    .Build();
 ```
 
-To stop the core type:
+Resolve services from container:
 
 ```c#
- await core.StopAsync();
+var logger = host.Services.GetService<ILogger<Program>>();
+logger?.LogInformation("Hello world");
 ```
+
+**⚠️ _Other documentation will be available soon._**
 
 ### 📋 Licence
 

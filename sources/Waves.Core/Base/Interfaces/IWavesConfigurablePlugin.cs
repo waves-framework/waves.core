@@ -1,11 +1,10 @@
-﻿namespace Waves.Core.Base.Interfaces
+namespace Waves.Core.Base.Interfaces;
+
+/// <summary>
+/// Interface for configurable plugin.
+/// </summary>
+public interface IWavesConfigurablePlugin :
+    IWavesPlugin,
+    IWavesConfigurableObject
 {
-    /// <summary>
-    /// Interface for configurable plugins.
-    /// </summary>
-    public interface IWavesConfigurablePlugin :
-        IWavesPlugin,
-        IWavesConfigurableObject
-    {
-    }
 }

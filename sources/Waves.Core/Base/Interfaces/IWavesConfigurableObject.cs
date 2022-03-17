@@ -1,27 +1,9 @@
-﻿using System.Threading.Tasks;
+namespace Waves.Core.Base.Interfaces;
 
-namespace Waves.Core.Base.Interfaces
+/// <summary>
+/// Wrapper interface for configurable object.
+/// </summary>
+public interface IWavesConfigurableObject :
+    IWavesInitializableObject
 {
-    /// <summary>
-    /// Interface for configurable objects.
-    /// </summary>
-    public interface IWavesConfigurableObject : IWavesObject
-    {
-        /// <summary>
-        /// Gets object's configuration.
-        /// </summary>
-        IWavesConfiguration Configuration { get; }
-
-        /// <summary>
-        /// Async loads configuration.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task LoadConfigurationAsync();
-
-        /// <summary>
-        /// Async saves configuration.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SaveConfigurationAsync();
-    }
 }

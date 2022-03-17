@@ -1,85 +1,65 @@
-﻿using System.Threading.Tasks;
-using ReactiveUI.Fody.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Interfaces;
-using Waves.Core.Plugins.Services.Interfaces;
+using Waves.Core.Extensions;
 
-namespace Waves.Core.Base
+namespace Waves.Core.Base;
+
+/// <summary>
+/// Abstraction for configurable object.
+/// </summary>
+public abstract class WavesConfigurableObject :
+    WavesInitializableObject,
+    IWavesConfigurableObject
 {
+    private readonly Dictionary<string, string> _configurations;
+
     /// <summary>
-    /// Configurable object abstraction.
+    /// Creates new instances of <see cref="WavesConfigurableObject"/>.
     /// </summary>
-    public abstract class WavesConfigurableObject :
-        WavesObject,
-        IWavesConfigurableObject
+    /// <param name="configuration">Configuration.</param>
+    /// <param name="logger">Logger.</param>
+    protected WavesConfigurableObject(
+        IConfiguration configuration,
+        ILogger<WavesInitializableObject> logger)
+        : base(logger)
     {
-        /// <summary>
-        /// Creates new instance os <see cref="WavesConfigurableObject"/>.
-        /// </summary>
-        /// <param name="configurationService">Instance of configuration service.</param>
-        protected WavesConfigurableObject(IWavesConfigurationService configurationService)
+        _configurations = ConfigurableExtensions.InitializeConfiguration(this, configuration);
+    }
+
+    /// <inheritdoc />
+    public override async Task InitializeAsync()
+    {
+        if (IsInitialized)
         {
-            ConfigurationService = configurationService;
+            return;
         }
 
-        /// <inheritdoc />
-        [Reactive]
-        public IWavesConfiguration Configuration { get; private set; }
-
-        /// <summary>
-        /// Gets configuration service.
-        /// </summary>
-        protected IWavesConfigurationService ConfigurationService { get; private set; }
-
-        /// <inheritdoc />
-        public async Task LoadConfigurationAsync()
+        try
         {
-            Configuration = await ConfigurationService.GetConfigurationAsync(this);
-
-            if (Configuration == null)
-            {
-                return;
-            }
-
-            var pluginType = GetType();
-            var properties = pluginType.GetProperties();
-            foreach (var property in properties)
-            {
-                var attributes = property.GetCustomAttributes(true);
-                foreach (var attribute in attributes)
-                {
-                    if (attribute is WavesPropertyAttribute)
-                    {
-                        property.SetValue(this, Configuration.GetPropertyValue(property.Name));
-                    }
-                }
-            }
+            await LoadConfigurationAsync();
+            await RunInitializationAsync();
+            IsInitialized = true;
         }
-
-        /// <inheritdoc />
-        public virtual Task SaveConfigurationAsync()
+        catch (Exception e)
         {
-            Configuration = new WavesConfiguration();
-
-            var pluginType = GetType();
-            var properties = pluginType.GetProperties();
-            foreach (var property in properties)
-            {
-                var attributes = property.GetCustomAttributes(true);
-                foreach (var attribute in attributes)
-                {
-                    if (!(attribute is WavesPropertyAttribute))
-                    {
-                        continue;
-                    }
-
-                    var name = property.Name;
-                    var value = property.GetValue(this);
-                    Configuration.AddProperty(name, value);
-                }
-            }
-
-            return Task.CompletedTask;
+            IsInitialized = false;
+            Logger.LogError(e, "Object initialization error");
         }
+    }
+
+    /// <summary>
+    /// Loads configuration.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    protected virtual Task LoadConfigurationAsync()
+    {
+        return this.Configure(_configurations);
     }
 }
