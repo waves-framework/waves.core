@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Waves.Core.Base.Attributes;
-using Waves.Core.Base.Interfaces;
 
 namespace Waves.Core.Services.Interfaces
 {

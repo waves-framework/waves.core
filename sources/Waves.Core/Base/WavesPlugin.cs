@@ -3,7 +3,7 @@ using Waves.Core.Base.Interfaces;
 namespace Waves.Core.Base;
 
 /// <summary>
-///     Abstract base for plugins.
+/// Waves plugin abstraction.
 /// </summary>
 public class WavesPlugin :
     WavesObject,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Waves.Core.Base.Enums;
+using Waves.Core.Extensions;
 
 namespace Waves.Core.Base.Attributes;
 
@@ -17,11 +18,12 @@ public class WavesPluginAttribute : WavesObjectAttribute
     /// <param name="name">Name of plugin.</param>
     public WavesPluginAttribute(
         Type pluginType,
-        WavesLifetimeType lifetimeType = WavesLifetimeType.Transient,
+        WavesLifetime lifetimeType = WavesLifetime.Transient,
         [CallerMemberName] string name = default)
         : base(name)
     {
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 
@@ -35,12 +37,13 @@ public class WavesPluginAttribute : WavesObjectAttribute
     public WavesPluginAttribute(
         object key,
         Type pluginType,
-        WavesLifetimeType lifetimeType = WavesLifetimeType.Transient,
+        WavesLifetime lifetimeType = WavesLifetime.Transient,
         [CallerMemberName] string name = default)
         : base(name)
     {
         Key = key;
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 
@@ -56,12 +59,13 @@ public class WavesPluginAttribute : WavesObjectAttribute
         Guid id,
         object key,
         Type pluginType,
-        WavesLifetimeType lifetimeType = WavesLifetimeType.Transient,
+        WavesLifetime lifetimeType = WavesLifetime.Transient,
         [CallerMemberName] string name = default)
         : base(id, name)
     {
         Key = key;
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 
@@ -77,19 +81,20 @@ public class WavesPluginAttribute : WavesObjectAttribute
         string id,
         object key,
         Type pluginType,
-        WavesLifetimeType lifetimeType = WavesLifetimeType.Transient,
+        WavesLifetime lifetimeType = WavesLifetime.Transient,
         [CallerMemberName] string name = default)
         : base(id, name)
     {
         Key = key;
         Type = pluginType;
+        Name = pluginType.ToString();
         Lifetime = lifetimeType;
     }
 
     /// <summary>
     ///     Gets whether plugin must has single instance when registering in container.
     /// </summary>
-    public WavesLifetimeType Lifetime { get; }
+    public WavesLifetime Lifetime { get; }
 
     /// <summary>
     ///     Gets key.

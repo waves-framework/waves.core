@@ -1,4 +1,6 @@
-﻿namespace Waves.Core.Base.Interfaces;
+﻿using System.Threading.Tasks;
+
+namespace Waves.Core.Base.Interfaces;
 
 /// <summary>
 ///     Interface for plugin.

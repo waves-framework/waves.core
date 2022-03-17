@@ -1,15 +1,14 @@
 using Microsoft.Extensions.Logging;
+using Waves.Core.Base;
 using Waves.Core.Base.Attributes;
-using Waves.Core.Sandbox.Services.Interfaces;
-using ILogger = Splat.ILogger;
 
 namespace Waves.Core.Sandbox.Services;
 
 /// <summary>
 /// Sample service.
 /// </summary>
-[WavesPlugin(typeof(ISampleService))]
-public class SampleService : ISampleService
+[WavesPlugin(typeof(SampleService))]
+public class SampleService : WavesPlugin
 {
     private readonly ILogger<SampleService> _logger;
 
@@ -22,9 +21,13 @@ public class SampleService : ISampleService
         _logger = logger;
     }
 
-    /// <inheritdoc />
-    public void SampleMethod()
+    /// <summary>
+    /// Run sample method.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public Task Run()
     {
-        _logger.LogInformation("Sample method invoked.");
+        _logger.LogInformation("Hello from sample service!");
+        return Task.CompletedTask;
     }
 }
