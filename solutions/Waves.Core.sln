@@ -30,8 +30,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Tests", "..\sources\Waves.Core.Tests\Waves.Core.Tests.csproj", "{A0EA3E6F-EA03-4043-9245-557D8EA934D7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,18 +64,6 @@ Global
 		{2A1F3B72-E79E-45DE-BD97-342EE375D77F}.Release|x64.Build.0 = Release|Any CPU
 		{2A1F3B72-E79E-45DE-BD97-342EE375D77F}.Release|x86.ActiveCfg = Release|Any CPU
 		{2A1F3B72-E79E-45DE-BD97-342EE375D77F}.Release|x86.Build.0 = Release|Any CPU
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Debug|x64.ActiveCfg = Debug|x64
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Debug|x64.Build.0 = Debug|x64
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Debug|x86.ActiveCfg = Debug|x86
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Debug|x86.Build.0 = Debug|x86
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Release|x64.ActiveCfg = Release|x64
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Release|x64.Build.0 = Release|x64
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Release|x86.ActiveCfg = Release|x86
-		{A0EA3E6F-EA03-4043-9245-557D8EA934D7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
