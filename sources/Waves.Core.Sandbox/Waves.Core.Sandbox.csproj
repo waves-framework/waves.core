@@ -13,15 +13,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="nlog.config" CopyToOutputDirectory="Always" />
         <None Update="appsettings.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="appsettings.Development.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Update="ReactiveUI" Version="17.1.50" />
-      <PackageReference Update="ReactiveUI.Fody" Version="17.1.50" />
+      <PackageReference Include="ReactiveUI" Version="18.0.7" />
+      <PackageReference Include="ReactiveUI.Fody" Version="18.0.7" />
     </ItemGroup>
 
 </Project>

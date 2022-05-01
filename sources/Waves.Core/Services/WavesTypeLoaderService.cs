@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Waves.Core.Base;
-using Waves.Core.Base.Attributes;
 using Waves.Core.Extensions;
 using Waves.Core.Services.Interfaces;
-using ILogger = NLog.ILogger;
 
 namespace Waves.Core.Services
 {
