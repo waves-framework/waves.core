@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -9,7 +8,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
 using Waves.Core.Extensions;
@@ -28,8 +27,8 @@ public class WavesCore
     private IServiceCollection _serviceCollection;
     private IServiceProvider _serviceProvider;
     private ILogger<WavesCore> _logger;
-
     private ContainerBuilder _containerBuilder;
+    private Action<ILoggingBuilder> _loggingBuilder;
 
     /// <summary>
     /// Starts core async.
@@ -277,6 +276,15 @@ public class WavesCore
     }
 
     /// <summary>
+    /// Configures logging.
+    /// </summary>
+    /// <param name="builder">Logging builder.</param>
+    public void AddLogging(Action<ILoggingBuilder> builder)
+    {
+        _loggingBuilder = builder;
+    }
+
+    /// <summary>
     /// Starts core.
     /// </summary>
     private void StartCore()
@@ -314,14 +322,20 @@ public class WavesCore
     /// </summary>
     private void InitializeLogging()
     {
-        _serviceCollection
-            .AddLogging(loggingBuilder =>
-            {
-                // configure Logging with NLog
-                loggingBuilder.ClearProviders();
-                loggingBuilder.SetMinimumLevel(LogLevel.Trace);
-                loggingBuilder.AddNLog(_configuration);
-            });
+        if (_loggingBuilder == null)
+        {
+            _serviceCollection
+                .AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.ClearProviders();
+                    loggingBuilder.AddConfiguration(_configuration.GetSection("Logging"));
+                    loggingBuilder.AddConsole();
+                });
+        }
+        else
+        {
+            _serviceCollection.AddLogging(_loggingBuilder);
+        }
     }
 
     /// <summary>
