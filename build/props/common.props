@@ -52,6 +52,10 @@
       <Pack>True</Pack>
       <PackagePath/>
     </None>
+    <None Include="..\..\readme.md">
+      <Pack>True</Pack>
+      <PackagePath/>
+    </None>
     <None Include="..\..\license.md">
       <Pack>True</Pack>
       <PackagePath/>
