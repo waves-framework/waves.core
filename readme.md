@@ -1,5 +1,4 @@
-## ![logo](files/images/logo_c_64.png)  Waves Core
-
+## <img style="float: right;" src="files/images/logo_64.png"/>  Waves Core
 ![logo](https://img.shields.io/github/license/waves-framework/waves.core) ![logo](https://img.shields.io/nuget/v/Waves.Core)
 
 ### 📚 About Waves
@@ -25,15 +24,15 @@ Install-Package Waves.Core
 After installing the package you just need to declare new instance of host and declare own startup (inherited from `WavesStartup`) class:
 
 ```c#
-var host = WavesBuilder.CreateDefaultBuilder(args)
-    .UseStartup<Startup>()
-    .Build();
+var core = new WavesCore();
+await core.StartAsync();
+await core.BuildContainerAsync();
 ```
 
 Resolve services from container:
 
 ```c#
-var logger = host.Services.GetService<ILogger<Program>>();
+var logger = await core.GetInstanceAsync<ILogger<Program>>();
 logger?.LogInformation("Hello world");
 ```
 

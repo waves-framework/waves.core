@@ -48,14 +48,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\files\images\logo_c_128.png">
-      <Pack>True</Pack>
-      <PackagePath/>
-    </None>
-    <None Include="..\..\readme.md">
-      <Pack>True</Pack>
-      <PackagePath/>
-    </None>
     <None Include="..\..\license.md">
       <Pack>True</Pack>
       <PackagePath/>
@@ -63,8 +55,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="17.1.17" />
-    <PackageReference Include="ReactiveUI.Fody" Version="17.1.17" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
