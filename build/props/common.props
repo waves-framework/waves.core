@@ -9,7 +9,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <LangVersion>latest</LangVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageIcon>logo_c_128.png</PackageIcon>
+    <PackageIcon>logo_128.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseFile>license.md</PackageLicenseFile>
   </PropertyGroup>
@@ -48,7 +48,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\files\images\logo_c_128.png">
+    <None Include="..\..\files\images\logo_128.png">
       <Pack>True</Pack>
       <PackagePath/>
     </None>
@@ -63,8 +63,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="17.1.17" />
-    <PackageReference Include="ReactiveUI.Fody" Version="17.1.17" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
