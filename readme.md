@@ -21,7 +21,7 @@ Install-Package Waves.Core
 
 ### ⌨️ Usage basics
 
-After installing the package you just need to declare new instance of host and declare own startup (inherited from `WavesStartup`) class:
+After installing the package you just need to initialize core in your main class:
 
 ```c#
 var core = new WavesCore();
