@@ -10,7 +10,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Props", "Props", "{C0019410-C602-4ABA-B970-6AE4A5128631}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\props\common.props = ..\build\props\common.props
-		..\build\props\tests.props = ..\build\props\tests.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{AE6577B5-EC22-4B4C-BF17-CC5F000C4E56}"
