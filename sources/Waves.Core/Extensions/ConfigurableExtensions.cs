@@ -16,22 +16,6 @@ namespace Waves.Core.Extensions;
 public static class ConfigurableExtensions
 {
     /// <summary>
-    /// Saves configuration.
-    /// </summary>
-    /// <param name="token">Token.</param>
-    /// <param name="value">Value.</param>
-    /// <typeparam name="T">Type of configuration.</typeparam>
-    public static void SaveConfiguration<T>(string token, T value)
-    {
-        var jsonString = File.ReadAllText(Constants.ConfigurationFileName);
-        var jObject = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString) as JObject;
-        var jToken = jObject?.SelectToken(token);
-        jToken?.Replace(new JValue(value));
-        var updatedJsonString = jObject?.ToString();
-        File.WriteAllText(Constants.ConfigurationFileName, updatedJsonString);
-    }
-
-    /// <summary>
     /// Initializes configuration for object.
     /// </summary>
     /// <param name="obj">Object.</param>
