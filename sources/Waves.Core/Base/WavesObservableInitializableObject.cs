@@ -22,7 +22,7 @@ public abstract class WavesObservableInitializableObject :
     }
 
     /// <inheritdoc />
-    public bool IsInitialized { get; internal set; }
+    public bool IsInitialized { get; protected set; }
 
     /// <summary>
     /// Gets logger.

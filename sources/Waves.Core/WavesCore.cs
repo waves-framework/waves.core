@@ -28,6 +28,7 @@ public class WavesCore
     private IServiceProvider _serviceProvider;
     private ILogger<WavesCore> _logger;
     private ContainerBuilder _containerBuilder;
+    private Action<IServiceCollection> _configureServices;
     private Action<ILoggingBuilder> _loggingBuilder;
 
     /// <summary>
@@ -285,12 +286,22 @@ public class WavesCore
     }
 
     /// <summary>
+    /// Configures services.
+    /// </summary>
+    /// <param name="configureServices">Configure services action.</param>
+    public void AddServices(Action<IServiceCollection> configureServices)
+    {
+        _configureServices = configureServices;
+    }
+
+    /// <summary>
     /// Starts core.
     /// </summary>
     private void StartCore()
     {
         _serviceCollection = new ServiceCollection();
 
+        InitializeServices(_serviceCollection);
         InitializeConfiguration();
         InitializeLogging();
         InitializeServices();
@@ -336,6 +347,14 @@ public class WavesCore
         {
             _serviceCollection.AddLogging(_loggingBuilder);
         }
+    }
+
+    /// <summary>
+    /// Configures services.
+    /// </summary>
+    private void InitializeServices(IServiceCollection collection)
+    {
+        _configureServices?.Invoke(collection);
     }
 
     /// <summary>
