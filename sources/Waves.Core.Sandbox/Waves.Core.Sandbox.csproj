@@ -22,8 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="ReactiveUI" Version="18.0.7" />
-      <PackageReference Include="ReactiveUI.Fody" Version="18.0.7" />
+      <PackageReference Include="ReactiveUI" Version="18.1.8" />
+      <PackageReference Include="ReactiveUI.Fody" Version="18.1.8" />
     </ItemGroup>
 
 </Project>
