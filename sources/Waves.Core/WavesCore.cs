@@ -322,9 +322,11 @@ public class WavesCore
     /// </summary>
     private void InitializeConfiguration()
     {
+        var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
         _configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile(Constants.ConfigurationFileName, optional: true, reloadOnChange: true)
+            .AddJsonFile(string.Format(Constants.ConfigurationFileName, env), optional: true, reloadOnChange: true)
             .Build();
     }
 

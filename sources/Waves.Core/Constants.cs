@@ -8,5 +8,5 @@ internal class Constants
     /// <summary>
     /// Configuration file name.
     /// </summary>
-    internal const string ConfigurationFileName = "appsettings.json";
+    internal const string ConfigurationFileName = "appsettings.{0}.json";
 }
