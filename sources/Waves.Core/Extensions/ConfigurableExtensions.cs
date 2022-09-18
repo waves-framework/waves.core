@@ -92,7 +92,7 @@ public static class ConfigurableExtensions
             }
             catch (Exception e)
             {
-                logger.LogError(e, "An error occured while loading configuration value");
+                logger?.LogError(e, "An error occured while loading configuration value");
             }
         }
 
