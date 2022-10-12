@@ -1,5 +1,5 @@
 ## <img style="float: right;" src="files/images/logo_64.png"/>  Waves Core
-![logo](https://img.shields.io/github/license/waves-framework/waves.core) ![logo](https://img.shields.io/nuget/v/Waves.Core)
+![logo](https://img.shields.io/github/license/waves-framework/waves.core) ![logo](https://img.shields.io/nuget/v/Waves.Core) ![logo](https://img.shields.io/nuget/dt/Waves.Core)
 
 ### 📚 About Waves
 

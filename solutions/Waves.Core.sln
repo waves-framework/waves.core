@@ -12,14 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Props", "Props", "{C0019410
 		..\build\props\common.props = ..\build\props\common.props
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCop", "StyleCop", "{AE6577B5-EC22-4B4C-BF17-CC5F000C4E56}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\stylecop\stylecop.json = ..\build\stylecop\stylecop.json
-		..\build\stylecop\stylecop.targets = ..\build\stylecop\stylecop.targets
-		..\build\stylecop\waves.stylecop.ruleset = ..\build\stylecop\waves.stylecop.ruleset
-		..\build\stylecop\waves.stylecop.withoutdocs.ruleset = ..\build\stylecop\waves.stylecop.withoutdocs.ruleset
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Sandbox", "..\sources\Waves.Core.Sandbox\Waves.Core.Sandbox.csproj", "{2A1F3B72-E79E-45DE-BD97-342EE375D77F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B5D5734D-33CB-4941-9501-DC3B942D9C98}"
@@ -69,7 +61,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C0019410-C602-4ABA-B970-6AE4A5128631} = {515CA84E-FB48-4E54-8DFA-3EB2E948A7C7}
-		{AE6577B5-EC22-4B4C-BF17-CC5F000C4E56} = {515CA84E-FB48-4E54-8DFA-3EB2E948A7C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E8EE6A0-1037-49F2-8C63-D7650E3925B7}

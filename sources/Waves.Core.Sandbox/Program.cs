@@ -14,7 +14,7 @@ logger.LogInformation("Logger successfully resolved");
 var service = await core.GetInstanceAsync<SampleConfigurableService>().ConfigureAwait(false);
 if (service != null)
 {
-    logger.LogInformation($"Value from test service: {service.TestValue}");
+    logger.LogInformation("Value from test service: {Value}", service.TestValue);
 }
 
 Console.ReadLine();

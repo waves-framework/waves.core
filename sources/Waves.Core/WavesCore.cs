@@ -28,6 +28,7 @@ public class WavesCore
     private IServiceProvider _serviceProvider;
     private ILogger<WavesCore> _logger;
     private ContainerBuilder _containerBuilder;
+    private Action<IServiceCollection> _configureServices;
     private Action<ILoggingBuilder> _loggingBuilder;
 
     /// <summary>
@@ -81,9 +82,7 @@ public class WavesCore
             : _container.ResolveKeyed<T>(key);
 
 #if DEBUG
-        var stackTrace = new StackTrace(1, false);
-        var type = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-        _logger.LogDebug($"{result.GetType().GetFriendlyName()} resolved from container");
+        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
 #endif
 
         return result;
@@ -103,9 +102,7 @@ public class WavesCore
             : _container.ResolveKeyed<T>(key);
 
 #if DEBUG
-        var stackTrace = new StackTrace(1, false);
-        var type = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-        _logger.LogDebug($"{result.GetType().GetFriendlyName()} resolved from container");
+        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
 #endif
 
         return Task.FromResult(result);
@@ -124,9 +121,7 @@ public class WavesCore
             : _container.ResolveKeyed(key, type);
 
 #if DEBUG
-        var stackTrace = new StackTrace(1, false);
-        var t = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-        _logger.LogDebug($"{result.GetType().GetFriendlyName()} resolved from container");
+        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
 #endif
 
         return result;
@@ -145,9 +140,7 @@ public class WavesCore
             : _container.ResolveKeyed(key, type);
 
 #if DEBUG
-        var stackTrace = new StackTrace(1, false);
-        var t = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-        _logger.LogDebug($"{result.GetType().GetFriendlyName()} resolved from container");
+        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
 #endif
 
         return Task.FromResult(result);
@@ -170,9 +163,7 @@ public class WavesCore
         foreach (var result in e)
         {
 #if DEBUG
-            var stackTrace = new StackTrace(1, false);
-            var type = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-            _logger.LogDebug($"{result.GetType().GetFriendlyName()} resolved from container");
+            _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
 #endif
         }
 
@@ -198,7 +189,7 @@ public class WavesCore
 #if DEBUG
             var stackTrace = new StackTrace(1, false);
             var type = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-            _logger.LogDebug($"{type.GetFriendlyName()} resolved {result.GetType().GetFriendlyName()} from container");
+            _logger.LogDebug("{Type} resolved {Name} from container", type.GetFriendlyName(), result.GetType().GetFriendlyName());
 #endif
         }
 
@@ -234,7 +225,7 @@ public class WavesCore
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error occured while register type {type.GetFriendlyName()}");
+            _logger.LogError(e, "Error occured while register type {Name}", type.GetFriendlyName());
         }
 
         return Task.CompletedTask;
@@ -269,7 +260,7 @@ public class WavesCore
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Error occured while register instance {obj.GetType().GetFriendlyName()}");
+            _logger.LogError(e, "Error occured while register instance {Name}", obj.GetType().GetFriendlyName());
         }
 
         return Task.CompletedTask;
@@ -285,18 +276,33 @@ public class WavesCore
     }
 
     /// <summary>
+    /// Configures services.
+    /// </summary>
+    /// <param name="configureServices">Configure services action.</param>
+    public void AddServices(Action<IServiceCollection> configureServices)
+    {
+        _configureServices = configureServices;
+    }
+
+    /// <summary>
     /// Starts core.
     /// </summary>
     private void StartCore()
     {
         _serviceCollection = new ServiceCollection();
 
+        InitializeServices(_serviceCollection);
         InitializeConfiguration();
         InitializeLogging();
         InitializeServices();
 
         _serviceProvider = _serviceCollection.BuildServiceProvider();
         _logger = _serviceProvider.GetService<ILogger<WavesCore>>();
+
+        if (_logger == null)
+        {
+            return;
+        }
 
         _logger.LogDebug("Core is starting...");
 
@@ -311,9 +317,13 @@ public class WavesCore
     /// </summary>
     private void InitializeConfiguration()
     {
+        var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+        var configurationFileName = !string.IsNullOrEmpty(env) ? string.Format(Constants.ConfigurationFileName, env) : "appsettings.json";
+
         _configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile(Constants.ConfigurationFileName, optional: true, reloadOnChange: true)
+            .AddJsonFile(configurationFileName, optional: true, reloadOnChange: true)
             .Build();
     }
 
@@ -336,6 +346,14 @@ public class WavesCore
         {
             _serviceCollection.AddLogging(_loggingBuilder);
         }
+    }
+
+    /// <summary>
+    /// Configures services.
+    /// </summary>
+    private void InitializeServices(IServiceCollection collection)
+    {
+        _configureServices?.Invoke(collection);
     }
 
     /// <summary>
@@ -378,7 +396,12 @@ public class WavesCore
                 await RegisterType(type, registerType, lifetime, key);
 
                 var keyMessage = key != null ? $" with key {key}" : string.Empty;
-                _logger.LogDebug($"{type.GetFriendlyName()} registered as {registerType.GetFriendlyName()} with {lifetime.ToDescription()} lifetime{keyMessage}");
+                _logger.LogDebug(
+                    "{Type} registered as {RegisterType} with {Description} lifetime{KeyMessage}",
+                    type.GetFriendlyName(),
+                    registerType.GetFriendlyName(),
+                    lifetime.ToDescription(),
+                    keyMessage);
             }
         }
         else

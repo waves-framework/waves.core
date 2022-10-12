@@ -27,7 +27,7 @@ public abstract class WavesConfigurableObject :
     /// <param name="logger">Logger.</param>
     protected WavesConfigurableObject(
         IConfiguration configuration,
-        ILogger<WavesInitializableObject> logger)
+        ILogger<WavesConfigurableObject> logger)
         : base(logger)
     {
         _configurations = ConfigurableExtensions.InitializeConfiguration(this, configuration);
@@ -60,6 +60,6 @@ public abstract class WavesConfigurableObject :
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     protected virtual Task LoadConfigurationAsync()
     {
-        return this.Configure(_configurations);
+        return this.Configure(_configurations, Logger);
     }
 }
