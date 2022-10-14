@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using Waves.Core.Base.Attributes;
 
 namespace Waves.Core.Extensions;
@@ -90,7 +92,7 @@ public static class ConfigurableExtensions
             }
             catch (Exception e)
             {
-                logger.LogError(e, "An error occured while loading configuration value");
+                logger?.LogError(e, "An error occured while loading configuration value");
             }
         }
 
