@@ -41,7 +41,7 @@ public abstract class WavesObservableInitializableObject :
         {
             await RunInitializationAsync();
             IsInitialized = true;
-            Logger.LogDebug($"Object {this} initialized");
+            Logger.LogDebug("Object {@This} initialized", this);
         }
         catch (Exception e)
         {
