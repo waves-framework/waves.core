@@ -30,7 +30,7 @@ public static class TypeExtensions
     /// <param name="type">Type.</param>
     /// <returns>Friendly name.</returns>
     public static string GetFriendlyName(
-        this System.Type type)
+        this Type type)
     {
         var friendlyName = type.Name;
         if (!type.IsGenericType)

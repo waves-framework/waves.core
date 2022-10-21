@@ -43,12 +43,12 @@ public abstract class WavesObservableConfigurableObject :
             await LoadConfigurationAsync();
             await RunInitializationAsync();
             IsInitialized = true;
-            Logger.LogDebug($"Object {this} initialized");
+            Logger.LogDebug("Object {@This} initialized", this);
         }
         catch (Exception e)
         {
             IsInitialized = false;
-            Logger.LogError(e, "Object initialization error");
+            Logger.LogError("Object initialization error: {Message}", e);
         }
     }
 
@@ -69,7 +69,7 @@ public abstract class WavesObservableConfigurableObject :
     {
         foreach (var pair in _configurations)
         {
-            Logger.LogDebug($"Configuration of {this}: {pair.Key} - {pair.Value}");
+            Logger.LogDebug("Configuration of {@This}: {PairKey} - {PairValue}", this, pair.Key, pair.Value);
         }
 
         return this.Configure(_configurations, Logger);
