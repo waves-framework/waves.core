@@ -32,12 +32,6 @@ public static class ConfigurableExtensions
 
         var pluginName = wavesObjectAttribute.Name;
         var configurationsDictionary = new Dictionary<string, string>();
-        var configurations = configuration.GetSection(pluginName);
-        if (configurations == null)
-        {
-            return configurationsDictionary;
-        }
-
         var e = configuration.AsEnumerable();
         var startKey = $"{pluginName}:";
         foreach (var config in e)
@@ -92,7 +86,7 @@ public static class ConfigurableExtensions
             }
             catch (Exception e)
             {
-                logger?.LogError(e, "An error occured while loading configuration value");
+                logger?.LogError("An error occured while loading configuration value: {Message}", e);
             }
         }
 

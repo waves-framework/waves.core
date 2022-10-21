@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-#if NET6_0 || NETCOREAPP3_1
+#if NET6_0 || NET7_0
 using System.Runtime.Loader;
 #endif
 using System.Threading.Tasks;
@@ -60,7 +60,7 @@ internal static class AssemblyExtensions
 
                 if (!hasItem)
                 {
-#if NETCOREAPP3_1 || NET5_0 || NET6_0
+#if NET6_0 || NET7_0
                         assemblies.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(file));
 #elif NETSTANDARD2_0 || NET462
                     assemblies.Add(Assembly.LoadFile(file));

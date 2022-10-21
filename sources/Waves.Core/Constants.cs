@@ -3,7 +3,7 @@ namespace Waves.Core;
 /// <summary>
 /// Internal core constance.
 /// </summary>
-internal class Constants
+internal static class Constants
 {
     /// <summary>
     /// Configuration file name.

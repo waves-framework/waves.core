@@ -14,7 +14,7 @@ public abstract class WavesObservableInitializablePlugin :
     /// Creates new instance of <see cref="WavesObservableInitializablePlugin"/>.
     /// </summary>
     /// <param name="logger">Logger.</param>
-    protected WavesObservableInitializablePlugin(ILogger<WavesObservableInitializableObject> logger)
+    protected WavesObservableInitializablePlugin(ILogger<WavesObservableInitializablePlugin> logger)
         : base(logger)
     {
     }
