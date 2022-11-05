@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
 using Waves.Core.Extensions;
@@ -30,6 +26,11 @@ public class WavesCore
     private ContainerBuilder _containerBuilder;
     private Action<IServiceCollection> _configureServices;
     private Action<ILoggingBuilder> _loggingBuilder;
+
+    /// <summary>
+    /// Gets service provider.
+    /// </summary>
+    public IWavesServiceProvider ServiceProvider { get; private set; }
 
     /// <summary>
     /// Starts core async.
@@ -55,6 +56,9 @@ public class WavesCore
     public void BuildContainer()
     {
         _container = _containerBuilder.Build();
+        _logger.LogDebug($"Container built");
+        ServiceProvider = new WavesServiceProvider(_container);
+        _logger.LogDebug($"Service provider created");
     }
 
     /// <summary>
@@ -63,137 +67,8 @@ public class WavesCore
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public Task BuildContainerAsync()
     {
-        _container = _containerBuilder.Build();
-        _logger.LogDebug($"Container built");
+        BuildContainer();
         return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public T GetInstance<T>(object key = null)
-        where T : class
-    {
-        var result = key == null
-            ? _container.Resolve<T>()
-            : _container.ResolveKeyed<T>(key);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return result;
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public Task<T> GetInstanceAsync<T>(object key = null)
-        where T : class
-    {
-        var result = key == null
-            ? _container.Resolve<T>()
-            : _container.ResolveKeyed<T>(key);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return Task.FromResult(result);
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <param name="type">Type.</param>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public object GetInstance(Type type, object key = null)
-    {
-        var result = key == null
-            ? _container.Resolve(type)
-            : _container.ResolveKeyed(key, type);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return result;
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <param name="type">Type.</param>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public Task<object> GetInstanceAsync(Type type, object key = null)
-    {
-        var result = key == null
-            ? _container.Resolve(type)
-            : _container.ResolveKeyed(key, type);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return Task.FromResult(result);
-    }
-
-    /// <summary>
-    /// Gets instances by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public IEnumerable<T> GetInstances<T>(object key = null)
-        where T : class
-    {
-        var results = key == null
-            ? _container.Resolve<IEnumerable<T>>()
-            : _container.ResolveKeyed<IEnumerable<T>>(key);
-
-        var e = results.ToList();
-        foreach (var result in e)
-        {
-#if DEBUG
-            _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-        }
-
-        return e.AsEnumerable();
-    }
-
-    /// <summary>
-    /// Gets instances by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public Task<IEnumerable<T>> GetInstancesAsync<T>(object key = null)
-        where T : class
-    {
-        var results = key == null
-            ? _container.Resolve<IEnumerable<T>>()
-            : _container.ResolveKeyed<IEnumerable<T>>(key);
-
-        var e = results.ToList();
-        foreach (var result in e)
-        {
-#if DEBUG
-            var stackTrace = new StackTrace(1, false);
-            var type = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-            _logger.LogDebug("{Type} resolved {Name} from container", type.GetFriendlyName(), result.GetType().GetFriendlyName());
-#endif
-        }
-
-        return Task.FromResult(e.AsEnumerable());
     }
 
     /// <summary>
