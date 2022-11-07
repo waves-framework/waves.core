@@ -46,7 +46,7 @@ public static class TaskExtensions
         task.ContinueWith(
             async t =>
             {
-                var logger = await core.GetInstanceAsync<Microsoft.Extensions.Logging.ILogger>();
+                var logger = await core.ServiceProvider.GetInstanceAsync<ILogger>();
 
                 if (t.Exception == null)
                 {

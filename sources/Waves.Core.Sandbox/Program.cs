@@ -8,10 +8,10 @@ var core = new WavesCore();
 await core.StartAsync();
 await core.BuildContainerAsync();
 
-var logger = await core.GetInstanceAsync<ILogger<Program>>().ConfigureAwait(false);
+var logger = await core.ServiceProvider.GetInstanceAsync<ILogger<Program>>().ConfigureAwait(false);
 logger.LogInformation("Logger successfully resolved");
 
-var service = await core.GetInstanceAsync<SampleConfigurableService>().ConfigureAwait(false);
+var service = await core.ServiceProvider.GetInstanceAsync<SampleConfigurableService>().ConfigureAwait(false);
 if (service != null)
 {
     logger.LogInformation("Value from test service: {Value}", service.TestValue);
