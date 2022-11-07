@@ -24,8 +24,6 @@ public class WavesCore
     private IServiceProvider _serviceProvider;
     private ILogger<WavesCore> _logger;
     private ContainerBuilder _containerBuilder;
-    private Action<IServiceCollection> _configureServices;
-    private Action<ILoggingBuilder> _loggingBuilder;
 
     /// <summary>
     /// Gets service provider.
@@ -36,6 +34,16 @@ public class WavesCore
     /// Gets service registry.
     /// </summary>
     public IWavesServiceRegistry ServiceRegistry { get; private set; }
+
+    /// <summary>
+    /// Gets configure services action.
+    /// </summary>
+    internal Action<IServiceCollection> ConfigureServices { get; set; }
+
+    /// <summary>
+    /// Gets logging builder action.
+    /// </summary>
+    internal Action<ILoggingBuilder> LoggingBuilder { get; set; }
 
     /// <summary>
     /// Starts core async.
@@ -77,24 +85,6 @@ public class WavesCore
     }
 
     /// <summary>
-    /// Configures logging.
-    /// </summary>
-    /// <param name="builder">Logging builder.</param>
-    public void AddLogging(Action<ILoggingBuilder> builder)
-    {
-        _loggingBuilder = builder;
-    }
-
-    /// <summary>
-    /// Configures services.
-    /// </summary>
-    /// <param name="configureServices">Configure services action.</param>
-    public void AddServices(Action<IServiceCollection> configureServices)
-    {
-        _configureServices = configureServices;
-    }
-
-    /// <summary>
     /// Starts core.
     /// </summary>
     private void StartCore()
@@ -111,7 +101,7 @@ public class WavesCore
 
         if (_logger == null)
         {
-            return;
+            throw new Exception("Logging has not been configured");
         }
 
         _logger.LogDebug("Core is starting...");
@@ -142,7 +132,7 @@ public class WavesCore
     /// </summary>
     private void InitializeLogging()
     {
-        if (_loggingBuilder == null)
+        if (LoggingBuilder == null)
         {
             _serviceCollection
                 .AddLogging(loggingBuilder =>
@@ -154,7 +144,7 @@ public class WavesCore
         }
         else
         {
-            _serviceCollection.AddLogging(_loggingBuilder);
+            _serviceCollection.AddLogging(LoggingBuilder);
         }
     }
 
@@ -163,7 +153,7 @@ public class WavesCore
     /// </summary>
     private void InitializeServices(IServiceCollection collection)
     {
-        _configureServices?.Invoke(collection);
+        ConfigureServices?.Invoke(collection);
     }
 
     /// <summary>
