@@ -33,6 +33,11 @@ public class WavesCore
     public IWavesServiceProvider ServiceProvider { get; private set; }
 
     /// <summary>
+    /// Gets service registry.
+    /// </summary>
+    public IWavesServiceRegistry ServiceRegistry { get; private set; }
+
+    /// <summary>
     /// Starts core async.
     /// </summary>
     public void Start()
@@ -68,76 +73,6 @@ public class WavesCore
     public Task BuildContainerAsync()
     {
         BuildContainer();
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Registers type.
-    /// </summary>
-    /// <param name="type">Type.</param>
-    /// <param name="registerType">Registration type.</param>
-    /// <param name="lifetime">Lifetime type.</param>
-    /// <param name="key">Register key, may be null.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public Task RegisterType(Type type, Type registerType, WavesLifetime lifetime, object key = null)
-    {
-        try
-        {
-            switch (lifetime)
-            {
-                case WavesLifetime.Transient:
-                    _containerBuilder.RegisterTransientType(type, registerType, key);
-                    break;
-                case WavesLifetime.Scoped:
-                    _containerBuilder.RegisterScopedType(type, registerType, key);
-                    break;
-                case WavesLifetime.Singleton:
-                    _containerBuilder.RegisterSingletonType(type, registerType, key);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error occured while register type {Name}", type.GetFriendlyName());
-        }
-
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Registers instance.
-    /// </summary>
-    /// <param name="obj">Current object.</param>
-    /// <param name="registerType">Registration type.</param>
-    /// <param name="lifetime">Lifetime type.</param>
-    /// <param name="key">Register key, may be null.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public Task RegisterInstance(object obj, Type registerType, WavesLifetime lifetime, object key = null)
-    {
-        try
-        {
-            switch (lifetime)
-            {
-                case WavesLifetime.Transient:
-                    _containerBuilder.RegisterTransientInstance(obj, registerType, key);
-                    break;
-                case WavesLifetime.Scoped:
-                    _containerBuilder.RegisterScopedInstance(obj, registerType, key);
-                    break;
-                case WavesLifetime.Singleton:
-                    _containerBuilder.RegisterSingletonInstance(obj, registerType, key);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error occured while register instance {Name}", obj.GetType().GetFriendlyName());
-        }
-
         return Task.CompletedTask;
     }
 
@@ -255,6 +190,7 @@ public class WavesCore
     /// </summary>
     private async void InitializePlugins()
     {
+        ServiceRegistry = new WavesServiceRegistry(_serviceProvider, _containerBuilder);
         var typeLoader = _serviceProvider.GetService<IWavesTypeLoaderService<WavesPluginAttribute>>();
         if (typeLoader != null)
         {
@@ -268,7 +204,7 @@ public class WavesCore
                 var key = attribute.Key;
                 var lifetime = attribute.Lifetime;
 
-                await RegisterType(type, registerType, lifetime, key);
+                await ServiceRegistry.RegisterType(type, registerType, lifetime, key);
 
                 var keyMessage = key != null ? $" with key {key}" : string.Empty;
                 _logger.LogDebug(
