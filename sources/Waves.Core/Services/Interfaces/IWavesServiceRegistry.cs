@@ -7,7 +7,7 @@ namespace Waves.Core.Services.Interfaces;
 /// <summary>
 /// Waves service registry.
 /// </summary>
-public interface IWavesServiceRegistry
+internal interface IWavesServiceRegistry
 {
     /// <summary>
     /// Registers type.

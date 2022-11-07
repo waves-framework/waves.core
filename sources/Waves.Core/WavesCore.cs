@@ -28,12 +28,12 @@ public class WavesCore
     /// <summary>
     /// Gets service provider.
     /// </summary>
-    public IWavesServiceProvider ServiceProvider { get; private set; }
+    internal IWavesServiceProvider ServiceProvider { get; private set; }
 
     /// <summary>
     /// Gets service registry.
     /// </summary>
-    public IWavesServiceRegistry ServiceRegistry { get; private set; }
+    internal IWavesServiceRegistry ServiceRegistry { get; private set; }
 
     /// <summary>
     /// Gets configure services action.
@@ -66,22 +66,21 @@ public class WavesCore
     /// <summary>
     /// Builds container.
     /// </summary>
-    public void BuildContainer()
+    /// <returns>Returns container.</returns>
+    public IContainer BuildContainer()
     {
         _container = _containerBuilder.Build();
         _logger.LogDebug($"Container built");
-        ServiceProvider = new WavesServiceProvider(_container);
-        _logger.LogDebug($"Service provider created");
+        return _container;
     }
 
     /// <summary>
     /// Builds container.
     /// </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public Task BuildContainerAsync()
+    public Task<IContainer> BuildContainerAsync()
     {
-        BuildContainer();
-        return Task.CompletedTask;
+        return Task.FromResult(BuildContainer());
     }
 
     /// <summary>
@@ -164,6 +163,7 @@ public class WavesCore
         _serviceCollection.AddScoped(_ => _configuration);
         _serviceCollection.AddSingleton<IWavesTypeLoaderService<WavesPluginAttribute>, WavesTypeLoaderService<WavesPluginAttribute>>();
         _serviceCollection.AddSingleton(this);
+        _serviceCollection.AddTransient<IWavesServiceProvider>(_ => new WavesServiceProvider(_container));
     }
 
     /// <summary>

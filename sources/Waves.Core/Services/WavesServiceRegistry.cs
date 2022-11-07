@@ -12,7 +12,7 @@ namespace Waves.Core.Services;
 /// <summary>
 /// Waves service registry.
 /// </summary>
-public class WavesServiceRegistry : IWavesServiceRegistry
+internal class WavesServiceRegistry : IWavesServiceRegistry
 {
     private readonly ContainerBuilder _containerBuilder;
     private readonly ILogger<WavesServiceRegistry> _logger;
