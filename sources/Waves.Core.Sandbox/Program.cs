@@ -1,17 +1,20 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Autofac;
 using Microsoft.Extensions.Logging;
 using Waves.Core;
 using Waves.Core.Sandbox.Services;
+using Waves.Core.Services.Interfaces;
 
 var core = new WavesCore();
 await core.StartAsync();
-await core.BuildContainerAsync();
+var container = await core.BuildContainerAsync();
+var provider = container.Resolve<IWavesServiceProvider>();
 
-var logger = await core.ServiceProvider.GetInstanceAsync<ILogger<Program>>().ConfigureAwait(false);
+var logger = await provider.GetInstanceAsync<ILogger<Program>>().ConfigureAwait(false);
 logger.LogInformation("Logger successfully resolved");
 
-var service = await core.ServiceProvider.GetInstanceAsync<SampleConfigurableService>().ConfigureAwait(false);
+var service = await provider.GetInstanceAsync<SampleConfigurableService>().ConfigureAwait(false);
 if (service != null)
 {
     logger.LogInformation("Value from test service: {Value}", service.TestValue);
