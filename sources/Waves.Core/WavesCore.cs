@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Base.Enums;
 using Waves.Core.Extensions;
@@ -28,8 +24,26 @@ public class WavesCore
     private IServiceProvider _serviceProvider;
     private ILogger<WavesCore> _logger;
     private ContainerBuilder _containerBuilder;
-    private Action<IServiceCollection> _configureServices;
-    private Action<ILoggingBuilder> _loggingBuilder;
+
+    /// <summary>
+    /// Gets service provider.
+    /// </summary>
+    public IWavesServiceProvider ServiceProvider { get; private set; }
+
+    /// <summary>
+    /// Gets service registry.
+    /// </summary>
+    public IWavesServiceRegistry ServiceRegistry { get; private set; }
+
+    /// <summary>
+    /// Gets configure services action.
+    /// </summary>
+    internal Action<IServiceCollection> ConfigureServices { get; set; }
+
+    /// <summary>
+    /// Gets logging builder action.
+    /// </summary>
+    internal Action<ILoggingBuilder> LoggingBuilder { get; set; }
 
     /// <summary>
     /// Starts core async.
@@ -55,6 +69,9 @@ public class WavesCore
     public void BuildContainer()
     {
         _container = _containerBuilder.Build();
+        _logger.LogDebug($"Container built");
+        ServiceProvider = new WavesServiceProvider(_container);
+        _logger.LogDebug($"Service provider created");
     }
 
     /// <summary>
@@ -63,225 +80,8 @@ public class WavesCore
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
     public Task BuildContainerAsync()
     {
-        _container = _containerBuilder.Build();
-        _logger.LogDebug($"Container built");
+        BuildContainer();
         return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public T GetInstance<T>(object key = null)
-        where T : class
-    {
-        var result = key == null
-            ? _container.Resolve<T>()
-            : _container.ResolveKeyed<T>(key);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return result;
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public Task<T> GetInstanceAsync<T>(object key = null)
-        where T : class
-    {
-        var result = key == null
-            ? _container.Resolve<T>()
-            : _container.ResolveKeyed<T>(key);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return Task.FromResult(result);
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <param name="type">Type.</param>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public object GetInstance(Type type, object key = null)
-    {
-        var result = key == null
-            ? _container.Resolve(type)
-            : _container.ResolveKeyed(key, type);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return result;
-    }
-
-    /// <summary>
-    /// Gets instance by type and key.
-    /// </summary>
-    /// <param name="type">Type.</param>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public Task<object> GetInstanceAsync(Type type, object key = null)
-    {
-        var result = key == null
-            ? _container.Resolve(type)
-            : _container.ResolveKeyed(key, type);
-
-#if DEBUG
-        _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-
-        return Task.FromResult(result);
-    }
-
-    /// <summary>
-    /// Gets instances by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public IEnumerable<T> GetInstances<T>(object key = null)
-        where T : class
-    {
-        var results = key == null
-            ? _container.Resolve<IEnumerable<T>>()
-            : _container.ResolveKeyed<IEnumerable<T>>(key);
-
-        var e = results.ToList();
-        foreach (var result in e)
-        {
-#if DEBUG
-            _logger.LogDebug("{Name} resolved from container", result.GetType().GetFriendlyName());
-#endif
-        }
-
-        return e.AsEnumerable();
-    }
-
-    /// <summary>
-    /// Gets instances by type and key.
-    /// </summary>
-    /// <typeparam name="T">Type.</typeparam>
-    /// <param name="key">Key.</param>
-    /// <returns>Returns instance.</returns>
-    public Task<IEnumerable<T>> GetInstancesAsync<T>(object key = null)
-        where T : class
-    {
-        var results = key == null
-            ? _container.Resolve<IEnumerable<T>>()
-            : _container.ResolveKeyed<IEnumerable<T>>(key);
-
-        var e = results.ToList();
-        foreach (var result in e)
-        {
-#if DEBUG
-            var stackTrace = new StackTrace(1, false);
-            var type = stackTrace.GetFrame(1)?.GetMethod()?.DeclaringType;
-            _logger.LogDebug("{Type} resolved {Name} from container", type.GetFriendlyName(), result.GetType().GetFriendlyName());
-#endif
-        }
-
-        return Task.FromResult(e.AsEnumerable());
-    }
-
-    /// <summary>
-    /// Registers type.
-    /// </summary>
-    /// <param name="type">Type.</param>
-    /// <param name="registerType">Registration type.</param>
-    /// <param name="lifetime">Lifetime type.</param>
-    /// <param name="key">Register key, may be null.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public Task RegisterType(Type type, Type registerType, WavesLifetime lifetime, object key = null)
-    {
-        try
-        {
-            switch (lifetime)
-            {
-                case WavesLifetime.Transient:
-                    _containerBuilder.RegisterTransientType(type, registerType, key);
-                    break;
-                case WavesLifetime.Scoped:
-                    _containerBuilder.RegisterScopedType(type, registerType, key);
-                    break;
-                case WavesLifetime.Singleton:
-                    _containerBuilder.RegisterSingletonType(type, registerType, key);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error occured while register type {Name}", type.GetFriendlyName());
-        }
-
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Registers instance.
-    /// </summary>
-    /// <param name="obj">Current object.</param>
-    /// <param name="registerType">Registration type.</param>
-    /// <param name="lifetime">Lifetime type.</param>
-    /// <param name="key">Register key, may be null.</param>
-    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public Task RegisterInstance(object obj, Type registerType, WavesLifetime lifetime, object key = null)
-    {
-        try
-        {
-            switch (lifetime)
-            {
-                case WavesLifetime.Transient:
-                    _containerBuilder.RegisterTransientInstance(obj, registerType, key);
-                    break;
-                case WavesLifetime.Scoped:
-                    _containerBuilder.RegisterScopedInstance(obj, registerType, key);
-                    break;
-                case WavesLifetime.Singleton:
-                    _containerBuilder.RegisterSingletonInstance(obj, registerType, key);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error occured while register instance {Name}", obj.GetType().GetFriendlyName());
-        }
-
-        return Task.CompletedTask;
-    }
-
-    /// <summary>
-    /// Configures logging.
-    /// </summary>
-    /// <param name="builder">Logging builder.</param>
-    public void AddLogging(Action<ILoggingBuilder> builder)
-    {
-        _loggingBuilder = builder;
-    }
-
-    /// <summary>
-    /// Configures services.
-    /// </summary>
-    /// <param name="configureServices">Configure services action.</param>
-    public void AddServices(Action<IServiceCollection> configureServices)
-    {
-        _configureServices = configureServices;
     }
 
     /// <summary>
@@ -301,7 +101,7 @@ public class WavesCore
 
         if (_logger == null)
         {
-            return;
+            throw new Exception("Logging has not been configured");
         }
 
         _logger.LogDebug("Core is starting...");
@@ -332,7 +132,7 @@ public class WavesCore
     /// </summary>
     private void InitializeLogging()
     {
-        if (_loggingBuilder == null)
+        if (LoggingBuilder == null)
         {
             _serviceCollection
                 .AddLogging(loggingBuilder =>
@@ -344,7 +144,7 @@ public class WavesCore
         }
         else
         {
-            _serviceCollection.AddLogging(_loggingBuilder);
+            _serviceCollection.AddLogging(LoggingBuilder);
         }
     }
 
@@ -353,7 +153,7 @@ public class WavesCore
     /// </summary>
     private void InitializeServices(IServiceCollection collection)
     {
-        _configureServices?.Invoke(collection);
+        ConfigureServices?.Invoke(collection);
     }
 
     /// <summary>
@@ -380,6 +180,7 @@ public class WavesCore
     /// </summary>
     private async void InitializePlugins()
     {
+        ServiceRegistry = new WavesServiceRegistry(_serviceProvider, _containerBuilder);
         var typeLoader = _serviceProvider.GetService<IWavesTypeLoaderService<WavesPluginAttribute>>();
         if (typeLoader != null)
         {
@@ -393,7 +194,7 @@ public class WavesCore
                 var key = attribute.Key;
                 var lifetime = attribute.Lifetime;
 
-                await RegisterType(type, registerType, lifetime, key);
+                await ServiceRegistry.RegisterType(type, registerType, lifetime, key);
 
                 var keyMessage = key != null ? $" with key {key}" : string.Empty;
                 _logger.LogDebug(
