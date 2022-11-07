@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Waves.Core.Services.Interfaces;
 
 namespace Waves.Core.Extensions;
 
@@ -39,15 +40,14 @@ public static class TaskExtensions
     /// Log exceptions for task.
     /// </summary>
     /// <param name="task">Task.</param>
-    /// <param name="core">Core.</param>
+    /// <param name="serviceProvider">Service provider.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public static Task LogExceptions(this Task task, WavesCore core)
+    public static Task LogExceptions(this Task task, IWavesServiceProvider serviceProvider)
     {
         task.ContinueWith(
             async t =>
             {
-                var logger = await core.ServiceProvider.GetInstanceAsync<ILogger>();
-
+                var logger = await serviceProvider.GetInstanceAsync<ILogger>();
                 if (t.Exception == null)
                 {
                     return;
@@ -56,7 +56,7 @@ public static class TaskExtensions
                 var aggException = t.Exception.Flatten();
                 foreach (var exception in aggException.InnerExceptions)
                 {
-                    logger.LogError(exception, "An error occured");
+                    logger.LogError("An error occured in task: {Message}", exception.Message);
                 }
             },
             TaskContinuationOptions.OnlyOnFaulted);
