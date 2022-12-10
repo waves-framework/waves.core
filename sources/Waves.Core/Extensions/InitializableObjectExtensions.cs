@@ -6,7 +6,7 @@ namespace Waves.Core.Extensions;
 /// <summary>
 /// Extensions for <see cref="WavesInitializableObject"/>.
 /// </summary>
-internal static class WavesInitializableObjectExtensions
+internal static class InitializableObjectExtensions
 {
     /// <summary>
     /// Checks that object is <see cref="WavesInitializableObject"/> and initialize it if it is.

@@ -49,7 +49,7 @@ namespace Waves.Core.Services
             {
                 foreach (var e in exceptions)
                 {
-                    _logger.LogWarning(e, $"Error occured while loading assembly: {e}");
+                    _logger.LogWarning(e, "Error occured while loading assembly: {E}", e);
                 }
             }
 
@@ -75,12 +75,12 @@ namespace Waves.Core.Services
 
                     if (count > 0)
                     {
-                        _logger.LogDebug($"Assembly {assembly.FullName} loaded with {count} types");
+                        _logger.LogDebug("Assembly {AssemblyFullName} loaded with {Count} types", assembly.FullName, count);
                     }
                 }
                 catch (Exception e)
                 {
-                    _logger.LogWarning(e, $"Error occured while loading assembly {assembly.FullName}");
+                    _logger.LogWarning(e, "Error occured while loading assembly {AssemblyFullName}", assembly.FullName);
                 }
             }
         }
