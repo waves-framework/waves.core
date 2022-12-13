@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Tests", "..\sources\Waves.Core.Tests\Waves.Core.Tests.csproj", "{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{2A1F3B72-E79E-45DE-BD97-342EE375D77F}.Release|x64.Build.0 = Release|x64
 		{2A1F3B72-E79E-45DE-BD97-342EE375D77F}.Release|x86.ActiveCfg = Release|x86
 		{2A1F3B72-E79E-45DE-BD97-342EE375D77F}.Release|x86.Build.0 = Release|x86
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Debug|x64.Build.0 = Debug|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Debug|x86.Build.0 = Debug|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Release|x64.ActiveCfg = Release|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Release|x64.Build.0 = Release|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Release|x86.ActiveCfg = Release|Any CPU
+		{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
