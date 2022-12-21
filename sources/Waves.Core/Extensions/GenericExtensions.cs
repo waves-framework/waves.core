@@ -31,8 +31,9 @@ public static class GenericExtensions
         this T obj,
         string methodName,
         Type genericType,
-        object[] parameters)
+        object[] parameters = null)
     {
+        parameters ??= Array.Empty<object>();
         var method = typeof(T).GetMethod(methodName);
         var genericMethod = method?.MakeGenericMethod(genericType);
         genericMethod?.Invoke(obj, parameters);

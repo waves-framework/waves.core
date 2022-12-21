@@ -5,8 +5,8 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Waves.Core.Base.Attributes;
-using Waves.Core.Base.Enums;
 using Waves.Core.Extensions;
 using Waves.Core.Services;
 using Waves.Core.Services.Interfaces;
@@ -64,6 +64,30 @@ public class WavesCore
     }
 
     /// <summary>
+    /// Configures options.
+    /// This method created because of this:
+    /// https://github.com/autofac/Autofac/issues/659 .
+    /// </summary>
+    /// <typeparam name="T">Type of options.</typeparam>
+    public void ConfigureOptions<T>()
+        where T : class
+    {
+        _containerBuilder.Register(p => _configuration.Get<T>()).SingleInstance();
+    }
+
+    /// <summary>
+    /// Configures options.
+    /// </summary>
+    /// <typeparam name="T">Type of options.</typeparam>
+    /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+    public Task ConfigureOptionsAsync<T>()
+        where T : class
+    {
+        ConfigureOptions<T>();
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
     /// Builds container.
     /// </summary>
     /// <returns>Returns container.</returns>
@@ -90,8 +114,8 @@ public class WavesCore
     {
         _serviceCollection = new ServiceCollection();
 
-        InitializeServices(_serviceCollection);
         InitializeConfiguration();
+        InitializeServices(_serviceCollection);
         InitializeLogging();
         InitializeServices();
 
