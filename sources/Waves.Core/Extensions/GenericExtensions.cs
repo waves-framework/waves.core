@@ -50,8 +50,9 @@ public static class GenericExtensions
         Type classType,
         string methodName,
         Type genericType,
-        object[] parameters)
+        object[] parameters = null)
     {
+        parameters ??= Array.Empty<object>();
         var methods = classType.GetMethods();
         var method = methods.SingleOrDefault(x => x.Name.Equals(methodName)
                                                   && x.IsGenericMethod
