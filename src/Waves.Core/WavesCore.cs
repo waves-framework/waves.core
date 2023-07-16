@@ -5,7 +5,6 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Waves.Core.Base.Attributes;
 using Waves.Core.Extensions;
 using Waves.Core.Services;
@@ -46,20 +45,44 @@ public class WavesCore
     internal Action<ILoggingBuilder> LoggingBuilder { get; set; }
 
     /// <summary>
-    /// Starts core async.
+    /// Starts core.
     /// </summary>
-    public void Start()
+    /// <param name="args">Args.</param>
+    public void Start(string[] args = null)
     {
-        StartCore();
+        args ??= Array.Empty<string>();
+
+        _serviceCollection = new ServiceCollection();
+
+        InitializeConfiguration(args);
+        InitializeServices(_serviceCollection);
+        InitializeLogging();
+        InitializeServices();
+
+        _serviceProvider = _serviceCollection.BuildServiceProvider();
+        _logger = _serviceProvider.GetService<ILogger<WavesCore>>();
+
+        if (_logger == null)
+        {
+            throw new Exception("Logging has not been configured");
+        }
+
+        _logger.LogDebug("Core is starting...");
+
+        InitializeContainer();
+        InitializePlugins();
+
+        _logger.LogDebug("Core started");
     }
 
     /// <summary>
     /// Starts core async.
     /// </summary>
+    /// <param name="args">Args.</param>
     /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-    public Task StartAsync()
+    public Task StartAsync(string[] args = null)
     {
-        StartCore();
+        Start(args);
         return Task.CompletedTask;
     }
 
@@ -108,37 +131,9 @@ public class WavesCore
     }
 
     /// <summary>
-    /// Starts core.
-    /// </summary>
-    private void StartCore()
-    {
-        _serviceCollection = new ServiceCollection();
-
-        InitializeConfiguration();
-        InitializeServices(_serviceCollection);
-        InitializeLogging();
-        InitializeServices();
-
-        _serviceProvider = _serviceCollection.BuildServiceProvider();
-        _logger = _serviceProvider.GetService<ILogger<WavesCore>>();
-
-        if (_logger == null)
-        {
-            throw new Exception("Logging has not been configured");
-        }
-
-        _logger.LogDebug("Core is starting...");
-
-        InitializeContainer();
-        InitializePlugins();
-
-        _logger.LogDebug("Core started");
-    }
-
-    /// <summary>
     /// Initializes configuration.
     /// </summary>
-    private void InitializeConfiguration()
+    private void InitializeConfiguration(string[] args)
     {
         var env = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
 
@@ -147,6 +142,8 @@ public class WavesCore
         _configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile(configurationFileName, optional: true, reloadOnChange: true)
+            .AddCommandLine(args)
+            .AddEnvironmentVariables()
             .Build();
     }
 
