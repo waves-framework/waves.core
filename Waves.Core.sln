@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core", "..\sources\Waves.Core\Waves.Core.csproj", "{58AC79C3-9ED8-46BE-8A4E-EFCF08848FE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core", "src\Waves.Core\Waves.Core.csproj", "{58AC79C3-9ED8-46BE-8A4E-EFCF08848FE3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{515CA84E-FB48-4E54-8DFA-3EB2E948A7C7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Props", "Props", "{C0019410-C602-4ABA-B970-6AE4A5128631}"
 	ProjectSection(SolutionItems) = preProject
-		..\build\props\common.props = ..\build\props\common.props
+		build\props\common.props = build\props\common.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Sandbox", "..\sources\Waves.Core.Sandbox\Waves.Core.Sandbox.csproj", "{2A1F3B72-E79E-45DE-BD97-342EE375D77F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Sandbox", "src\\Waves.Core.Sandbox\Waves.Core.Sandbox.csproj", "{2A1F3B72-E79E-45DE-BD97-342EE375D77F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B5D5734D-33CB-4941-9501-DC3B942D9C98}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Tests", "..\sources\Waves.Core.Tests\Waves.Core.Tests.csproj", "{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waves.Core.Tests", "src\Waves.Core.Tests\Waves.Core.Tests.csproj", "{E3ECD2E6-7C3D-4291-9302-4DC4636EEC49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
